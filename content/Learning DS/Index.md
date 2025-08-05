@@ -4,8 +4,7 @@ longform:
   title: Learning DS
   workflow: Default Workflow
   sceneFolder: /
-  scenes:
-    - About me
+  scenes: []
   sceneTemplate: templates/chapter.md
   ignoredFiles:
     - Untitled
