@@ -1,4 +1,12 @@
-## I. Introduction to NumPy
+---
+title: Introduction to Numerical Computing with NumPy, Linear Algebra, and Applications
+draft: false
+tags:
+  - Python
+  - NumPy
+  - linear-algebra
+---
+ ## I. Introduction to NumPy
 #### 1. What is NumPy?
 NumPy (Numerical Python) is a **versatile Python library** specifically designed to support **numerical computing**. It is an open-source library that provides a powerful data structure for efficient mathematical operations.
 #### 2. Why use NumPy?

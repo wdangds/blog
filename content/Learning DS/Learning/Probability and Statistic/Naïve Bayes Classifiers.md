@@ -1,3 +1,12 @@
+---
+title: Naïve Bayes Classifiers
+draft: false
+tags:
+  - probability
+  - statistics
+  - classifiers
+  - machine-learning
+---
 Naïve Bayes Classifiers are a family of probabilistic algorithms based on [[Probability|Bayes' Theorem]], primarily used for classification tasks. They are effective, simple, and computationally fast, finding applications in spam filtering, text classification, and speech recognition.
 ## I. Classification Problem
 - **Input**: A fixed set of classes $C= \{c_1, c_2, ..., c_L\}$ and a training set of M samples $S = \{(X_1, c_1), (X_2, c_2),...,(X_M,c_j)\}$, where each sample $X=<x_1, x_2, ...,x_N>$ represents N features.

@@ -1,3 +1,9 @@
+---
+title: Probability
+draft: false
+tags:
+  - probability
+---
 ## I. Introduction to Probability
 **Probability** is a measure of the likelihood of an event occurring. It quantifies how likely an event is to happen, ranging from 0 (impossible) to 1 (certain).
 The concept of "Controlling Randomness" involves applying mathematical techniques to understand, predict, or even influence the outcome of seemingly random systems or processes. This is crucial in a world filled with randomness and uncertainty, where mathematical principles and programming can help us gain insight and control over factors that appear beyond our reach.

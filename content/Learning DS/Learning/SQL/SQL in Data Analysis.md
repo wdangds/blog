@@ -1,4 +1,10 @@
-## I. Introduction to Databases
+---
+title: SQL in Data Analysis
+draft: false
+tags:
+  - SQL
+---
+ ## I. Introduction to Databases
 #### 1. Database Motivation and Definition
 **The problem for large datasets:** Manually managing hundreds of thousands of customer records and their associated products and orders becomes unmanageable without a structured database.
 

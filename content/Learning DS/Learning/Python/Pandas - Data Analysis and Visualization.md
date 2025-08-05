@@ -1,3 +1,10 @@
+---
+title: Pandas - Data Analysis and Visualization
+draft: false
+tags:
+  - Python
+  - Pandas
+---
 ## I. Introduction to Pandas
 ### 1. What is Pandas?
 Pandas is a foundational Python library for data analysis and manipulation. It is built on NumPy and provides easy-to-use data structures and robust data analysis tools. Pandas is highly valued for its speed, power, flexibility, and open-source nature. It excels at handling tabular data, resembling structures like SQL tables or Excel spreadsheets.
