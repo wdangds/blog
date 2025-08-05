@@ -66,3 +66,29 @@ print(df)
 ```
 ![[Df-example.svg]]
 - **Common data types for DataFrame columns include**: `int64` (integers), `float64` (floating-point numbers), `object` (strings), `bool` (Boolean values), `datetime64[ns]` (timestamps), and `category` (categorical data). DataFrames support powerful operations like filtering, conditional operations, statistics, grouping, and table joins.
+### 3. Basic Data Operations
+Pandas provides a rich set of functions for common data operations.
+#### a. Reading and Writing Data
+- **Reading CSV files**: The most common format in data analysis
+```python
+df = pd.read_csv('data.csv')
+```
+We can customize parameters like `sep` (separator), `encoding` (file encoding), `header`, and `names` (column names).
+- **Reading JSON files**:
+```python
+df = pd.read_json('data.json')
+```
+- **Writing data to files**:
+```python
+df.to_csv('output.csv', index = False)
+df.to_json('output.json', orient = 'records')
+```
+Pandas also supports Excel (`read_excel()`, `to_excel()`), SQL (`read_sql()`, `to_sql()`) and clipboard (`read_clipboard()`).
+#### b. Viewing and Exploring Data
+These functions will help us get a quick overview of our dataset's structure, size, data types, distribution, and missing data status.
+- `df.head(n=5)`: Display the **first `n` rows** (default is 5). Useful for a quick check of data and structure.
+- `df.tail(n=5)`: Display the **last `n` rows** (default is 5). Useful for checking records at the end of the dataset.
+- `len(df)`: Returns the **number of rows** in the DataFrame.
+- `df.shape`: Returns a tuple `(number of rows, number of columns)`.
+- `df.index`: Show the **index object** (e.g., integer index, datetime index).
+- `df.columns`:
