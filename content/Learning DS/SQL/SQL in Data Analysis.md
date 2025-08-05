@@ -35,7 +35,7 @@ $\quad$ The ``DROP DATABASE`` statement can be used to remove an existing databa
 ```MySQL
 DROP DATABASE IF EXISTS databasename;
 ```
-	NOTE: Be careful before dropping a database. Deleting a database will result in loss of complete information stored in the database!
+NOTE: Be careful before dropping a database. Deleting a database will result in loss of complete information stored in the database!
 - **Create Tables**: The ``CREATE TABLE`` statement is used to create a new table in a database.
 ```MySQL
 CREATE TABLE tablename(
