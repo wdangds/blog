@@ -63,7 +63,7 @@ print(df)
 ```
 ![[Df-example.svg]]
 - **Common data types for DataFrame columns include**: `int64` (integers), `float64` (floating-point numbers), `object` (strings), `bool` (Boolean values), `datetime64[ns]` (timestamps), and `category` (categorical data). DataFrames support powerful operations like filtering, conditional operations, statistics, grouping, and table joins.
-### 3. Basic Data Operations
+### 4. Basic Data Operations
 Pandas provides a rich set of functions for common data operations.
 #### a. Reading and Writing Data
 - **Reading CSV files**: The most common format in data analysis
@@ -158,3 +158,14 @@ For Series, `data.sort_index(inplace=True)` can be used to sort by index labels.
 
 #### f. Applying Custom Functions (`apply()`)
 The `apply()` method provides **flexibility to apply any custom function to elements along an axis** (rows or columns) of a DataFrame or Series. It's especially useful for complex operations not directly available in Pandas.
+```python
+# Apply a lambda function to a column
+df['score'].apply(lambda x: x / 100 * 10)
+```
+```python
+# Apply a lambda function row wise
+df.apply(lambda row: row['math'] + row['english'], axis=1)
+```
+We can pass any predefined custom function to `apply()`.
+
+
