@@ -91,4 +91,39 @@ These functions will help us get a quick overview of our dataset's structure, si
 - `len(df)`: Returns the **number of rows** in the DataFrame.
 - `df.shape`: Returns a tuple `(number of rows, number of columns)`.
 - `df.index`: Show the **index object** (e.g., integer index, datetime index).
-- `df.columns`:
+- `df.columns`: Return a **list of column names**.
+- `df.dtypes`: Display the **data type of each column** (e.g., `int64`, `object`, `float64`).
+- `df.sample(n)`: Selects **`n` random rows** from the DataFrame.
+- `df['Column'].unique()`: Returns **unique values** within a specified column.
+- `df['Column'].value_counts()`: Returns the **frequency of occurrence** for each unique value in a column.
+- `df.isnull().sum()`: Checks for and **sums the number of missing (null) values** per column.
+**Important overview function**:
+- `df.info()`: Provides a **summary of the DataFrame**, including the number of rows, column names, data types, non-null counts, and memory usage. It's often one of the first functions to call after loading data.
+- `df.describe()`: Generates **descriptive statistics for numerical columns**, including count, mean, standard deviation, minimum, maximum, and quartiles (25%, 50%, 75%).
+#### c. Accessing Data (Indexing and Slicing)
+Pandas offers powerful methods to access specific parts of our data.
+- **Series Access**: we can access data in a Series using its index label, similar to a dictionary.
+```python
+s['b']
+```
+- **DataFrame Slicing**: to select multiple rows:
+```python
+df[1:]
+```
+- `loc[]`: **Access by Label**
+Use to retrieve data based on **labels of rows and columns**. Labels can be string names or defined index value.
+```python
+df.loc['row1', 'columns1'] # row with label row1, column with label columns1
+df.loc[0:3, ['name', 'age']] # row 0-3, column 'name' and 'age'
+```
+- `iloc[]`: **Access by Integer Position**
+Used to retrieve data based on **integer positions (0-based index)** of rows and columns. Works like Python slicing.
+```python
+df.iloc[0, 1] # row index 0 column index 1
+df.iloc[0:3, 0:2] # row index 0-2, column index 0-1
+```
+- `at[]`: **Fast Access by Label for Single Value**
+Optimized for **quick retrieval of a single element using labels**. More efficient than `.loc[]` for single value access.
+```python
+df.at['row1', 'column1'] # get value at row 'row1' column 'column1'
+```
