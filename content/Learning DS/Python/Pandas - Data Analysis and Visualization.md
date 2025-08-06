@@ -8,6 +8,7 @@ tags:
 ## I. Introduction to Pandas
 ### 1. What is Pandas?
 Pandas is a foundational Python library for data analysis and manipulation. It is built on NumPy and provides easy-to-use data structures and robust data analysis tools. Pandas is highly valued for its speed, power, flexibility, and open-source nature. It excels at handling tabular data, resembling structures like SQL tables or Excel spreadsheets.
+
 **Key characteristics of Pandas:**
 ![[Key-characteristic-Panda.svg]]
 **Applications of Pandas span various fields:**
@@ -23,10 +24,6 @@ Before using Pandas, we need to install it. It's a third-party library, not part
 - **Installation**: Open the terminal or command prompt and run:
 ```cmd
 pip install pandas
-```
-```python
-import micropip 
-await micropip.install('pandas') # This is for Obsidian
 ```
 - **Import:** In the Python script or Jupyter Notebook, import Pandas, typically with the alias `pd`:
 ```python
@@ -127,3 +124,37 @@ Optimized for **quick retrieval of a single element using labels**. More efficie
 ```python
 df.at['row1', 'column1'] # get value at row 'row1' column 'column1'
 ```
+- `iat[]`: **Fast Access by Integer Position for Single Value**
+A high-performance version of `.iloc[]` for **single element retrieval using integer positions**.
+```python
+df.iat[0, 1] # value at row 0 and column 1 (index)
+```
+#### d. Grouping Data (`groupby()`)
+`groupby()` is a powerful method for **grouping records based on one or more criteria** (columns) to perform calculations on each group. It follows a **split-apply-combine** strategy: data is *split* into groups, a function is *applied* to each group, and results are combined.
+```python
+# Get the mean salary for each department
+df.groupby('department')['salary'].mean() 
+```
+```python
+# Sum of salary of each gender in each department
+df.groupby(['department', 'gender'])['salary'].sum()
+```
+`groupby()` can be combined with various statistical functions like `.mean()`, `.sum()`, `.count()`, `.min()`, `.max()`, and `.agg()` (to apply multiple functions simultaneously).
+#### e. Sorting Data (`sort_values()`)
+The `sort_values()` method allows us to **sort DataFrame rows based on the values of one or more columns**, in either ascending or descending order.
+```python
+# Sort by one column, ascending
+df.sort_values('salary')
+```
+```python
+#Sort by one column, descending
+df.sort_values('salary', ascending=False)
+```
+```python
+# Sort by multiple columns with mixed order:
+df.sort_values(['department', 'salary'], ascending=[True, False])
+```
+For Series, `data.sort_index(inplace=True)` can be used to sort by index labels.
+
+#### f. Applying Custom Functions (`apply()`)
+The `apply()` method provides **flexibility to apply any custom function to elements along an axis** (rows or columns) of a DataFrame or Series. It's especially useful for complex operations not directly available in Pandas.
