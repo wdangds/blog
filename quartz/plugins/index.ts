@@ -54,4 +54,4 @@ declare module "vfile" {
     relativePath: FilePath
   }
 }
-export { NotebookEmbedding } from "./notebook"
+export { NotebookEmbedding } from "./transformers/notebook"
