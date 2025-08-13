@@ -46,7 +46,7 @@ arr = np.array([1,3,4,7,9])
 	- Example:
 		```python
 		arr = np.arange(0, 5) # creates a ndarray([0,1,2,3,4])
-`````
+```
 - **Identity Matrix**: `np.eye(N)` creates a 2D identity matrix (square matrix) where diagonal elements are 1 and others are 0.
 	- Example:
 	```Python
