@@ -535,3 +535,5 @@ Before analysis, raw text often requires preprocessing:
 		- The `sklearn.metrics.cosine_similarity` function can be used for this.
 	4. **Conclusion**: Compare the calculated Cosine Similarity with a predefined threshold (e.g., 0.8) to conclude whether the texts likely share the same author.
 - **Minimum Word Count for Author Attribution**: Historically, studies suggested a minimum of 250 words for reliable stylometric analysis. However, modern machine learning algorithms can achieve successful author attribution on much shorter texts (e.g., under 25 words for Twitter messages).
+
+[m02w01-exercise.ipynb]
