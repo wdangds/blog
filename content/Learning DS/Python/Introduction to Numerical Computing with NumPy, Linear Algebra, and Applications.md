@@ -26,29 +26,32 @@ import numpy as np
 
 arr = np.array([1,3,4,7,9])
 ```
-- **Arrays with Specific Values**:
-    - **Zeros**: `np.zeros(shape)` creates an array where all elements are 0.
-        - Example:
-          ```python
-          arr = np.zeros(5)  # create a 1D array of five zeros
-          ```
-    - **Ones**: `np.ones(shape)` creates an array where all elements are 1.
-	    - Example:
-		```python
-		arr = np.ones((3,3)) # create a 3x3 array of ones.
-		```
-    - **Full**: `np.full(shape, fill_value)` creates an array with all elements set to a specified `fill_value`.
-        - Example:
-          ```python
-          arr = np.full((2,3), 7)  # create a 2x3 array of sevens.
-          ```
+- **Arrays with Specific Values**
+  - **Zeros:** `np.zeros(shape)` creates an array of 0s.
+
+    ```python
+    arr = np.zeros(5)  # 1D array of five zeros
+    ```
+
+  - **Ones:** `np.ones(shape)` creates an array of 1s.
+
+    ```python
+    arr = np.ones((3, 3))  # 3x3 ones
+    ```
+
+  - **Full:** `np.full(shape, fill_value)` fills with a value.
+
+    ```python
+    arr = np.full((2, 3), 7)  # 2x3 sevens
+    ```
+
 - **Arrays with Sequential Values**: `np.arange(start, stop, step)` creates an array with evenly spaced values within a defined interval. The `stop` value is exclusive.
-	- Example:
-		```python
-		arr = np.arange(0, 5) # creates a ndarray([0,1,2,3,4])
+
+```python
+	arr = np.arange(0, 5) # creates a ndarray([0,1,2,3,4])
 ```
 - **Identity Matrix**: `np.eye(N)` creates a 2D identity matrix (square matrix) where diagonal elements are 1 and others are 0.
-	- Example:
+
 	```Python
 	arr = np.eye(3) # create a 3x3 identity matrix.
 ```
@@ -457,7 +460,8 @@ np.apply_along_axis(my_func, 1, b)
 ```
 #### 3. `np.clip()` and `np.where()`
 - `np.clip()`: Used to limit values in an array to a specified range, handling out-of-range issues often encountered in image processing (e.g., pixel values exceeding 255)
-	```Python
+
+```python
 a = np.arange(10)
 np.clip(a, 1, 8)
 >> array([1, 1, 2, 3, 4, 5, 6, 7, 8, 8])
@@ -536,4 +540,4 @@ Before analysis, raw text often requires preprocessing:
 	4. **Conclusion**: Compare the calculated Cosine Similarity with a predefined threshold (e.g., 0.8) to conclude whether the texts likely share the same author.
 - **Minimum Word Count for Author Attribution**: Historically, studies suggested a minimum of 250 words for reliable stylometric analysis. However, modern machine learning algorithms can achieve successful author attribution on much shorter texts (e.g., under 25 words for Twitter messages).
 
-[m02w01-exercise.ipynb]
+[Demo Notebook](/static/notebooks/m02w01-exercise.ipynb)
