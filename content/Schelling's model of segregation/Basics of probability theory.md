@@ -4,7 +4,6 @@ draft: false
 tags:
   - probabiltiy
 ---
-## Basics of Probability
 
 This serves as a **collection of definitions** for readers who already have a background in probability or mathematical statistics.
 
