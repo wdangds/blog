@@ -57,8 +57,8 @@ $$
 - **i.i.d. Random Variables**: Short for **independent and identically distributed**. A sequence of random variable $X_1, X_2,...$ is **i.i.d.** if they:
 	1. Are **independent**.
 	2. Have the **same distribution function**, i.e., $P(X_i\leq x)=P(X_j\leq x)$ for all $i$, $j$, and $x$.
-> [!example]- **Example**
-> 🎲 Rolling a fair six-sided die multiple times.
+> [!example]- **Example of i.i.d Random Variables**
+> 🎲 **Rolling a fair six-sided die multiple times.**
 >  -  Let $X_1, X_2, ..., X_n$ be the outcomes of each roll.
 >  - Each $X_i$ can take values in $\{1, 2, 3, 4, 5, 6\}$.
 >  - They are **identically distributed** because every roll follows the same uniform distribution:
@@ -67,4 +67,94 @@ $$
 > $$
 > - They are **independent** because the result of one roll does not affect the result of another.
 > So if we roll the die 10 times, the sequence of outcomes can be modeled as 10 i.i.d random variables
-- **Random Process (or Stochastic Process)**: A sequence of random variables $(X_1)
+- **Random Process (or Stochastic Process)**: A sequence of random variables $(X_1,X_2,...)$ often interpreted as the **evolution in time of some random quantity**, where $X_n$ is the quantity at the time $n$.
+	- **Markov chains** are a special class of random processes.
+### 3. Types of Real-Valued Random Variables
+- **Discrete Random Variables**: Take values in some **finite or countable subset of $\mathbb{R}$**. In this text, they are often (or are contained in) $\{0, 1, 2\}$, referred to as **nonnegative integer-valued discrete random variables**.
+- **Continuous Random Variables**: A random variable X for which there exists a **density function** $f_X: \mathbb{R} \rightarrow [0,\infty)$ such that:
+	$$
+	\int_{-\infty}^{x}f_X(x)dx = F_X(x)= P(X\leq x) \quad \forall x\in\mathbb{R}
+	$$
+	- [[Gaussian density function]] is a well-known example.
+	- The only continuous random variables considered in this section are **uniform $[0,1]$ ones**:
+		- **Density function**:
+$$
+f_X=
+\begin{cases}
+1, & \text{if } x\in[0,1]\\
+0, & \text{otherwise}
+\end{cases}
+$$
+		-  **Distribution function**:
+		$$
+		F_x(x)=\int_{-\infty}^{x}f_X(x)dx=
+		\begin{cases}
+		0, &\text{if } x\leq 0\\
+		x, &\text{if } x\in[0,1]\\
+		1, &\text{if } x\geq1.
+		\end{cases}
+		$$
+> [!tip] **Intuition**
+> X is **equally likely to take its value anywhere in the unit interval**. For any interval I of length $a$ inside, $P(X\in I)=a$.
+
+### 4. Characteristics of Random Variables: Expectation and Variance
+- **Expectation ($E[X]$)/ Expected Value/ Mean**: In some sense, the **"average" value we expect from X**.
+	- For a **continuous random variable with density function $f_X(x)$**:
+		$$
+		E[X]=\int_{-\infty}^{\infty}xf_X(x)dx
+		$$
+		- For a **uniform random variable**:
+		$$
+		E[X]=\int_{0}^{1}xdx=\frac{1}{2}
+		$$
+	- For a **nonnegative integer-valued random variable**:
+	$$
+	E[X]=\sum_{k=1}^{\infty}kP(X=k)
+	$$
+		- This is equivalent to the alternative formula:
+$$
+E[X]=\sum_{k=1}^{\infty}P(X\geq k)
+$$
+> [!note]- **Proof**
+> We want to show:
+> $$
+> E[X]=\sum_{k=1}^{\infty}kP(X=k) \equiv E[X]=\sum_{k=1}^{\infty}P(X\geq k)
+> $$
+> **Step 1:** *Expand the first formula*
+> $$
+> \sum_{k=1}^{\infty}kP(X=k)
+> $$
+> Notice that $k$ can be written as a sum of 1's:
+> $$
+> k = \sum_{j=1}^k 1
+> $$
+> So,
+> $$
+> kP(X=k)=(\sum_{j=1}^k 1)P(X=k)=\sum_{j=1}^k P(X=k)
+> $$
+> **Step 2:** *Swap the order of summation*
+> Now substitute back:
+> $$
+> \sum_{k=1}^{\infty}kP(X=k)=\sum_{k=1}^{\infty}\sum_{j=1}^k P(X=k) = \sum_{j=1}^{\infty}\sum_{k=j}^{\infty}P(X=k)
+> $$
+> **Step 3**: *Interpret the inner sum*
+> $$
+> \sum_{k=j}^{\infty}P(X=k)=P(X\geq j)
+> $$
+> **Step 4:** *Final formula*
+> Thus,
+> $$
+> \sum_{k=1}^{\infty}kP(X=k)=\sum_{j=1}^{\infty}P(X\geq j)
+> $$
+> which proves the equivalence.
+
+> [!warning] **Important Note**
+> The expectation $E[X]$ can be **infinite**, even if X itself only takes finite values.
+> > [!example]- **Example: [[The St. Petersburg Paradox]]**
+> > In a game where one is paid $2^X$ roubles (X being the number of heads before the first tail), $E[Y] (\text{where }Y=2^X)$ is infinite, despite $X$ always being finite. This shows a flaw in the classical theory of hazard games in such cases.
+
+
+
+
+
+
