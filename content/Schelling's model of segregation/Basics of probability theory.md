@@ -71,50 +71,56 @@ $$
 	- **Markov chains** are a special class of random processes.
 ### 3. Types of Real-Valued Random Variables
 - **Discrete Random Variables**: Take values in some **finite or countable subset of $\mathbb{R}$**. In this text, they are often (or are contained in) $\{0, 1, 2\}$, referred to as **nonnegative integer-valued discrete random variables**.
-- **Continuous Random Variables**: A random variable X for which there exists a **density function** $f_X: \mathbb{R} \rightarrow [0,\infty)$ such that:
-	$$
-	\int_{-\infty}^{x}f_X(x)dx = F_X(x)= P(X\leq x) \quad \forall x\in\mathbb{R}
-	$$
-	- [[Gaussian density function]] is a well-known example.
-	- The only continuous random variables considered in this section are **uniform $[0,1]$ ones**:
-		- **Density function**:
+- **Continuous Random Variables**:  
+A random variable \(X\) for which there exists a **density function**  
+$f_X: \mathbb{R} \rightarrow [0,\infty)$ such that  
 $$
-f_X=
-\begin{cases}
-1, & \text{if } x\in[0,1]\\
-0, & \text{otherwise}
-\end{cases}
+F_X(x) = P(X \leq x) = \int_{-\infty}^{x} f_X(t)\,dt, \quad \forall x \in \mathbb{R}.
 $$
-		-  **Distribution function**:
-		$$
-		F_x(x)=\int_{-\infty}^{x}f_X(x)dx=
-		\begin{cases}
-		0, &\text{if } x\leq 0\\
-		x, &\text{if } x\in[0,1]\\
-		1, &\text{if } x\geq1.
-		\end{cases}
-		$$
+
+- [[Gaussian density function]] is a well-known example.  
+- The only continuous random variables considered in this section are **uniform $([0,1])$ ones**:  
+  - **Density function**:  
+  $$
+  f_X(x) =
+  \begin{cases}
+  1, & \text{if } x \in [0,1], \\
+  0, & \text{otherwise}.
+  \end{cases}
+  $$  
+
+  - **Distribution function**:  
+  $$
+  F_X(x) =
+  \begin{cases}
+  0, & \text{if } x \leq 0, \\
+  x, & \text{if } x \in [0,1], \\
+  1, & \text{if } x \geq 1.
+  \end{cases}
+  $$
+
 > [!tip] **Intuition**
 > X is **equally likely to take its value anywhere in the unit interval**. For any interval I of length $a$ inside, $P(X\in I)=a$.
 
 ### 4. Characteristics of Random Variables: Expectation and Variance
-- **Expectation ($E[X]$)/ Expected Value/ Mean**: In some sense, the **"average" value we expect from X**.
-	- For a **continuous random variable with density function $f_X(x)$**:
-		$$
-		E[X]=\int_{-\infty}^{\infty}xf_X(x)dx
-		$$
-		- For a **uniform random variable**:
-		$$
-		E[X]=\int_{0}^{1}xdx=\frac{1}{2}
-		$$
-	- For a **nonnegative integer-valued random variable**:
-	$$
-	E[X]=\sum_{k=1}^{\infty}kP(X=k)
-	$$
-		- This is equivalent to the alternative formula:
-$$
-E[X]=\sum_{k=1}^{\infty}P(X\geq k)
-$$
+- **Expectation $(E[X])$ / Expected Value / Mean**:  
+  In some sense, the **"average" value we expect from \(X\)**.
+  - For a **continuous random variable with density function \(f_X(x)\)**:  
+    $$
+    E[X] = \int_{-\infty}^{\infty} x f_X(x)\,dx
+    $$
+  - For a **uniform random variable**:  
+    $$
+    E[X] = \int_{0}^{1} x \, dx = \tfrac{1}{2}
+    $$
+  - For a **nonnegative integer-valued random variable**:  
+    $$
+    E[X] = \sum_{k=1}^{\infty} k \, P(X=k)
+    $$
+    - This is equivalent to the alternative formula:  
+      $$
+      E[X] = \sum_{k=1}^{\infty} P(X \geq k)
+      $$
 > [!note]- **Proof**
 > We want to show:
 > $$
@@ -153,7 +159,7 @@ $$
 > > [!example]- **Example: [[The St. Petersburg Paradox]]**
 > > In a game where one is paid $2^X$ roubles (X being the number of heads before the first tail), $E[Y] (\text{where }Y=2^X)$ is infinite, despite $X$ always being finite. This shows a flaw in the classical theory of hazard games in such cases.
 
-
+	
 
 
 

@@ -1,6 +1,6 @@
 ---
 title: The St. Petersburg Paradox
-draft: True
+draft: False
 tags:
   - probabiltiy
 ---
