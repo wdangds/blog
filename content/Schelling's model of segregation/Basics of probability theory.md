@@ -57,7 +57,7 @@ $$
 - **i.i.d. Random Variables**: Short for **independent and identically distributed**. A sequence of random variable $X_1, X_2,...$ is **i.i.d.** if they:
 	1. Are **independent**.
 	2. Have the **same distribution function**, i.e., $P(X_i\leq x)=P(X_j\leq x)$ for all $i$, $j$, and $x$.
-> [!info] **Example**
+> [!example]- **Example**
 > 🎲 Rolling a fair six-sided die multiple times.
 >  -  Let $X_1, X_2, ..., X_n$ be the outcomes of each roll.
 >  - Each $X_i$ can take values in $\{1, 2, 3, 4, 5, 6\}$.
@@ -67,4 +67,4 @@ $$
 > $$
 > - They are **independent** because the result of one roll does not affect the result of another.
 > So if we roll the die 10 times, the sequence of outcomes can be modeled as 10 i.i.d random variables
-
+- **Random Process (or Stochastic Process)**: A sequence of random variables $(X_1)
