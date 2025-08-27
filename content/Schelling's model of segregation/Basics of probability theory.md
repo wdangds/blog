@@ -171,7 +171,44 @@ $$
 	- **Expectations**:
 		- $E[X_1+...+X_n]=E[X_1]+...+E[X_n]$
 		- $E[cX]=cE[X]$ for a constant $c$. 
+	- **Variances**:
+		- $Var[cX] = c^2Var[X]$
+		- If $X_1, ..., X_n$ are **independent**, then $Var[X_1 +...+X_n]=Var[X_1]+...+Var[X_n]$. (This fails in general without independence)
+### 5. Examples of Random Variables and Their Characteristics
+#### a. Bernoulli (p) Random Variable
+- Given that $p \in [0,1]$, such an X is defined as:
+$$
+X = \begin{cases}
+1, & \text{with probability }p\\
+0, & \text{with probability }1-p
+\end{cases}
+$$
+- $E[X] = p$
+- $Var[X]=p(1-p)$
+#### b. Binomial (n, p) Random Variable
+- Defined as **Y = the sum of *n* independent Bernoulli (p) random variables** (e.g., number of heads in $n$ coin tosses with heads-probability $p$).
+- $E[Y]=E[X_1]+...+E[X_n]=np$
+- $Var[Y]=Var[X_1]+...+Var[X_n]=np(1-p)$
+### 6. Important Theorems
+>[!info] **Theorem 1.1: Chebyshev's inequality**
+>*Let X be a random variable with mean $\mu$ and variance $\sigma^2$. For any $a>0$, we have that the probability $P[|X-\mu|\geq a]$ of a deviation from the mean of at least $a$, satisfies:*
+>$$
+>P(|X-\mu|\geq a)\leq \frac{\sigma ^2 }{a^2}
+>$$
+>
 
+> [!note]- **Proof**
+> WIP
 
+**Purpose**: Useful for **bounding the probability that a random variable deviates by a large amount from its mean**.
+
+>[!info] **Theorem 1.2: The Law of Large Number**
+>*Let $X_1, X_2,...$ be i.i.d random variables with finite mean $\mu$ and finite variance $\sigma^2$. Let $M_n$ denote the average of the first $n$ $X_i$'s, i.e., $M_n=\frac{1}{n}(X_1+...+X_n)$. Then, for any $\epsilon>0$, we have:*
+>$$
+>lim_{n\rightarrow\infty}P(|M_n-\mu|\geq \epsilon)=0
+>$$
+
+> [!note]- **Proof**
+> WIP
 
 
