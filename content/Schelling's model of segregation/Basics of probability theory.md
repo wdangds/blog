@@ -177,12 +177,12 @@ $$
 ### 5. Examples of Random Variables and Their Characteristics
 #### a. Bernoulli (p) Random Variable
 - Given that $p \in [0,1]$, such an X is defined as:
-$$
-X = \begin{cases}
-1, & \text{with probability }p\\
-0, & \text{with probability }1-p
-\end{cases}
-$$
+  $$
+  X = \begin{cases}
+  1, & \text{with probability }p\\
+  0, & \text{with probability }1-p
+  \end{cases}
+  $$
 - $E[X] = p$
 - $Var[X]=p(1-p)$
 #### b. Binomial (n, p) Random Variable
