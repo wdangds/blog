@@ -159,7 +159,21 @@ $$
 >\mu^{(n)}=\mu^{(0)}P^{(1)}P^{(2)}...P^{(n)}
 >$$
 
-
+## 8. Problems and Advanced Concepts
+### Problem 2.1: Interpretation of $P^2$
+WIP
+### Problem 2.2: Modified Random Walk
+WIP
+### Problem 2.3: Limit Behavior of $\mu^{(n)}$
+WIP
+### Problem 2.4: Stationary Distribution (Equilibrium)
+WIP
+### Problem 2.5: Multi-step Transition Probabilities
+WIP
+### Problem 2.6: Functions of Markov Chains are Not Always Markov Chains
+WIP
+### Problem 2.7: Sampling Markov Chains
+WIP
 
 
 

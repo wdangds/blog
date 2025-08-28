@@ -5,7 +5,7 @@ date: 2025-07-10
 
 # 👋 Hello, I’m Wan Dang
 
-I’m a senior in the Computational & Data Science (CDS) program at George Mason University, and have recently been accepted into the BAM (Bachelor’s to Accelerated Master’s) pathway. Driven by curiosity and a love of problem‐solving, I build data‐driven insights and machine learning prototypes that address real-world challenges.
+I’m a senior in the Computational & Data Science (CDS) program at George Mason University. Driven by curiosity and a love of problem‐solving, I build data‐driven insights and machine learning prototypes that address real-world challenges.
 
 ---
 
@@ -30,7 +30,7 @@ I’m a senior in the Computational & Data Science (CDS) program at George Mason
 • Fine-tuned Stable Diffusion via DreamBooth on a custom JSON dataset of posters  
 • Evaluated CNN architectures for genre recognition and layout element detection  
 
-### 3. Tarot Deck Shop Analysis  
+### 3. Shop Analysis  
 • Modeled sales & inventory data with SQL and Python to identify factors in store performance  
 • Visualized customer retention, seasonal trends, and feature importance  
 
@@ -38,10 +38,9 @@ I’m a senior in the Computational & Data Science (CDS) program at George Mason
 
 ## 🛠️ Skills & Tools
 
-- **Languages & Frameworks:** Python, SQL, JavaScript, Flask, Unity  
+- **Languages & Frameworks:** Python, SQL, JavaScript, Flask 
 - **Data & ML:** pandas, scikit-learn, TensorFlow, PyTorch, SMOTE, SHAP  
-- **Visualization:** Matplotlib, Plotly, Mermaid (mind-maps), Markmap  
-- **Academic Writing:** LaTeX, BibTeX, Overleaf  
+- **Visualization:** Matplotlib, Plotly
 
 ---
 
