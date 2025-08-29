@@ -7,7 +7,7 @@ tags:
   - simulation
 ---
 ## 1. Computer Simulation of Markov Chains
-"A key matter in many (most?) practical applications of Markov theory is the ability to simulate Markov chains on a computer." Computer simulation is a **key matter in many practical applications of Markov theory**. A core assumption, although technically *incorrect*, is that we have access to a sequence of **[[Basics of probability theory#2. Random Variables and Distributions|i.i.d random variables]], uniformly distributed on the unit interval** (denoted as $U_0, U_1,....$).
+Computer simulation is a **key matter in many practical applications of Markov theory**. A core assumption, although technically *incorrect*, is that we have access to a sequence of **[[Basics of probability theory#2. Random Variables and Distributions|i.i.d random variables]], uniformly distributed on the unit interval** (denoted as $U_0, U_1,....$).
 
 This initial assumption about random number generators being *truly* random and uniformly distributed is a simplification. There are two main reasons why this is a *lie*:
 ### a. Non-Uniform Distribution
@@ -26,5 +26,53 @@ The **deterministic nature (B) is the most important objection** compared to the
 Despite these advancements, it is crucial to remember that **pseudo-randomness is a potential source of errors in computer simulation**. A long period (time until repetition) for a generator is **far from sufficient** to deem it good, as certain patterns may occur too frequently. 
 
 ## 2. Core Ingredients for Markov Chain Simulation
+To simulate a Markov chain $(X_0, X_1,...)$ with a given state space $S={s_1,...,s_k}$, [[Markov Chains#d. Initial Distribution ($ mu {(0)}$)|initial distribution]] $(\mu^{(0)})$, and [[Markov Chains#b. Transition Matrix (P)|transition matrix]] $P$, the main ingredients are:
+1. **Random numbers ($U_0, U_1,...$)**: As discussed above, these are assumed (incorrectly) to be i.i.d. uniform.
+2. **[[#3. The Initiation Function ($ psi$)|Initiation function]] ($\psi$)**: A function $\psi: [0,1]\rightarrow S$ used to generate the starting value $X_0$.
+3. **[[#4. The Update Function ($ phi$)|Update function]] ($\phi$)**: A function $\phi: S\times [0,1]\rightarrow S$ used to generate $X_{n+1}$ from $X_n$.
+## 3. The Initiation Function ($\psi$)
+### a. Properties of a Valid Initiation Function
+A valid initiation function $\psi$ must satisfy two properties:
+- **(i) Piecewise Constant**: $\psi$ must be piecewise constant, meaning $[0,1]$ can be split into finitely many subintervals where $\psi$ is constant on each [^2]. 
+- **(ii) Correct Initial Distribution**: For each state $s\in S$, the **total length of the interval on which $\psi(x)=s$ must equal $\mu^{(0)}$**. This can be formally stated as:
+$$
+\int_0^1 \mathbb{1}_{\{\psi(x)=s\}}dx=\mu^{(0)}(s) \quad \forall s \in S.
+$$
+- Here $\mathbb{1}_{\{\psi(x)=s\}}$ is the [[Indicator Function|indicator function]] of $\{\psi (x)=s\}$. 
+If these properties are met, setting $X_0=\psi(U_0)$ will yield the correct distribution for $X_0$, i.e.,
+$$
+P(X_0=s)=P(\psi(U_0)=s)=\int_0^1\mathbb{1}_{\{\psi(x)=s\}}dx=\mu^{(0)}(s)
+$$
+[^2]: "Piecewise constant on $[0,1]$" means $[0,1]$ can be cut into a **finite** partition of intervals $0=a_0<a_1<...<a_k=1,\quad I_i=[a_{i-1}, a_i)$, and there are constants $c_1, ..., c_k$ such that $\psi(x)=c_i, \quad \forall x\in I_i$ . So $\psi$ is constant **within** each piece and only jumps when we cross a cutpoint $a_i$ (a "step function"). Endpoints don't matter for integration/probability because there are only finitely many of them. Example: $\psi(x)=3\mathbb{1}_{[0,0.4)}(x)+1\mathbb{1}_{[0.4,0.9)}(x)+7\mathbb{1}_{[0.9,1]}(x)$
+### b. Construction of a Valid Initiation Function
+For a state space $S=\{s_1,...s_k\}$ and initial distribution $\mu^{(0)}$, a valid initiation function $\psi(x)$ can be constructed as follows:
+$$
+\psi(x)=\begin{cases}
+s_1 & \text{for }x\in[0,\mu^{(0)}(s_1))\\
+s_2 & \text{for }x\in [\mu^{(0)}(s_1), \mu^{(0)}(s_1)+\mu^{(0)}(s_2))\\
+\vdots & \vdots\\
+s_i & \text{for }x\in [\sum_{j=1}^{i-1}\mu^{(0)}(s_j),\sum_{j=1}^i\mu^{(0)}(s_j))\\
+\vdots & \vdots \\
+s_k& \text{for }x\in [\sum_{j=1}^{k-1}\mu^{(0)}(s_j), 1]
+\end{cases}
+$$
+This constructed **satisfies both properties:** property (i) is obvious, and property (ii) holds because the length of the interval corresponding to $s_i$
+$$
+\int_{0}^1\mathbb{1}_{\{\psi(x)=s_i\}}dx=\sum_{j=1}^i\mu^{(0)}(s_j)-\sum_{j=1}^{i-1}\mu^{(0)}(s_j)=\mu^{(0)}(s_i)
+$$
+## 4. The Update Function ($\phi$)
+The update function $\phi$ is used to generate the next state $X_{n+1}$ from the current state $X_n$.
+### a. Properties of a Valid Update Function
+A valid update function $\phi(s_i,x)$ must obey similar properties to the initiation function:
+- **(i) Piecewise constant (for fixed current state)**: For a fixed $s_i \in S$, the function $\phi(s_i,x)$ must be piecewise constant when viewed as a function $x$.
+- **(ii) Correct Transition Probabilities**: For each fixed $s_i, s_j\in S$, the **total length of the intervals on which $\phi(s_i, x)=s_j$ must equal $P_{i,j}$** (the transition probability from $s_i$ to $s_j$). This is formally stated as:
+$$
+\int_0^1\mathbb{1}_{\{\phi(s_i,x)=s_j\}}dx=P_{i,j}
+$$
+If $\phi$ satisfies these properties, then $P(X_{n+1}=s_j|X_n=s_i)=P_{i,j}$, which correctly simulates the Markov chain.
+
+
+
+
 
 
