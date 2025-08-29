@@ -70,9 +70,84 @@ $$
 \int_0^1\mathbb{1}_{\{\phi(s_i,x)=s_j\}}dx=P_{i,j}
 $$
 If $\phi$ satisfies these properties, then $P(X_{n+1}=s_j|X_n=s_i)=P_{i,j}$, which correctly simulates the Markov chain.
+### b. Construction of a Valid Update Function
+For each $s_i\in S$, a valid update function $\phi(s_i,x)$ can be constructed similarly to $\psi(x)$:
+$$
+\phi(s_i,x)=\begin{cases}
+s_1 & \text{for }x\in[0,P_{i,1})\\
+s_2 & \text{for }x\in [P_{i,1}, P_{i,1}+P_{i,2})\\
+\vdots & \vdots\\
+s_j & \text{for }x\in [\sum_{l=1}^{j-1}P_{i,l},\sum_{l=1}^jP_{i,l})\\
+\vdots & \vdots \\
+s_k& \text{for }x\in [\sum_{l=1}^{k-1}P_{i,l}, 1]
+\end{cases}
+$$
+This construction ensures that for any $s_i, s_j\in S$, the length of the interval is:
+$$
+\int_{0}^{1}\mathbb{1}_{\{\phi(s_i,x)=s_j\}}dx=\sum_{l=1}^jP_{i,l}-\sum_{l=1}^{j-1}P_{i,l}=P_{i,j}
+$$
+thus satisfying property (ii).
+### c. Non-Uniqueness of Update Functions
+It's important to note that the **choice of update function is not necessarily unique**. For instance, in the [[Markov Chains#5. Examples of Homogeneous Markov Chains|Gothenburg weather example]], an alternative valid update function for $\phi(s_2, x)$ can be constructed.
+## 5. Complete Recipe for Simulating a Markov Chain
+Once valid initiation and update functions ($\psi$ and $\phi$) are constructed, the Markov chain can be simulated iteratively:
+- $X_0=\psi(U_0)$ (generate the starting state using the first random number).
+- $X_1 = \phi(X_0, U_1)$ (generate the next state from $X_0$ )
+- $X_2 = \phi(X_1, U_2)$ (and so on)
+- $X_{n+1}=\phi(X_n, U_{n+1})$ 
 
-
-
+> [!example]- Example 3.1: Simulating the Gothenburg weather
+> Consider the Markov chain in the [[Markov Chains#5. Examples of Homogeneous Markov Chains|example about Gothenburg weather]], whose state space is $S=\{s_1, s_2\}$ where $s_1=$ "rain" and $s_2=$ "sunshine", and whose transition matrix is given by:
+> $$
+> P=\begin{bmatrix}
+> 0.75&0.25\\
+> 0.25&0.75\\
+> \end{bmatrix}
+> $$
+> Suppose we start the Markov chain on a rainy day, so that $\mu^{(0)}=(1,0)$. To simulate this Markov chain using the above scheme, we set the initiation function:
+> $$
+> \psi(x)=s_1, \quad \forall x
+> $$
+> and update function given by:
+> - For $s_1$ (rain):
+> $$
+> \phi(s_1, x)=\begin{cases}
+> s_1, &\forall x\in[0,0.75)\\
+> s_2, &\forall x\in[0.75,1]
+> \end{cases}
+> $$
+>- For $s_2$ (sunshine):
+>$$
+>\phi(s_2, x)=\begin{cases}
+>s_1, & \forall x\in[0, 0.25)\\
+>s_2, & \forall x \in [0.25,1]
+>\end{cases}
+>$$
+## 6. Generalization to Inhomogeneous Markov Chains
+The simulation method can be generalized for [[Markov Chains#7. Inhomogeneous Markov Chain|inhomogeneous Markov Chains]], which have time-dependent transition matrices.
+### a. Simulation Procedure for Inhomogeneous Chains
+- The **initiation function $\psi$ and the starting value $X_0$ are obtained as in the homogeneous case**.
+- For updating, since the chain is inhomogeneous, **several different updating functions $\phi^{(n)}$ are needed**, one for each time step $n$.
+- These $\phi^{(n)}$ functions must satisfy:
+$$
+\int_0^1\mathbb{1}_{\{\phi^{(n)}(s_i,x)=s_j\}}(x)dx=P_{i,j}^{(n)}
+$$
+- A generalized construction for $\phi^{(n)}(s_i, x)$ is provided, using the time-dependent transition probabilities $P^{(n)}_{i,j}$ instead of $P_{i,j}$:
+$$
+\phi^{(n)}(s_i,x)=\begin{cases}
+s_1 & \text{for }x\in[0,P^{(n)}_{i,1})\\
+s_2 & \text{for }x\in [P^{(n)}_{i,1}, P^{(n)}_{i,1}+P^{(n)}_{i,2})\\
+\vdots & \vdots\\
+s_j & \text{for }x\in [\sum_{l=1}^{j-1}P^{(n)}_{i,l},\sum_{l=1}^jP^{(n)}_{i,l})\\
+\vdots & \vdots \\
+s_k& \text{for }x\in [\sum_{l=1}^{k-1}P^{(n)}_{i,l}, 1]
+\end{cases}
+$$
+The inhomogeneous Markov chain is then simulated by setting:
+- $X_0=\psi(U_0)$
+- $X_1=\phi^{(1)}(X_0,U_1)$
+- $X_2=\phi^{(2)}(X_1,U_2)$
+- $X_3=\phi^{(3)}(X_2,U_3)$
 
 
 
