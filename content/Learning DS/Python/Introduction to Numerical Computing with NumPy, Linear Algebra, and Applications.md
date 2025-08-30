@@ -1,6 +1,6 @@
 ---
 title: Introduction to Numerical Computing with NumPy, Linear Algebra, and Applications
-draft: false
+draft: true
 tags:
   - Python
   - NumPy

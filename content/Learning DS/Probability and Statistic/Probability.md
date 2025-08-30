@@ -1,6 +1,6 @@
 ---
 title: Probability
-draft: false
+draft: true
 tags:
   - probability
 ---

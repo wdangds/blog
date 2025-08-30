@@ -1,6 +1,6 @@
 ---
 title: SQL in Data Analysis
-draft: false
+draft: true
 tags:
   - SQL
 ---

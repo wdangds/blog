@@ -28,4 +28,8 @@ E[n(X)]=\sum_{\xi\in\{0,1\}^V}n(\xi)\mu_G(\xi)=\frac{1}{Z_G}\sum_{\xi \in \{0,1\
 $$
 - When exact calculations are beyond computational resources, a good approach is to **revert to simulations**. By simulating many random configurations with distribution $\mu_G$, $E[n(X)]$ can be estimated by the average number of 1s observed. [[Basics of probability theory#6. Important Theorems|The Law of Large Number]] ensures this estimate converges to the true value as the number of simulations increases.
 ### b. Limitations of Direct Simulation
-In principle, simulating a random variable $X$ with distribution $\pi$ involves enumerating states and mapping a uniform random variable to these states based on their cumulative probabilities.
+In principle, simulating a random variable $X$ with distribution $\pi$ involves enumerating states and mapping a uniform random variable to these states based on their cumulative probabilities. However, this approach is **infeasible for large state spaces** because evaluating the mapping function becomes too time-consuming. This is precisely the kind of situation where MCMC method is useful.
+### c. MCMC as a Solution and Historical Context
+The MCMC method **originates in physics in the 1950s** and later saw significant booms in **image analysis (1980s)** and **Bayesian statistics (1990s)**. It is argued that MCMC methods made the Bayesian approach computationally feasible.
+
+## 2. MCMC Method Fundamentals
