@@ -32,5 +32,8 @@ The **sample variance ($s^2$) is a point estimate of the population variance ($\
 ## 2. Sampling Distribution
 To understand how much point estimates vary, we first look at their variability from sample to sample.
 - **Definition**: A **sampling distribution is an empirical distribution of sample statistics** (e.g., sample means, $\bar{X}$). It shows the distribution of a statistic calculated from many different samples of the same size drawn from the same population.
-
-[Example]()
+- **Effect of Increasing Number of Samples:** If we increase the number of calculated sample means ($\bar{X}s$), the sampling distribution takes on a more defined shape.
+[Example: Effect of Increasing Number of Samples](https://github.com/wdangds/blog/blob/v4/content/static/notebooks/example-num-sample.ipynb)
+- **Effect of Increasing Sample Size (n)**: As the sample size (n) increases, the sampling distribution of $\bar{X}$ exhibits general patterns.
+[Example: Effect of Increasing Sample Size](https://github.com/wdangds/blog/blob/v4/content/static/notebooks/example-sample-size.ipynb)
+## 3. Central Limit Theorem (CLT)
