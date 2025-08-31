@@ -20,7 +20,7 @@ $$
   - More generally, for a **countable sequence of disjoint events** $(A_1, A_2, ...)$:
 $$
 P(\bigcup_{i=1}^{\infty}A_i)=\sum_{i=1}^{\infty}P(A_i)
-$$
+$$ 
 - **Conditional probability P(A|B)**: If A and B are events and $P(B)>0$, the conditional probability of A given B is defined as:
 $$
 P(A\mid B)=\frac{P(A\cap B)}{P(B)}
