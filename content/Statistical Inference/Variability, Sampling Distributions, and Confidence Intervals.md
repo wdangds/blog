@@ -53,6 +53,8 @@ If you flip a coin 100 times, and let $X_i=1$ if heads, $0$ if tails, then $S_{1
 With the same 100 coin flips, $\bar{X}_{100}=\frac{\text{\#heads}}{100}$, i.e., the proportion of heads.
 
 [Example: Central Limit Theorem](https://github.com/wdangds/blog/blob/v4/content/static/notebooks/example-clt.ipynb)
+- **Standard Error (SE)**: The uncertainty of a sampling distribution, specifically its standard deviation, is given a special name: the **Standard Error**.
+	- **$SE=\frac{Var(X)}{n}=\frac{SD(X)}{\sqrt{n}}$**. The SE measures the typical distance an estimate falls the from the population parameter.
 - **Conditions for the CLT**: For the CLT to apply, certain conditions are required:
 	- This is approximately true if **random sampling/assignment** is used and the **sample size (n) is less than 10% of the population size** (to prevent overlapping).
 	- **Sample size/skew**: The population distribution must be **nearly normal, OR the sample size must be large**.
@@ -60,3 +62,45 @@ With the same 100 coin flips, $\bar{X}_{100}=\frac{\text{\#heads}}{100}$, i.e., 
 		- This is usually checked by assuming the sample distribution is similar to the population distribution.
 ## 4. Confidence Intervals
 Using only a point estimate is like fishing with a spear; it's unlikely to hit the exact population parameter. A **confidence interval is like a fishing net**, providing a range of plausible values with a good chance of capturing the parameter.
+- **Purpose**: To design a "net" with a reasonable chance of capturing the population mean ($\mu$) using a point estimate ($\bar{X}$).
+- **Connection to CLT**:
+	- The CLT states that **$\bar{X}$ is a sample from $N(\mu, \frac{\sigma}{\sqrt{n}})$**.
+	- This implies that **95% of the time, a sample's mean ($\bar{X}$) will be within 2 Standard Error ($2\frac{\sigma}{\sqrt{n}}$) of $\mu$**.
+	- Consequently, for 95% of samples, the population mean ($\mu$) will be within 2 Standard Error of $\bar{X}$.
+> [!example] Example - Cardinals
+*A transect was sampled 50 times by counting the number of cardinals seen when walking a 1 mile path in the Duke forest. The mean of these samples was 13.2. Estimate the true average number of cardinals along this path, assuming the population distribution is nearly normal with a population standard deviation of 1.74.*
+$$
+\begin{aligned}
+&\bar{X}=13.2, \quad \sigma = 1.74, \quad SE = \frac{\sigma}{\sqrt{n}}=\frac{1.74}{\sqrt{50}}=0.25\\
+& \Rightarrow \mu = 13.2 \pm 2\times 0.25 \Rightarrow \mu \in (12.7, 13.7)
+\end{aligned}
+$$
+- **What does "95% confident" mean?**
+	- If we were to take **many samples** and construct a confidence interval from each using the formula $\text{point estimate }\pm CV\times SE$, then **about 95% of those intervals would contain the true population mean ($\mu$)**.
+- **General Confidence Interval Formula**:
+	- $\text{point estimate }\pm CV \times SE$.
+	- **Conditions** when the point estimate is $\bar{X}$:
+		1. **Independence:** Observations must be independent (random sample/assignment, $n<10\%$ of population).
+		2. **Normality:** Nearly normal population distribution or a large enough sample size.
+		3. **Population Variance:** So far, it's assumed known, which is rarely true in practice.
+- **Changing the Confidence Level:**
+	- To change the confidence level, we adjust the **critical value (CV)** in the formula.
+	- Common confidence levels are 90%, 95%, 98%, and 99%.
+	- If CLT conditions are met, $CV= Z*$ (a Z-score from the standard normal distribution).
+	- For a **95% confidence interval, $Z*=1.96$**. $Z*$ can be found using a Z table for any desired confidence level.
+- **Width of an Interval**:
+	- To be very certain of capturing the population parameter (i.e., **increase confidence level**), one should use a **wider interval**.
+	- A drawback of a wider interval is that it provides **less precise information** about the parameter's exact location.
+> [!example] Example - Sample size
+*Coca-Cola wants to estimate the per capita number of Coke products consumed each year in the United States, in order to properly forecast market demands they need their margin of error to be 5 items at the 95% confidence level. From previous years they know that $\sigma \approx 30$. How many people should they survey to achieve the desired accuracy?*
+$$
+ME=z\times \frac{\sigma}{\sqrt{n}}\Rightarrow n = (\frac{z\times \sigma}{ME})^2=(\frac{1.96\times 30}{5})^2\approx 139
+$$
+## 5. Common Misconceptions about Confidence Intervals
+Several misunderstandings about confidence intervals are prevalent.
+1. **Misconception 1**: The confidence level is the probability that the interval contains the true population parameter.
+	- **Correction**: In the frequentist paradigm, the **population parameter is fixed but unknown**. Therefore, any given confidence interval either *does* or *does not* contain the true value, meaning the probability is $0$ or $1$, not $95\%$. The $95\%$ refers to the success rate of the *method* over many samples.
+2. **Misconception 2**: A narrower confidence interval is always better.
+	- **Correction**: The **width of an interval is a function of both the confidence level (CV) and the standard error (SE)**. A narrower interval might come from a lower confidence level, which is not necessarily "better".
+3. **Misconception 3**: A wider interval means less confidence.
+	- **Correction**: **A wider interval generally indicates *more* confidence**, as it has a higher chance of capturing the true parameter. It is possible to make very precise statements with very little confidence, and vice versa.
