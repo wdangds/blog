@@ -14,7 +14,7 @@ Markov chains are mathematical models used to describe a sequence of events wher
 > - From **time 2 onwards**, another coin flip decides the move: heads means one step **clockwise**, tails means one step **counterclockwise** to an adjacent corner.
 > - $X_n$ denotes the street-corner at time $n$, forming a random process $(X_0, X_1,...)$ with values in $\{1,2,3,4\}$.
 
-![[fig-1-random-walker.png]]
+![[content/Schelling's model of segregation/Pics/fig-1-random-walker.png]]
 ## 2. Key Properties of Markov Chains
 - **Memoryless Property (Markov Property)**:
 	- The **conditional distribution of $X_{n+1}$** (the next state) given the entire history of the process up to time $n$ $(X_0, X_1, ..., X_n)$ **depends only on the current state $X_n$**.
@@ -117,7 +117,7 @@ $$
 - **Components**:
 	- **Nodes:** Represent the **states** of the Markov chain.
 	- **Arrows**: Represent the **transition probabilities** between states.
-![[fig-2-transition-graph.png]]
+![[content/Schelling's model of segregation/Pics/fig-2-transition-graph.png]]
 ## 7. Inhomogeneous Markov Chain
 **Motivation**: In situations where the transition rule (or mechanism) for the Markov chain changes with time, an inhomogeneous model is necessary.
 >[!info] Definition 2.2
