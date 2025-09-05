@@ -23,24 +23,24 @@ I’m a senior in the Computational & Data Science (CDS) program at George Mason
 ## 🚀 Key Projects
 
 ### 1. High-Speed Rail Success Prediction  
-• Compiled a global dataset of existing HSR projects (economic, demographic, infrastructure metrics)  
-• Built & compared ML models (Logistic Regression, RF, XGBoost, SVM) to forecast project viability  
-• Analyzed cost-benefit tradeoffs for Vietnam’s North–South corridor  
+Tools: Python, Pandas, Scikit-learn, XGBoost, LightGBM, Matplotlib, Seaborn.
+- Performed exploratory data analysis and feature engineering on a global dataset of 160 HSR lines, identifying GDP per capita, cost/km, urbanization rate, and corridor length as the strongest predictors.
+- Trained and cross-validated multiple classifiers (Logistic Regression, Random Forest, XGBoost, SVM), with Random Forest and XGBoost each achieving around 0.705 ROC-AUC.
+- Applied the calibrated model to Vietnam’s proposed North–South corridor (1,570 km, $55.75 B cost, 39.5% urbanization) to forecast a 63.2% success probability, guiding strategic planning.
 ### 2. Movie Poster Classification  
-• Fine-tuned Stable Diffusion via DreamBooth on a custom JSON dataset of posters  
-• Evaluated CNN architectures for genre recognition and layout element detection  
-
-### 3. Shop Analysis  
-• Modeled sales & inventory data with SQL and Python to identify factors in store performance  
-• Visualized customer retention, seasonal trends, and feature importance  
+Tools: Pandas, Tensorflow, Pytorch, Flask.
+- Utilized Pandas for data preparation, including cleaning and binarizing genre labels to support multi-label classification, ensuring the dataset of 30,000+ images was properly structured for model training and evaluation.
+- Developed a CNN-based classification model with TensorFlow and PyTorch to predict multiple genres from movie posters, leveraging a custom-curated dataset and multi-label techniques.
+- Deployed an interactive Flask web application providing a user-friendly interface for uploading movie posters, running real-time inference, and presenting genre predictions.
 
 ---
 
 ## 🛠️ Skills & Tools
 
-- **Languages & Frameworks:** Python, SQL, JavaScript, Flask 
-- **Data & ML:** pandas, scikit-learn, TensorFlow, PyTorch, SMOTE, SHAP  
-- **Visualization:** Matplotlib, Plotly
+- **Languages & Frameworks:** Python, R, Java, MATLAB
+- **Data & ML:** Pandas, NumPy, Scikit-learn, TensorFlow, PyTorch  
+- **Visualization:** Matplotlib, Plotly, Seaborn
+- **DBMS**: MySQL, MongoDB
 
 ---
 
