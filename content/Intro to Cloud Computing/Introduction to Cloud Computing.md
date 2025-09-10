@@ -72,4 +72,25 @@ Despite its benefits, cloud computing faces significant challenges and criticism
 ## 5. Service Availability and Failures
 Clouds are complex systems susceptible to malicious attacks and infrastructure failures.
 - **Causes of Failure**: Events like DNS attacks, power outages, and even lightning can cause major service blackouts.
-- **Example: AWS 2012 Outage**: A 2012 storm on the U.S. East Coast caused a prolonged outage from Amazon AWS. The failure exposed a range of "hidden" problems, including failures in backup generators, faulty boot preocesses  
+- **Example: AWS 2012 Outage**: A 2012 storm on the U.S. East Coast caused a prolonged outage from Amazon AWS. The failure exposed a range of "hidden" problems, including failures in backup generators, faulty boot processes, and critical bugs in the Elastic Load Balancer (ELB) and Relational Database Service (RDS) that hindered recovery.
+- **Stability Risks**: The interaction between independent services, like an application's load balancer and an infrastructure's power optimizer, can lead to unpredictable feedback and instability, especially under extreme conditions.
+- **Mitigation: Geographic dispersion** of resource - clustering data centers in different locations - can lower the probability of catastrophic failures and improve performance through intelligent load balancing.
+## 6. Ethical, Energy, and Environmental Considerations
+### a. Ethical Issues
+The cloud computing paradigm shift introduces profound ethical challenges:
+- **Relinquishing Control**: Users cede control to third-party services, creating risks like unauthorized access, data corruption, and service unavailability.
+- **Blurred Accountability (De-perimeterization)**: When services span multiple organizations, it becomes difficult to determine who is responsible when something goes wrong.
+- **Privacy and Data Control**: The practice of sharing and storing vast amounts of personal data tests an individual's right to control how their data is collected and used. This is complicated by cultural differences in attitudes toward privacy.
+- **Need for Governance**: Rules and regulations are needed to manage cloud computing ethically. 
+**Accountability is a key ingredient**, requiring clear information on how data is handled and who is responsible, though this can create tension with privacy.
+### b. Energy Use and Ecological Impact
+The energy consumption of data centers has a significant environmental impact.
+- **The Footprint**: IT industries and data centers in industrialized nations contribute significantly to $CO_2$ emissions. In 2018, global data centers accounted for about 1% of global electricity consumption.
+- **An Optimistic Trend**: Despite a more than sixfold increase in workloads from 2010 to 2018, data center energy use grew by only 6%. The energy intensity per compute instance has decreased by about 20% annually since 2010.
+- **Path to Sustainability**: The continued adoption of cloud computing could prevent the emission of over 1 billion metric tons of $CO_2$ between 2021 and 2024. Key strategies include:
+	- Shifting to cleaner energy sources.
+	- Improving energy efficiency to reduce waste from activities like cooling.
+	- Refreshing hardware with more energy-efficient technologies.
+	- Using resource management software that prioritizes energy optimization.
+## 7. The future of Cloud Computing
+Cloud computing is a technical and social reality that will continue to evolve in both predictable and unpredictable ways. The future focus is expected to shift from building the infrastructure to innovating in the **application domain**. The evolution of the cloud is organically tied to the future of the Internet itself, with emerging technologies like the **Internet of Things (IoT)** already integrating with cloud services. As the cost of communication continues drop, it will make even more economic sense to store data in the cloud where the applications run, likely leading to the emergence of new classes of cloud applications.
