@@ -109,4 +109,36 @@ There are two competing hypotheses: the null ($H_0$) and the alternative ($H_A$)
 | Reject $H_0$         | **Type I Error ($\alpha$)** | Correct (Power, $1-\beta$)  |
 - **Type I Error ($\alpha$): Rejecting the null hypothesis when $H_0$ is actually true**.
 	- The probability of a Type I error is denoted by $\alpha$, which is the chosen significance level.
-	- For example, if $\alpha= 0.05$
+	- For example, if $\alpha= 0.05$, it means that if $H_0$ is true, we will incorrectly reject it at most 5% of the time.
+	- Type I errors are generally considered *worse* in many contexts (e.g., wrongly convicting an innocent person). Therefore, inference procedures are tuned to minimized them by choosing small values for $\alpha$ (e.g., 0.05).
+- **Type II Error ($\beta$): Failing to reject the null hypothesis when $H_A$ is actually true**.
+	- The probability of a Type II error is denoted by $\beta$.
+- **Power ($1-\beta$)**: The probability of **correctly rejecting the null hypothesis when $H_A$ is true**. It represents the test's ability to detect a true effect or difference.
+
+![[fig-type-1-2-error.png]]
+### b. Factors Affecting Type II Error ($\beta$) and Power
+The Type II error rate ($\beta$) and thus power ($1-\beta$) depend on several factors:
+- **Effect Size ($\delta$)**: The true difference between the population parameter and the null hypothesis value. A large effect size ($\delta$) makes it easier to detect the difference, thus decreasing $\beta$ and increasing power.
+- **Significance Level ($\alpha$)**: Increasing $\alpha$ (e.g., from 0.05 to 0.10) makes it easier to reject $H_0$, thereby decreasing $\beta$ and increasing power, but at the cost of increasing the Type I error rate.
+- **Sample Size (n)**: Increasing the sample size (n) decreases the standard error, making the test more sensitive to detect differences. This decreases $\beta$ and increases power.
+### c. Calculating Power
+Calculating power involves a two-step process:
+1. **Step 0**: Define the null and alternative hypotheses, choose a meaningful **effect size ($\delta$)** (the true population mean under $H_A$), a **significance level ($\alpha$)**, and the sample size ($n$).
+2. **Step 1:** **Determine the rejection region for $H_0$**: Calculate the range of sample mean ($\overline{X}$) values that would lead to rejecting $H_0$ at the chosen $\alpha$ level, assuming $H_0$ is true. ^step-1
+3. **Step 2: Calculate the probability of rejecting $H_0$ under $H_A$**: Assuming the true population mean is $\mu_{H_0}+\delta$, calculate the probability that the sample mean ($\overline{X}$) would fall into the rejection region identified in [[#^step-1|step 1]]. This probability is the power.
+
+> [!example]- Example: Blood Pressure (One-sided test)
+> - **Scenario**: Detect an increase of 2 mmHg in average blood pressure. National average $\mu=130 \text{ mmHg}$, $\sigma=25 \text{ mmHg}$. Sample of $n=100$ employees.
+> 	- $H_0:\mu=130$, $H_A:\mu>130$
+> 	- Assume $\alpha=0.05$ and the true average $\mu=132 \text{ mmHg}$ ($\delta=2$)
+> - **Step 1 (Rejection Region)**: 
+> 	- For $\alpha=0.05$, the critical z-value for a one-sided test is $z*=1.645$.
+> 	- Reject $H_0$ if $\overline{X}>130+1.645\times \frac{25}{\sqrt{100}}=134.1125$.
+> 	- So, reject $H_0$ if $\overline{X}>134.1125$.
+> - **Step 2 (Probability under $H_A$)**:
+> 	- Now, assume $\mu=132$. What is the probability that $\overline{X}>134.1125$?
+> 	- $Z=\frac{134.1125-132}{\frac{25}{\sqrt{100}}}=\frac{2.1125}{2.5}=0.845$.
+> 	- $P(Z>0.845)=0.199$. This represents the power.
+
+### d. Using Power to Determine Sample Size
+Often, researchers want to determine the minimum sample size (n) needed to achieve a desired level of power for a specific effect and significant level.
