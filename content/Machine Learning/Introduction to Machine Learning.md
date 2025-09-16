@@ -49,6 +49,7 @@ This framework helps us clearly define and evaluate any machine learning problem
 Understanding data structure is crucial for machine learning.
 
 ![[fig-feature-target-data-types.png]]
+
 **Data Point**: A single row or observation in your dataset (e.g., one patient's medical record).
 
 **Feature**: An individual, measurable property or characteristic of a data point (input variables)
@@ -120,3 +121,90 @@ Several key factors influence the choice of ML approach:
 The ML pipeline represents the full lifecycle of a machine learning project, from raw data to a deployed model. It is an **iterative process**, not a linear one.
 
 ![[fig-ml-pipeline.png]]
+
+| Stage                                  | Goal                                                                                           | Activities                                                                                                                                                                                                                                                    |
+| -------------------------------------- | ---------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 1 - Data preparation and Preprocessing | Transform raw data in to a clean, structured format that models can understand.                | Data cleaning, normalization, scaling, and categorical encoding.                                                                                                                                                                                              |
+| 2 - Model Training                     | Feed prepared data into an algorithm to learn patterns                                         | Use the **training set** (subset of data used to train model) to build the model.                                                                                                                                                                             |
+| 3 - Evaluation                         | Assess a model's performance on separate, unseen test data.                                    | Use a **validation set** (data used to fine-tune model parameters and prevent overfitting) to fine-tune parameters. Then, use a **test set** (a separate subset of data) to evaluate the final model's performance, providing unbiased validation of results. |
+| 4 - Optimization                       | Adjust hyperparameters to improve performance.                                                 | Interpret model decisions                                                                                                                                                                                                                                     |
+| 5 - Deployment                         | Deploy the final model in to a production environment where it can make real-time predictions. |                                                                                                                                                                                                                                                               |
+## 7. The Reality of Real-World Data
+### a. The 80/20 Rule
+In data science, the *80/20 rule* refers to the reality that data scientists typically spend the **majority of their time (80%) on data cleaning, preparation, and preprocessing**, with only **20% on actual modeling**. This highlights the crucial importance of data quality.
+### b. "Garbage In, Garbage Out"
+This principle means that **poor quality input data will inevitably lead to poor quality results**, regardless of how sophisticated the machine learning algorithm is. The model can only learn from the data it's given. Even the most sophisticated algorithm cannot overcome poor data quality. A model trained on biased or incorrect data will produce biased or incorrect results.
+### c. Common Data Quality Issues
+- **Missing Values**: Sensors fail, surveys are incomplete, databases have gaps.
+- **Inconsistent Formats:** Different date formats, units, naming conventions.
+- **Outliers and Errors**: Typos, measurement errors, data corruption.
+- **Bias in Collection**: Sampling bias, historical bias.
+
+> [!example]- Example: Geographic Bias in Climate Model
+> If a climate model trained primarily on data from North America performs poorly when predicting climate patterns in Africa, this is an example of **sampling bias or geographic bias** in the training data. Certain regions are underrepresented or missing from the dataset.
+>
+> **Steps to Address**:
+> 1. **Analyze data distribution**: examine the geographic coverage of training data to identify gaps.
+> 2. **Collect additional data**: Gather more data from underrepresented regions.
+> 3. **Investigate regional differences**: Research whether different environmental conditions require different modeling approaches.
+> 4. **Validate across regions**: Test the updated model's performance across all geographic areas.
+> 5. **Consider domain adaptation**: Use techniques to adapt the model to new geographic regions.
+
+## 8. Ethical Considerations in Machine Learning
+As future scientists and practitioners, you have a responsibility to consider the ethical implications of the machine learning systems you develop and deploy.
+
+**Fairness and Non-discriminations**:
+- **Concern**: Model should not discriminate against protected groups or exhibit unequal performance across different population. Consider historical biases in training data.
+- **How to address**: Ensure training data includes diverse, representative samples from all demographic groups, regularly audit model performance across different populations; implement bias detection and mitigation techniques.
+
+**Transparency and Explainability**:
+- **Concern**: Stakeholders should understand how ML systems make decisions, especially in high-stakes applications.
+- **How to address**: Use interpretable models when possible; provide explanations for AI recommendations; maintain human oversight in final decisions; document model limitations clearly. Transparency and explainability specifically refer to the requirement that stakeholders understand how ML systems make decisions.
+
+**Accountability and Responsibility**:
+- **Concern**: Unclear responsibility for errors and outcomes.
+- **How to address**: Establish clear protocols for human oversight and error handling; maintain clear responsibility for model outcomes and decisions; conduct regular auditing and monitoring of deployed systems.
+
+**Privacy and Data Protection**:
+- **Concern**: Protecting sensitive patient or research data.
+- **How to address**: Use data anonymization, secure storage, obtain proper consent; minimize data collection to what's necessary.
+
+## 9. Application Example
+> [!example] Spam Detection System
+> **Feature:** Measurable and relevant properties of an email that can help classify it as spam or not spam.
+> - *Examples*: Number of exclamation marks, presence of keywords like "FREE" or "URGENT", sender reputation score, email length, time sent, number of links.
+>
+> **Target/Label**: The outcome we are trying to predict.
+> - *Example*: "Spam" or "Not Spam" (a binary classification problem)
+>
+> **Training Data**: Realistic and appropriately labeled data used to teach the model.
+> - *Example*: Thousands of emails that have been manually labeled as spam or legitimate.
+>
+> **Performance Metric**: A suitable metric for classification problems to measure how ell the model performs.
+> - *Example*: Accuracy, precision, recall, F1-score, or area under ROC curve
+
+
+# Glossary
+
+|                               | Definition                                                                                   |
+| ----------------------------- | -------------------------------------------------------------------------------------------- |
+| **Core Concepts**             | ------------------------------------------------------------                                 |
+| Algorithm                     | A set of rules or instructions that a computer follows to solve a problem or complete a task |
+| Data point                    | A single row or observation in your dataset                                                  |
+| Feature                       | An individual, measurable property or characteristic of a data point                         |
+| Target (Label)                | The variable you are trying to predict; the "answer" in your training data                   |
+| T-P-E Framework               | Task, Performance measure, and Experience                                                    |
+| **Types of machine learning** | ------------------------------------------------------------                                 |
+| Supervised learning           | Learning with labeled data to predict a target variable                                      |
+| Classification                | Predicting discrete categories or classes                                                    |
+| Regression                    | Predicting continuous numerical values                                                       |
+| Unsupervised learning         | Finding hidden patterns in unlabeled data without a specific target variable                 |
+| Reinforcement learning        | An agent learns to make decisions through rewards and penalties                              |
+| **ML Pipeline Stages**        | ------------------------------------------------------------                                 |
+| Data Preparation              | Transforming raw data into a clean, structured format for models                             |
+| Model Training                | The process of feeding data into an algorithm to learn patterns                              |
+| Evaluation                    | Assessing a model's performance on separate, unseen test data                                |
+| **Data and Evaluation Terms** | ------------------------------------------------------------                                 |
+| Training Set                  | The subset of data used to train the model                                                   |
+| Validation Set                | Data used to fine-tune model parameters and prevent overfitting                              |
+| Test Set                      | A separate subset of data used to evaluate the final model's performance                     |

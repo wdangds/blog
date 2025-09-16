@@ -86,7 +86,9 @@ The chi-square framework can assess if a statistical model fits a dataset.
 > | -------- | --- | --- | --- | --- | --- | --- | --- | ----- |
 > | Observed | 717 | 369 | 155 | 69  | 28  | 14  | 10  | 1362  |
 > | Expected | 743 | 338 | 154 | 70  | 32  | 14  | 12  | 1362  |
+> 
 > Distribution of the waiting time until a positive trading day.
+> 
 > $\chi^2=4.61$ with $df=6$ ($k=7$ categories).
 > - **P-value**: Upper tail area $=0.5951$
 > - **Conclusion**: Since p-value (0.5951) > $\alpha$ (e.g., 0.05), we **do not have sufficient evidence to reject $H_0$**. We cannot reject the notion that trading days are independent and that wait times follow a geometric distribution. This suggests that dependence between days, if any, is very weak.
