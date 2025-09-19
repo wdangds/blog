@@ -1,11 +1,21 @@
 ---
 title: Statistical Inference
 ---
+# OpenIntro Statistic [^1]
+[^1]: Get the book at: [link](https://www.openintro.org/book/os/)
 ## Table of content
 
-| Chapter | Section | Title                                            | Tags                                                             |
-| ------- | ------- | ------------------------------------------------ | ---------------------------------------------------------------- |
-| 6       | 1       | [[Inference for a Single Proportion]]            | #inference #statistics #hypothesis-test #categorical             |
-| 6       | 2       | [[Difference of Two Proportions]]                | #inference #statistics #hypothesis-test #categorical             |
-| 6       | 3       | [[Testing for goodness of fit using chi-square]] | #inference #statistics #categorical #hypothesis-test #chi-square |
-| 6       | 4       | [[Testing for independence in two-way tables]]   | #categorical #chi-square #inference #statistics #hypothesis-test |
+| Chapter | Section | Title                                            | Tags                                                               |
+| ------- | ------- | ------------------------------------------------ | ------------------------------------------------------------------ |
+| 6       | 1       | [[Inference for a Single Proportion]]            | #inference #statistics #hypothesis-test #categorical               |
+| 6       | 2       | [[Difference of Two Proportions]]                | #inference #statistics #hypothesis-test #categorical               |
+| 6       | 3       | [[Testing for goodness of fit using chi-square]] | #inference #statistics #categorical #hypothesis-test #chi-square   |
+| 6       | 4       | [[Testing for independence in two-way tables]]   | #categorical #chi-square #inference #statistics #hypothesis-test   |
+| 7       | 1       | [[One-sample means with the t-distribution]]     | #statistics #numerical #t-distribution #inference #hypothesis-test |
+# CSI 672 - Statistical Inference Lecture Note
+## Table of Content
+
+| Week | Title                                                             | Tags                                     |
+| ---- | ----------------------------------------------------------------- | ---------------------------------------- |
+| 1    | [[Variability, Sampling Distributions, and Confidence Intervals]] | #statistics                              |
+| 2    | [[Inference for the Mean]]                                        | #statistics  #inference #hypothesis-test |

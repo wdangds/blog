@@ -20,7 +20,7 @@ $$
 $$
 - This model captures behaviors in **statistical physics** (e.g., gas particles with non-negligible radii) and **telecommunications** (occupied nodes disabling neighbors).
 
-![[content/Schelling's model of segregation/Pics/fig-7-feasible-configuration.png]]
+![[fig-7-feasible-configuration.png]]
 - A common question is: **What is the expected number of 1s in a random configuration chosen according to $\mu_G$?**
 	- This expected value, $E[n(X)]$, is a sum over all configurations, which is **computational infeasible for large graphs** because the number of configurations grows exponentially. For example, an $8\times 8$ grid has $2^{64}$ configurations ($\approx 1.8\times 10^{19}$), and even the number of non-zero terms (feasible configurations) grows exponentially. Calculating $Z_G$ is also nontrivial.
 $$
