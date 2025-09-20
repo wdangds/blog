@@ -117,7 +117,7 @@ There are two competing hypotheses: the null ($H_0$) and the alternative ($H_A$)
 
 ![[fig-type-1-2-error.png]]
 ### b. Factors Affecting Type II Error ($\beta$) and Power
-The Type II error rate ($\beta$) and thus power ($1-\beta$) depend on several factors:
+The Type II error rate ($\beta$) and thus [[Power Calculations for a Difference of Means|power]] ($1-\beta$) depend on several factors:
 - **Effect Size ($\delta$)**: The true difference between the population parameter and the null hypothesis value. A large effect size ($\delta$) makes it easier to detect the difference, thus decreasing $\beta$ and increasing power.
 - **Significance Level ($\alpha$)**: Increasing $\alpha$ (e.g., from 0.05 to 0.10) makes it easier to reject $H_0$, thereby decreasing $\beta$ and increasing power, but at the cost of increasing the Type I error rate.
 - **Sample Size (n)**: Increasing the sample size (n) decreases the standard error, making the test more sensitive to detect differences. This decreases $\beta$ and increases power.

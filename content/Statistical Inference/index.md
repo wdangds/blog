@@ -12,6 +12,10 @@ title: Statistical Inference
 | 6       | 3       | [[Testing for goodness of fit using chi-square]] | #inference #statistics #categorical #hypothesis-test #chi-square   |
 | 6       | 4       | [[Testing for independence in two-way tables]]   | #categorical #chi-square #inference #statistics #hypothesis-test   |
 | 7       | 1       | [[One-sample means with the t-distribution]]     | #statistics #numerical #t-distribution #inference #hypothesis-test |
+| 7       | 2       | [[Paired data]]                                  | #statistics #numerical #inference #hypothesis-test #dependent      |
+| 7       | 3       | [[Difference of Two Independent Means]]          | #statistics #numerical #inference #hypothesis-test #independent    |
+| 7       | 4       | [[Power Calculations for a Difference of Means]] | #statistics #power #error #type1 #type2                            |
+| 7       | 5       | [[Comparing Many Means with ANOVA]]              | #ANOVA #statistics #numerical #inference #f-distribution           |
 # CSI 672 - Statistical Inference Lecture Note
 ## Table of Content
 

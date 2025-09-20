@@ -167,7 +167,7 @@ The *confusion matrix* is a powerful tool for evaluating classification models b
 > 	- *Precision*: 'Of all patients we *flagged* as positive, how many *actually* have the disease?' High precision means *fewer false alarms*.
 > 	- *Prioritization*: In screening, *we prioritize recall (catching disease) over precision (avoiding false alarms)* because missing a diagnosis has more serious consequences than additional testing.
 > 3. *Model recommendation for clinical deployment*:
-> 	- Recommend the model with the *highest recall (sensitivity) while maintaining acceptable precision (e.g., >10%)*. A [[Random Forest]] with `class_weight='balanced'` often achieves high recall (~0.85-0.95) with reasonable precision (~0.15-0.25), making the slight increase in false alarms acceptable for critical disease detection.
+> 	- Recommend the model with the *highest recall (sensitivity) while maintaining acceptable precision (e.g., >10%)*. A [[Random Forest|Random Forest]] with `class_weight='balanced'` often achieves high recall (~0.85-0.95) with reasonable precision (~0.15-0.25), making the slight increase in false alarms acceptable for critical disease detection.
 > 4. *Additional Validation Before Clinical Deployment*:
 > 	- Multi-site validation (across different hospitals/populations).
 > 	- Temporal validation (on data from different time periods).
