@@ -1,5 +1,5 @@
 ---
-title: Machine Learning
+title: Machine Learning Applications in Sciences
 ---
 # Table of Content
 ### Hands-On Machine Learning with Scikit-Learn, Keras, and TensorFlow, 3rd Edition, O'Reilly Media 
