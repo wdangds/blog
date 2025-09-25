@@ -102,4 +102,41 @@ Since there are many transformation steps, Scikit-Learn's `Pipeline` class is ex
 ```python
 from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import StandardScaler
+
+num_pipeline = Pipeline([
+	("impute", SimpleImputer(strategy="median")),
+	("standardize", StandardScaler())
+])
 ```
+To handle different column types (numerical, categorical) simultaneously, use `ColumnTransformer`. It applies different pipelines to different subsets of columns and concatenates the results.
+```python
+from sklearn.compose import ColumnTransformer
+from sklearn.pipeline import make_pipeline
+
+num_attribs = ["longtitude", "latitude", "housing_median_age", "total_rooms", "total_bedrooms", "population", "households", "median_income"]
+cat_attribs = ["ocean_proximity"]
+
+cat_pipeline = make_pipeline(
+	SimpleImputer(strategy="most_frequent"),
+	OneHotEncoder(handle_unknown="ignore"))
+	
+preprocessing = ColumnTransformer([
+	("num", num_pipeline, num_attribs),
+	("cat", cat_pipeline, cat_attribs),
+])
+```
+
+> [!tip]
+> Instead of using a transformer, we can specify the string "drop" if we want the columns to be dropped, or we can specify "passthrough" if we want the columns to be left untouched. By default, the remaining columns (i.e., the ones that were not listed) will be dropped, but we can set the remainder hyperparameter to any transformer (or to "passthrough") if we want these columns to be handled differently.
+
+```python
+housing_prepared = preprocessing.fit_transform(housing)
+```
+
+> [!note]
+> The `OneHotEncoder` returns a sparse matrix and the `num_pipeline` returns a dense matrix. When there is such a mix of sparse and dense matrices, the ColumnTransformer estimates the density of the final matrix (i.e., the ratio of nonzero cells), and it returns a sparse matrix if the density is lower than a given threshold (by default, `sparse_threshold=0.3`).
+
+This create a single preprocessing pipeline that handles all data preparation steps, making the workflow clean and efficient.
+
+[CODE DEMO](https://github.com/wdangds/blog/blob/v4/content/static/notebooks/ml-app-in-sci-chapter-2-handbook.ipynb)
+

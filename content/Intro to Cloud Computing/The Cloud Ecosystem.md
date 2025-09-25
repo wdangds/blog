@@ -65,11 +65,46 @@ Cloud Service Providers (CSPs) offer services through one or more delivery model
 
 **Best Use Cases**: Situations with volatile demand, new businesses that want to avoid investing in infrastructure, or rapidly expanding organizations.
 
-![[Screenshot 2025-09-18 at 4.44.22 PM.png]]
-
+![[fig-iaas-saas-paas.png]]
 #### (iv) Database as a Service (DBaaS)
 > [!definition]
 > A cloud service where the database runs on the provider's infrastructure, enabling users to set up and operate databases using a common set of abstractions.
 
 **Key Features:**
-- *Self-service*: 
+- *Self-service*: Easy provisioning without complex deployment.
+- *Elasticity and scalability*: Automated and dynamic scaling of resources.
+- *Pay-as-you-go model*: Metered usage where cost reflects resources used.
+- *Agility*: Applications adapt seamlessly to new requirements.
+
+**Architecture**: DBaaS typically uses a layered architecture, including a user interface, application layer, database layer, and a data storage layer that handles encryption and backups. It relies heavily on *multi-tenancy*, which poses resources management and security challenges.
+
+### c. Infrastructure as Code (IaC)
+> [!definition]
+> IaC is the practice of managing and provisioning cloud infrastructure (servers, OS, storage, etc.) using a high-level descriptive language. It is a key component of cloud-native development, which uses discrete, reusable components called **microservices**, often packaged in containers.
+
+**Approaches**:
+- *Declarative (Functional)*: An administrator specifies the desired final state, and the IaC software handles the configuration steps.
+- *Procedural*: Automates provisioning one step at a time.
+
+**Advantages**: Improved consistency, more efficient development, lower costs, and a more secure environment.
+
+**Popular Tools**:
+- *Ansible*: An open-source IT automation engine used for provisioning, configuration management, and application deployment (often in DevOps context).
+- *Terraform*: Automates resource management across multiple cloud providers. It creates an execution plan and a resource graph to parallelize the creation of non-dependent resources.
+## 3. Major Cloud Service Providers
+### a. Amazon Web Services (AWS)
+AWS began as the powerful infrastructure for Amazon's retail business and was later extended to provide computing resources for enterprises and individuals. It is primarily based on the [[#(iii). Infrastructure as a Service (IaaS)|IaaS]] model.
+#### (i) Core Services
+**Elastic Compute Cloud (EC2)**: A web service for launching virtual server "instances" under various operating systems. It previously used the Xen hypervisor but switched to KVM in 2017.
+- *Instances*: A user selects an instance type (defining CPU, memory, storage) and a location (region and availability zone). Each instance gets a private IP for internal communication and a public IP for external communication, mapped via Network Address Translation (NAT)
+- *Elastic IP Address*: A static public IP address that can be re-mapped to mask instance failures.
+- *Amazon Machine Image (AMI)*:  Instances are created from an AMI, which is a template containing the OS, libraries, and application.
+
+**Simple Storage System (S3)**: A storage service for large objects (from 1 byte to 5 TB). It supports `write`, `read`, and `delete` functions but not direct copy or rename operations. It uses MD5 checksums (via an `ETag`) to verify data integrity.
+
+**Elastic Block Store (EBS)**: Provides persistent block-level storage volumes for EC2 instances, appearing as raw, unformatted physical disks.
+
+**Simple DB**: A non-relational data store for storing and querying data items via web services.
+
+#### (ii). Additional Services
+**Simple Queue Service (SQS)**: A hosted message queue
