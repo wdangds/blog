@@ -16,6 +16,8 @@ title: Statistical Inference
 | 7       | 3       | [[Difference of Two Independent Means]]          | #statistics #numerical #inference #hypothesis-test #independent    |
 | 7       | 4       | [[Power Calculations for a Difference of Means]] | #statistics #power #error #type1 #type2                            |
 | 7       | 5       | [[Comparing Many Means with ANOVA]]              | #ANOVA #statistics #numerical #inference #f-distribution           |
+| 8       | 1       | [[Fitting a line, residuals, and correlation]]   | #linear-regression #residuals #correlation #covariance             |
+| 8       | 2       | [[Least Square Regression]]                      | #least-square-regression #linear-regression                        |
 # CSI 672 - Statistical Inference Lecture Note
 ## Table of Content
 

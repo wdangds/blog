@@ -110,3 +110,65 @@ print(sgd_clf.predict([some_digit]))
 ```
 
 The classifier correctly predicts that our `some_digit` (the '5' from earlier) is indeed a 5.
+
+## 4. Performance Measures
+Evaluating a classifier is often more complex than evaluating a regressor. Let's explore the various ways to measure performance.
+### a. Accuracy and its Pitfalls
+A common way to evaluate a model is with *k-fold cross-validation*. Let's use `cross_val_score()` to measure the accuracy of our `SGDClassifier`.
+
+```python
+from sklearn.model_selection import cross_val_score
+
+scores = cross_val_score(sgd_clf, X_train, y_train, cv=3, scoring="accuracy")
+print(scores)
+# Output: array([0.87365 0.85835 0.8689])
+```
+
+An accuracy of over 85% looks impressive. However, *accuracy is often not the best metric for classifiers, especially with skewed datasets* (where some classes are far more frequent than others).
+
+To demonstrate this, consider a `DummyClassifier` that always guesses the most frequent class (in our case, 'not-5').
+
+```python
+from sklearn.dummy import DummyClassifier
+
+dummy_clf = DummyClassifier()
+dummy_clf.fit(X_train, y_train_5)
+dummy_scores = cross_val_score(dummy_clf, X_train, y_train_5, cv=3, scoring="accuracy")
+print(dummy_scores)
+# Output: array([0.90965 0.90965 0.90965])
+```
+This simple classifier achieves over 90% accuracy just by guessing "not-5" every time, because only about 10% of the images are 5s. This shows why we need more nuanced metrics.
+
+### b. The Confusion Matrix
+A much better way to evaluate performance is the *confusion matrix*. It provides a comprehensive look at a classifier's errors by counting how many times instances of class A are classified as class B.
+
+To generate a confusion matrix, we first need a set of predictions. We use `cross_val_predict()`, which, like `cross_val_score`, performs k-fold cross-validation but returns the prediction made for each instance on the fold it was held out from. This gives us "clean" predictions that the model has not seen during training.
+
+```python
+from sklearn.model_selection import cross_val_predict
+from sklearn.metrics import confusion_matrix
+
+y_train_pred = cross_val_predict(sgd_clf, X_train, y_train_5, cv=3)
+cm = confusion_matrix(y_train_5, y_train_pred)
+print(cm)
+# Output: array([[53892 687] 
+#				[ 1891 3530]])
+```
+Here's how to interpret the matrix:
+- **Rows**: Represent actual classes (negative class 'not-5' on top, positive class '5' on bottom).
+- **Columns**: Represent predicted classes (predicted negative on left, predicted positive on right)
+- **True Negatives (TN)**: 53,892 non-5s were correctly classified as non-5s.
+- **False Positives (FP)**: 687 non-5s were wrongly classified as 5s (Type I error).
+- **False Negatives (FN)**: 1,891 5s were wrongly classified as non-5s (Type II error).
+- **True Positives (TP)**: 3,530 5s were correctly classified as 5s.
+A perfect classifier would have non-zero values only on the main diagonal.
+### c. Precision and Recall
+The confusion matrix gives us the components to calculate more precise metrics.
+- **Precision**: The accuracy of positive predictions. It answers the question: *Of all the images the classifier identified as a 5, what percentage was actually a 5?*
+$$
+\text{Precision}=\frac{TP}{TP+FP}
+$$
+- **Recall (Sensitivity or True Positive Rate)**: The ratio of positive instances that are correctly detected. It answers: *Of all the actual 5s in the dataset, what percentage did the classifier correctly identify?*
+$$
+\text{Recall}=\frac{TP}{TP+FN}
+$$

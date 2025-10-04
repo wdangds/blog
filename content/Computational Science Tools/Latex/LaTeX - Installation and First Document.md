@@ -1,6 +1,6 @@
 ---
 title: LaTeX - Installation and First Document
-draft:
+draft: true
 tags:
   - LaTeX
 ---

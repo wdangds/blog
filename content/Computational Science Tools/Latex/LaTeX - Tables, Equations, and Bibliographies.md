@@ -1,6 +1,6 @@
 ---
 title: LaTeX - Tables, Equations, and Bibliographies
-draft:
+draft: true
 tags:
   - LaTeX
 ---

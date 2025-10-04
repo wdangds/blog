@@ -1,6 +1,6 @@
 ---
 title: Diffusion of Innovation and Innovation Processes
-draft:
+draft: true
 tags:
   - computational-science
   - innovation
