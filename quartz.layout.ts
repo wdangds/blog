@@ -5,7 +5,31 @@ import * as Component from "./quartz/components"
 export const sharedPageComponents: SharedLayout = {
   head: Component.Head(),
   header: [],
-  afterBody: [],
+  afterBody: [// Only render this on the homepage (index.md)
+    Component.ConditionalRender({
+      component: Component.RecentNotes({
+        title: "Recent updates",
+        limit: 3,
+        showTags: false,
+        filter: (f) => {
+          // Treat any folder index page as NOT a post
+          const isFolderIndex =
+            f.slug === "index" ||                                // root: content/index.md
+            (typeof f.slug === "string" && /(?:^|\/)index$/.test(f.slug)) ||
+            (typeof f.filePath === "string" && /\/index\.mdx?$/.test(f.filePath))
+
+          if (isFolderIndex) return false
+
+          // Your “post” rule (adjust to your structure/tags)
+          return (
+            (typeof f.slug === "string" && f.slug.startsWith("posts/")) ||
+            (Array.isArray(f.frontmatter?.tags) && f.frontmatter.tags.includes("post"))
+          )
+        },
+        // sort: (a, b) => (b.dates?.modified?.getTime() ?? 0) - (a.dates?.modified?.getTime() ?? 0),
+      }),
+      condition: (props) => props.fileData.slug === "index",
+    }),],
   footer: Component.Footer({
     links: {
       GitHub: "https://github.com/jackyzha0/quartz",
