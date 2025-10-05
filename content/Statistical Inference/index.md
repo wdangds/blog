@@ -18,6 +18,8 @@ title: Statistical Inference
 | 7       | 5       | [[Comparing Many Means with ANOVA]]              | #ANOVA #statistics #numerical #inference #f-distribution           |
 | 8       | 1       | [[Fitting a line, residuals, and correlation]]   | #linear-regression #residuals #correlation #covariance             |
 | 8       | 2       | [[Least Square Regression]]                      | #least-square-regression #linear-regression                        |
+| 8       | 3       | [[Types of Outliers in Linear Regression]]       | #linear-regression #outlier                                        |
+| 8       | 4       | [[Inference for Linear Regression]]              | #linear-regression #inference #hypothesis-test                     |
 # CSI 672 - Statistical Inference Lecture Note
 ## Table of Content
 

@@ -11,25 +11,40 @@ export const sharedPageComponents: SharedLayout = {
         title: "Recent updates",
         limit: 3,
         showTags: false,
+        linkToMore: false,
         filter: (f) => {
-          // Treat any folder index page as NOT a post
-          const isFolderIndex =
-            f.slug === "index" ||                                // root: content/index.md
-            (typeof f.slug === "string" && /(?:^|\/)index$/.test(f.slug)) ||
-            (typeof f.filePath === "string" && /\/index\.mdx?$/.test(f.filePath))
+          const slug = String(f.slug ?? "")
+          const path = String(f.filePath ?? "")
 
+          // 1) Skip any folder index (TOCs), including the homepage
+          const isFolderIndex =
+            slug === "index" ||
+            /(?:^|\/)index$/.test(slug) ||
+            /\/index\.mdx?$/.test(path)
           if (isFolderIndex) return false
 
-          // Your “post” rule (adjust to your structure/tags)
-          return (
-            (typeof f.slug === "string" && f.slug.startsWith("posts/")) ||
-            (Array.isArray(f.frontmatter?.tags) && f.frontmatter.tags.includes("post"))
-          )
+          // 2) Skip special/asset areas
+          if (slug.startsWith(".obsidian/")) return false
+          if (slug.startsWith("static/")) return false
+
+          // 3) Only real notes (md/mdx) under content
+          if (!/\.mdx?$/.test(path)) return false
+
+          // If you want EVERYTHING else to be eligible, return true:
+          return true
+
+          // --- Optional stricter rule ---
+          // If you prefer to hand-pick “blog posts”, tag them `post`
+          // and replace the `return true` with:
+          // return Array.isArray(f.frontmatter?.tags) && f.frontmatter.tags.includes("post")
         },
+        // Optional: sort by last modified (Quartz already sorts by date)
         // sort: (a, b) => (b.dates?.modified?.getTime() ?? 0) - (a.dates?.modified?.getTime() ?? 0),
       }),
+      // Only show this block on the homepage
       condition: (props) => props.fileData.slug === "index",
-    }),],
+    }),
+    ],
   footer: Component.Footer({
     links: {
       GitHub: "https://github.com/jackyzha0/quartz",

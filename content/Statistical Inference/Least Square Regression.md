@@ -79,3 +79,34 @@ While software is typically used, the least squares line can be calculated from 
 > [!example]- Example: [[#^example-elmhurst|Elmhurst]]
 > Using the model to predict aid for a family with a $1 million income gives a negative aid amount, which is impossible. This is an extrapolation because the original data did not include incomes that high.
 
+## 6. R-squared ($R^2$): Strength of the Fit
+> [!definition]
+> $R^2$ describes the *percentage of the variation in the response variable ($y$) that is explained by the least squares line using the explanatory variable ($x$)*.
+
+- $R^2$ is calculated by squaring the [[Fitting a line, residuals, and correlation#4. Correlation ($R$) Quantifying the Strength of a Linear Relationship|correlation coefficient]] ($R$).
+- The value is always between 0 and 1 (or 0% and 100%).
+- A higher $R^2$ means the model explains more of the variability in $y$, and the data points are closer to the regression line.
+
+> [!example]- Example: [[#^example-elmhurst|Elmhurst Example]]
+> $R=-0.499$, so $R^2=(-0.499)^2\approx 0.25$
+>
+> About **25% of the variation** in gift aid among these students is explained by their family income.
+
+## 7. Categorical Predictors with Two Levels
+Linear regression can also be used when the predictor variable is categorical with two levels (e.g.,  'new' vs 'used')
+
+> [!definition] Construct a categorical predictor with two levels
+> 1. **Create an indicator variable**: This is a numerical variable that is 1 for one category and 0 for the other.
+> 2. **Fit the linear model**: $\hat{y} = b_0 + b_1 \times (\text{indicator variable})$
+
+> [!example]- Example: Mario Kart Auction Prices
+> Predicting auction price based on game condition ('new' or used').
+> - Indicator variable `cond_new`: 1 if the game is new, 0 if it is used.
+> - Model from software output: $\hat{\text{price}}=42.87+10.90 \times \text{cond\_new}$
+>   
+>  ![[fig-linear-categorical.png]]
+>  
+>  **Interpretation**:
+>  - *Intercept $b_0$*: The predicted value when the indicator is 0. The average price of a *used* game is $42.87.
+> - *Slope* $b_1$: The average difference in price between the two categories. On average, *new* games sell for $10.90 more than used game
+
