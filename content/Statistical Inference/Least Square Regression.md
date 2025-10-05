@@ -4,6 +4,7 @@ draft:
 tags:
   - least-square-regression
   - linear-regression
+  - "#regression"
 ---
 > [!summary]
 > *This section moves from fitting lines by eye to a more rigorous, objective method called **least squares regression**.*

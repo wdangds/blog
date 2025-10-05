@@ -23,9 +23,9 @@ Once we have a single sample of differences, we can apply the one-sample $t$-tes
 >[!example]- Example: Textbook Prices (UCLA vs. Amazon)
 > We want to determine if there is a difference in average textbook prices between the UCLA bookstore and Amazon. The data consists of prices for 68 books, with a price from each store for each book, making it paired data. We analyze the differences: $\text{price}_{\text{UCLA}}-\text{price}_{\text{Amazon}}$. For the 68 differences:
 > 
-| $n_{\text{diff}}$ | $\overline{x}_{\text{diff}}$ | $s_{\text{diff}}$ |
-| ----------------- | ---------------------------- | ----------------- |
-| 68                | 3.58                         | 13.42             |
+> | $n_{\text{diff}}$ | $\overline{x}_{\text{diff}}$ | $s_{\text{diff}}$ |
+> | ----------------- | ---------------------------- | ----------------- |
+> | 68                | 3.58                         | 13.42             |
 >
 >**Hypothesis Test**:
 >1. *Prepare*:
