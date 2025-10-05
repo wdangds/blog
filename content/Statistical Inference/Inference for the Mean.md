@@ -11,8 +11,8 @@ The sample mean ($\overline{X}$) is approximately normally distributed around th
 
 > [!formula]
 > $$
->\overline{X} \sim N(\mu, \frac{\sigma^2}{n})$
->$$
+> \overline{X} \sim N(\mu, \frac{\sigma^2}{n})
+> $$
 
 **Standardized Sample Mean**:
 - If the population standard deviation ($\mu$) is known, the standardized sample mean follows a standard normal distribution: 

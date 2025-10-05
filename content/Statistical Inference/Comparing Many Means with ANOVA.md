@@ -40,21 +40,21 @@ $$
 > [!example] Example: Batting Performance (OBP) by MLB Position
 > We want to know if the mean on-base percentage (OBP) differs for outfielders (OF), infielders (IF), and catchers (C).
 > 
-|          |     name     |   team   | position |    AB    |    H     |    HR    |   RBI    |   AVG    |   OBP    |
-| :------: | :----------: | :------: | :------: | :------: | :------: | :------: | :------: | :------: | :------: |
-|    1     |   Abreu, J   |   CWS    |    IF    |   499    |   132    |    22    |    78    |  0.265   |  0.325   |
-|    2     | Acuna JR., R |   ATL    |    OF    |   433    |   127    |    26    |    64    |  0.293   |  0.366   |
-|    3     |  Adames, W   |    TB    |    IF    |   288    |    80    |    10    |    34    |  0.278   |  0.348   |
-| $\vdots$ |   $\vdots$   | $\vdots$ | $\vdots$ | $\vdots$ | $\vdots$ | $\vdots$ | $\vdots$ | $\vdots$ | $\vdots$ |
-|   429    |   Zunio, M   |   WSH    |    C     |   373    |    75    |    20    |    44    |  0.201   |  0.259   |
+> |          |     name     |   team   | position |    AB    |    H     |    HR    |   RBI    |   AVG    |   OBP    |
+>| :------: | :----------: | :------: | :------: | :------: | :------: | :------: | :------: | :------: | :------: |
+>|    1     |   Abreu, J   |   CWS    |    IF    |   499    |   132    |    22    |    78    |  0.265   |  0.325   |
+>|    2     | Acuna JR., R |   ATL    |    OF    |   433    |   127    |    26    |    64    |  0.293   |  0.366   |
+>|    3     |  Adames, W   |    TB    |    IF    |   288    |    80    |    10    |    34    |  0.278   |  0.348   |
+>| $\vdots$ |   $\vdots$   | $\vdots$ | $\vdots$ | $\vdots$ | $\vdots$ | $\vdots$ | $\vdots$ | $\vdots$ | $\vdots$ |
+> |   429    |   Zunio, M   |   WSH    |    C     |   373    |    75    |    20    |    44    |  0.201   |  0.259   |
 >
 > Summary statistics of on-base percentage, split by player position
 > 
 > |                                |  OF   |  IF   |   C   |
-| :----------------------------: | :---: | :---: | :---: |
-|      Sample size ($n_i$)       |  160  |  205  |  64   |
-| Sample mean ($\overline{x}_i$) | 0.320 | 0.318 | 0.302 |
-|       Sample SD ($s_i$)        | 0.043 | 0.038 | 0.038 |
+> | :----------------------------: | :---: | :---: | :---: |
+> |      Sample size ($n_i$)       |  160  |  205  |  64   |
+>| Sample mean ($\overline{x}_i$) | 0.320 | 0.318 | 0.302 |
+>|       Sample SD ($s_i$)        | 0.043 | 0.038 | 0.038 |
 >
 > **Hypotheses**:
 > - $H_O: \mu_{OF}=\mu_{IF}=\mu_{C}$
@@ -63,9 +63,9 @@ $$
 > **ANOVA Results:**
 >
 > |           | Df  | Sum Sq | Mean Sq | F value | Pr(>F) |
-| :-------: | :-: | :----: | :-----: | :-----: | :----: |
-| position  |  2  | 0.0161 | 0.0080  | 5.0766  | 0.0066 |
-| Residuals | 426 | 0.6740 | 0.0016  |         |        |
+> | :-------: | :-: | :----: | :-----: | :-----: | :----: |
+> | position  |  2  | 0.0161 | 0.0080  | 5.0766  | 0.0066 |
+> | Residuals | 426 | 0.6740 | 0.0016  |         |        |
 >
 > **Conclusion:** Since $p(0.0066)<0.05$, we reject $H_0$. The data provide strong evidence that the average on-base percentage varies by the player's position.
 

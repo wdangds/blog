@@ -13,7 +13,7 @@ To find the "best" fitting line, we need a mathematical criterion. The most comm
 
 > [!minimize]
 > $$
-> \sum e_i^2 = e_1^2+e_2^2+...+e_n^2
+> \sum \epsilon_i^2 = \epsilon_1^2+\epsilon_2^2+...+\epsilon_n^2
 > $$
 
 Th line that satisfies this condition is called the *least squares line*. This method is preferred because:
@@ -32,13 +32,15 @@ For the results of a least squares regression to be reliable, four conditions sh
 
 ## 3. Finding the Least Squares Line
 While software is typically used, the least squares line can be calculated from summary statistics.
-> [!formula] Formulas for $b_1$ (Slope) and $b_0$ (Intercept)
+> [!formula] Formulas for Slope and Intercept
 > 1. **Estimate the slope $b_1$**:
 > $$
 > b_1=\frac{s_y}{s_x}\times R
 > $$
 > where $s_y$ and $s_x$ are the sample standard deviations of the response and explanatory variables, and $R$ is the [[Fitting a line, residuals, and correlation#4. Correlation ($R$) Quantifying the Strength of a Linear Relationship|correlation]].
+> 
 > 2. **The line passes through the point of averages** $(\overline{x},\overline{y})$.
+> 
 > 3. **Use the point-slope form to find the full equation**:
 > $$
 > y-\overline{y}=b_1\times(x-\overline{x})
@@ -50,8 +52,8 @@ While software is typically used, the least squares line can be calculated from 
 > 
 > |      | Family Income ($x$)      | Gift Aid ($y$)     |
 > | ---- | ------------------------ | ------------------ |
-> | mean | $\overline{x}=\$101,780$ | $\hat{y}=\$19,940$ |
-> | sd   | $s_x=\$63,200$           | $s_y=\$5,460$      |
+> | mean | $\overline{x}=101,780$ | $\hat{y}=19,940$ |
+> | sd   | $s_x=63,200$           | $s_y=5,460$      |
 > |      |                          | $R=-0.499$         |
 >
 > 1. **Calculate the slope ($b_1$)**: $b_1=\frac{5460}{63200}\times(-0.499)=-0.0431$
@@ -60,15 +62,17 @@ While software is typically used, the least squares line can be calculated from 
 
 ## 4. Interpreting Regression Parameters
 
-> [!Intercept] Intercept $b_0$
+> [!Intercept] Intercept
 > The intercept is the *predicted value of $y$ when $x=0$*. This interpretation is only practical if $x=0$ is a realistic value in the data.
 > > [!example]-
-> > In the [[#^example-elmhurst|Elmhurst Example]], $b_0=24,327$. This means a student with a family income of $0 is predicted to receive $24,319 in aid, on average.
+> > 
+> > In the [[#^example-elmhurst|Elmhurst Example]], $b_0=24,327$. This means a student with a family income of \$0 is predicted to receive \$24,319 in aid, on average.
 
-> [!slope] Slope $b_1$
+> [!slope] Slope 
 > The slope represents the *predicted change in $y$ for a one-unit increase in $x$*.
 > > [!example]-
-> > In the [[#^example-elmhurst|Elmhurst Example]], $b_1=-0.0431$. For each additional $1 of family income, the gift aid is predicted to decrease by $0.0431 (or 4.31 cents) on average.
+> > 
+> > In the [[#^example-elmhurst|Elmhurst Example]], $b_1=-0.0431$. For each additional \$1 of family income, the gift aid is predicted to decrease by \$0.0431 (or 4.31 cents) on average.
 
 > [!caution]
 > These are observational data, so we can describe an association, but we cannot claim a causal connection without more information.
@@ -77,7 +81,7 @@ While software is typically used, the least squares line can be calculated from 
 **Extrapolation** is applying a regression model to predict values outside the range of the original data. This is dangerous because the linear trend may not continue.
 
 > [!example]- Example: [[#^example-elmhurst|Elmhurst]]
-> Using the model to predict aid for a family with a $1 million income gives a negative aid amount, which is impossible. This is an extrapolation because the original data did not include incomes that high.
+> Using the model to predict aid for a family with a \$1 million income gives a negative aid amount, which is impossible. This is an extrapolation because the original data did not include incomes that high.
 
 ## 6. R-squared ($R^2$): Strength of the Fit
 > [!definition]
@@ -107,6 +111,6 @@ Linear regression can also be used when the predictor variable is categorical wi
 >  ![[fig-linear-categorical.png]]
 >  
 >  **Interpretation**:
->  - *Intercept $b_0$*: The predicted value when the indicator is 0. The average price of a *used* game is $42.87.
-> - *Slope* $b_1$: The average difference in price between the two categories. On average, *new* games sell for $10.90 more than used game
+>  - *Intercept $b_0$*: The predicted value when the indicator is 0. The average price of a *used* game is \$42.87.
+> - *Slope* $b_1$: The average difference in price between the two categories. On average, *new* games sell for \$10.90 more than used game
 
