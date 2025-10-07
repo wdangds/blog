@@ -21,6 +21,10 @@ title: Statistical Inference
 | 8       | 3       | [[Types of Outliers in Linear Regression]]       | #linear-regression #outlier                                        |
 | 8       | 4       | [[Inference for Linear Regression]]              | #linear-regression #inference #hypothesis-test                     |
 | 9       | 1       | [[Introduction to Multiple Regression]]          | #linear-regression #regression #multiple-regression                |
+| 9       | 2       | [[Model Selection]]                              | #select-model #model-evaluation #regression #multiple-regression   |
+| 9       | 3       | [[Checking Model Conditions Using Graphs]]       | #graph #select-model #linear-regression #regression                |
+| 9       | 4       | [[Multiple Regression Case Study -  Mario Kart]] | #case-study #linear-regression #multiple-regression                |
+| 9       | 5       | [[Introduction to Logistic Regression]]          | #logistic-regression #regression                                   |
 # CSI 672 - Statistical Inference Lecture Note
 ## Table of Content
 
