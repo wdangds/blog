@@ -4,6 +4,8 @@ draft:
 tags:
   - Markov-Chains
   - probability
+  - irreducible
+  - aperiodic
 ---
 In the study of [[Markov Chains|Markov chains]], certain conditions are imposed to yield significant theoretical results. These conditions need to be strong enough to product useful consequences while also being applicable to a wide range of examples. This note covers two of the most important conditions in Markov theory: **irreducibility** and **aperiodicity**. These concepts are crucial for understanding stationary distributions and are discussed in the context of **homogeneous Markov chains**, where transition probabilities do not change over time.
 

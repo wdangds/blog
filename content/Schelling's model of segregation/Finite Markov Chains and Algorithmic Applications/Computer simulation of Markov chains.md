@@ -5,6 +5,7 @@ tags:
   - probabiltiy
   - computer-science
   - simulation
+  - Markov-Chains
 ---
 ## 1. Computer Simulation of Markov Chains
 Computer simulation is a **key matter in many practical applications of Markov theory**. A core assumption, although technically *incorrect*, is that we have access to a sequence of **[[Basics of probability theory#2. Random Variables and Distributions|i.i.d random variables]], uniformly distributed on the unit interval** (denoted as $U_0, U_1,....$).
