@@ -18,6 +18,7 @@ This case study examines total auction prices (highest bid + shipping) for Mario
 | $\vdots$ | $\vdots$ | $\vdots$ | $\vdots$    | $\vdots$ | $\vdots$ |
 | 140      | 38.76    | 0        | 0           | 7        | 0        |
 | 141      | 54.51    | 1        | 1           | 1        | 2        |
+
 **Full Model Equation**: The full model uses $k=4$ predictors:
 $$
 \begin{aligned}
@@ -31,16 +32,19 @@ $$
 ## 2. Model Selection (Backward Elimination)
 We use backward elimination based on adjusted $R^2$ to refined the Mario Kart model.
 - Full Model Baseline: $R^2_{adj}=0.7108$
+
 **Step 1**: Variables are dropped one at a time. The model without `duration` yielded the highest $R^2_{adj}$ (0.7128), which is an improvement over the full model. Therefore, **`duration` is dropped**.
 
 | Exclude... | cond_new           | stock_photo        | duration           | wheels             |
 | ---------- | ------------------ | ------------------ | ------------------ | ------------------ |
 |            | $R^2_{adj}=0.6626$ | $R^2_{adj}=0.7107$ | $R^2_{adj}=0.7128$ | $R^2_{adj}=0.3487$ |
+
 **Step 2**: New baseline: $R^2_{adj}=0.7128$. Testing the removal of the three remaining variables (`cond new`, `stock photo`, `wheels`) resulted in a decrease in $R^2_{adj}$ in all cases. Therefore, **no additional variables are eliminated**.
 
 | Exclude... | cond_new           | stock_photo        | wheels             |
 | ---------- | ------------------ | ------------------ | ------------------ |
 |            | $R^2_{adj}=0.6587$ | $R^2_{adj}=0.7124$ | $R^2_{adj}=0.3414$ |
+
 **Final Reduced Model**:
 $$
 \hat{price}=36.05+5.18\times cond\_new+1.12\times stock\_photo+7.30\times wheels
