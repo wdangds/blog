@@ -4,6 +4,9 @@ draft: false
 tags:
   - probabiltiy
   - Markov-Chains
+  - "#monte-carlo"
+  - "#mcmc"
+date: 2025-10-10
 ---
 ## 1. Introduction to Markov Chain Monte Carlo (MCMC)
 The central problem addressed by Markov Chain Monte Carlo (MCMC) is **simulating a random object with a given probability distribution $\pi$ on a state space $S=\{s_1,...,s_k\}$**. This method becomes particularly useful when direct simulation is computationally infeasible.

@@ -103,4 +103,27 @@ $$
 \pi=(\pi_1,\pi_2, \dots, \pi_k)=\left(\frac{\pi_1^*}{\sum_{i=1}^k\pi_i^*}, \frac{\pi_2^*}{\sum_{i=1}^k\pi_i^*},\dots, \frac{\pi_k^*}{\sum_{i=1}^k\pi_i^*} \right)
 $$
 
-> [!example] Real-world analogy
+> [!example]- Real-world analogy
+> Queue length in a store: only increases (birth) or decreases (death) by one customer at a time.
+> 
+> The equilibrium line length reflects the balance of arrival vs. service rates.
+
+## 4. Nonreversible Markov Chain
+While it might appear that most Markov chains are reversible, this is not true.
+
+Let us consider a [[Markov Chains#Problem 2.2 Modified Random Walk|modified version of the random walk]]. Suppose that the coin tosses are biased. At each integer time, the walker moves one step clockwise with probability $\frac{3}{4}$, and one step counterclockwise with probability $\frac{1}{4}$. This yield the transition graph below.
+
+![[fig-6-transition-graph.png]]
+
+**Stationary Distribution**: The distribution $\pi=\left(\frac{1}{4},\frac{1}{4}, \frac{1}{4}, \frac{1}{4} \right)$ is the stationary distribution for this chain. Because this chain is irreducible, this stationary is unique (by [[Stationary distributions#b. Uniqueness of the Stationary Distribution|theorem]]). 
+
+**Reversibility Test Failure**: Due to [[#2. Relationship to Stationary Distribution|relationship to stationary distribution]], the unique stationary distribution $\pi$ *must* be reversible for the chain to be reversible. Testing for $i=1$ and $j=2$:
+- $\pi_1 P_{1,2}=\frac{1}{4}\cdot \frac{3}{4}=\frac{3}{16}$
+- $\pi_2 P_{2,1}=\frac{1}{4}\cdot\frac{1}{4}=\frac{1}{16}$. Since $\frac{3}{16}>\frac{1}{16}$, we have $\pi_1 P_{1,2}\neq \pi_2 P_{2,1}$, demonstrating that reversibility ails.
+
+> [!tip] Explanation
+> The chain is not reversible because the walker has a *tendency to move clockwise*. If a film of the walker were watched backwards, it would appear the walker favored counterclockwise movement, meaning the chain behaves differently in "backwards time" versus "forwards time".
+
+> [!example]- Real-world analogy
+> A one-way traffic circle - steady flow exists, but reversing the movie shows a different behavior (violates time-symmetry)
+
