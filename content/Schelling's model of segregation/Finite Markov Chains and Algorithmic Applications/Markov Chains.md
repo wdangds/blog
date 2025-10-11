@@ -14,7 +14,8 @@ Markov chains are mathematical models used to describe a sequence of events wher
 > - From **time 2 onwards**, another coin flip decides the move: heads means one step **clockwise**, tails means one step **counterclockwise** to an adjacent corner.
 > - $X_n$ denotes the street-corner at time $n$, forming a random process $(X_0, X_1,...)$ with values in $\{1,2,3,4\}$.
 
-![[content/Schelling's model of segregation/Pics/fig-1-random-walker.png]]
+
+![[fig-1-random-walker.png]]
 ## 2. Key Properties of Markov Chains
 - **Memoryless Property (Markov Property)**:
 	- The **conditional distribution of $X_{n+1}$** (the next state) given the entire history of the process up to time $n$ $(X_0, X_1, ..., X_n)$ **depends only on the current state $X_n$**.
@@ -39,15 +40,15 @@ Markov chains are mathematical models used to describe a sequence of events wher
 - A **$k\times k$ matrix** where its elements, $P_{i,j}$, are called **transition probabilities.**
 - $P_{i,j}$ is the conditional probability of being in state $s_j$ "tomorrow" given that the process is in state $s_i$ "today".
 > [!example]- Example (Random Walker)
- For the 4-corner random walker, the state space is $\{1,2,3,4\}$ and the transition matrix is:
-$$
-P=\begin{bmatrix}
- 0 & \frac{1}{2} & 0 & \frac{1}{2}\\
- \frac{1}{2} & 0 & \frac{1}{2} & 0\\
- 0 & \frac{1}{2} & 0 & \frac{1}{2}\\
- \frac{1}{2} & 0 & \frac{1}{2} & 0\\
-\end{bmatrix}
-$$
+> For the 4-corner random walker, the state space is $\{1,2,3,4\}$ and the transition matrix is:
+> $$
+> P=\begin{bmatrix}
+> 0 & \frac{1}{2} & 0 & \frac{1}{2}\\
+> \frac{1}{2} & 0 & \frac{1}{2} & 0\\
+> 0 & \frac{1}{2} & 0 & \frac{1}{2}\\
+> \frac{1}{2} & 0 & \frac{1}{2} & 0\\
+>\end{bmatrix}
+> $$
 ### c. Properties of Transition Matrices
 - **Non-negativity**: $P_{i,j}\geq 0$ for all $i,j\in \{1,...,k\}$
 - **Row sum to 0**: The sum of probability in each row must equal to 1 (from any given state $s_i$, the process must transition to some state):
@@ -68,7 +69,7 @@ $$
 - A **row vector** representing the probability distribution of the Markov chain at time $n$.
 - $\mu^{(n)}=(P(X_n=s_1), P(X_n=s_2), ..., P(X_n=s_k))$
 > [!example]- Example (Random Walker)
-Based on initial moves, $\mu^{(1)}=(0, \frac{1}{2}, 0, \frac{1}{2})$
+> Based on initial moves, $\mu^{(1)}=(0, \frac{1}{2}, 0, \frac{1}{2})$
 ## 4. Computing Distributions Over Time
 > [!summary] Theorem 2.1: Calculation of $\mu^{(n)}$
 > *For a Markov chain $(X_0,X_1,...)$ with state space $\{s_1, ..., s_k\}$, initial distribution $\mu^{(0)}$ and transition matrix $P$, we have for any $n$ that the distribution $\mu^{(n)}$ at time $n$ satisfies:*
@@ -79,8 +80,8 @@ Based on initial moves, $\mu^{(1)}=(0, \frac{1}{2}, 0, \frac{1}{2})$
 
 >[!proof]- Proof
 >WIP
-- **Multiple-step Transition Probabilities:**
-	- Following the same logic, the probability of transitioning from state $s_i$ to $s_j$ in $n$ steps, $P(X_{m+n}=s_j|X_m=s_i)$, is given by the $(i,j)$-th element of the matrix $P^{(n)}$
+
+**Multiple-step Transition Probabilities:** Following the same logic, the probability of transitioning from state $s_i$ to $s_j$ in $n$ steps, $P(X_{m+n}=s_j|X_m=s_i)$, is given by the $(i,j)$-th element of the matrix $P^{(n)}$
 $$
 P(X_{m+n}=s_j|X_m=s_i)=(P^{n})_{i,j}
 $$
@@ -117,7 +118,8 @@ $$
 - **Components**:
 	- **Nodes:** Represent the **states** of the Markov chain.
 	- **Arrows**: Represent the **transition probabilities** between states.
-![[content/Schelling's model of segregation/Pics/fig-2-transition-graph.png]]
+
+![[fig-2-transition-graph.png]]
 ## 7. Inhomogeneous Markov Chain
 **Motivation**: In situations where the transition rule (or mechanism) for the Markov chain changes with time, an inhomogeneous model is necessary.
 >[!info] Definition 2.2

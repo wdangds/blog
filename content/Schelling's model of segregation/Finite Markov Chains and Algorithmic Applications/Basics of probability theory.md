@@ -157,6 +157,7 @@ $$
 > [!warning] **Important Note**
 > The expectation $E[X]$ can be **infinite**, even if X itself only takes finite values.
 > > [!example]- **Example: [[The St. Petersburg Paradox]]**
+> > 
 > > In a game where one is paid $2^X$ roubles (X being the number of heads before the first tail), $E[Y] (\text{where }Y=2^X)$ is infinite, despite $X$ always being finite. This shows a flaw in the classical theory of hazard games in such cases.	
 - **Variance $(Var[X])$**: Another important characteristic, defined by:
   $$

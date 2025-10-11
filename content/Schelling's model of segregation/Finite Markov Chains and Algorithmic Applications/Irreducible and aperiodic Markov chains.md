@@ -77,14 +77,14 @@ A Markov chain is defined as **aperiodic** if all of its state are aperiodic. If
 
 ### c. A Key Consequence of Aperiodicity
 Aperiodicity is useful because of the following theorem:
-> [!theorem] Theorem 4.1 ^theorem-4-1
-> *Suppose that we have an aperiodic Markov chain $(X_0, X_1, ...)$ with state space $S=\{s_1, ..., s_k\}$ and transition matrix $P$. Then there exists an $N<\infty$ such that:*
+> [!theorem] Theorem 4.1 
+> *Suppose that we have an aperiodic Markov chain $(X_0, X_1, ...)$ with state space $S=\{s_1, ..., s_k\}$ and transition matrix $P$. Then there exists an $N<\infty$ such that:* ^theorem-4-1
 > $$
 > (P^n)_{i,i}>0
 > $$
 
 To prove this result, we shall borrow the following lemma from number theory.
-> [!lemma 4.1]
+> [!lemma] Lemma 4.1
 > Let $A=\{a_1, a_2,...\}$ be a set of positive integers which is::
 > 1. nonlattice, meaning that $\gcd\{a_1, a_2,...\}=1$, and
 > 2. closed under addition, meaning that if $a\in A$ and $a'\in A$, then $a+a' \in A$.
