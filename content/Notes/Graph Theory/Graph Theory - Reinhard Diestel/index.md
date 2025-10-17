@@ -15,5 +15,5 @@ Get the book at: [link](https://www.prip.tuwien.ac.at/staffpages/yll/docs/graph_
 | 1       | 6       | [[Bipartite graphs]]                    | #bipartite #graph        |
 | 1       | 7       | [[Contraction and Minors]]              | #contraction #minor      |
 | 1       | 8       | [[Euler Tours]]                         | #path #euler-tours       |
-|         |         |                                         |                          |
+| 1       | 9       | [[Algebraic Graph Theory]]              | #linear-algebra          |
 
