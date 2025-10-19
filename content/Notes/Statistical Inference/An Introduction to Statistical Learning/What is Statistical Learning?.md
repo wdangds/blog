@@ -69,6 +69,8 @@ The accuracy of $\hat{Y}$ is governed by two quantities: **reducible error** and
 > - $\epsilon$ may contain unmeasurable variation (e.g., variations in the drug or the patient's feeling of well-being).
 > - The irreducible error provides an **upper bound** on the accuracy of prediction for $Y$.
 
+^0573ae
+
 The average, or expected value, of the squared difference between the predicted and actual value of $Y$ is given by:
 $$
 E(Y-\hat{Y})^2=E[f(X)+\epsilon-\hat{f}(X)]^2=\underbrace{[f(X)-\hat{f}(X)]^2}_{Reducible}+\underbrace{\text{Var}(\epsilon)}_{Irreducible}
@@ -108,6 +110,79 @@ Statistical learning methods are generally characterized as either [[#a. Paramet
 > f(X)=\beta_0+\beta_1X_1+\beta_2X_2+\dots+\beta_pX_p
 > $$
 > The problem simplifies from estimating an arbitrary $p$-dimensional function $f(X)$ to estimating $p+1$ coefficients $(\beta_0,\dots, \beta_p)$.
+> 2. **Use the training data to fit or train the model** by estimating the parameters. The most common fitting for the linear model is **(ordinary) least squares**.
+> 	- Advantage: Reduces the complexity of estimating $f$.
+> 	- Disadvantage: The chosen model may not match the true unknown form of $f$. If the chosen model is too far from the true $f$, the estimate will be poor.
 
+> [!example]-
+> Fitting a linear model to the income data:
+> $$
+> \text{income}\approx \beta_0+\beta_1\times \text{education}+\beta_2\times\text{seniority}
+> $$
+> 
+> ![[fig-2-4.png]]
 
+> [!important] Overfitting
+> Choosing overly **flexible models** (which require estimating more parameters) can lead to overfitting, where the model follows the **noise** (or errors) too closely.
 ### b. Non-parametric Methods
+These methods do not make explicit assumptions about the functional form of $f$.
+- **Goal**: Seek an estimate $\hat{f}$ that is as close to the data points as possible without being too rough or wiggly.
+- **Major Advantage**: Potential to accurately fit a wider range of possible shapes for $f$ since they avoid assuming an incorrect functional form.
+- **Major Disadvantage**: Since the problem is not reduced to a small number of parameters, a **very large number of observations** is required to obtain an accurate estimate.
+
+> [!example]-
+> Using a **thin-plate spline**.
+> 
+> ![[fig-2-6.png]]
+>
+> If a low level of smoothness is selected, the estimate fits the observed data perfectly (zero error on training data) but is far more variable than the true function $f$, leading to **overfitting**.
+
+## 3. The Trade-Off Between Prediction Accuracy and Model Interpretability
+Statistical learning methods vary widely in **flexibility**, or how restrictive they are in the range of shapes they can produce to estimate $f$.
+- **Inflexible (Restrictive) Methods**: Generate a relatively small range of shapes (e.g., linear regression generates only lines or planes).
+- **Flexible Methods**: Generate a much wider range of possible shapes (e.g., thin plate splines).
+
+> **The Trade-Off**
+
+| Goal       | Preferred Flexibility  | Reason                                                                                                                                                                           |
+| ---------- | ---------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Inference  | Restrictive/Inflexible | Models are more **interpretable**. It is easier to understand how $Y$ relates to $X$.                                                                                            |
+| Prediction | Flexible (Usually)     | Flexible models can potentially capture complex relationships. However, extremely models risk **overfitting** and may yield less accurate predictions than less flexible models. |
+> **Flexibility and Interpretability Spectrum**
+
+![[fig-2-7.png]]
+
+- **Highly Interpretable (Low Flexibility)**: Least Squares, Lasso (more restrictive in coefficient estimation, setting some to zero), Subset Selection.
+- **Mid-Range**: Generalized Additive Models (GAMs) (extend linear model to non-linear relationships, somewhat less interpretable).
+- **Low Interpretability (High Flexibility)**: Trees, Bagging, Boosting, Support Vector Machines (with non-linear kernels), Deep Learning (neural networks).
+
+## 4. Supervised Versus Unsupervised Learning
+Statistical learning problems fall mostly into two categories: [[Introduction to Machine Learning#a. Supervised Learning|supervised]] or [[Introduction to Machine Learning#b. Unsupervised Learning|unsupervised]].
+
+| Category              | Description                                                                                                                          | Data Format                                                                          | Common Methods                                                                           |
+| --------------------- | ------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------ | ---------------------------------------------------------------------------------------- |
+| Supervised Learning   | Goal is to model the relationship between predictors and response, for prediction or inference.                                      | Observed $n$ pairs: ($x_i,y_i$), where $y_i$ is the associated response measurement. | Linear regression, logistic regression, GAM, boosting, support vector machines learning. |
+| Unsupervised Learning | Goal is to understand relationships between variables or observations when no response variable $y_i$ is available (working "blind") | Observed $n$ vectors $x_i$ but **no associated response $y_i$**.                     | **Cluster analysis** (clustering), seeking distinct groups among observations.           |
+
+> [!example]- Unsupervised Example
+> Market segmentation where characteristics ($x_i$) of potential customers are known, but their spending habits ($y_i$) are unknown. Clustering identifies distinct groups.
+> 
+> ![[fig-2-8.png]]
+
+
+> [!definition] Semi-Supervised Learning
+> Occurs when $m<n$ observations have both predictors and responses, but $n-m$ observations only have predictors.
+
+## 5. Regression Versus Classification Problems
+Problems are categorized based on the nature of the response variable $Y$.
+
+| Variable Type             | Characteristics                                                                                             | Problem Type            | Examples                                       |
+| ------------------------- | ----------------------------------------------------------------------------------------------------------- | ----------------------- | ---------------------------------------------- |
+| Quantitative              | Takes numerical values (e.g., age, income, house value)                                                     | Regression Problems     | Least square linear regression                 |
+| Qualitative (Categorical) | Takes values in $K$ different classes or categories (e.g., marital status, product brand, cancer diagnosis) | Classification Problems | Logistic regression (used for binary response) |
+
+> [!tip] Note
+> Some methods, like K-nearest neighbors and boosting, can be used for both quantitative and qualitative responses. The type of predictor variable (qualitative or quantitative) is generally less critical for selecting the learning method.
+
+
+

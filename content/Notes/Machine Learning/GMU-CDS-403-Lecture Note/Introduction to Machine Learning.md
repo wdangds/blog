@@ -64,7 +64,7 @@ Understanding data structure is crucial for machine learning.
 	- **Example**: A collection of customer purchase records without any categorization or outcome labels.
 
 ## 5. The Three Pillars of Machine Learning
-Machine learning is broadly divided into three main categories: supervised learning, unsupervised learning, and reinforcement learning.
+Machine learning is broadly divided into three main categories: [[What is Statistical Learning?#4. Supervised Versus Unsupervised Learning|supervised learning]], [[What is Statistical Learning?#4. Supervised Versus Unsupervised Learning|unsupervised learning]], and reinforcement learning.
 ### a. Supervised Learning
 > [!definition]
 > Uses **labeled data** (input-output pairs) to learn a mapping from inputs to outputs, enabling prediction of target variables for new, unseen data.
