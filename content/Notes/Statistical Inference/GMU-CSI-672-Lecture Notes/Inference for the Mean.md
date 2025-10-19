@@ -52,8 +52,8 @@ $t*$ is the critical t-value determined by the desired confidence level and the 
 	- **Z-statistic ($\sigma$ known)**: $Z=\frac{\overline{X}-\mu_{H_0}}{\frac{\sigma}{\sqrt{n}}}$
 	- **T-statistic ($\sigma$ unknown)**: $T=\frac{\overline{X}-\mu_{H_0}}{\frac{s}{\sqrt{n}}}$
 		- $\mu_{H_0}$ is the population mean value specified in the null hypothesis.
-- **P-value**: The probability of observing a test statistic as extreme as, or more extreme than, the one calculated from the sample data, assuming the null hypothesis is true.
-- **Significance Level ($\alpha$)**: A pre-determined threshold (e.g., 0.05). If the p-value is less than $\alpha$, the null hypothesis is rejected.
+- **P-value**: The probability of observing a test statistic as extreme as, or more extreme than, the one calculated from the sample data, assuming the null hypothesis is true. ^ddf350
+- **Significance Level ($\alpha$)**: A pre-determined threshold (e.g., 0.05). If the p-value is less than $\alpha$, the null hypothesis is rejected. ^1f7b5f
 ### b. Decision Rule
 - **If p-value < $\alpha$**: Reject $H_0$ (e.g., if p-value is 0.043 and $\alpha$ is 0.05, reject $H_0$)
 - **If p-value > $\alpha$**: Fail to reject $H_0$.

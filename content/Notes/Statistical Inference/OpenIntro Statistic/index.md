@@ -6,6 +6,9 @@ Get the book at: [link](https://www.openintro.org/book/os/)
 
 | Chapter | Section | Title                                            | Tags                                                               |
 | ------- | ------- | ------------------------------------------------ | ------------------------------------------------------------------ |
+| 5       | 1       | [[Points Estimates and Sampling Variability]]    |  #data-sampling #uncertainty                                       |
+| 5       | 2       | [[Confidence Intervals for a Proportion]]        | #estimation-theory #confidence-intervals                           |
+| 5       | 3       | [[Hypothesis Testing for a Proportion]]          | #hypothesis-test #inference                                        |
 | 6       | 1       | [[Inference for a Single Proportion]]            | #inference #statistics #hypothesis-test #categorical               |
 | 6       | 2       | [[Difference of Two Proportions]]                | #inference #statistics #hypothesis-test #categorical               |
 | 6       | 3       | [[Testing for goodness of fit using chi-square]] | #inference #statistics #categorical #hypothesis-test #chi-square   |
