@@ -27,3 +27,5 @@ Decision trees typically **are not competitive** with the best supervised learni
 
 To overcome low predictive accuracy, advanced methods such as **bagging**, **random forests**, **boosting**, and **Bayesian additive regression trees (BART)** involve producing **multiple trees** which are then combined to yield a single consensus prediction. Combining a large number of trees often results in **dramatic improvements in prediction accuracy**, usually at the expense of some loss in interpretation.
 
+---
+Read next: [[The Basics of Decision Trees]]
