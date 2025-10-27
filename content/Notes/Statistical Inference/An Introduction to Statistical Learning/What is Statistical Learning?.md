@@ -18,6 +18,8 @@ Statistical learning is motivated by investigating the association between input
 >
 > **Goal**: Develop an accurate model to predict sales based on the three media budgets, allowing the client to adjust advertising budgets to indirectly increase sales.
 
+^ef3553
+
 > **The relationship between Output and Input**
 
 Generally, we observe a quantitative response $Y$ and $p$ different predictors, $X_1, X_2,\dots, X_p$. The relationship between $Y$ and $X=(X_1,X_2, \dots, X_p)$ is written in the general form:
@@ -184,5 +186,5 @@ Problems are categorized based on the nature of the response variable $Y$.
 > [!tip] Note
 > Some methods, like K-nearest neighbors and boosting, can be used for both quantitative and qualitative responses. The type of predictor variable (qualitative or quantitative) is generally less critical for selecting the learning method.
 
-
-
+---
+Next: [[Assessing Model Accuracy]]

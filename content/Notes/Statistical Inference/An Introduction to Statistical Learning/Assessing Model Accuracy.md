@@ -122,3 +122,5 @@ The choice of $K$ drastically affects flexibility:
 ![[fig-2-16.png]]
 Similar to regression, the classification training error rate declines monotonically as flexibility increases (i.e., as $K$ decreases, or $\frac{1}{K}$ increases), while the test error rate exhibits a U-shape.
 
+---
+Next: [[Linear Regression - Introduction and Review]]
