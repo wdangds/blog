@@ -539,3 +539,7 @@ Ablations over width (16/64/128), depth (2/3), and dropout (0/0.5) confirmed a 
 Critically, non-graph baselines (Logistic Regression, MLP) lagged far behind (51–58%), demonstrating that **graph structure (message passing) is the key signal** on Cora.
 
 Next, we’ll move **beyond benchmark bias** by loading a non-benchmark graph, **measuring homophily**, and, if the graph is **heterophilous**, comparing GCN to heterophily-robust variants (APPNP/GPR-GNN, MixHop/GCNII, H2GCN/LINKX) and to **random-walk features**. We’ll report multi-seed mean $\pm$ std and per-class diagnostics for a fair, general conclusion.
+
+---
+[Full code demo](https://github.com/wdangds/replicate-gnn/blob/main/notebooks/01_gcn_cora.ipynb)
+
