@@ -15,7 +15,7 @@ It is insufficient to run separate simple linear regressions for each predictor 
 1. It is unclear how to combine them into a single prediction, and 
 2. separate models ignore potential correlations among predictors, leading to misleading coefficient estimates.
 
-> [!definition] Model Equation
+> [!definition] Model Equation ^model-equation
 > If we have $p$ distinct predictors $(X_1, X_2, \dots, X_p)$, the multiple linear regression model is
 > $$
 > Y=\beta_0+\beta_1X_1+\beta_2X_2+\dots+\beta_pX_p+\epsilon
@@ -82,4 +82,26 @@ The t-statistic and p-value for an individual predictor are exactly equivalent t
 
 > **Model Fit (RSE and $R^2$)**
 
+The RSE and $R^2$ quantify model fit just as in simple linear regression.
+
 In multiple linear regression, $R^2$ is equal to $Cor(Y,\hat{Y})^2$, the square of the correlation between the response and the fitted linear model, and the fitted model maximizes this correlation.
+
+> [!warning] Note on $R^2$
+> $R^2$ will always increase when more variables are added to the model because adding a variable always decreases the RSS on the training data. A small increase in $R^2$ when adding a non-significant variable (like newspaper advertising to the TV + radio model) suggests the variable should be dropped to avoid overfitting.
+
+
+> [!warning] Note on RSE
+> RSE can increase even when $R^2$ increases slightly, because RSE accounts for the number of predictors $p$.
+> $$
+> RSE = \sqrt{\frac{1}{n-p-1}RSS}
+> $$
+
+
+> **Predictions and Uncertainty**
+
+Predictions are made using [[#^model-equation|equation (*)]]. There are three sources of uncertainty associated with predictions:
+1. **Inaccuracy in Coefficient Estimates**: The least squares plane ($\hat{Y}$) is only an estimate of the true population regression plane $f(X)$. This relates to [[What is Statistical Learning?#^b0f52c|reducible error]].
+2. **Model Bias**: Assuming a linear model is often an approximation of reality, introducing potentially reducible error.
+3. **Irreducible Error ($\epsilon$)**: Even if $f(X)$ were known, the random error term $\epsilon$ prevents perfect prediction. This is the [[What is Statistical Learning?#^0573ae|irreducible error]].
+
+**Confidence Intervals (CI)** quantify the uncertainty surrounding the **average response $f(X)$** over a large number of samples.

@@ -65,6 +65,8 @@ The accuracy of $\hat{Y}$ is governed by two quantities: **reducible error** and
 > [!definition] Reducible Error
 > Error introduced because $\hat{f}$ is not a perfect estimate for $f$. This error can potentially be improved (reduced) by selecting a more appropriate statistical learning technique.
 
+^b0f52c
+
 > [!definition] Irreducible Error
 > Error caused by the random error term $\epsilon$, which cannot be predicted using $X$. Denoted: $\text{Var}(\epsilon)$.
 > - $\epsilon$ may contain unmeasured variables useful for predicting $Y$.

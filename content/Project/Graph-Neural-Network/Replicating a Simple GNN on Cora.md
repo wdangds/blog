@@ -208,7 +208,7 @@ Stacking 2 layers lets information flow **two hops** away, etc.
 > $$
 > If degrees are similar, the normalized aggregate is roughly the **average**:
 > $$
-> \tilde{h}_i^{(l)}\approx \frac{h_i^{l}+h_j^{l}+h_k^(l)}{3}=[\frac{1}{3},\frac{1}{3},\frac{1}{3}]
+> \tilde{h}_i^{(l)}\approx \frac{h_i^{(l)}+h_j^{(l)}+h_k^{(l)}}{3}=[\frac{1}{3},\frac{1}{3},\frac{1}{3}]
 > $$
 > Then multiply by $W^{(l)}$ and apply ReLU.
 >
@@ -230,7 +230,7 @@ class GCN(nn.Module):
 		if num_layers == 3:
 			self.convs.append(GCNConv(hidden_dim, hidden_dim))
 		self.convs.append(GCNConv(hidden_dim, out_dim))
-	self.dropout = dropout
+		self.dropout = dropout
 	
 	def forward(self, x, edge_index):
 		for i, conv in enumerate(self.convs):
@@ -397,7 +397,7 @@ That shape (fast drop, train approx 1.0, val approx 0.78) is typical for a plain
 - **Accuracy** (fraction correct) on test nodes.
 - **Macro-f1**: compute F1 per class, then average.
 $$
-F1_c=\frac{2\times\text{Precision}_c\times \text{Recall}_c}{\text{Precision}_c+\text{Recall}_c},\qquad \text{MacroF1}=\frac{1}{C}\sum c
+F1_c=\frac{2\times\text{Precision}_c\times \text{Recall}_c}{\text{Precision}_c+\text{Recall}_c},\qquad \text{MacroF1}=\frac{1}{C}\sum F1_c
 $$
 
 > [!warning] Q-A
@@ -476,7 +476,7 @@ ablation_df = pd.DataFrame(rows).sort_values("test_acc", ascending = False).rese
 | 10  | 128    | 3      | 0.0     | 0.788        | 0.790    | 0.786757      |
 | 11  | 16     | 3      | 0.0     | 0.782        | 0.774    | 0.764161      |
 
-> **Pattens**
+> **Patterns**
 
 **Width sweet spot = 64**: 16 underfits ($\leq$ 0.806), 128 doesn't clearly beat 64 and can sag without enough regularization (e.g, 128-2-0.0 = 0.791)
 
