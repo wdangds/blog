@@ -5,6 +5,6 @@ These notes are based on the course [Introduction to Network Models](https://ocw
 
 ## Reading guides
 
-| Lecture | Topics                                | Reading                                                |
-| ------- | ------------------------------------- | ------------------------------------------------------ |
-| 1       | Motivation, and intro to graph theory | [[Aspects of Networks]], [[Central Themes and Topics]] |
+| Lecture | Topics                                | Reading                                                                                  |
+| ------- | ------------------------------------- | ---------------------------------------------------------------------------------------- |
+| 1       | Motivation, and intro to graph theory | [[Aspects of Networks]], [[Central Themes and Topics]], [[Introduction to Graph Theory]] |

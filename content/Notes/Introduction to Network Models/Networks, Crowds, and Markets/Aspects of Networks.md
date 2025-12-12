@@ -18,7 +18,7 @@ A network is a fundamentally defined as a pattern of interconnections among a se
 4. **Operational Networks**: Examples include networks of suppliers for global manufacturing, networks of users for websites, and networks of advertisers for media companies.
 
 [![Social Network Model of Relationships in the Karate Club](https://upload.wikimedia.org/wikipedia/en/thumb/8/87/Zachary_karate_club_social_network.png/500px-Zachary_karate_club_social_network.png)](https://en.wikipedia.org/wiki/File:Zachary_karate_club_social_network.png)
-Fig: a network representation of social relationships among the 34 individuals in the karate club studied by Zachary.
+<small>Fig: a network representation of social relationships among the 34 individuals in the karate club studied by Zachary.</small>
 
 ## II. Aspects of Networks (Structure and Behavior)
 ### a. Network Structure

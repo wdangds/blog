@@ -43,7 +43,7 @@ Economic activity and trade naturally form networks where participants are linke
 - **Network Constraints**: Network structures sometimes reflect constraints, such as institutional restrictions (regulations) or physical limitations (like geography, as seen in Medieval trade routes) which limit access between participants.
 
 ![[medival-trade.png]]
-Fig: In some settings, such as this map of Medieval trade routes, physical networks constrain the patterns of interaction, giving certain participants an intrinsic economic advantage based on their network position.
+<small>Fig: In some settings, such as this map of Medieval trade routes, physical networks constrain the patterns of interaction, giving certain participants an intrinsic economic advantage based on their network position.</small>
 
 - **Network Position and Power**: The level of success for participants is affected by their positions in the network. Power depends on both the number of connections and the power of the other individuals connected to oneself.
 
@@ -52,7 +52,7 @@ Online information systems, such as the Web, possess a fundamental network struc
 - **Community Structure**: link between Web pages reveal how they cluster into different communities. For instance, political blogs before the 2004 election separated into two distinct clusters corresponding to liberal and conservative perspectives.
 
 ![[pilitical-network.png]]
-Fig: The links among Web pages can reveal densely-knit communities and prominent sites. In this case, the network structure of political blogs prior to the 2004 U.S. Presidential election reveals two natural and well-separated clusters.
+<small>Fig: The links among Web pages can reveal densely-knit communities and prominent sites. In this case, the network structure of political blogs prior to the 2004 U.S. Presidential election reveals two natural and well-separated clusters.</small>
 
 - **Prominence and Ranking**: Search engines (like Google) utilize network structure to evaluate page quality. Prominence is often recursively defined: a page is considered more prominent if it receives links from pages that are *themselves* prominent. This circular definition can be resolved during the concept of **equilibrium** in the link structure.
 - **Strategic Interaction**: The relationship between search engines and content creators is game-theoretic. Content creators constantly optimize their Web pages to achieve a high rank under the engines's current evaluation methods; thus, search methods must be developed considering these human feedback effects.
@@ -65,7 +65,7 @@ Collective phenomena, such as the spread of new **social practices** (new belief
 > 2. **Direct Benefit (Network Effects)**: There is a direct benefit to aligning one's behavior with others, regardless of whether the decision is optimal. For social media sites, value increases as more people join (more content, wider audience). **Network effects** amplify success, creating a "rich-get-richer" feedback process that is characteristic of the aggregate distribution of popularity.
 
 ![[network-dynamic-population.png]]
-Fig: Cascading adoption of a new technology or service (in this case, the social-networking site MySpace in 2005-2006) can be the result of individual incentives to use the most widespread technology --- either based on the informational effects of seeing many other people adopt the technology, or the direct benefits of adopting what many others are already using.
+<small>Fig: Cascading adoption of a new technology or service (in this case, the social-networking site MySpace in 2005-2006) can be the result of individual incentives to use the most widespread technology --- either based on the informational effects of seeing many other people adopt the technology, or the direct benefits of adopting what many others are already using.</small>
 
 ## VI. Network Dynamics: Structural Effects
 When individuals are motivated to adopt the behavior of their immediate neighbors, **cascading** effects can result, spreading outward from a small set of initial adopters.
@@ -73,6 +73,23 @@ When individuals are motivated to adopt the behavior of their immediate neighbor
 - **Diffusion Barriers**: The diffusion of technologies can be blocked by the boundary of a *densely-connected cluster* (a "closed community") that is highly resistant to outside influences.
 
 ![[diffusion-barriers.png]]
-Fig: 
+<small>Fig: When people are influenced by the behaviors their neighbors in the network, the adoption of a new product or innovation can cascade through the network structure. Here, e-mail recommendations for a Japanese graphic novel spread in a kind of informational or social contagion.</small>
 
 - **Social Contagion**: Cascading behavior is often referred to as "social contagion", analogous to a biological epidemic. While social contagion involves decision-making and biological contagion involves pathogen transmission, the network-level dynamics are similar.
+
+![[social-contagion.png]]
+<small>Fig: The spread of an epidemic disease (such as the tuberculosis outbreak shown here) is another form of cascading behavior in a network. The similarities and contrasts between biological and social contagion lead to interesting research questions.</small>
+
+## VII. Institutions and Aggregate Behavior
+**Institutions** are the rules, conventions, or mechanisms designed by a society to synthesize individual actions into a pattern of aggregate behavior.
+
+> [!example] Example: Markets as Aggregators
+> Markets synthesize individuals' beliefs. For example, the price in a financial market aggregates beliefs about the value of assets. **Prediction markets** use a market mechanism where asset prices reflect an aggregate estimate for the probability of future events (e.g., elections).
+> 
+> ![[markets-as-aggregators.png]]
+> <small>Fig: The plot here depicts the varying price over time for two assets that paid $1 in the respective events that the Democratic or Republican nominee won the 2008 U.S. Presidential election.</small>
+
+
+> [!definition] Voting Systems
+> Voting systems aggregate individual preferences over subjective choices. The process of producing a cumulative social preference from conflicting individual priorities is inherently difficult, as formalized by *Arrow's Impossibility Theorem*.
+
