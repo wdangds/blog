@@ -23,6 +23,7 @@ Graphs are categorized based on whether the relationships they model are symmetr
 | Directed Graph (DiGraph) | The relationship is asymmetric, meaning a link goes from one node *to* another, and direction matters. Elements of $E$ are ordered pairs $(u,v)$. By convention, $(u,v)$ points to $v$. | $(u,v)$ is distinct from $(v,u)$ | Twitter follower networks, who-calls-whom phone networks. |
 
 ![[directed-undirected-graph.png]]
+
 <small>Fig: Two graphs: (a) an undirected graph, and (b) a directed graph.</small>
 
 
@@ -35,6 +36,7 @@ Graphs are categorized based on whether the relationships they model are symmetr
 Graphs that do not contain self-loops (an edge connecting a node to itself) or multi-edges (multiple edges between the same two nodes). Most analysis focuses on simple graphs.
 
 ![[simple-graphs.png]]
+
 <small>Fig: a simple graph</small>
 
 > **Multi-graphs**
@@ -42,6 +44,7 @@ Graphs that do not contain self-loops (an edge connecting a node to itself) or m
 Graphs that may contain self-loops and/or multi-edges. Multi-edges are often encoded as edge weights (counts).
 
 ![[multi-graph.png]]
+
 <small>Fig: a multi graph</small>
 
 > **Weighted Graphs**
@@ -65,6 +68,7 @@ Graphs where edges are labeled with numerical values. The length of a path in a 
 - **Incidence**: An edge $(u,v)$ is incident with the vertices $u$ and $v$.
 
 ![[adjacency.png]]
+
 <small>In figure: Vertices 1 and 5 are adjacent; 2 and 4 are not. Edge (1,2) is adjacent to (1,5) but not to (4,6)</small>
 
 ### b. Vertex Degree
@@ -99,6 +103,7 @@ In directed graphs (digraphs), vertices have two types of degrees:
 - **Out-degree** ($d_v^o$): the number of edges pointing *away* from vertex.
 
 ![[degree-digraph.png]]
+
 <small>In figure, vertex in-degree shown in red, out-degrees in blue</small>
 
 ## III. Global Connectivity and Paths
@@ -130,6 +135,7 @@ Efficient algorithms exists to compute distances, including Dijkstra, Floyd-Wars
 > A **component** is a maximally connected subgraph. A maximal subgraph is one where adding any other vertex would ruin the connectivity. Disconnected graphs have two or more components.
 
 ![[connected-component.png]]
+
 <small>In figure, components are <font color="blue">{1,2,5,7}</font>, <font color="red">{3,6}</font>, and <font color="green">{4}</font>. Subgraph {3,4,6} not connected, {1,2,5} not maximal.</small>
 
 > [!definition] Giant Component
@@ -144,6 +150,7 @@ Connectivity is more complex in directed graphs and has two main notions
 2. **Weakly connected**: A digraph is weakly connected if it remains connected after disregarding the edge directions (i.e., its underlying undirected graph is connected). Strongly connectivity implies weak connectivity.
 
 ![[connectivity-directed-graph.png]]
+
 <small>Above graph is weakly connected but not strongly connected</small>
 
 ## IV. Specialized Graph Structures
@@ -153,3 +160,45 @@ Connectivity is more complex in directed graphs and has two main notions
 > A complete graph of order $n$ has all possible edges between its $n$ vertices.
 
 ![[complete-graph.png]]
+
+> [!question]- How many edges does $K_n$ have?
+> The number of edges is equal to the number of vertex pairs:
+> $$
+> \text{Number of edges in }K_n=\binom{n}{2}=\frac{n(n-1)}{2}
+> $$
+
+> [!definition] Clique
+> A clique is a complete subgraph. This represents an extreme notion of cohesive subgroups or communities in network analysis.
+
+### b. Regular graphs
+
+> [!definition] Regular graphs
+> A $d$-regular graph is one where all vertices have an equal degree, $d$.
+
+![[regular-graph.png]]
+
+> [!example]-
+> The complete graph $K_n$ is $(n-1)$-regular. Cycles are $2$-regular subgraphs.
+
+Regular graphs frequently arise in the study of crystal structures (physics/chemistry), pixel adjacency models in image processing (geo-spatial settings), and modeling opinion formation or information cycles.
+
+### c. Trees and Acyclic Graphs
+
+> [!definition] Tree
+> A connected graph that is acyclic (contains no cycles)
+
+> [!definition] Forest
+> A collection of trees.
+> 
+
+> [!definition] Directed Tree
+> A digraph whose underlying undirected graph is a tree. It is considered "rooted" if paths exist from one vertex (the root) to all others.
+
+> [!definition] Directed Acyclic Graph (DAG)
+> A directed graph that contains no directed cycles. The underlying graph of a DAG need not be a tree.
+
+![[tree.png]]
+
+> [!example]-
+> River networks, information cascades in Twitter, and citation networks.
+
