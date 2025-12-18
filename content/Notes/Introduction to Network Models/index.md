@@ -8,6 +8,6 @@ These notes are based on the course [Introduction to Network Models](https://ocw
 | Lecture | Topics                                | Reading                                                                                  |
 | ------- | ------------------------------------- | ---------------------------------------------------------------------------------------- |
 | 1       | Motivation, and intro to graph theory | [[Aspects of Networks]], [[Central Themes and Topics]], [[Introduction to Graph Theory]] |
-| 2       | Mathematics of Networks               |                                                                                          |
+| 2       | Mathematics of Networks               | [[Basic Definitions and Network Types]], [[Adjacency Matrix]]                            |
 |         |                                       |                                                                                          |
 |         |                                       |                                                                                          |
