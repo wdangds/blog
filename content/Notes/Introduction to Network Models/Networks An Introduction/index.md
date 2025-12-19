@@ -12,3 +12,5 @@ title: "Networks: An Introduction"
 | 6       | 3       | [[Degree, Density, and Regularity]]             |
 | 6       | 4       | [[Connectivity and Paths]]                      |
 | 6       | 5       | [[Network Connectivity, Components, and Flows]] |
+| 6       | 6       | [[Specialized Structures]]                      |
+| 6       | 7       | [[The Graph Laplacian and Dynamic Processes]]   |
