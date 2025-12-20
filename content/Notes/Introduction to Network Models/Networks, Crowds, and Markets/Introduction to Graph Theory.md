@@ -197,7 +197,7 @@ Regular graphs frequently arise in the study of crystal structures (physics/chem
 > [!definition] Directed Acyclic Graph (DAG)
 > A directed graph that contains no directed cycles. The underlying graph of a DAG need not be a tree.
 
-![[tree.png]]
+![[Notes/Introduction to Network Models/Networks, Crowds, and Markets/fig/tree.png]]
 
 > [!example]-
 > River networks, information cascades in Twitter, and citation networks.
