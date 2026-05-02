@@ -11,7 +11,7 @@ I am a Ph.D. student in Data Science at the University of Virginia, working unde
 
 ## 🎓 What did I do?
 
-I earned my Bachelor’s degree in **Computational and Data Sciences** at **George Mason University**. During my time at Mason, I was also a member of the **Mason Experimental Geometry Lab (MEGL)**, where I worked with [Dr. Michael Jarret](https://science.gmu.edu/directory/michael-jarret) and [Anthony Pizzimenti](https://mason.gmu.edu/~apizzime/) on the [Standard Schelling Model project](https://megl.science.gmu.edu/projects/spring-2026/).
+I earned my Bachelor’s degree in **Computational and Data Sciences** at **George Mason University**. During my time at Mason, I was also a member of the **Mason Experimental Geometry Lab (MEGL)**, where I worked with [Dr. Michael Jarret](https://science.gmu.edu/directory/michael-jarret) and [Anthony Pizzimenti](https://mason.gmu.edu/~apizzime/) on the [Standard Schelling Model project](https://megl.science.gmu.edu/wp-content/uploads/2026/01/TeamJarretFall2025Poster-1.pdf).
 
 ![MEGL Member Spring 2026](https://megl.science.gmu.edu/wp-content/uploads/2026/02/LabSP26-1536x552.jpeg)
 
