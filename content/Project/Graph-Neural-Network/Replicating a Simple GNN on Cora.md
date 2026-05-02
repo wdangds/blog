@@ -201,7 +201,7 @@ $$
 
 Stacking 2 layers lets information flow **two hops** away, etc.
 
-> [!example] 
+> [!example]- 
 > Suppose node $i$ has neighbors $j$ and $k$ (plus itself). Current 3-dim features:
 > $$
 > h_i^{(l)}=[1,0,0],\quad h_j^{(l)}=[0,1,0],\quad h_k^{(l)}=[0,0,1]
@@ -541,5 +541,3 @@ Critically, non-graph baselines (Logistic Regression, MLP) lagged far behind (51
 Next, we’ll move **beyond benchmark bias** by loading a non-benchmark graph, **measuring homophily**, and, if the graph is **heterophilous**, comparing GCN to heterophily-robust variants (APPNP/GPR-GNN, MixHop/GCNII, H2GCN/LINKX) and to **random-walk features**. We’ll report multi-seed mean $\pm$ std and per-class diagnostics for a fair, general conclusion.
 
 ---
-[Full code demo](https://github.com/wdangds/replicate-gnn/blob/main/notebooks/01_gcn_cora.ipynb)
-
