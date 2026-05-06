@@ -1,6 +1,7 @@
 ---
 title: Data Science, Data Mining, and the Process of Turning Data into Knowledge
 ---
+
 ## 1. Introduction: What is Data Science?
 
 Data science can be understood as the modern practice of applying the scientific method to data through computation. Its purpose is not merely to collect data, summarize, or build software systems, but to transform raw observations into reliable explanations, predictions, and decisions. In this sense, data science is both a technical discipline and an applied problem-solving framework. It combines statistical reasoning, computation implementation, and domain knowledge in order to extract useful information from complex data.
@@ -53,9 +54,47 @@ A strong data science requires all three. A technical elegant model may be usele
 
 ## 3. Data Mining and Knowledge Discovery
 
+The term `data mining` is often used alongside data science. In everyday usage, data mining may refer to finding useful patterns in data. However, in the classical Knowledge Discovery in Databases literature, data mining has a more specific meaning. Fayyad, Piatetsky, Piatetsky-Shapiro, and Smyth define Knowledge Discovery in Databases, or KDD, as the broader of discovering useful knowledge from data, while data mining is the algorithmic step within that larger process where patterns or models are extracted[^4].
 
+This distinction is important. Data mining is not the entire data science process. It is one part of it. Before mining patterns, the data scientist must understand the problem, select data, clean the data, transform variables, and decide what type of pattern would be useful. After mining patterns, the data scientist must evaluate them, interpret them, and determine whether they should be used in practice.
+
+> [!info] Distinction
+> - **KDD/Data science process**: The full workflow from problem formulation to deployed knowledge.
+> - **Data mining**: The modeling or pattern-discovery stage inside that workflow.
+
+> [!example]- 
+> Suppose a retail company wants to identify customers likely to buy a new product. The data mining step might involve training a classification model. But the broader data science process includes defining what "likely to buy" means, selecting customer records, cleaning missing values, engineering behavior features, evaluating performance, explaining the model to marketing teams, and monitoring the model after deployment.
+
+## 4. The Data Science Cycle
+
+Data science is often mistakenly described as a linear sequence: collect data, clean data, train a model, deploy it. In practice, the process is iterative. A visualization may reveal missing values, forcing the analyst to revisit data collection. A model may perform poorly, forcing new feature engineering. Deployment may expose changing data patterns, requiring model retraining.
+
+The CRISP-DM framework, one of the most widely cited process models for data mining projects, organizes the life cycle into six phases: business understanding, data understanding, data preparation, modeling, evaluation, and deployment. These phases are not linear; feedback loops are expected.
+
+<div align="center">
+![CRISP-DM framework](https://enterprise-knowledge.com/wp-content/uploads/2025/03/CRISP-DM-1.png)
+</div>
+
+From my perspective, the process can be presented in the following expanded form:
+
+```mermaid
+flowchart LR
+A[Problem formulation] --> B[Data capture and selection]  
+B --> C[Data understanding and exploratory analysis]  
+C --> D[Data preparation and preprocessing]  
+D --> E[Transformation and feature engineering]  
+E --> F[Modeling and data mining]  
+F --> G[Evaluation and interpretation]  
+G --> H[Deployment and decision support]  
+H --> I[Monitoring, feedback, and revision]  
+  
+I --> A  
+C --> B
+G --> F
+```
 
 ---
-[^1]: JTukey, J. W. (1962). _The future of data analysis_. Annals of Mathematical Statistics, 33(1), 1–67. https://doi.org/10.1214/aoms/1177704711.
-[^2]: Cleveland, W. S. (2001). _Data science: An action plan for expanding the technical areas of the field of statistics_. International Statistical Review, 69(1), 21–26. https://www.jstor.org/stable/1403527.
+[^1]: JTukey, J. W. (1962). _The future of data analysis_. Annals of Mathematical Statistics, 33(1), 1–67. [https://doi.org/10.1214/aoms/1177704711](https://doi.org/10.1214/aoms/1177704711).
+[^2]: Cleveland, W. S. (2001). _Data science: An action plan for expanding the technical areas of the field of statistics_. International Statistical Review, 69(1), 21–26. [https://www.jstor.org/stable/1403527](https://www.jstor.org/stable/1403527).
 [^3]: Donoho, D. (2017). _50 years of data science_. Journal of Computational and Graphical Statistics, 26(4), 745–766. [https://doi.org/10.1080/10618600.2017.1384734](https://doi.org/10.1080/10618600.2017.1384734) 
+[^4]: Fayyad, U., Piatetsky-Shapiro, G., & Smyth, P. (1996). _From data mining to knowledge discovery in databases_. AI Magazine, 17(3), 37–54. [https://www.kdnuggets.com/gpspubs/aimag-kdd-overview-1996-Fayyad.pdf](https://www.kdnuggets.com/gpspubs/aimag-kdd-overview-1996-Fayyad.pdf)

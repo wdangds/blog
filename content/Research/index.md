@@ -4,7 +4,11 @@ draft:
 ---
 As a student switching from Computer Science to Data Science — and somehow ending up working with a math lab lol — I’ve always wondered why there even exists a role called `Data Scientist`. Since the very first day I stepped into Data Science, I kept seeing this diagram:
 
-  ![Data Science Diagram](https://miro.medium.com/0*POjH5vv_7t8s8loG)
+<div align="center">
+  
+![Data Science Diagram](https://miro.medium.com/0*POjH5vv_7t8s8loG)
+
+</div>
 
 At first glance, the figure looks cool: “Oh wow, a data scientist can do the work of a mathematician, a computer scientist, and even more.” But for me, the deeper I go into this field, the more I start seeing all of that as a disadvantage.
 
