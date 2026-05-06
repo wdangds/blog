@@ -51,6 +51,10 @@ Thus, data science sits at the intersection of three forms of knowledge:
 
 A strong data science requires all three. A technical elegant model may be useless if it answers the wrong question. A meaningful question may remain unanswered if the data pipeline is broken. A large dataset may produce misleading results if the analysis ignore bias, missingness, or uncertainty.
 
+## 3. Data Mining and Knowledge Discovery
+
+
+
 ---
 [^1]: JTukey, J. W. (1962). _The future of data analysis_. Annals of Mathematical Statistics, 33(1), 1–67. https://doi.org/10.1214/aoms/1177704711.
 [^2]: Cleveland, W. S. (2001). _Data science: An action plan for expanding the technical areas of the field of statistics_. International Statistical Review, 69(1), 21–26. https://www.jstor.org/stable/1403527.
