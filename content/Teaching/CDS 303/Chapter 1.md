@@ -170,6 +170,20 @@ Exploratory analysis may reveal:
 
 Exploratory analysis is not separate from modeling. It directly affects modeling choices. If the target class is rare, accuracy may be misleading. If time trends exist, random train-test splitting may cause leakage. If variables are highly skewed, transformations may be needed. If geographic patterns are present, spatial features may improve prediction.
 
+## 8. Data Preparation and Preprocessing
+
+Raw data are usually messy. Data preparation converts raw observations into a reliable modeling dataset. This stage often takes more time than modeling itself.
+
+Common preprocessing tasks include:
+
+| Task                    | Purpose                                          |
+| ----------------------- | ------------------------------------------------ |
+| Removing duplicates     | Prevent repeated records from distorting results |
+| Handling missing values | Avoide                                           |
+
+
+
+
 
 ---
 [^1]: JTukey, J. W. (1962). _The future of data analysis_. Annals of Mathematical Statistics, 33(1), 1–67. [https://doi.org/10.1214/aoms/1177704711](https://doi.org/10.1214/aoms/1177704711).
