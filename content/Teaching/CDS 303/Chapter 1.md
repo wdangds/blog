@@ -179,7 +179,8 @@ Common preprocessing tasks include:
 | Task                    | Purpose                                          |
 | ----------------------- | ------------------------------------------------ |
 | Removing duplicates     | Prevent repeated records from distorting results |
-| Handling missing values | Avoide                                           |
+| Handling missing values | Avoid biased or invalid model inputs             |
+| Correcting errors       | Fix impossible                                   |
 
 
 
