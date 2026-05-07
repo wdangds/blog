@@ -71,9 +71,7 @@ Data science is often mistakenly described as a linear sequence: collect data, c
 
 The CRISP-DM framework, one of the most widely cited process models for data mining projects, organizes the life cycle into six phases: business understanding, data understanding, data preparation, modeling, evaluation, and deployment. These phases are not linear; feedback loops are expected.
 
-<div align="center">
 ![CRISP-DM framework](https://enterprise-knowledge.com/wp-content/uploads/2025/03/CRISP-DM-1.png)
-</div>
 
 From my perspective, the process can be presented in the following expanded form:
 
@@ -92,6 +90,86 @@ I --> A
 C --> B
 G --> F
 ```
+
+1. Problem formulation
+2. Data capture and selection
+3. Data understanding and exploratory analysis
+4. Data preparation and preprocessing
+5. Transformation and feature engineering
+6. Modeling and data mining
+7. Evaluation and interpretation
+8. Deployment and decision support
+9. Monitoring, feedback, and revision
+
+Each stage is discussed below.
+
+## 5. Problem Formulation
+
+The first stage of data science is not data collection. We have to define the problem first. Before building a dataset or choosing an algorithm, the data scientist must define the question.
+
+A weak question is vague:
+
+> "Can we use data to improve sales?"
+
+A stronger data science question is operational:
+
+> "Can we predict, at the time of first customer inquiry, whether a customer is likely to purchase a new car within the next 30 days?"
+
+The second question is better because it defines the unit of analysis, prediction target, time horizon, and decision context. It also suggests what data might be needed: customer demographics, inquiry channel, previous purchases, income range, geographic region, and interaction history.
+
+Problem formulation usually requires collaboration with domain experts. The data scientist must translate a practical concern into a technical objective. For example:
+
+| Practice Goal               | Data Science Translation                                  |
+| --------------------------- | --------------------------------------------------------- |
+| Reduce customer churn       | Predict probability of churn within 60 days.              |
+| Improve hospital operations | Forecast emergency department arrivals by hour.           |
+| Detect fraud                | Classify transactions as fraudulent or legitimate.        |
+| Improve marketing           | Segment customers by purchase behavior.                   |
+| Predict salary              | Estimate salary from experience, education, and job type. |
+
+A data science project can make no sense if this stage is rushed. A technically impressive model may have little value if it solves a poorly defined problem.
+
+## 6. Data Capture and Selection
+
+Once the problem is formulated, the next step is to identify relevant data sources. Data may come from internal databases, surveys, sensors, transaction logs, public APIs, web data, text documents, images, or experimental measurements.
+
+> [!example]-
+> In a project predicting whether customers will buy a new car, a company may collect information from sales inquiries: age, gender, occupation, annual income, previous purchase history, location, inquiry date, vehicle type, and whether the customer eventually purchased the car.
+
+Data selection involves deciding which observations and variables belong in the project. Sometimes, the current available data may not match the desired problem. A company may want to predict future purchases, but its database may only include customers who already interacted with the company. This creates selection bias: the data represent only a subset of the real population.
+
+Important questions at this stage include:
+- Who or what is represented in the data?
+- What population is missing?
+- How were the data collected?
+- Are the measurements reliable?
+- Is the target variable available?
+- Are there legal, ethical, or privacy restrictions?
+- Does the data source reflect the decision context?
+
+Data capture shapes everything that follows.
+
+## 7. Data Understanding and Exploratory Analysis
+
+After data are collected, the data scientist must understand them. This stage often uses exploratory data analysis, visualization, descriptive statistics, and data quality checks.
+
+Exploratory analysis may reveal:
+- Missing values
+- Duplicate records
+- Outliers
+- Impossible values
+- Inconsistent categories
+- Class imbalance
+- Time trends
+- Spatial patterns
+- Correlated variables
+- Data leakage
+
+> [!example]-
+> Suppose a rainfall prediction project uses sensor readings from weather stations. A visualization may show negative rainfall values or extremely large readings far outside the physical range of the sensor. These observations may indicate sensor malfunction, unit conversion errors, or data entry mistakes. In that case, the analyst may need to return to the data capture stage and obtain corrected readings.
+
+Exploratory analysis is not separate from modeling. It directly affects modeling choices. If the target class is rare, accuracy may be misleading. If time trends exist, random train-test splitting may cause leakage. If variables are highly skewed, transformations may be needed. If geographic patterns are present, spatial features may improve prediction.
+
 
 ---
 [^1]: JTukey, J. W. (1962). _The future of data analysis_. Annals of Mathematical Statistics, 33(1), 1–67. [https://doi.org/10.1214/aoms/1177704711](https://doi.org/10.1214/aoms/1177704711).
