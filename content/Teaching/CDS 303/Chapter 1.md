@@ -310,6 +310,7 @@ Different tasks require different metrics.
 |                | RMSE      | Square root of MSE, in original units                |
 |                | $R^2$     | Proportion of variance explained                     |
 |                | MAPE      | Percentage error, when appropriate                   |
+
 Evaluation must reflect the decision context.
 
 > [!example]-
