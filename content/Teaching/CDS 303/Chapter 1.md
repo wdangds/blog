@@ -176,18 +176,286 @@ Raw data are usually messy. Data preparation converts raw observations into a re
 
 Common preprocessing tasks include:
 
-| Task                    | Purpose                                          |
-| ----------------------- | ------------------------------------------------ |
-| Removing duplicates     | Prevent repeated records from distorting results |
-| Handling missing values | Avoid biased or invalid model inputs             |
-| Correcting errors       | Fix impossible                                   |
+| Task                           | Purpose                                             |
+| ------------------------------ | --------------------------------------------------- |
+| Removing duplicates            | Prevent repeated records from distorting results    |
+| Handling missing values        | Avoid biased or invalid model inputs                |
+| Correcting errors              | Fix impossible or inconsistent values               |
+| Standardizing formats          | Make variables comparable                           |
+| Normalizing or scaling         | Prepare variables for algorithms sensitive to scale |
+| Encoding categorical variables | Convert text categories into numerical form         |
+| Merge datasets                 | Combine information from multiple sources           |
+| Filtering observations         | Keep only relevant cases                            |
+| Creating train/test splits     | Evaluate generalization                             |
 
+> [!example]-
+> A customer dataset may contain annual income as both "50000" and "$50,000," dates in different formats, missing occupations, and duplicate customer IDs. If these issues are ignored, the model may learn artifacts of the database instead of meaningful behavior.
 
+Data cleaning should also be documented. A reproducible project should make clear which observations were removed, how missing values were handled, and why certain transformations were applied.
 
+## 9. Transformation and Feature Engineering
 
+Feature engineering is the process of transforming raw data into variables that better represent the underlying problem. It is one of the most important stages in applied data science because models often depend more on the quality of features than on the complexity of algorithms.
+
+A raw timestamp such as <span style="font-family: monospace">1550563843</span> may not be directly useful to a model. But it can be transformed into features such as hour of day, day of week, month, holiday indicator, season, or time since last purchase. In a sales prediction problem, these features may capture shopping patterns that the raw timestamp hides.
+
+Feature engineering can include:
+- Extracting date/time features
+- Creating ratios or rates
+- Aggregating behavior over time windows
+- Encoding geographic distance
+- Creating lag variables
+- Measuring frequency or recency
+- Transforming skewed variables
+- Reducing dimensionality
+- Selecting important predictors
+
+> [!example]-
+> In a salary prediction model, years of experience may be a useful feature. A simple regression model might estimate a relationship such as:
+> $$
+> \text{Salary} = 8\times \text{Experience} + 40
+> $$
+> It is a simplified representation of an assumed relationship: salary increases with experience. Whether that relationship is realistic depends on the domain, the dataset, and the modeling assumptions.
+
+## 10. The Curse of Dimensionality
+
+A major challenge in feature engineering is the **curse of dimensionality**. As the number of features increases, the data space grows rapidly. Data points become sparse, distances become less informative, and models may require much more data to generalize well. 
+
+Suppose a dataset has only two features: age and income. With enough observations, the data scientist may find meaningful neighborhoods of similar customers. But if the dataset has hundreds or thousands of features, each customer may appear unique. There may be too few comparable observations in any local region of the feature space. Algorithms that depend on similarity, distance, or interpolation may then perform poorly.
+
+Dimensionality is not always bad. Additional features can improve a model if they contain useful signal. The problem occurs when many features are irrelevant, noisy, redundant, or sparse. In that case, the model may overfit - it learns accidental patterns in the training data rather than stable patterns that generalize.
+
+Common strategies for addressing high dimensionality include:
+- Feature selection
+- Regularization
+- Principal Component Analysis
+- Autoencoders
+- Domain-guided variable construction
+- Removing redundant variables
+- Increasing sample size
+- Using models robust to irrelevant features.
+
+Principal Component Analysis, or PCA, is one classical dimensionality reduction method. It transforms correlated variables into a smaller set of uncorrelated components that preserve as much variation as possible. PCA is somehow consider as a central method for reducing dimensionality while retaining much of the information in the original variables[^5].
+
+## 11. Modeling, Data Mining, and Machine Learning
+
+The modeling stage is where data mining and machine learning methods are usually applied. The goal is to learn patterns, relationships, or structures from data.
+
+### 11.1. Supervised Learning
+
+In supervised learning, the models learns from labeled examples. Each observation has input features and a known output. The model learns a mapping from inputs to outputs.
+
+Common supervised learning tasks include:
+
+| Task           | Output Type     | Example                                 |
+| -------------- | --------------- | --------------------------------------- |
+| Regression     | Continuos value | Predict salary, price, rainfall, demand |
+| Classification | Category label  | Predict spam/not spam, fraud/not fraud  |
+| Ranking        | Ordered list    | Rank search results or recommendations  |
+
+>[!example]-
+> In spam detection, the input may be the text of an email, sender information, links, and metadata. The output is a label: spam or not spam. The modern learns from past labeled emails and produces predictions for new incoming messages.
+
+### 11.2. Unsupervised Learning
+
+In supervised learning, the data do not include a labeled output. The goal is to discover hidden structure.
+
+Common unsupervised learning tasks include:
+
+| Task                     | Purpose                    | Example                         |
+| ------------------------ | -------------------------- | ------------------------------- |
+| Clustering               | Group similar observations | Segment customers               |
+| Dimensionality reduction | Compress variables         | Visualize high-dimensional data |
+| Association discovery    | Find co-occurring patterns | Market basket analysis          |
+| Anomaly detection        | Identify unusual cases     | Detect abnormal transactions    |
+
+>[!example]-
+>A retail store may use clustering to group customers based on purchase history. One cluster may contain frequent high-value buyers, another may contain seasonal buyers, and another may contain discount-driven buyers. The company can then design different marketing strategies for each group.
+
+### 11.3. Predictive Versus Explanatory Modeling
+
+Not all models serve the same purpose. Some models are designed primarily for prediction. Others are designed for explanation or inference.
+
+There are two cultures of statistical modeling[^6]. One culture assumes that data are generated by a specified stochastic model and focuses on estimating interpretable parameters. The other culture treats the data-generating mechanism as unknown and focuses on algorithmic prediction. Some practical projects often require both predictive accuracy and interpretability. 
+
+> [!example]-
+> A hospital may want the most accurate model possible for predicting patient readmission, but doctors may also need to understand which factors drive the prediction. Similarly, a bank may use a complex model to detect fraud, but regulators may require explanations for adverse decision.
+
+A good data science project must therefore ask:
+- Is the goal prediction, explanation, or decision support?
+- Is interpretability required?
+- Are causal claims being made?
+- What errors are most costly?
+- Who will use the model output?
+- What constraints exist in deployment?
+
+## 12. Evaluation and Interpretation
+
+A model is not useful simply because it fits the training data. It must generalize to new data. Evaluation is the process of testing whether the model performs well on unseen observations.
+
+The simplest approach is to split the data into training and test sets. The model is trained on one portion and evaluated on another. More advanced approaches include validation sets, cross-validation, time-based splits, bootstrap evaluation, and external validation.
+
+Different tasks require different metrics.
+
+| Task           | Metric    | Meaning                                              |
+| -------------- | --------- | ---------------------------------------------------- |
+| Classification | Accuracy  | Fraction of correct predictions                      |
+|                | Precision | Of predicted positives, how many were truly positive |
+|                | Recall    | Of actual positives, how many were detected          |
+|                | F1-score  | Balance between precision and recall                 |
+|                | ROC-AUC   | Ability to rank positives above negatives            |
+|                | PR-AUC    | Useful for imbalanced classification                 |
+| Regression     | MAE       | Average absolute prediction error                    |
+|                | MSE       | Average squared prediction error                     |
+|                | RMSE      | Square root of MSE, in original units                |
+|                | $R^2$     | Proportion of variance explained                     |
+|                | MAPE      | Percentage error, when appropriate                   |
+Evaluation must reflect the decision context.
+
+> [!example]-
+> In disease screening, recall may be more important than precision because missing a true case is costly. In fraud prediction, precision may matter because false accusations can harm customers. In weather prediction, calibration may matter because decision-makers need reliable probabilities.
+
+Interpretation is also essential. A model may have strong performance metrics but still be unusable if its behavior is unstable, biased, or impossible to explain. Data scientists must inspect errors, compare model behavior across groups, check whether important variables make sense, and communicate uncertainty.
+
+## 13. Inference, Deployment, and Knowledge Application
+
+The final goal of data science is not a model file. The goal is usable knowledge. Deployment means integrating the model or analysis into a real decision process.
+
+Deployment may take many forms:
+- A dashboard for managers
+- A real-time prediction API
+- A weekly report
+- A recommender system
+- A fraud alert system
+- A risk score
+- A scientific conclusion
+- A policy recommendation
+
+>[!example]-
+>A retail company may deploy a customer segmentation model so that marketing teams can design targeted campaigns. A transportation agency may use a forecasting model to plan staffing. A hospital may use a readmission model to identify patients needing follow-up care.
+
+Deployment introduces new challenges. The data available in production may differ from the training data. User behavior may change. Sensors may fall. A model trained last year may become less accurate this year. This phenomenon is often called *data drift* or *concept drift*.
+
+Therefore, deployment should include monitoring. A deployed model should be checked for:
+- Prediction accuracy over time
+- Changes in input distributions
+- Bias across subgroups
+- Unexpected errors
+- System failures
+- User feedback
+- Need for retraining
+
+A data science project is not finished when the model is deployed. It enters a maintenance stage where the model must be evaluated continuously.
+
+## 14. Data Science Compared with Related Fields
+
+Data science overlaps with several fields but isn't identical to them.
+
+### 14.1. Data Science and Statistics
+
+Statistics provides many of the foundations of data science, including probability, inference, regression, experimental design, uncertainty, and model evaluation. However, data science usually places greater emphasis on computation, data pipelines, large-scale processing, machine learning, and deployment. 
+
+This distinction should not be exaggerated. Modern statistics and data science are deeply connected. Data science can be viewed as an expansion of statistical thinking into computational and applied environments.
+
+### 14.2. Data Science and Machine Learning
+
+Machine learning focuses on algorithms that learn patterns from data. Data science uses machine learning, tho also includes problem formulation, data engineering, exploratory analysis, evaluation, communication, and deployment.
+
+A machine learning model is one component of a data science project. The broader data science process determines whether that model is meaningful, valid, and useful.
+
+### 14.3. Data Science and Artificial Intelligence
+
+Artificial intelligence, or AI, is a broad field concerned with building systems that perform tasks associated with intelligent behavior, such as perception, reasoning, planning, language understanding, and decision-making. Data science can support AI by providing data-driven models, but not all data science is AI, and not all AI is data science.
+
+> [!example]-
+> A sales dashboard with statistical summaries is data science but not necessarily AI. A symbolic planning system may be AI but not necessarily data science. A spam classifier trained from labeled emails belongs to both.
+
+### 14.4. Data Science and Software Engineering
+
+Software engineering focuses on building reliable software systems. Data science depends on software engineering, especially when models must be deployed, automated, and maintained. However, data science also requires statistical and domain reasoning that may not be central in ordinary software development.
+
+## 15. Example: Predicting Car Purchases
+
+To see the full process, consider a company that wants to predict which customers are likely to buy a new car.
+
+**Step 1: Problem Formulation** 
+
+The company defines the objective:
+$$
+\boxed{
+\text{Predict whether a customer who submits an inquiry will purchase a car within 30 days.}
+}
+$$
+The target variable is binary: purchase or no purchase.
+
+**Step 2: Data Capture** 
+
+The company collects customer information:
+- Age
+- Gender
+- Occupation
+- Annual income
+- Location
+- Inquiry data
+- Vehicle type 
+- Previous purchase history
+- Website interactions
+- Sales representative notes
+
+**Step 3: Data Understanding**
+
+The data scientist explores the dataset and finds:
+- Some income values are missing.
+- Occupations are entered inconsistently.
+- Some customers appear multiple times.
+- Purchase rates vary by vehicle type.
+- Weekend inquiries have different conversion patterns.
+
+**Step 4: Data Preparation**
+
+The analyst removes duplicates, standardizes categories, handles missing income values, and creates a clean modeling table.
+
+**Step 5: Feature Engineering**
+
+The analyst creates new features:
+- Day of Week
+- Month
+- Income bracket
+- Prior inquiry count
+- Distance to dealership
+- Vehicle price range
+- Time since last interaction
+
+**Step 6: Modeling**
+
+Several models are trained:
+- Logistic regression
+- Decision tree
+- Random forest
+- Gradient boosting classifier
+
+**Step 7: Evaluation**
+
+The models are evaluated on unseen test data. Accuracy alone may not be enough because the company cares about identifying likely buyers. Precision, recall, and calibration may be more useful.
+
+**Step 8: Deployment** 
+
+The final model produces a purchase probability for each new inquiry. Sales teams prioritize high-probability customers while still maintaining fair and responsible outreach practices.
+
+**Step 9: Monitoring**
+
+The company monitors whether predictors remain accurate as customer behavior changes, new car models are introduced, or economic conditions shift.
+
+---
+
+Data science is best understood as an interdisciplinary, iterative, and applied process for transforming data into knowledge. It combines the scientific method with computation, statistical reasoning, and domain expertise. Data mining and machine learning are central parts of this process, but they do not define the entire field.
+
+A complete data science project begins with a meaningful problem, not an algorithm. It requires careful data capture, cleaning, transformation, modeling, evaluation, deployment, and monitoring. It also requires judgement: the ability to decide whether a pattern is meaningful, whether a model is reliable, whether a prediction is useful, and whether the result makes sense in the real world. In modern scientific, business, or social contexts, data science provides a framework for making sense of complex data and converting that understanding into informed action.
 
 ---
 [^1]: JTukey, J. W. (1962). _The future of data analysis_. Annals of Mathematical Statistics, 33(1), 1–67. [https://doi.org/10.1214/aoms/1177704711](https://doi.org/10.1214/aoms/1177704711).
 [^2]: Cleveland, W. S. (2001). _Data science: An action plan for expanding the technical areas of the field of statistics_. International Statistical Review, 69(1), 21–26. [https://www.jstor.org/stable/1403527](https://www.jstor.org/stable/1403527).
 [^3]: Donoho, D. (2017). _50 years of data science_. Journal of Computational and Graphical Statistics, 26(4), 745–766. [https://doi.org/10.1080/10618600.2017.1384734](https://doi.org/10.1080/10618600.2017.1384734) 
 [^4]: Fayyad, U., Piatetsky-Shapiro, G., & Smyth, P. (1996). _From data mining to knowledge discovery in databases_. AI Magazine, 17(3), 37–54. [https://www.kdnuggets.com/gpspubs/aimag-kdd-overview-1996-Fayyad.pdf](https://www.kdnuggets.com/gpspubs/aimag-kdd-overview-1996-Fayyad.pdf)
+[^5]: Jolliffe, I. T. (2002). _Principal component analysis_ (2nd ed.). Springer. [https://link.springer.com/book/10.1007/978-1-4757-1904-8](https://link.springer.com/book/10.1007/978-1-4757-1904-8)
+[^6]: Breiman, L. (2001). _Statistical modeling: The two cultures_. Statistical Science, 16(3), 199–231.
