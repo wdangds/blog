@@ -69,7 +69,7 @@ This distinction is important. Data mining is not the entire data science proces
 
 Data science is often mistakenly described as a linear sequence: collect data, clean data, train a model, deploy it. In practice, the process is iterative. A visualization may reveal missing values, forcing the analyst to revisit data collection. A model may perform poorly, forcing new feature engineering. Deployment may expose changing data patterns, requiring model retraining.
 
-The CRISP-DM framework, one of the most widely cited process models for data mining projects, organizes the life cycle into six phases: business understanding, data understanding, data preparation, modeling, evaluation, and deployment. These phases are not linear; feedback loops are expected.
+The CRISP-DM framework, one of the most widely cited process models for data mining projects, organizes the life cycle into six phases: [[Chapter 2|business understanding]], [[Chapter 2|data understanding]], data preparation, modeling, evaluation, and deployment. These phases are not linear; feedback loops are expected.
 
 ![CRISP-DM framework](https://enterprise-knowledge.com/wp-content/uploads/2025/03/CRISP-DM-1.png)
 
@@ -452,6 +452,8 @@ The company monitors whether predictors remain accurate as customer behavior cha
 Data science is best understood as an interdisciplinary, iterative, and applied process for transforming data into knowledge. It combines the scientific method with computation, statistical reasoning, and domain expertise. Data mining and machine learning are central parts of this process, but they do not define the entire field.
 
 A complete data science project begins with a meaningful problem, not an algorithm. It requires careful data capture, cleaning, transformation, modeling, evaluation, deployment, and monitoring. It also requires judgement: the ability to decide whether a pattern is meaningful, whether a model is reliable, whether a prediction is useful, and whether the result makes sense in the real world. In modern scientific, business, or social contexts, data science provides a framework for making sense of complex data and converting that understanding into informed action.
+
+Next chapter: [[Chapter 2|Context and Data Understanding in Data Science]]
 
 ---
 [^1]: JTukey, J. W. (1962). _The future of data analysis_. Annals of Mathematical Statistics, 33(1), 1–67. [https://doi.org/10.1214/aoms/1177704711](https://doi.org/10.1214/aoms/1177704711).
