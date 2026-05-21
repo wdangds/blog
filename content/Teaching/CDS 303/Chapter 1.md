@@ -1,5 +1,9 @@
 ---
 title: Data Science, Data Mining, and the Process of Turning Data into Knowledge
+tags:
+  - data-mining
+  - data-science
+  - knowledge-discovery
 ---
 
 ## 1. Introduction: What is Data Science?

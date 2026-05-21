@@ -189,7 +189,182 @@ __(2) Context Inference__
 Context inference interprets the observation in relation to other conditions. For example:
 - Sales increased because of a holiday promotion.
 - The temperature spike occurred during a known equipment cycle.
+- The customer was browsing during a seasonal sale.
+- The patient's heart rate increased after medication.
 
+This level adds situational meaning.
+
+__(3) Decision Inference__
+
+Decision inference connects the interpreted situation to an action. For example:
+- Increase inventory for similar products.
+- Ignore the temperature spike if it matches normal operating behavior.
+- Recommend related products.
+- Alert a clinician if the heart rate pattern is abnormal.
+
+This level asks what should be done.
+
+__(4) System Inference__
+
+System inference considers a broader system and its evolution. For example:
+- Will promotions train customers to wait for discounts?
+- Will ignoring repeated equipment spikes increase long-term risk?
+- Will recommendations narrow user exposure and reduce diversity?
+- Will clinical alerts create alarm fatigue?
+
+This level asks how decisions affect the systems over time.
+
+## 7. Context-Aware Systems
+
+### 7.1. Context-Aware Recommendation
+
+A useful example of context-aware data science is the recommender system. A context-aware recommender systems is described as systems that adapt recommendations to the user's contextual situation, such as time, location, social setting, device, weather, or activity[^6].
+
+> [!example]-
+> An e-commerce platform might recommend:
+> - Swimwear in July but coats in December.
+> - Umbrellas when local weather indicates rain.
+> - Quick meals during weekday evenings.
+> - Travel accessories before a scheduled trip.
+> - Different products on mobile versus desktop.
+>
+
+The same user may have different preferences under different conditions. Context-aware modeling recognizes that preference is situated.
+
+### 7.2. Context as Model Input v.s. Context as Interpretation
+
+There are two ways context appears in data science.
+
+The first is _context as model input_. Here, contextual variables are added to the model: time, location, weather, device type, user state, economic conditions, or social setting.
+
+The second is _context as interpretation_. Here, context is the reasoning framework used to understand whether the model output makes sense.
+
+>[!example]-
+>A model may predict high demand for emergency services in neighborhood. Contextual variables may include time of day, weather, and prior incidents. But interpretation requires asking deeper questions: is demand higher because of actual need, lack of preventive care, reporting practices, or unequal access to services?
+
+Both forms of context are necessary. Adding context variables can improve prediction, but context-aware interpretation prevents shallow or harmful conclusions.
+
+## 8. Adaptive Learning in Dynamic Environments
+
+### 8.1. The Problem of Change
+
+Many data science systems are built under the assumption that the future will resemble the past. This assumption is often incorrect. Customer behavior changes, markets shift, weather patterns vary, disease dynamics evolve, adversaries adapt, and institutions modify their policies.
+
+When the relationship between input variables and the target variable changes over time, the problem is known as _concept drift_[^7]. 
+
+>[!definition]
+>_**Concept drift** is a situation in ==online supervised learning== where the relation between inputs and outputs changes over time. We need an adaptation strategies, algorithms, and evaluation methods for such non-stationary environments._
+
+Relatedly, _dataset shift_ refers to a mismatch between training and deployment distributions. This is a central problem in machine learning when training and test conditions differ[^8]. 
+
+### 8.2. Types of Change
+
+Dynamic environments can change in different ways.
+
+| Type of Change          | Description                                   | Example                                         |
+| ----------------------- | --------------------------------------------- | ----------------------------------------------- |
+| Covariate shift         | Input distribution changes                    | Customers become younger over time              |
+| Prior probability shift | Outcome prevalence changes                    | Fraud becomes more common                       |
+| Concept drift           | Relationship between input and output changes | Old fraud signals stop working                  |
+| Label drift             | Meaning or coding of labels changes           | Hospital diagnosis codes are updated            |
+| Behavioral adaptation   | Users respond to the model                    | Sellers change behavior to game ranking systems |
+
+The last case is especially important. Once a model is deployed, it can change the environment it measures. A recommendation system changes what users see. A credit scoring system changes who receives loans. A predictive policing system changes where police are sent, which changes what crime is recorded. The model is not outside the system; it becomes part of the system.
+
+### 8.3. The Red Queen View of Adaptive Systems
+
+The Red Queen metaphor comes from evolutionary thinking: one must keep running just to stay in the same place. In adaptive machine learning, this means that a model's environment may evolve in response to the model itself. Fraud detection, cybersecurity, advertising, finance, and recommender systems are all examples where the system and its users co-evolve.
+
+A fraud model may identify suspicious transaction patterns. Fraudsters then change their behavior. The model must adapt. But if it adapts too quickly, it may overreact to noise. If it adapts too slowly, it becomes obsolete. 
+
+Adaptive learning therefore requires balance:
+- Stability versus flexibility.
+- Historical knowledge versus new evidence.
+- Sensitivity to drift versus robustness to noise.
+- Automation versus human oversight.
+- Short-term performance versus long-term system effects.
+
+## 9. Business Context and Modeling Culture
+
+### 9.1. From Business Question to Modeling Strategy
+
+In applied data science, modeling choices should be guided by the decision problem. Some questions require explanation, some require forecasting, some require causal inference, some require optimization, and some require monitoring. 
+
+For example:
+
+| Business Question                    | Modeling Translation                        |
+| ------------------------------------ | ------------------------------------------- |
+| Which customers are likely to churn? | Predictive classification                   |
+| Why are customers leaving?           | Explanatory analysis or causal inference    |
+| Which intervention reduces churn?    | Experimentation or causal modeling          |
+| How many products should be stocked? | Forecasting and optimization                |
+| Which process factor controls yield? | Interpretable modeling and process analysis |
+
+A common failure occurs when the technical team solves a prediction problem while the business needed an explanation problem.
+
+### 9.2. Two Modeling Cultures
+
+There are two cultures of statistical modeling: one focused on modeling the data-generating process and another focused on algorithmic prediction[^9]. For the purpose of this chapter, we can describe them as follows:
+
+| Factor           | Explanatory Culture                                       | Predictive Culture                        |
+| ---------------- | --------------------------------------------------------- | ----------------------------------------- |
+| Informal label   | "Monks"                                                   | "Cowboys"                                 |
+| Main goal        | Understand mechanism, causation, long-term structure      | Maximize predictive performance           |
+| Typical question | Why does this happen?                                     | What will happen next?                    |
+| Evaluation       | Theoretical plausibility, validity, causal identification | Accuracy, error, ranking, calibration     |
+| Strength         | Interpretability and scientific explanation               | Practical performance at scale            |
+| Risk             | Overly restrictive assumptions                            | Black-box decisions without understanding |
+
+If the business asks, "Which customers are most likely to respond to this campaign?" a predictive model may be appropriate. If the business asks, "What caused the decline in customer retention?" prediction along is insufficient. If the business asks, "Which process variable should we adjust to increase chemical yield?" a black-box predictor may not provide actionable knowledge.
+
+### 9.3. The ROI Imperative
+
+In business settings, data science sometimes connect to return on investment (ROI). ROI may include revenue growth, cost reduction, risk reduction, time savings, improved reliability, customer satisfaction, fairness, regulatory compliance, or scientific insight.
+
+Before a project begins, the route to value should be explicit:
+1. What decision will change?
+2. Who will use the result?
+3. What action will the model support?
+4. What cost is reduced or value is created?
+5. What risk does the model introduce?
+6. How will success be measured?
+
+A model with high predictive accuracy can still fail if it does not support action. 
+
+> [!example]-
+> Suppose a company uses a complex neural network to predict chemical yield with excellent accuracy. If the model cannot explain which process variables influence yield, engineers may be unable to improve the process. In that case, predictive performance does not translate into business value.
+
+
+## 10. Explainability and the Black Box Problem
+
+### 10.1. Why Explainability Matters
+
+Explainability refers to the ability to understand, communicate, or justify how a model produces its outputs. It is important in high-stakes domains such as healthcare, banking, criminal justice, education, and employment.
+
+A black-box model may be acceptable in low-risk settings where errors are minor and reversible, such as recommending a movie. It is more problematic when decisions affect loans, diagnoses, sentencing, hiring, insurance, or public benefits.
+
+Explainability matters for several reasons:
+- **Debugging:** Understanding model behavior helps detect errors.
+- __Trust__: Users are more likely to accept systems they understand.
+- __Accountability__: Institutions must justify decisions.
+- __Fairness__: Explanations help identify discriminatory patterns.
+- __Scientific learning__: Explanatory models can reveal mechanisms.
+- __Actionability__: Decision-makers need to know what can be changed.
+
+However, explainability is not a single property. A model may be mathematically interpretable to a statistician but not understandable to a business manager. A local explanation may describe one prediction without explaining the global model. A simplified explanation may be intuitive but inaccurate.
+
+Thus, the right question is: 
+
+> **Explainable to whom, for what purpose, and at what level of detail?**
+
+---
+Context and data understanding form the foundation of responsible data science. A dataset is a structured representation of a situation, produced through social, technical, institutional, and historical processes.
+
+To understand data, one must understand how the data were generated, what they include, what they exclude, what assumptions shape them, and how they will be used. Exploratory analysis, visualization, documentation, and domain knowledge are central to scientific integrity.
+
+We all have argued that context operates at several levels. It gives meaning to variables, shapes data collection, determines the appropriateness of data use, affects model performance over time, and defines ethical responsibility. Context-aware data science therefore requires more than adding contextual features to a model; it requires a disciplined way of thinking about data as situated evidence.
+
+Next chapter: [[Chapter 3|Data Preparation and Model Design]]
 
 
 ---
@@ -198,3 +373,7 @@ Context inference interprets the observation in relation to other conditions. Fo
 [^3]: Boyd, Danah, and Kate Crawford. “CRITICAL QUESTIONS FOR BIG DATA: Provocations for a Cultural, Technological, and Scholarly Phenomenon.” _Information, Communication & Society_ 15, no. 5 (2012): 662–79. [https://doi.org/10.1080/1369118X.2012.678878](https://doi.org/10.1080/1369118X.2012.678878).
 [^4]: Selten, Reinhard. “Bounded Rationality.” _Journal of Institutional and Theoretical Economics (JITE) / Zeitschrift Für Die Gesamte Staatswissenschaft_ 146, no. 4 (1990): 649–58.
 [^5]: Endsley, Mica R. “Toward a Theory of Situation Awareness in Dynamic Systems.” _Human Factors_ 37, no. 1 (1995): 32–64. [https://doi.org/10.1518/001872095779049543](https://doi.org/10.1518/001872095779049543).
+[^6]: Adomavicius, Gediminas, Bamshad Mobasher, Francesco Ricci, and Alex Tuzhilin. “Context‐Aware Recommender Systems.” _AI Magazine_ 32, no. 3 (2011): 67–80. [https://doi.org/10.1609/aimag.v32i3.2364](https://doi.org/10.1609/aimag.v32i3.2364).
+[^7]: Gama, João, Indrė Žliobaitė, Albert Bifet, Mykola Pechenizkiy, and Abdelhamid Bouchachia. “A Survey on Concept Drift Adaptation.” _ACM Comput. Surv._ 46, no. 4 (2014): 44:1-44:37. [https://doi.org/10.1145/2523813](https://doi.org/10.1145/2523813).
+[^8]: Quiñonero-Candela, Joaquin, ed. _Dataset Shift in Machine Learning_. Neural Information Processing Series. MIT Press, 2009.
+[^9]: Breiman, Leo. “Statistical Modeling: The Two Cultures.” _Statistical Science_ 16, no. 3 (2001): 199–215.
