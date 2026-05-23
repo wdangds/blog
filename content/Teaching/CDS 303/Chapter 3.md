@@ -1,5 +1,5 @@
 ---
-title: "Chapter 3: Data Preparation and Model Design"
+title: Data Preparation and Model Design
 tags:
   - data-preparation
   - model-design
@@ -11,4 +11,554 @@ tags:
 
 In this sense, data preparation is an act of __epistemological refinement__. It converts a contextually produced dataset into an analytical object. Each decision (which we will discuss later) changes the structure of the evidence available to the model.
 
-_Model design_ then turns 
+_Model design_ then turns this prepare evidence into a formal learning system. A model is designed through assumptions, objectives, constraints, hyperparameters, evaluation metrics, and validation procedures. So our main question of this chapter are: __What kind of function should be learned? What should count as success? How much complexity is justified? How should the model be tested?__
+
+This chapter develops two connected arguments:
+
+> **Data preparation determines the form of evidence. Model design determines the form of learning.**
+
+Together, they represent the bridge between data understanding and machine learning.
+
+## 1. Data Preparation
+
+Data preparation is the process of selecting, cleaning, transforming, and organizing data so that it can be used by analytical or machine learning methods. In applied data science, this stage is often more consuming than model training itself. Real-world data are usually incomplete, inconsistent, duplicated, incorrectly formatted, noisy, or measured at the wrong level of granularity.
+
+> [!example]
+> Suppose a dataset records customer transactions. The same customer may appear under multiple IDs. Some transaction dates may be missing. Product categories may change over time. Currency values may be recorded in different formats. Refunds may appear as negative sales. 
+> 
+
+A mechanical cleaning process might remove "bad" records, but a scientific preparation process asks what each irregularity means. A missing transaction may indicate a logging failure, or may also indicate that no transaction occurred. A duplicate may be a database error, or it may represent two legitimate purchases made at the same time. An outlier may be a mistake, or it maybe the most important case in the dataset.
+
+## 2. Missing Values and Inconsistencies
+
+### 2.1. Why Missingness Matters
+
+Missing data are one of the most common problems in data preparation. A value may be missing because it was not collected, not applicable, lost during transfer, intentionally withheld, corrupted by a sensor, or removed for privacy reasons. The technical symbol may be the same (NaN, NULL, blank, or None), but the meaning can differ greatly.
+
+For example, in a medical dataset, missing income may indicate that the patient declined to answer. In a sensor dataset, missing temperature may indicate device failure. In a sales dataset, missing Sunday transaction data may indicate that the store was closed, the logging system failed, or the data file was not uploaded.
+
+The treatment of missingness should depend on the reason for the missingness. Removing all rows with missing values is simple, but it may introduce bias if the missingness is systematic. Imputation can preserve sample size, but it may create artificial certainty if the imputed values are treated as truly observed.
+
+A conceptual distinction is among three types of missingness:
+
+| Types                               | Meaning                                                 | Example                                          |
+| ----------------------------------- | ------------------------------------------------------- | ------------------------------------------------ |
+| Missing Completely at Random (MCAR) | Missingness is unrelated to observed or unobserved data | A random database export error remove 2% of rows |
+| Missing at Random (MAR)             | Missingness depends on observed variables               | Younger users are less likely to report income   |
+| Missing Not at Random (MNAR)        | Missing depends on the missing value itself             | High-income respondents avoid reporting income   |
+
+These categories matter because the validity of imputation depends on the mechanism that produced the missingness. If income is missing mainly among high-income individuals, replacing missing income with the mean may distort the distribution and weaken the model's understanding of purchasing power.
+
+### 2.2. Common Strategies
+
+Common strategies include:
+
+| Strategy               | Description                                         | Risk                                          |
+| ---------------------- | --------------------------------------------------- | --------------------------------------------- |
+| Deletion               | Remove rows or columns with missing values          | Can reduce sample size and introduce bias     |
+| Mean/median imputation | Fill missing numeric values with central tendency   | Can shrink variance and hide uncertainty      |
+| Mode imputation        | Fill categorical values with most frequent category | Can overrepresent majority category           |
+| Constant imputation    | Fill with "Unknown" or fixed value                  | Can be useful if missingness is informative   |
+| Model-based imputation | Predict missing values from other variables         | Can leak information if done incorrectly      |
+| Missingness indicator  | Add binary flag for whether value was missing       | Useful when missingness itself carries signal |
+
+> [!example] Example: Missing Sunday Sales
+> Suppose a retail store records daily sales, but one Sunday is missing. We cannot drop the missing day because if the model is learning weekly seasonality, removing that Sunday breaks the time structure. A more appropriate strategy may be impute the missing Sunday using the average of nearby Sundays.
+
+```python
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+
+# Create example daily sales data
+dates = pd.date_range("2026-01-01", periods=35, freq="D")
+rng = np.random.default_rng(42)
+
+sales = 200 + 30 * np.sin(np.arange(35) * 2 * np.pi / 7) + rng.normal(0, 10, 35)
+df = pd.DataFrame({"date": dates, "sales": sales})
+
+# Create one missing Sunday
+missing_date = pd.Timestamp("2026-01-11")
+df.loc[df["date"] == missing_date, "sales"] = np.nan
+
+# Impute using average of other Sundays
+df["day_name"] = df["date"].dt.day_name()
+sunday_mean = df.loc[df["day_name"] == "Sunday", "sales"].mean()
+df["sales_imputed"] = df["sales"].fillna(sunday_mean)
+
+# Plot original and imputed data
+plt.figure(figsize=(10, 5))
+plt.plot(df["date"], df["sales"], marker="o", label="Observed sales")
+plt.plot(df["date"], df["sales_imputed"], marker="x", linestyle="--", label="After Sunday-mean imputation")
+plt.axvline(missing_date, linestyle=":", label="Missing Sunday")
+plt.title("Imputing a Missing Sunday Sales Value")
+plt.xlabel("Date")
+plt.ylabel("Sales")
+plt.legend()
+plt.tight_layout()
+plt.show()
+```
+
+![[c3-ex3-4.png]]
+
+## 3. Feature Scaling
+
+### 3.1. Why Scaling is Necessary
+
+Many machine learning algorithms are sensitive to the scale of input variables. Algorithms based on distances, gradients, or regularization can behave poorly if one variable has a much larger numeric range than another.
+
+> [!example]
+> Suppose a health model uses blood pressure and body temperature. Blood pressure may range from 80 to 180, while body temperature may range from 36 to 40. If a distance-based model is used, blood pressure may dominate the calculation simply because its numbers vary more widely.
+
+
+Feature scaling prevents numeric magnitude from being mistaken for importance.
+
+### 3.2. Normalization and Standardization
+
+Two common scaling techniques are normalization and standardization.
+
+> **Min-Max Normalization**
+
+Min-max normalization transforms a feature into a fixed range, often $[0,1]$:
+
+$$
+x'=\frac{x-x_{\min}}{x_{\max}-x_{\min}}
+$$
+
+This is useful when the feature range is known and bounded.
+
+> **Standardization**
+
+Standardization subtracts the mean and divides by the standard deviation:
+
+$$
+z=\frac{x-\mu}{\sigma}
+$$
+This centers the variable around zero and expresses values in units of standardization.
+
+> **Max-Abs Scaling**
+
+MaxAbs scaling is a technique used to scale the data by dividing each feature by its maximum absolute value. 
+
+$$
+x'=\frac{x}{\max|X|}
+$$
+
+This method is useful when the data contains both positive negative values and we want to preserve the sign of the data while scaling it to the range of -1 to 1.
+
+> [!example]
+> Suppose a model uses blood pressure and body temperature to predict heart disease. Without scaling, a distance-based algorithm such as K-Nearest Neighbors may treat differences in blood pressure as much more important than differences in temperature. After scaling, both variables contribute more proportionally.
+
+
+```python
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+from sklearn.preprocessing import StandardScaler, MinMaxScaler, MaxAbsScaler
+rng = np.random.default_rng(123)
+
+# Simulated health data
+n = 120
+blood_pressure = rng.normal(130, 18, n)
+body_temperature = rng.normal(37, 0.5, n)
+
+X = pd.DataFrame({
+	"blood_pressure": blood_pressure,
+	"body_temperature": body_temperature
+	})
+
+# Standardize
+scaler = StandardScaler()
+X_std = pd.DataFrame(
+	scaler.fit_transform(X),
+	columns=["blood_pressure_scaled", "body_temperature_scaled"]
+	)
+	
+# Min-max scale
+min_max_scaler = MinMaxScaler()
+X_minmax = pd.DataFrame(
+	min_max_scaler.fit_transform(X),
+	columns=["blood_pressure_minmax", "body_temperature_minmax"]
+)
+
+# Max-abs scale
+max_abs_scaler = MaxAbsScaler()
+X_maxabs = pd.DataFrame(
+	max_abs_scaler.fit_transform(X),
+	columns=["blood_pressure_maxabs", "body_temperature_maxabs"]
+)
+
+fig, axes = plt.subplots(2, 2, figsize=(15, 10))
+axes[0, 0].scatter(X["blood_pressure"], X["body_temperature"], alpha=0.7)
+axes[0, 0].set_title("Raw Feature Scales")
+axes[0, 0].set_xlabel("Blood Pressure")
+axes[0, 0].set_ylabel("Body Temperature")
+axes[0, 1].scatter(X_minmax["blood_pressure_minmax"], X_minmax["body_temperature_minmax"], alpha=0.7)
+axes[0, 1].set_title("Min-Max Scaled Feature Scales")
+axes[0, 1].set_xlabel("Blood Pressure (min-max scaled)")
+axes[0, 1].set_ylabel("Body Temperature (min-max scaled)")
+axes[1, 0].scatter(X_maxabs["blood_pressure_maxabs"], X_maxabs["body_temperature_maxabs"], alpha=0.7)
+axes[1, 0].set_title("Max-Abs Scaled Feature Scales")
+axes[1, 0].set_xlabel("Blood Pressure (max-abs scaled)")
+axes[1, 0].set_ylabel("Body Temperature (max-abs scaled)")
+axes[1, 1].scatter(X_std["blood_pressure_scaled"], X_std["body_temperature_scaled"], alpha=0.7)
+axes[1, 1].set_title("Standardized Feature Scales")
+axes[1, 1].set_xlabel("Blood Pressure (standardized)")
+axes[1, 1].set_ylabel("Body Temperature (standardized)")
+plt.tight_layout()
+plt.show()
+```
+
+![[c3-ex3-2.png]]
+
+## 4. Encoding Categorical Variables
+
+Most machine learning algorithms operate on numerical arrays. Therefore, categorical variables must (often) be transformed into numerical representations. Encoding encodes assumptions about the relationship among categories.
+
+There are two broad types of categorical variables:
+
+| Type    | Meaning                            | Example            | Common Encoding  |
+| ------- | ---------------------------------- | ------------------ | ---------------- |
+| Nominal | Categories have no natural order   | Genre, color, city | One-hot encoding |
+| Ordinal | Categories have a meaningful order | Low, medium, high  | Ordinal encoding |
+
+Using the wrong encoding can mislead a model. For example, encoding movie genres as Action = 1, Comedy = 2, Horror = 3 implies that Horror is numerically greater than Comedy and that Comedy lies between Action and Horror. That ordering is meaningless.
+
+> [!example]
+> Suppose a movie dataset includes a genre variable with three categories: Action, Comedy, and Horror. `OneHotEncoding` creates three binary columns:
+>
+> |  Movie   |  Genre   | Action | Comedy |  Horror |
+> | --- | --- |  --- | --- | --- | 
+> | A    |  Action   |  1  |  0   |  0   |
+> | B    |  Comedy   |  0  |  1   |  0   |
+> |   C  |  Horror    |  0  |   0  |  1   |
+
+```python
+import pandas as pd
+import matplotlib.pyplot as plt
+from sklearn.preprocessing import OneHotEncoder
+
+movies = pd.DataFrame({
+    "movie": ["Movie A", "Movie B", "Movie C", "Movie D", "Movie E"],
+    "genre": ["Action", "Comedy", "Horror", "Action", "Comedy"]
+})
+
+encoder = OneHotEncoder(sparse_output=False)
+encoded = encoder.fit_transform(movies[["genre"]])
+
+encoded_df = pd.DataFrame(
+    encoded,
+    columns=encoder.get_feature_names_out(["genre"])
+)
+
+plot_df = encoded_df.copy()
+plot_df.index = movies["movie"]
+
+plt.figure(figsize=(7, 4))
+plt.imshow(plot_df, aspect="auto")
+plt.title("One-Hot Encoding of Movie Genre")
+plt.xlabel("Encoded Genre Columns")
+plt.ylabel("Movie")
+plt.xticks(range(len(plot_df.columns)), plot_df.columns, rotation=45)
+plt.yticks(range(len(plot_df.index)), plot_df.index)
+plt.colorbar(label="Binary value")
+plt.tight_layout()
+plt.show()
+```
+
+![[c3-ex-4.png]]
+
+## 5. Text Processing
+
+### 5.1. High-Dimensional Data
+
+Text data require specialized preparation because language is unstructured, sparse, and context-dependent. Before a model can classify emails, summarize documents, detect sentiment, or cluster topics, text must be transformed into a numerical representation.
+
+Traditional natural language preprocessing includes:
+- Tokenization
+- Lowercasing
+- Stop-word removal
+- Stemming
+- Lemmatization
+- Vectorization
+- Term weighting
+
+The specific steps depend on the task. For example, stop-word removal may be useful in topic modeling but harmful in authorship detection or legal text analysis, where function words may carry stylistic or procedural meaning.
+
+### 5.2. Tokenization
+
+Tokenization splits text into smaller units, such as words, subwords, or characters. For example:
+
+> "The movie was surprisingly good."
+
+may become: 
+
+```
+["the", "movie", "was", "supprisingly", "good"]
+```
+
+### 5.3. Stop-words
+
+Stop-words are common words such as "the", "is", "and", or "of". They are often removed because they appear frequently and may carry little topical information. In some cases (such as sentiment analysis), negation words such as "not" are crucial; removing "not" from "not good" changes the meaning.
+
+### 5.4. Stemming and Lemmatization
+
+Stemming reduces words to crude roots, while lemmatization reduces words to linguistically meaningful base forms.
+
+| Word    | Stemming | Lemmatization |
+| ------- | -------- | ------------- |
+| studies | studi    | study         |
+| running | run      | run           |
+| better  | better   | good          |
+
+Stemming is faster but rougher. Lemmatization is more linguistically informed.
+
+> [!example]
+> In spam detection, preprocessing may convert raw email text into a matrix of term frequencies or TF-IDF values. Words such as "free", "winner", "urgent", or "click" may become predictive signals.
+
+```python
+import pandas as pd
+import matplotlib.pyplot as plt
+from sklearn.feature_extraction.text import CountVectorizer
+
+emails = [
+    "Win money now click urgent prize",
+    "Meeting schedule attached for tomorrow",
+    "Urgent winner claim your free prize now",
+    "Project update and meeting notes attached",
+    "Free money offer click now"
+]
+
+labels = ["spam", "not spam", "spam", "not spam", "spam"]
+
+vectorizer = CountVectorizer(stop_words="english")
+X = vectorizer.fit_transform(emails)
+
+word_counts = X.toarray().sum(axis=0)
+terms = vectorizer.get_feature_names_out()
+
+freq_df = pd.DataFrame({
+    "term": terms,
+    "count": word_counts
+}).sort_values("count", ascending=False)
+
+plt.figure(figsize=(8, 5))
+plt.bar(freq_df["term"], freq_df["count"])
+plt.title("Word Frequencies in Example Email Corpus")
+plt.xlabel("Term")
+plt.ylabel("Frequency")
+plt.xticks(rotation=45)
+plt.tight_layout()
+plt.show()
+```
+
+![[c5-ex-5.png]]
+
+## 6. Image Preparation and Data Augmentation
+
+Image data are high-dimensional arrays of pixel values. A small image of size $222\times 224$ with three color channels contains 150,528 numeric values. Deep learning models can learn powerful visual representations from such data, but they often require large, diverse datasets.
+
+Image preparation may include:
+- Resizing
+- Cropping
+- Normalizing pixel values
+- Color correction
+- Label verification
+- Augmentation
+
+> [!definition] Definition: Data Augmentation
+> Data augmentation creates modified versions of training images to improve generalization.
+
+Common augmentations include rotation, flipping, zooming, cropping, brightness adjustment, and small translations. If a model must recognize cats, it should recognize a cat whether the image is slightly rotated, shifted, or zoomed. Augmentation teaches the model that such transformations should not change the label.
+
+```python
+import numpy as np
+import matplotlib.pyplot as plt
+from scipy.ndimage import rotate, shift, zoom
+
+img = np.zeros((64, 64))
+img[20:44, 20:44] = 1.0
+
+# Create augmentations
+rotated = rotate(img, angle=20, reshape=False)
+shifted = shift(img, shift=(8, -5))
+zoomed = zoom(img, zoom=1.2)
+
+# Crop zoomed image back to 64x64
+start = (zoomed.shape[0] - 64) // 2
+zoomed_crop = zoomed[start:start+64, start:start+64]
+
+images = [img, rotated, shifted, zoomed_crop]
+titles = ["Original", "Rotated", "Shifted", "Zoomed"]
+
+fig, axes = plt.subplots(2, 2, figsize=(10, 5))
+for ax, image, title in zip(axes.flatten(), images, titles):
+	ax.imshow(image, cmap="gray")
+	ax.set_title(title)
+	ax.axis("off")
+	plt.tight_layout()
+	plt.show()
+```
+
+![[c3-ex-6.png]]
+
+## 7. Machine Learning
+
+### 7.1. Defining Machine Learning
+
+Machine learning[^1] is the stage where prepared data are used to train models.
+
+> [!definition] Definition: Machine Learning
+> _A computer program is said to **learn** from experience $E$, with respect to some class of task $T$ and performance measure $P$, if its performance at tasks in $T$, as measured by $P$, improves with experience $E$._
+> 
+
+| Component       | Meaning                                | Example                     |
+| --------------- | -------------------------------------- | --------------------------- |
+| Experience $E$  | Data or interactions used for learning | Labeled email examples      |
+| Task $T$        | What the system must do                | Classify spam               |
+| Performance $P$ | How success is measured                | Accuracy, precision, recall |
+
+### 7.2. Supervised Learning
+
+In supervised learning, the model receives labeled examples. Each observation includes input variables and a known output.
+
+Common supervised tasks include classification and regression.
+
+**Classification:** predicts discrete labels.
+
+Examples: 
+- Fraud or non-fraud, spam or not spam.
+- Under-estimate, normal, over-estimate.
+- Disease or no disease (or belonging to what type of disease).
+
+**Regression**: predicts continuous numeric outcomes.
+
+Examples:
+- House price, salary.
+- Rainfall amount, energy demand.
+- Travel time.
+
+### 7.3. Unsupervised Learning
+
+In unsupervised learning, the model receives data without labeled outputs. The goal is to discover structure.
+
+Examples:
+- Customer segmentation
+- Topic discovery
+- Anomaly detection
+- Dimensionality reduction
+
+### 7.4. Reinforcement Learning
+
+In reinforcement learning, an agent interacts with an environment and learns through rewards or penalties. Instead of learning only from a fixed labeled dataset, the agent learns by taking actions and observing consequences.
+
+Examples:
+- Game-playing systems
+- Robotics
+- Dynamic pricing
+- Autonomous navigation
+- Resource allocation
+
+AlphaGo is a famous example of reinforcement learning and search methods applied to strategic game play. The AlphaGo system combined deep neural networks with tree search and achieved superhuman performance in Go, a game long considered difficult for artificial intelligence.
+
+
+## 8. Model Design
+
+Model design is the process of selecting and configuring a learning system. It is a structured contest among possible representations of the problem.
+
+A data scientist must decide:
+- What is the prediction target?
+- What features are available at prediction time?
+- What family of models is appropriate?
+- What assumptions are acceptable?
+- What metric reflects success?
+- What errors are most costly?
+- How much interpretability is needed?
+- How will the model be validated?
+- How will the model be maintained?
+
+This is why model design is iterative, as discussed [[Chapter 1#4. The Data Science Cycle|previously]]. Early results often reveal that the target is poorly defined, a feature leaks future information, a model is too complex, or the metric does not match the real decision problem.
+
+> **Candidate Models**
+
+The first design decision is often the model family.
+
+| Model Family           | Strength                              | Limitation                         |
+| ---------------------- | ------------------------------------- | ---------------------------------- |
+| Linear regression      | Simple and interpretable              | Limited nonlinear structure        |
+| Logistic regression    | Strong baseline for classification    | Linear decision boundary           |
+| Decision tree          | Interpretable nonlinear rules         | Can overfit                        |
+| Random forest          | Robust nonlinear model                | Less interpretable than one tree   |
+| Gradient boosting      | Strong tabular performance            | Require tuning                     |
+| Support vector machine | Effective in high-dimensional spaces  | Can be hard to scale               |
+| Neural network         | Flexible representation learning      | Data-hungry and less interpretable |
+| Gaussian process       | Uncertainty-aware nonparametric model | Computationally expensive at scale |
+
+## 9. Train, Validation, and Test Splits
+
+### 9.1. Why Splitting Matters
+
+A model that performs well on the training data may simply have memorized it. To estimate generalization performance, the data scientist must evaluate the model on data not used during training.
+
+A common split is:
+
+| Split          | Purpose                                   |
+| -------------- | ----------------------------------------- |
+| Training set   | Fit model parameters                      |
+| Validation set | Tune hyperparameters and compare models   |
+| Test set       | Estimate final generalization performance |
+
+The test set should be used only at the end. If the test set is repeatedly used to guide model design, it stops being an unbiased estimate of future performance.
+
+### 9.2. Overfitting
+
+Overfitting occurs when a model captures noise or accidental structure in the training data rather stable patterns. A highly flexible model may achieve near-perfect training performance but fail on new observations.
+
+```python
+import numpy as np
+import matplotlib.pyplot as plt
+from sklearn.preprocessing import PolynomialFeatures
+from sklearn.linear_model import LinearRegression
+from sklearn.pipeline import Pipeline
+
+rng = np.random.default_rng(42)
+
+# Synthetic nonlinear data
+X = np.linspace(0, 1, 25).reshape(-1, 1)
+y = np.sin(2 * np.pi * X).ravel() + rng.normal(0, 0.25, X.shape[0])
+
+X_grid = np.linspace(0, 1, 300).reshape(-1, 1)
+
+degrees = [1, 4, 15]
+
+plt.figure(figsize=(7, 5))
+plt.scatter(X, y, label="Training data")
+for degree in degrees:
+	model = Pipeline([
+		("poly", PolynomialFeatures(degree=degree)),
+		("linear", LinearRegression())
+		])
+	model.fit(X, y)
+	y_pred = model.predict(X_grid)
+	plt.plot(X_grid, y_pred, label=f"Polynomial degree {degree}")
+plt.xlabel("X")
+plt.ylabel("y")
+plt.legend()
+plt.tight_layout()
+plt.show()
+```
+
+
+
+
+
+
+
+
+
+
+
+
+[^1]: Mitchell, Tom M. _Machine Learning_. McGraw-Hill Series in Computer Science. McGraw-Hill, 1997.
+
+

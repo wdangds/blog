@@ -73,7 +73,7 @@ This distinction is important. Data mining is not the entire data science proces
 
 Data science is often mistakenly described as a linear sequence: collect data, clean data, train a model, deploy it. In practice, the process is iterative. A visualization may reveal missing values, forcing the analyst to revisit data collection. A model may perform poorly, forcing new feature engineering. Deployment may expose changing data patterns, requiring model retraining.
 
-The CRISP-DM framework, one of the most widely cited process models for data mining projects, organizes the life cycle into six phases: [[Chapter 2|business understanding]], [[Chapter 2|data understanding]], data preparation, modeling, evaluation, and deployment. These phases are not linear; feedback loops are expected.
+The CRISP-DM framework, one of the most widely cited process models for data mining projects, organizes the life cycle into six phases: [[Chapter 2|business understanding]], [[Chapter 2|data understanding]], [[Chapter 3|data preparation]], modeling, evaluation, and deployment. These phases are not linear; feedback loops are expected.
 
 ![CRISP-DM framework](https://enterprise-knowledge.com/wp-content/uploads/2025/03/CRISP-DM-1.png)
 
@@ -97,8 +97,8 @@ G --> F
 
 1. Problem formulation
 2. Data capture and selection
-3. Data understanding and exploratory analysis
-4. Data preparation and preprocessing
+3. [[Chapter 2|Data understanding]] and exploratory analysis
+4. [[Chapter 3|Data preparation and preprocessing]]
 5. Transformation and feature engineering
 6. Modeling and data mining
 7. Evaluation and interpretation
