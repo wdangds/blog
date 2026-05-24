@@ -352,7 +352,7 @@ plt.tight_layout()
 plt.show()
 ```
 
-![[c5-ex-5.png]]
+![[c3-ex-5.png]]
 
 ## 6. Image Preparation and Data Augmentation
 
@@ -548,17 +548,221 @@ plt.tight_layout()
 plt.show()
 ```
 
+![[c3-ex-9.png]]
 
+## 10. Cross-Validation
 
+A single train-validation split may produce unstable estimates, especially with small datasets. Cross-validation reduces this instability by evaluating the model across multiple splits.
 
+In $k$-fold cross-validation[^2], the dataset is divided into $k$ folds. The model is trained $k$ times. Each time, one fold is used for validation and the remaining $k-1$ folds are used for training.
 
+## 11. Hyperparameter Tuning
 
+### 11.1. Parameters Versus Hyperparameters
 
+A model has two kinds of quantities:
 
+| Type           | Meaning                                 | Example                                        |
+| -------------- | --------------------------------------- | ---------------------------------------------- |
+| Parameter      | Learned from data during training       | Regression coefficient                         |
+| Hyperparameter | Chosen before or during model selection | Tree depth, learning rate, number of neighbors |
 
+Hyperparameters control the behavior of the learning algorithm. For example:
+- $k$ in K-Nearest Neighbors
+- Maximum depth in a decision tree
+- Number of trees in a random forest
+- Learning rate in gradient boosting
+- Regularization strength in logistic regression
+- Number of layers in a neural network
 
+### 11.2. Grid Search and Random Search
 
+Grid search tests every combination in a predefined hyperparameter grid. It is simple but can be inefficient.
+
+Random search samples combinations from a distribution. It can be more efficient when only some hyperparameters strongly affect performance.
+
+### 11.3. Bayesian Optimization
+
+Bayesian optimization[^3] treats hyperparameter tuning as a sequential decision problem. Instead of blindly trying combinations, it builds a probabilistic model of performance and chooses promising configurations to evaluate next. 
+
+```python
+import numpy as np
+import matplotlib.pyplot as plt
+
+x = np.linspace(0, 10, 100)
+y = np.linspace(0, 10, 100)
+X, Y = np.meshgrid(x, y)
+
+Z = np.sin(X / 1.5) * np.cos(Y / 2) + np.exp(-((X - 7)**2 + (Y - 3)**2) / 5)
+
+plt.figure(figsize=(7, 5))
+contour = plt.contourf(X, Y, Z, levels=20)
+plt.title("Hyperparameter Performance Surface")
+plt.xlabel("Hyperparameter 1")
+plt.ylabel("Hyperparameter 2")
+plt.colorbar(contour, label="Validation score")
+plt.tight_layout()
+plt.show()
+```
+
+![[c3-ex11.png]]
+
+## 12. Pipelines and Leakage Prevention
+
+Data leakage occurs when information from outside the training process enters the model inappropriately. Leakage can make validation performance look excellent while real-world performance fails.
+
+Common leakage examples include:
+- Scaling the full dataset before train-test splitting
+- Imputing missing values using full-dataset statistics
+- Using future information to predict the past
+- Including variables created after the prediction time
+- Accidentally duplicating observations across train and test sets
+- Tuning hyperparameters on the test set
+
+Leakage is one of the most serious threats to model validity because it produces false confidence.
+
+> **Pipelines**
+
+A model pipeline ensures that preprocessing steps are fit on the training data and then applied to validation or test data. In scikit-learn, pipelines are commonly used to combine imputation, scaling, encoding, and modeling into one reproducible workflow.
+
+```python
+import pandas as pd
+from sklearn.compose import ColumnTransformer
+from sklearn.impute import SimpleImputer
+from sklearn.preprocessing import OneHotEncoder, StandardScaler
+from sklearn.pipeline import Pipeline
+from sklearn.linear_model import LogisticRegression
+from sklearn.model_selection import train_test_split
+
+# Example dataset
+df = pd.DataFrame({
+    "age": [22, 35, 41, None, 58, 29],
+    "income": [45000, 62000, None, 52000, 88000, 39000],
+    "genre_preference": ["Action", "Comedy", "Horror", "Action", None, "Comedy"],
+    "purchased": [0, 1, 1, 0, 1, 0]
+})
+
+X = df.drop(columns=["purchased"])
+y = df["purchased"]
+
+numeric_features = ["age", "income"]
+categorical_features = ["genre_preference"]
+
+numeric_pipeline = Pipeline([
+    ("imputer", SimpleImputer(strategy="median")),
+    ("scaler", StandardScaler())
+])
+
+categorical_pipeline = Pipeline([
+    ("imputer", SimpleImputer(strategy="most_frequent")),
+    ("encoder", OneHotEncoder(handle_unknown="ignore"))
+])
+
+preprocessor = ColumnTransformer([
+    ("num", numeric_pipeline, numeric_features),
+    ("cat", categorical_pipeline, categorical_features)
+])
+
+model_pipeline = Pipeline([
+    ("preprocess", preprocessor),
+    ("model", LogisticRegression())
+])
+
+X_train, X_test, y_train, y_test = train_test_split(
+    X, y, test_size=0.33, random_state=42
+)
+
+model_pipeline.fit(X_train, y_train)
+test_score = model_pipeline.score(X_test, y_test)
+
+print("Test score:", test_score)
+```
+
+## 13. Bayesian and Optimization-Driven model Design
+
+In Bayesian model design, the analyst specifies prior beliefs, a likelihood model, and a procedure for updating beliefs after observing data. This approach is useful when uncertainty matters, sample sizes are limited, or prior scientific knowledge should be incorporated explicitly. 
+
+> [!example]
+> In Gaussian process regression, the model is defined through a prior mean function and covariance kernel. The kernel encodes assumptions about smoothness, periodicity, and similarity.
+
+> [!important]
+> Choosing a kernel is a modeling assumption about the structure of the unknown function.
+
+A Gaussian process can model nonlinear functions with uncertainty bands. It is especially useful when data are limited and uncertainty estimates are important.
+
+```python
+import numpy as np
+import matplotlib.pyplot as plt
+from sklearn.gaussian_process import GaussianProcessRegressor
+from sklearn.gaussian_process.kernels import RBF, WhiteKernel
+
+rng = np.random.default_rng(42)
+
+# Training data
+X_train = np.linspace(0, 10, 12).reshape(-1, 1)
+y_train = np.sin(X_train).ravel() + rng.normal(0, 0.2, X_train.shape[0])
+
+# Test grid
+X_grid = np.linspace(0, 10, 300).reshape(-1, 1)
+
+# GP model
+kernel = RBF(length_scale=1.0) + WhiteKernel(noise_level=0.1)
+gp = GaussianProcessRegressor(kernel=kernel, random_state=42)
+gp.fit(X_train, y_train)
+
+y_mean, y_std = gp.predict(X_grid, return_std=True)
+
+plt.figure(figsize=(8, 5))
+plt.scatter(X_train, y_train, label="Observed data")
+plt.plot(X_grid, y_mean, label="GP mean prediction")
+plt.fill_between(
+    X_grid.ravel(),
+    y_mean - 2 * y_std,
+    y_mean + 2 * y_std,
+    alpha=0.2,
+    label="Approx. 95% uncertainty band"
+)
+plt.title("Gaussian Process Regression with Uncertainty")
+plt.xlabel("X")
+plt.ylabel("y")
+plt.legend()
+plt.tight_layout()
+plt.show()
+```
+
+![[c3-ex-13.png]]
+
+## 14. Automated Machine Learning and Neural Architecture Search
+
+### 14.1. AutoML
+
+Automated Machine Learning[^4], or AutoML, attempts to automate parts of the model design process, including preprocessing, model selection, hyperparameter tuning, and sometimes feature engineering. 
+
+>[!definition]
+>_**AutoML** is a field that aims to make machine learning decisions in a data-driven and automated way, allowing systems to determine strong approaches for particular applications._
+
+AutoML can be useful because model design involves many repetitive and technical choices. However, AutoML does not remove the need for data understanding. An AutoML system can optimize a metric, but it cannot by itself determine whether the metric represents the real-world objective, whether the data are biased, or whether the model is ethically appropriate.
+
+### 14.2. Neural Architecture Search
+
+Neural Architecture Search, or NAS, automates the search for neural network architectures. Instead of manually designing every layer, filter size, and connection pattern, NAS uses search algorithms to explore possible architectures.
+
+EfficientNet[^5] is a well-known example of architecture design and scaling. It is a compound scaling method that balances network depth, width, and input resolution, using neural architecture search to design a baseline network and then scaling it efficiently. 
+
+---
+
+Data preparation and model design are the technical core of applied data science. They translate contextual understanding into computational learning.
+
+Data preparation determines how the world is represented to the model. Missing values, scaling choices, categorical encoding, text preprocessing, image augmentation, and pipeline construction all shape what the model can learn. They encode assumptions about measurement, similarity, relevance, and uncertainty.
+
+Model design determines how learning occurs. The data scientist must choose among supervised, unsupervised, and reinforcement learning paradigms; select model families; tune hyperparameters; prevent overfitting; validate performance; and balance accuracy against interpretability, stability, fairness, and cost.
+
+The central lesson is that successful data science is achieved by constructing a reliable chain from prepare evidence to validated learning. A strong model is one whose data preparation, design assumptions, validation strategy, and decision context are scientifically defensible.
+
+---
 
 [^1]: Mitchell, Tom M. _Machine Learning_. McGraw-Hill Series in Computer Science. McGraw-Hill, 1997.
-
-
+[^2]: Kohavi, Ron. “A Study of Cross-Validation and Bootstrap for Accuracy Estimation and Model Selection.” _Proceedings of the 14th International Joint Conference on Artificial Intelligence - Volume 2_ (San Francisco, CA, USA), IJCAI’95, August 20, 1995, 1137–43.
+[^3]: Snoek, Jasper, Hugo Larochelle, and Ryan P. Adams. “Practical Bayesian Optimization of Machine Learning Algorithms.” arXiv:1206.2944. Preprint, arXiv, August 29, 2012. [https://doi.org/10.48550/arXiv.1206.2944](https://doi.org/10.48550/arXiv.1206.2944).
+[^4]: Hutter, Frank, Lars Kotthoff, and Joaquin Vanschoren, eds. _Automated Machine Learning: Methods, Systems, Challenges_. The Springer Series on Challenges in Machine Learning. Springer International Publishing, 2019. [https://doi.org/10.1007/978-3-030-05318-5](https://doi.org/10.1007/978-3-030-05318-5).
+[^5]: Tan, Mingxing, and Quoc V. Le. “EfficientNet: Rethinking Model Scaling for Convolutional Neural Networks.” arXiv:1905.11946. Preprint, arXiv, September 11, 2020. [https://doi.org/10.48550/arXiv.1905.11946](https://doi.org/10.48550/arXiv.1905.11946).
