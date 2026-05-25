@@ -759,6 +759,8 @@ Model design determines how learning occurs. The data scientist must choose amon
 
 The central lesson is that successful data science is achieved by constructing a reliable chain from prepare evidence to validated learning. A strong model is one whose data preparation, design assumptions, validation strategy, and decision context are scientifically defensible.
 
+Next chapter: [[Chapter 4|Data Modeling - Regression]]
+
 ---
 
 [^1]: Mitchell, Tom M. _Machine Learning_. McGraw-Hill Series in Computer Science. McGraw-Hill, 1997.
