@@ -238,11 +238,62 @@ $$
 >$$
 >\text{Salary}_i = \beta_0 + \beta_1 \times\text{ Experience}_i+\epsilon_i
 >$$
+>If the fitted model is 
+>$$
+>\hat{\text{Salary}} = 40 + 8 \times \text{Experience}
+>$$
+> then:
+>- $\hat \beta_0 = 40$ means the predicted salary at zero year of experience is $40,000.
+>- $\hat \beta_1 = 8$ means each additional year of experience is associated with an $8,000 increase in predicted salary.
+>
+> This interpretation is conditional on the model and data. It does not automatically prove that one more year experience causes salary to increase by $8,000. Causal interpretation requires additional assumptions.
 
+```python
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+from sklearn.linear_model import LinearRegression
 
+rng = np.random.default_rng(42)
 
+# Simulated salary data
+experience = np.linspace(0, 15, 60)
+salary = 40 + 8 * experience + rng.normal(0, 8, size=len(experience))
 
+df = pd.DataFrame({
+    "experience": experience,
+    "salary": salary
+})
 
+X = df[["experience"]]
+y = df["salary"]
+
+model = LinearRegression()
+model.fit(X, y)
+
+x_grid = np.linspace(0, 15, 200).reshape(-1, 1)
+y_pred = model.predict(x_grid)
+
+plt.figure(figsize=(8, 5))
+plt.scatter(df["experience"], df["salary"], alpha=0.75, label="Observed data")
+plt.plot(x_grid, y_pred, label="Fitted regression line")
+plt.title("Salary Prediction Using Simple Linear Regression")
+plt.xlabel("Years of Experience")
+plt.ylabel("Salary (thousand dollars)")
+plt.legend()
+plt.tight_layout()
+plt.show()
+
+print("Intercept:", model.intercept_)
+print("Slope:", model.coef_[0])
+```
+
+```
+Intercept: 39.703705534457946 
+Slope: 8.109143758238245
+```
+
+![[c4-ex1.png]]
 
 
 
