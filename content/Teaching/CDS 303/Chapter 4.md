@@ -295,6 +295,189 @@ Slope: 8.109143758238245
 
 ![[c4-ex1.png]]
 
+## 5. Residuals and Model Diagnostics
+
+### 5.1. Residuals
+
+> [!definition] Definition: Residuals
+> _For each observation, the residual is_
+> $$
+> e_i = y_i - \hat y_i
+> $$
+> _In vector form,_
+> $$
+> e = y - \hat y = y - \Phi \hat \theta
+> $$
+
+Residuals estimate the unexplained part of the response after fitting the model.
+
+A residual plot is one of the most important diagnostic tools in regression. If a linear model is appropriate, the residuals should generally appear randomly scattered around zero. Systematic structure in residuals indicates that the model has failed to capture some pattern.
+
+### 5.2. Common Residual Patterns
+
+| Residual Pattern         | Meaning                                       |
+| ------------------------ | --------------------------------------------- |
+| Random cloud around zero | Linear model may be adequate                  |
+| Curved pattern           | Nonlinear relationship omitted                |
+| Funnel shape             | Nonconstant variance, or heteroskedasticity   |
+| Clusters                 | Missing group structure                       |
+| Extreme points           | Possible outliers or influential observations |
+| Time pattern             | Autocorrelation or temporal dependence        |
+
+```python
+# Continuing from the salary example
+
+df["predicted_salary"] = model.predict(X)
+df["residual"] = df["salary"] - df["predicted_salary"]
+
+plt.figure(figsize=(8, 5))
+plt.scatter(df["predicted_salary"], df["residual"], alpha=0.75)
+plt.axhline(0, linestyle="--")
+plt.title("Residual Plot for Salary Regression")
+plt.xlabel("Predicted Salary")
+plt.ylabel("Residual")
+plt.tight_layout()
+plt.show()
+```
+
+![[c4-ex2.png]]
+
+## 6. Nonlinear Structure and Polynomial Regression
+
+Linear regression is linear in the coefficients, not necessarily in the original input. If the relationship between $x$ and $y$ is curved, we can transform the input using basis functions:
+
+$$
+\phi(x) = \begin{bmatrix}1 \\ x \\ x^2 \\x^3 \\ \vdots \\ x^p\end{bmatrix}
+$$
+Then the model becomes
+$$
+\hat y = \theta_0 + \theta_1x + \theta_2 x^2 +\cdots +\theta_p x^p
+$$
+This is called __polynomial regression__. It is nonlinear in $x$, but linear in $\theta$. Therefore, it can still be estimated using least squares.
+
+More generally, with basis functions $\phi_1, \dots, \phi_m$, the model is
+$$
+\hat f(x)=\sum_{j=1}^m \theta_j \phi_j(x).
+$$
+> [!example] Example: Curved Relationship
+> Suppose the true relationship is approximately quadratic:
+> $$
+> y = 2 + 3x - 0.5x^2 +\epsilon
+> $$
+> A simple linear model may underfit, while a quadratic model may capture the structure.
+
+```python
+import numpy as np
+import matplotlib.pyplot as plt
+from sklearn.linear_model import LinearRegression
+from sklearn.preprocessing import PolynomialFeatures
+from sklearn.pipeline import Pipeline
+
+rng = np.random.default_rng(123)
+
+X = np.linspace(-5, 5, 80).reshape(-1, 1)
+y = 2 + 3 * X.ravel() - 0.5 * X.ravel()**2 + rng.normal(0, 3, size=X.shape[0])
+
+x_grid = np.linspace(-5, 5, 300).reshape(-1, 1)
+
+linear_model = LinearRegression()
+linear_model.fit(X, y)
+
+poly_model = Pipeline([
+    ("poly", PolynomialFeatures(degree=2, include_bias=False)),
+    ("linear", LinearRegression())
+])
+poly_model.fit(X, y)
+
+plt.figure(figsize=(8, 5))
+plt.scatter(X, y, alpha=0.7, label="Observed data")
+plt.plot(x_grid, linear_model.predict(x_grid), label="Linear model")
+plt.plot(x_grid, poly_model.predict(x_grid), label="Quadratic model")
+plt.title("Linear Regression vs. Polynomial Regression")
+plt.xlabel("x")
+plt.ylabel("y")
+plt.legend()
+plt.tight_layout()
+plt.show()
+```
+
+![[c4-ex3.png]]
+
+## 7. Overfitting, Underfitting, and Model Complexity
+
+Regression models must balance two sources of error:
+1. __Approximation error__: error because the model class is too simple.
+2. __Estimation error__: error because the model is too flexible relative to the data.
+
+A low-degree polynomial may underfit. A very high-degree polynomial may overfit. The goal is not to minimize training error alone, but to minimize generalization error.
+
+```python
+import numpy as np
+import matplotlib.pyplot as plt
+from sklearn.preprocessing import PolynomialFeatures
+from sklearn.linear_model import LinearRegression
+from sklearn.pipeline import Pipeline
+
+rng = np.random.default_rng(7)
+
+X = np.linspace(0, 1, 25).reshape(-1, 1)
+y = np.sin(2 * np.pi * X).ravel() + rng.normal(0, 0.25, size=X.shape[0])
+
+x_grid = np.linspace(0, 1, 300).reshape(-1, 1)
+
+plt.figure(figsize=(7, 5))
+plt.scatter(X, y, label="Training data")
+for degree in [1, 4, 15]:
+    model = Pipeline([
+        ("poly", PolynomialFeatures(degree=degree)),
+        ("linear", LinearRegression())
+    ])
+    model.fit(X, y)
+    y_grid = model.predict(x_grid)
+	plt.plot(x_grid, y_grid, label=f"Polynomial degree {degree}")
+    
+plt.xlabel("x")
+plt.ylabel("y")
+plt.legend()
+plt.tight_layout()
+plt.show()
+```
+
+![[c4-ex4.png]]
+
+We have seen this figure in [[Chapter 3#9.2. Overfitting|Chapter 3]].
+
+
+## 8. Regularized Regression
+
+OLS can become unstable when:
+- the number of predictors is large,
+- predictors are highly correlated,
+- $d$ approaches or exceeds $n$,
+- noise is high,
+- the Gram matrix $\Phi^\top \Phi$ is nearly singular.
+
+Regularization addresses this by adding a penalty term to the objective function. Instead of minimizing training error alone, we minimize loss and penalty. The purpose is to control model capacity and improve generalization.
+
+### 8.1. Ridge Regression
+
+#### 8.1.1. Ridge Objective
+
+Ridge regression adds an $L_2$ penalty to the least squares objective:
+$$
+\hat \theta_{\text{ridge}}=\arg\min_\theta \left[\frac{1}{n}||y-\Phi\theta||^2_2 + \lambda ||\theta||_2^2\right],
+$$
+where
+$$
+||\theta||_2^2 = \sum_{j=1}^d \theta_j^2.
+$$
+The tuning parameter $\lambda\geq 0$ controls the strength of regularization.
+- If $\lambda=0$, ridge reduces to OLS.
+- If $\lambda$ is large, coefficients are strongly shrunk toward zero.
+
+Usually, the intercept is not penalized.
+
+
 
 
 
