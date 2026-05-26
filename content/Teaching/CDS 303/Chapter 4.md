@@ -477,10 +477,578 @@ The tuning parameter $\lambda\geq 0$ controls the strength of regularization.
 
 Usually, the intercept is not penalized.
 
+#### 8.1.2. Ridge Closed-Form Solution
+
+Ignoring the intercept penalty for simplicity, the ridge objective can be written as
+$$
+J(\theta)= ||y-\Phi\theta||_2^2 + \lambda||\theta||_2^2
+$$
+Expanding,
+$$
+J(\theta)=(y-\Phi\theta)^\top(y-\Phi\theta)+\lambda\theta^\top\theta
+$$
+Differentiate:
+$$
+\nabla_\theta J(\theta)=-2\Phi^\top y +2\Phi^\top\Phi\theta + 2\lambda\theta
+$$
+Set equal to zero:
+$$
+-2\Phi^\top y + 2\Phi^\top\Phi\theta + 2\lambda\theta = 0 \implies (\Phi^\top\Phi + \lambda I)\theta = \Phi^\top y
+$$
+Thus,
+$$
+\hat \theta_{\text{ridge}} = (\Phi^\top\Phi+\lambda I)^{-1}\Phi^\top y
+$$
+The key advantage is that even if $\Phi^\top\Phi$ is singular, the matrix
+$$
+\Phi^\top\Phi+\lambda I
+$$
+is invertible for $\lambda>0$, assuming standard conditions.
+
+#### 8.1.3. Bayesian Interpretation of Ridge
+
+Ridge regression also has a Bayesian interpretation. Suppose
+$$
+y|\theta \sim \mathcal N(\Phi\theta, \sigma^2 I)
+$$
+and place a Gaussian prior on the coefficients:
+$$
+\theta\sim \mathcal N(0, \tau^2I)
+$$
+The posterior is proportional to
+$$
+p(\theta|y)\propto p(y|\theta)p(\theta).
+$$
+Taking the negative log-posterior gives
+$$
+\frac{1}{2\sigma^2}||y-\Phi\theta||_2^2 + \frac{1}{2\tau^2}||\theta||_2^2 + C
+$$
+Minimizing this expression is equivalent to ridge regression with
+$$
+\lambda = \frac{\sigma^2}{\tau^2}
+$$
+Thus, ridge can be interpreted as maximum a posteriori estimation under a Gaussian prior. Bayesian linear regression and its connection to regularized least squares are a topic in probabilistic machine learning treatments.
+
+### 8.2. Lasso Regression
+
+#### 8.2.1. Lasso Objective
+
+Lasso regression uses an $L_1$ penalty:
+$$
+\hat \theta_{\text{lasso}} = \arg \min_\theta \left[\frac{1}{n}||y-\Phi\theta||_2^2 +\lambda||\theta||_1\right],
+$$
+where
+$$
+||\theta||_1 = \sum_{j=1}^d||\theta_j||.
+$$
+The $L_1$ penalty encourages sparsity. That means some coefficients can be estimated as exactly zero:
+$$
+\hat \theta_j = 0 \qquad\text{ for some predictors }j
+$$
+This makes lasso useful for automatic variable selection.
+
+#### 8.2.2. Geometry of Ridge and Lasso 
+
+The difference between ridge and lasso can be understood geometrically. Ridge constrains coefficients inside an $L_2$ ball:
+$$
+\sum_{j=1}^d \theta_j^2 \leq t.
+$$
+Lasso constrains coefficients inside an $L_1$ ball:
+$$
+\sum_{j=1}^d|\theta_j| \leq t.
+$$
+In two dimensions, the $L_2$ constraint is circular, while the $L_1$ constraint is diamond-shaped. The corners of the $L_1$ diamond lie on the coordinate axes, making it more likely that the optimum occurs where one coefficient is exactly zero.
+
+```python
+import numpy as np
+import matplotlib.pyplot as plt
+
+theta = np.linspace(0, 2*np.pi, 400)
+
+# L2 ball boundary
+x_l2 = np.cos(theta)
+y_l2 = np.sin(theta)
+
+# L1 ball boundary: |x| + |y| = 1
+x_l1 = np.array([1, 0, -1, 0, 1])
+y_l1 = np.array([0, 1, 0, -1, 0])
+
+plt.figure(figsize=(6, 6))
+plt.plot(x_l2, y_l2, label="Ridge L2 constraint")
+plt.plot(x_l1, y_l1, label="Lasso L1 constraint")
+plt.axhline(0, linewidth=0.8)
+plt.axvline(0, linewidth=0.8)
+plt.title("Geometry of Ridge and Lasso Constraints")
+plt.xlabel(r"$\theta_1$")
+plt.ylabel(r"$\theta_2$")
+plt.axis("equal")
+plt.legend()
+plt.tight_layout()
+plt.show()
+```
+
+![[c4-ex5.png]]
+
+### 8.3. Elastic Net Regression
+
+Ridge handles correlated predictors well but does not perform hard feature selection. Lasso performs feature selection but can behave unstably when predictors are highly correlated. Elastic net combines both penalties:
+$$
+\hat \theta_{EN}=\arg\min\left[\frac{1}{n}||y-\Phi\theta||_2^2+\lambda_1||\theta||_1 + \lambda_2 ||\theta||_2^2\right].
+$$
+An equivalent parameterization is
+$$
+\frac{1}{n}||y-\Phi\theta||_2^2 + \lambda[\alpha||\theta||_1 + (1-\alpha)||\theta||_2^2],
+$$
+where $0\leq \alpha \leq 1$.
+- $\alpha=1$ gives lasso.
+- $\alpha=0$ gives ridge.
+- $0<\alpha<1$ gives elastic net.
+
+Elastic net is especially useful when many predictors are correlated and sparse selection is still desired.
+
+> [!example] Example: Finance Regression with Multiple Predictors
+> In finance or business forecasting, the target may be quarterly sales:
+> $$
+> Y_i = \text{ Sales}_i
+> $$
+> Predictors may include:
+> $$
+> x_{i1} = \text{ interest rate, } x_{i2} = \text{ unemployment rate, } x_{i3} = \text{ GDP, } x_{i4}= \text{ advertising spend}
+> $$
+> A multiple linear regression model is 
+> $$
+> \text{Sales}_i = \beta_0 +\beta_1 x_{i1} + \beta_2 x_{i2} + \beta_3 x_{i3} + \beta_4 x_{i4}+\epsilon_i
+> $$
+> If predictors are correlated, such as GDP growth and unemployment, ridge or elastic net may provide more stable estimates than OLS.
+
+```python
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+from sklearn.linear_model import LinearRegression, Ridge
+from sklearn.preprocessing import StandardScaler
+from sklearn.pipeline import Pipeline
+
+rng = np.random.default_rng(42)
+n = 120
+
+interest = rng.normal(4, 1, n)
+unemployment = rng.normal(6, 1.5, n)
+gdp = 3 - 0.4 * unemployment + rng.normal(0, 0.5, n)
+advertising = 0.9 * gdp # assume a correlated variable
+
+sales = (
+    200
+    - 8 * interest
+    - 5 * unemployment
+    + 15 * gdp
+    + 0.7 * advertising
+    + rng.normal(0, 15, n)
+)
+
+X = pd.DataFrame({
+    "interest": interest,
+    "unemployment": unemployment,
+    "gdp": gdp,
+    "advertising": advertising
+})
+
+y = sales
+
+ols = Pipeline([
+    ("scaler", StandardScaler()),
+    ("model", LinearRegression())
+])
+
+ridge = Pipeline([
+    ("scaler", StandardScaler()),
+    ("model", Ridge(alpha=10))
+])
+lasso = Pipeline([
+	("scaler", StandardScaler()),
+	("model", Lasso(alpha=0.1))
+])
+ols.fit(X, y)
+ridge.fit(X, y)
+lasso.fit(X, y)
+coef_df = pd.DataFrame({
+    "feature": X.columns,
+    "OLS": ols.named_steps["model"].coef_,
+    "Ridge": ridge.named_steps["model"].coef_
+    "Lasso": lasso.named_steps["model"].coef_
+})
+
+x_pos = np.arange(len(coef_df))
+
+plt.figure(figsize=(9, 5))
+plt.bar(x_pos - 0.2, coef_df["OLS"], width=0.2, label="OLS")
+plt.bar(x_pos, coef_df["Ridge"], width=0.2, label="Ridge")
+plt.bar(x_pos + 0.2, coef_df["Lasso"], width=0.2, label="Lasso)
+plt.xticks(x_pos, coef_df["feature"])
+plt.axhline(0, linewidth=0.8)
+plt.title("OLS vs. Ridge vs. Lasso Coefficients")
+plt.xlabel("Predictor")
+plt.ylabel("Coefficient value after scaling")
+plt.legend()
+plt.tight_layout()
+plt.show()
+```
+
+![[c4-ex6.png]]
+
+## 9. Gradient Descent for Regression
+
+OLS has a closed-form solution, but many regression problems do not. When the model is large, nonlinear, regularized, or fitted to massive datasets, iterative optimization methods are often used.
+
+The most common optimization method is __gradient descent__.
+
+Let the objective be
+$$
+J(\theta)=\frac{1}{n}\sum_{i=1}^n(y_i-\tilde x_i^\top \theta)^2.
+$$
+The gradient is 
+$$
+\nabla_\theta J(\theta)= -\frac{2}{n}\Phi^\top(y-\Phi\theta)
+$$
+Gradient descent updates parameters by moving in the negative gradient direction:
+$$
+\theta^{(t+1)}=\theta^{(t)}-\alpha\nabla_\theta J(\theta^{(t)}),
+$$
+where $\alpha>0$ is the _learning rate_.
+
+Substituting the gradient:
+$$
+\theta^{(t+1)}=\theta^{(t)}+\frac{2\alpha}{n}\Phi^\top(y-\Phi\theta^{(t)}).
+$$
+If $\alpha$ is too small, convergence is slow. If $\alpha$ is too large, the algorithm may diverge.
+
+```python
+import numpy as np
+import matplotlib.pyplot as plt
+
+rng = np.random.default_rng(42)
+
+n = 100
+X_raw = rng.uniform(0, 10, n)
+y = 3 + 2 * X_raw + rng.normal(0, 2, n)
+
+# Add intercept column
+Phi = np.column_stack([np.ones(n), X_raw])
+
+theta = np.zeros(2)
+alpha = 0.001
+n_iter = 300
+
+loss_history = []
+
+for _ in range(n_iter):
+    y_pred = Phi @ theta
+    residual = y - y_pred
+    loss = np.mean(residual**2)
+    loss_history.append(loss)
+
+    grad = -(2 / n) * Phi.T @ residual
+    theta = theta - alpha * grad
+
+plt.figure(figsize=(8, 5))
+plt.plot(loss_history)
+plt.title("Gradient Descent for Linear Regression")
+plt.xlabel("Iteration")
+plt.ylabel("Mean Squared Error")
+plt.tight_layout()
+plt.show()
+
+print("Estimated parameters:", theta)
+```
+
+```
+Estimated parameters: [0.70824809 2.36049641]
+```
+
+![[c4-ex7.png]]
+
+## 10. Regression Performance Metrics
+
+Regression evaluate measures how close predictions $\hat y_i$ are to observed values $y_i$.
+
+Let 
+$$
+e_i=y_i-\hat{y}_i.
+$$
+The residual $e_i$ is the basic error unit.
+
+> [!definition] Definition: Mean Squared Error
+> The mean squared error is 
+> $$
+> MSE = \frac{1}{n}\sum_{i=1}^n (y_i-\hat y_i)^2
+> $$
+
+MSE penalizes large errors strongly because errors are squared.
+
+> [!definition] Definition: Root Mean Squared Error
+> The root mean squared error is
+> $$
+> RMSE = \sqrt{\frac{1}{n}\sum_{i=1}^n(y_i-\hat{y}_i)^2}
+> $$
+
+RMSE is in the same unit as the target variable.
+
+> [!definition] Definition: Mean Absolute Error
+> The mean absolute error is 
+> $$
+> MAE = \frac{1}{n} \sum_{i=1}^n |y_i-\hat y_i|
+> $$
+
+MAE is more robust to outliers than MSE because it does not square the residuals.
+
+> [!definition] Definition: Coefficient of Determination
+> The coefficient of determination is
+> $$
+> R^2 = 1-\frac{\sum_{i=1}^n (y_i-\hat y_i)^2}{\sum_{i=1}^n(y_i-\overline y)^2}
+> $$
+> where 
+> $$
+> \overline y = \frac{1}{n}\sum_{i=1}^n y_i
+> $$
+> The denominator is the total sum of squares:
+> $$
+> SST = \sum_{i=1}^n (y_i-\overline y)^2.
+> $$
+> The numerator is the residual sum of squares:
+> $$
+> SSE = \sum_{i=1}^n (y_i - \hat y_i)^2
+> $$
+> Thus,
+> $$
+> R^2 = 1 -\frac{SSE}{SST}.
+> $$
+
+An $R^2$ value close to 1 indicates that the model explains a large proportion of the variation in the response. However, high $R^2$ does not guarantee causal validity, fairness, robustness, or out-of-sample performance.
+
+```python
+import numpy as np
+import matplotlib.pyplot as plt
+from sklearn.metrics import mean_absolute_error, mean_squared_error
+
+rng = np.random.default_rng(42)
+
+y_true = np.linspace(0, 10, 50)
+y_pred_clean = y_true + rng.normal(0, 0.5, size=50)
+
+y_pred_outlier = y_pred_clean.copy()
+y_pred_outlier[-1] += 10
+
+mae_clean = mean_absolute_error(y_true, y_pred_clean)
+rmse_clean = mean_squared_error(y_true, y_pred_clean) ** 0.5
+
+mae_outlier = mean_absolute_error(y_true, y_pred_outlier)
+rmse_outlier = mean_squared_error(y_true, y_pred_outlier) ** 0.5
+
+metrics = ["MAE Clean", "RMSE Clean", "MAE Outlier", "RMSE Outlier"]
+values = [mae_clean, rmse_clean, mae_outlier, rmse_outlier]
+
+plt.figure(figsize=(8, 5))
+plt.bar(metrics, values)
+plt.title("MAE and RMSE Sensitivity to an Outlier")
+plt.ylabel("Error")
+plt.xticks(rotation=30)
+plt.tight_layout()
+plt.show()
+```
+
+![[c4-ex8.png]]
 
 
+## 11. A Survey of Models
+
+### 11.1. Exponential Recovery Model
+
+Some regression problems are better modeled with nonlinear functional forms motivated by domain knowledge.
+
+Suppose a hospital tracks a patient recovery index over time. A simple model may assume exponential recovery or decay:
+$$
+\text{Recovery}(t)=Ae^{-kt}+ C,
+$$
+where:
+- $A$ controls initial recovery distance,
+- $k>0$ controls recovery rate,
+- $C$ is the long-term baseline.
+
+If the measured variable is symptom burden rather than recovery, an exponential decay model may be appropriate:
+$$
+\text{Symptom}(t)=Ae^{-kt}+\epsilon.
+$$
+This model has an important property:
+$$
+Ae^{-kt}>0
+$$
+for $A>0$, which keeps predictions positive.
+
+```python
+import numpy as np
+import matplotlib.pyplot as plt
+from scipy.optimize import curve_fit
+
+rng = np.random.default_rng(42)
+
+def exp_decay(t, A, k, C):
+    return A * np.exp(-k * t) + C
+
+t = np.linspace(0, 20, 50)
+true_y = exp_decay(t, A=80, k=0.18, C=10)
+observed_y = true_y + rng.normal(0, 4, size=len(t))
+
+params, _ = curve_fit(exp_decay, t, observed_y, p0=[70, 0.1, 5])
+fitted_y = exp_decay(t, *params)
+
+plt.figure(figsize=(8, 5))
+plt.scatter(t, observed_y, alpha=0.7, label="Observed recovery data")
+plt.plot(t, fitted_y, label="Fitted exponential model")
+plt.title("Exponential Regression for Recovery Dynamics")
+plt.xlabel("Days since treatment")
+plt.ylabel("Symptom index")
+plt.legend()
+plt.tight_layout()
+plt.show()
+
+print("Estimated A, k, C:", params)
+```
+
+```
+Estimated A, k, C: [77.88582361 0.18102926 11.0525079 ]
+```
+
+![[c4-ex9.png]]
 
 
+### 11.2. Meteorology: Rainfall Regression
 
+Meteorological regression may use multiple atmospheric predictors:
+$$
+\text{Rainfall}_i = \beta_0 + \beta_1\text{Temperature}_i+\beta_2\text{Pressure}_i + \beta_3 \text{Windspeed}_i + \beta_4\text{Humidity}_i + \epsilon_i
+$$
+Rainfall prediction may be difficult because the response is nonnegative, skewed, and often zero-inflated. A simple linear model may produce negative predictions, which are physically impossible. 
+
+Possible alternatives include:
+$$
+\log (\text{Rainfall}_i+1) = \beta_0 + \beta^\top x_i + \epsilon_i
+$$
+or generalized models designed for nonnegative outcomes.
+
+```python
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+from sklearn.linear_model import LinearRegression
+
+rng = np.random.default_rng(42)
+n = 200
+
+temperature = rng.normal(22, 5, n)
+pressure = rng.normal(1010, 8, n)
+wind = rng.normal(12, 3, n)
+humidity = rng.uniform(40, 100, n)
+
+rainfall = (
+    -20
+    + 0.3 * temperature
+    - 0.05 * pressure
+    + 0.4 * wind
+    + 0.8 * humidity
+    + rng.normal(0, 8, n)
+)
+
+rainfall = np.maximum(rainfall, 0)
+
+X = pd.DataFrame({
+    "temperature": temperature,
+    "pressure": pressure,
+    "wind": wind,
+    "humidity": humidity
+})
+
+y = rainfall
+
+model = LinearRegression()
+model.fit(X, y)
+
+y_pred = model.predict(X)
+residuals = y - y_pred
+
+plt.figure(figsize=(14, 5))
+plt.subplot(1, 2, 1)
+
+plt.scatter(y_pred, y, alpha=0.7)
+plt.plot([y.min(), y.max()], [y.min(), y.max()], linestyle="--")
+plt.title("Observed vs. Predicted Rainfall")
+plt.xlabel("Predicted rainfall")
+plt.ylabel("Observed rainfall")
+plt.tight_layout()
+plt.show()
+plt.subplot(1, 2, 2)
+plt.scatter(y_pred, residuals, alpha=0.7)
+plt.axhline(0, linestyle="--")
+plt.title("Residual Plot for Rainfall Regression")
+plt.xlabel("Predicted rainfall")
+plt.ylabel("Residual")
+plt.tight_layout()
+plt.show()
+```
+
+![[c4-ex10.png]]
+
+## 12. Logistic Regression
+
+Although logistic regression is commonly used for classification rather than continuous regression, it belongs mathematically to the regression family because it models a transformed conditional probability.
+
+For binary classification,
+$$
+Y\in \{0,1\}
+$$
+Logistic regression models 
+$$
+P(Y=1|X=x) = \sigma (\theta^\top x),
+$$
+where the sigmoid function is 
+$$
+\sigma(z) = \frac{1}{1+e^{-z}}
+$$
+The log-odds, or logit, is linear:
+$$
+\log\left(\frac{P(Y=1|X=x)}{1-P(Y=1|X=x)}\right)=\theta^\top x
+$$
+The output is not a continuous target in the same sense as OLS regression. Instead, logistic regression predicts a probability in $(0,1)$.
+
+The likelihood for binary labels is 
+$$
+L(\theta) = \prod_{i=1}^n p_i^{y_i} (1-p_i)^{(1-y_i)},
+$$
+where 
+$$
+p_i = \sigma(\theta^\top x_i)
+$$
+The negative log-likelihood is 
+$$
+-\ell(\theta)=-\sum_{i=1}^n\left[y_i\log p_i+ (1-y_i)\log (1-p_i)\right]
+$$
+This is also called binary cross-entropy loss.
+
+---
+
+Regression analysis is the first major modeling paradigm in supervised machine learning because it formalizes one of the most common scientific questions: how does a quantitative outcome change as a function of observed inputs?
+
+Mathematically, regression begins with the estimate of an unknown function
+$$
+f:\mathcal X \to \mathbb R
+$$
+Under squared loss, the ideal target is the Bayes predictor:
+$$
+f^*(x)=\mathbb E[Y|X=x]
+$$
+Because this function is unknown, we first choose a model class, then estimate parameters by empirical risk minimization, evaluates predictive performance, and diagnoses model adequacy through residual analysis.
+
+Next chapter: [[Chapter 5|Data Modeling: Tree-based Models]]
+
+---
 [^1]: Hastie, Trevor, Robert Tibshirani, and Jerome Friedman. _The Elements of Statistical Learning_. Springer Series in Statistics. Springer, 2009. [https://doi.org/10.1007/978-0-387-84858-7](https://doi.org/10.1007/978-0-387-84858-7).
 [^2]: Bishop, Christopher M. _Pattern Recognition and Machine Learning_. Information Science and Statistics. Springer, 2006.
