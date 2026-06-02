@@ -129,6 +129,7 @@ $$
 \mathcal{L}=U\Lambda U^\intercal
 $$
 where:
+
 - $U\in \mathbb{R}^{n\times n}$ has orthonormal **eigenvectors** (graph Fourier basis).
 - $\Lambda=\text{diag}(\lambda_1, \dots, \lambda_n)$ has **eigenvalues** (graph frequencies).
 
@@ -136,6 +137,7 @@ A **graph Fourier transform (GFT)** of a signal $x\in \mathbb{R}^n$ is:
 $$
 \hat{x}=U^\intercal x, \qquad x=U\hat{x}
 $$
+
 - Intuition: each column $u_k$ of $U$ is a "frequency mode" on the graph; projecting onto it gives the amplitude at that "frequency".
 
 For **node features** $X\in \mathbb{R}^{n\times d}$ ($d$ channels):
@@ -147,6 +149,7 @@ $$
 g_\theta * X=U\, g_\theta(\Lambda)U^\intercal X
 $$
 where:
+
 - $U^\intercal X$: graph Fourier transform (to spectral domain)
 - $g_\theta(\Lambda)$: **diagonal** matrix; the $k$-th diagonal entry is $g_\theta(\lambda_k)$. This **scales each frequency independently**.
 - $U(\cdot)$: inverse GFT (back to nodes).
@@ -176,6 +179,7 @@ $$
 H^{(l+1)}=\sigma(\underbrace{\hat{D}^{-\frac{1}{2}}\hat{A}\hat{D}^{-\frac{1}{2}}}_{\text{normalized neighbor averaging}}H^{(l)}W^{(l)})
 $$
 where:
+
 - $H^{(0)}=X$,
 - $W^{(l)}$ are trainable weights,
 - $\sigma$ is a nonlinearity (ReLU)
@@ -189,14 +193,17 @@ where:
 
 ### b. Message-passing view
 For each node $i$, let $\mathcal{N}(i)$ be its neighbors (including $i$ itself with self-loop). A simplified per-node cartoon:
+
 1. **Message from neighbor $j$ to $i$**:
 $$
 m_{j\to i}^{(l)}=\frac{1}{\sqrt{\hat{d}_i\hat{d}_j}}h^{(l)}_j
 $$
+
 2. **Aggregate messages (sum/avg)**:
 $$
 \tilde{h}_i^{(l)}=\sum_{j\in \mathcal{N}(i)}m^{(l)}_{j\to i}
 $$
+
 3. **Update with learnable transform + nonlinearity**:
 $$
 h_i^{(l+1)}=\sigma(\tilde{h}_i^{(l)}W^{(l)})
@@ -327,6 +334,7 @@ As always, we must **only** train on the labeled training nodes (`train_mask`). 
 > **Validation pass (no gradient)**
 
 We compute **train** and **validation** accuracies:
+
 - Train acc helps detect under/overfit trend.
 - **Val acc** is the **selection signal** for early stoping.
 
@@ -341,6 +349,7 @@ We compute **train** and **validation** accuracies:
 > **Update best checkpoint or count "bad" epochs**
 
 If validation improved, we **snapshot** the model:
+
 - `state_dict()` returns all parameters/buffers.
 - `.detach().cpu().clone()` makes a clean, independent copy on CPU (safe from future in-place changes and GPU memory pressure).
 
@@ -394,11 +403,13 @@ epoch 100 | loss 0.0137 | train 1.000 | val 0.774
 
 ![base-train-val-loss.png](../../assets/images/projects/graph-neural-network/base-train-val-loss.png)
 **What we see**:
+
 - **Loss**: plunges in the first 10-15 epochs, then approximately 0.0 $\Rightarrow$ the model fits the training nodes almost perfectly.
 - **Train accuracy**: hits nearly 100% by nearly 10 epochs and stays there $\Rightarrow$ with only 140 train nodes in Cora, a 2-layer GCN(64) can memorize them easily.
 - **Val accuracy**: rises quickly to $0.76-0.79$ and plateaus with small noise $\Rightarrow$ this is our true generalization level for this config.
 
 That shape (fast drop, train approx 1.0, val approx 0.78) is typical for a plain 2-layer GCN on Cora. It means:
+
 - Not underfitting (train=1.0)
 - Mild overfitting (train-val gap=0.2), but expected on a tiny train split.
 - Early stopping would sensibly choose an epoch around the **first plateau** (8-15)
@@ -406,6 +417,7 @@ That shape (fast drop, train approx 1.0, val approx 0.78) is typical for a plain
 ## 5. Evaluate on the test split
 
 **Metrics**:
+
 - **Accuracy** (fraction correct) on test nodes.
 - **Macro-f1**: compute F1 per class, then average.
 $$
@@ -449,6 +461,7 @@ metrics
 ## 6. Hidden size, layers, dropout
 
 We sweep a few hyperparameters and record performance. This shows **sensitivity**:
+
 - **Hidden dimension**: capacity of the representation. Small $\rightarrow$ underfit; very large $\rightarrow$ overfit.
 - **Number of layers**: more hops of information. Too deep can cause **over-smoothing** (embeddings become too similar, the classifier loses contrast).
 - **Dropout**: regularization; often improves generalization on small graphs.

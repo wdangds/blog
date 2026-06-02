@@ -28,6 +28,7 @@ A common way to explain data science is through three overlapping skill areas: *
 ### 2.1. Data Analysis
 
 The first dimension is data analysis. This includes descriptive statistics, visualization, statistical inference, machine learning, predictive modeling, uncertainty quantification, and evaluation. A data scientist must know how to ask questions such as:
+
 - What patterns are visible in the data?
 - Which variables appear to be associated?
 - Can we predicted an outcome accurately?
@@ -89,7 +90,7 @@ The CRISP-DM framework, one of the most widely cited process models for data min
 
 From my perspective, the process can be presented in the following expanded form:
 
-```mermaid
+```{mermaid}
 flowchart LR
 A[Problem formulation] --> B[Data capture and selection]  
 B --> C[Data understanding and exploratory analysis]  
@@ -156,6 +157,7 @@ In a project predicting whether customers will buy a new car, a company may coll
 Data selection involves deciding which observations and variables belong in the project. Sometimes, the current available data may not match the desired problem. A company may want to predict future purchases, but its database may only include customers who already interacted with the company. This creates selection bias: the data represent only a subset of the real population.
 
 Important questions at this stage include:
+
 - Who or what is represented in the data?
 - What population is missing?
 - How were the data collected?
@@ -171,6 +173,7 @@ Data capture shapes everything that follows.
 After data are collected, the data scientist must understand them. This stage often uses exploratory data analysis, visualization, descriptive statistics, and data quality checks.
 
 Exploratory analysis may reveal:
+
 - Missing values
 - Duplicate records
 - Outliers
@@ -223,6 +226,7 @@ Feature engineering is the process of transforming raw data into variables that 
 A raw timestamp such as <span style="font-family: monospace">1550563843</span> may not be directly useful to a model. But it can be transformed into features such as hour of day, day of week, month, holiday indicator, season, or time since last purchase. In a sales prediction problem, these features may capture shopping patterns that the raw timestamp hides.
 
 Feature engineering can include:
+
 - Extracting date/time features
 - Creating ratios or rates
 - Aggregating behavior over time windows
@@ -252,6 +256,7 @@ Suppose a dataset has only two features: age and income. With enough observation
 Dimensionality is not always bad. Additional features can improve a model if they contain useful signal. The problem occurs when many features are irrelevant, noisy, redundant, or sparse. In that case, the model may overfit - it learns accidental patterns in the training data rather than stable patterns that generalize.
 
 Common strategies for addressing high dimensionality include:
+
 - Feature selection
 - Regularization
 - Principal Component Analysis
@@ -317,6 +322,7 @@ A hospital may want the most accurate model possible for predicting patient read
 :::
 
 A good data science project must therefore ask:
+
 - Is the goal prediction, explanation, or decision support?
 - Is interpretability required?
 - Are causal claims being made?
@@ -361,6 +367,7 @@ Interpretation is also essential. A model may have strong performance metrics bu
 The final goal of data science is not a model file. The goal is usable knowledge. Deployment means integrating the model or analysis into a real decision process.
 
 Deployment may take many forms:
+
 - A dashboard for managers
 - A real-time prediction API
 - A weekly report
@@ -379,6 +386,7 @@ A retail company may deploy a customer segmentation model so that marketing team
 Deployment introduces new challenges. The data available in production may differ from the training data. User behavior may change. Sensors may fall. A model trained last year may become less accurate this year. This phenomenon is often called *data drift* or *concept drift*.
 
 Therefore, deployment should include monitoring. A deployed model should be checked for:
+
 - Prediction accuracy over time
 - Changes in input distributions
 - Bias across subgroups
@@ -436,6 +444,7 @@ The target variable is binary: purchase or no purchase.
 **Step 2: Data Capture** 
 
 The company collects customer information:
+
 - Age
 - Gender
 - Occupation
@@ -450,6 +459,7 @@ The company collects customer information:
 **Step 3: Data Understanding**
 
 The data scientist explores the dataset and finds:
+
 - Some income values are missing.
 - Occupations are entered inconsistently.
 - Some customers appear multiple times.
@@ -463,6 +473,7 @@ The analyst removes duplicates, standardizes categories, handles missing income 
 **Step 5: Feature Engineering**
 
 The analyst creates new features:
+
 - Day of Week
 - Month
 - Income bracket
@@ -474,6 +485,7 @@ The analyst creates new features:
 **Step 6: Modeling**
 
 Several models are trained:
+
 - Logistic regression
 - Decision tree
 - Random forest

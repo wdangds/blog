@@ -39,6 +39,7 @@ $$
 Y = f(X) + \epsilon,\qquad \mathbb E[\epsilon|X]=0
 $$
 Here:
+
 - $X$ is the random input vector,
 - $Y$ is the random response,
 - $f(X)$ is the systematic component,
@@ -254,6 +255,7 @@ $$
 \hat{\text{Salary}} = 40 + 8 \times \text{Experience}
 $$
 then:
+
 - $\hat \beta_0 = 40$ means the predicted salary at zero year of experience is $40,000.
 - $\hat \beta_1 = 8$ means each additional year of experience is associated with an $8,000 increase in predicted salary.
 
@@ -421,6 +423,7 @@ plt.show()
 ## 7. Overfitting, Underfitting, and Model Complexity
 
 Regression models must balance two sources of error:
+
 1. __Approximation error__: error because the model class is too simple.
 2. __Estimation error__: error because the model is too flexible relative to the data.
 
@@ -466,6 +469,7 @@ We have seen this figure in [Chapter 3](chapter-3.qmd#overfitting).
 ## 8. Regularized Regression
 
 OLS can become unstable when:
+
 - the number of predictors is large,
 - predictors are highly correlated,
 - $d$ approaches or exceeds $n$,
@@ -487,6 +491,7 @@ $$
 ||\theta||_2^2 = \sum_{j=1}^d \theta_j^2.
 $$
 The tuning parameter $\lambda\geq 0$ controls the strength of regularization.
+
 - If $\lambda=0$, ridge reduces to OLS.
 - If $\lambda$ is large, coefficients are strongly shrunk toward zero.
 
@@ -615,6 +620,7 @@ $$
 \frac{1}{n}||y-\Phi\theta||_2^2 + \lambda[\alpha||\theta||_1 + (1-\alpha)||\theta||_2^2],
 $$
 where $0\leq \alpha \leq 1$.
+
 - $\alpha=1$ gives lasso.
 - $\alpha=0$ gives ridge.
 - $0<\alpha<1$ gives elastic net.
@@ -896,6 +902,7 @@ $$
 \text{Recovery}(t)=Ae^{-kt}+ C,
 $$
 where:
+
 - $A$ controls initial recovery distance,
 - $k>0$ controls recovery rate,
 - $C$ is the long-term baseline.

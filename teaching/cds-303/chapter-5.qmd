@@ -23,6 +23,7 @@ Instead of assuming a global equation, a tree-based model divides the feature sp
 This makes tree-based models especially useful when the relationship between predictors and target variables is nonlinear, discontinuous, interaction-heavy, or difficult to express through a simple parametric equation.
 
 A decision tree can be understood as a __recursive partitioning model__. Starting from the full dataset, the algorithm repeatedly chooses a feature and a threshold, splits the data into two child nodes, and continues until a stopping rule is reached. The result is a rooted tree:
+
 - internal nodes contain decision rules,
 - branches represent outcomes of those rules,
 - terminal nodes, or leaves, contain predictions.
@@ -240,6 +241,7 @@ Unlike regression trees, classification trees do not minimize squared residuals.
 Let $\hat p_{mk}$ be the proportion of class $k$ observations in node $m$.
 
 Three common impurity measures are:
+
 1. Misclassification error,
 2. Gini index,
 3. Cross-entropy, also called deviance.
@@ -418,6 +420,7 @@ $$
 C_\alpha(T) = R(T) + \alpha |T|,
 $$
 where $a\geq 0$ is a tuning parameter.
+
 - If $\alpha = 0$, the criterion favors the largest tree with lowest training error.
 - If $\alpha$ is large, the criterion penalizes complexity more heavily and favors a smaller tree.
 
@@ -525,6 +528,7 @@ This is why trees do not require feature scaling in the same way that KNN, K-mea
 ### 5.3. Limitations of Single Trees
 
 Single trees have several weakness:
+
 1. _High variance_. Small changes in training data can produce different tree structures.
 2. __
 

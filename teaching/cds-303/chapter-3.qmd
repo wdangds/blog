@@ -292,6 +292,7 @@ plt.show()
 Text data require specialized preparation because language is unstructured, sparse, and context-dependent. Before a model can classify emails, summarize documents, detect sentiment, or cluster topics, text must be transformed into a numerical representation.
 
 Traditional natural language preprocessing includes:
+
 - Tokenization
 - Lowercasing
 - Stop-word removal
@@ -379,6 +380,7 @@ plt.show()
 Image data are high-dimensional arrays of pixel values. A small image of size $222\times 224$ with three color channels contains 150,528 numeric values. Deep learning models can learn powerful visual representations from such data, but they often require large, diverse datasets.
 
 Image preparation may include:
+
 - Resizing
 - Cropping
 - Normalizing pixel values
@@ -454,6 +456,7 @@ Common supervised tasks include classification and regression.
 **Classification:** predicts discrete labels.
 
 Examples: 
+
 - Fraud or non-fraud, spam or not spam.
 - Under-estimate, normal, over-estimate.
 - Disease or no disease (or belonging to what type of disease).
@@ -461,6 +464,7 @@ Examples:
 **Regression**: predicts continuous numeric outcomes.
 
 Examples:
+
 - House price, salary.
 - Rainfall amount, energy demand.
 - Travel time.
@@ -470,6 +474,7 @@ Examples:
 In unsupervised learning, the model receives data without labeled outputs. The goal is to discover structure.
 
 Examples:
+
 - Customer segmentation
 - Topic discovery
 - Anomaly detection
@@ -480,6 +485,7 @@ Examples:
 In reinforcement learning, an agent interacts with an environment and learns through rewards or penalties. Instead of learning only from a fixed labeled dataset, the agent learns by taking actions and observing consequences.
 
 Examples:
+
 - Game-playing systems
 - Robotics
 - Dynamic pricing
@@ -494,6 +500,7 @@ AlphaGo is a famous example of reinforcement learning and search methods applied
 Model design is the process of selecting and configuring a learning system. It is a structured contest among possible representations of the problem.
 
 A data scientist must decide:
+
 - What is the prediction target?
 - What features are available at prediction time?
 - What family of models is appropriate?
@@ -595,6 +602,7 @@ A model has two kinds of quantities:
 | Hyperparameter | Chosen before or during model selection | Tree depth, learning rate, number of neighbors |
 
 Hyperparameters control the behavior of the learning algorithm. For example:
+
 - $k$ in K-Nearest Neighbors
 - Maximum depth in a decision tree
 - Number of trees in a random forest
@@ -639,6 +647,7 @@ plt.show()
 Data leakage occurs when information from outside the training process enters the model inappropriately. Leakage can make validation performance look excellent while real-world performance fails.
 
 Common leakage examples include:
+
 - Scaling the full dataset before train-test splitting
 - Imputing missing values using full-dataset statistics
 - Using future information to predict the past

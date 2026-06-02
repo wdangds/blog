@@ -51,6 +51,7 @@ The same measured value can support different interpretations depending on the t
 :::
 
 Thus, data understanding requires asking:
+
 - What activity produced this data?
 - What entity is being represented?
 - What environment surrounds the observation?
@@ -123,6 +124,7 @@ Important questions include:
 ::: {.callout-tip title="Example: House Price Data"}
 
 Consider a housing dataset with the following variables:
+
 - Sale price
 - Square footage
 - Number of bedrooms
@@ -134,6 +136,7 @@ Consider a housing dataset with the following variables:
 - Sale date
 
 A novice analysis may begin by calculating average price and fitting a regression model. A deeper data understanding process would ask:
+
 - Are prices skewed?
 - Are luxury properties creating outliers?
 - Are neighborhoods mixing different housing markets?
@@ -162,6 +165,7 @@ Because data are incomplete, decision-making always occurs under bounded rationa
 A model may optimize within the boundaries of available data, but those boundaries may not align with the real decision problem. For example, a hiring model may predict which applicants resemble historically successful employees. But if historical hiring was biased, then the model's apparent rationality is bounded by the organization's behavior.
 
 Thus, data scientist must ask:
+
 - What part of reality is captured?
 - What part is missing?
 - Who is absent from the data?
@@ -184,6 +188,7 @@ __Information fusion is the process of combining information from multiple sourc
 :::
 
 In human factors research, situation awareness is commonly defined through three levels: perceiving relevant elements in the environment, comprehending their meaning, and projecting their future status. We often use Endsley's theory of situation awareness in dynamic decision-making systems such as aviation, emergency response, healthcare, and control systems[^5]. Many applied systems must do the same thing within the framework:
+
 1. _Perceive_ signals from data.
 2. _Comprehend_ what those signals mean in context.
 3. _Project_ likely future states.
@@ -196,6 +201,7 @@ An adaptive data system can be understood through four levels of inference.
 __(1) Data Inference__
 
 Data inference refers to conclusions drawn directly from observed data. For example:
+
 - Sales increased by 12% last month.
 - A sensor recorded a temperature spike.
 - A customer clicked on three product pages.
@@ -206,6 +212,7 @@ This level is descriptive. It tells us what was observed.
 __(2) Context Inference__
 
 Context inference interprets the observation in relation to other conditions. For example:
+
 - Sales increased because of a holiday promotion.
 - The temperature spike occurred during a known equipment cycle.
 - The customer was browsing during a seasonal sale.
@@ -216,6 +223,7 @@ This level adds situational meaning.
 __(3) Decision Inference__
 
 Decision inference connects the interpreted situation to an action. For example:
+
 - Increase inventory for similar products.
 - Ignore the temperature spike if it matches normal operating behavior.
 - Recommend related products.
@@ -226,6 +234,7 @@ This level asks what should be done.
 __(4) System Inference__
 
 System inference considers a broader system and its evolution. For example:
+
 - Will promotions train customers to wait for discounts?
 - Will ignoring repeated equipment spikes increase long-term risk?
 - Will recommendations narrow user exposure and reduce diversity?
@@ -242,6 +251,7 @@ A useful example of context-aware data science is the recommender system. A cont
 ::: {.callout-tip title="Example"}
 
 An e-commerce platform might recommend:
+
 - Swimwear in July but coats in December.
 - Umbrellas when local weather indicates rain.
 - Quick meals during weekday evenings.
@@ -306,6 +316,7 @@ The Red Queen metaphor comes from evolutionary thinking: one must keep running j
 A fraud model may identify suspicious transaction patterns. Fraudsters then change their behavior. The model must adapt. But if it adapts too quickly, it may overreact to noise. If it adapts too slowly, it becomes obsolete. 
 
 Adaptive learning therefore requires balance:
+
 - Stability versus flexibility.
 - Historical knowledge versus new evidence.
 - Sensitivity to drift versus robustness to noise.
@@ -350,6 +361,7 @@ If the business asks, "Which customers are most likely to respond to this campai
 In business settings, data science sometimes connect to return on investment (ROI). ROI may include revenue growth, cost reduction, risk reduction, time savings, improved reliability, customer satisfaction, fairness, regulatory compliance, or scientific insight.
 
 Before a project begins, the route to value should be explicit:
+
 1. What decision will change?
 2. Who will use the result?
 3. What action will the model support?
@@ -375,6 +387,7 @@ Explainability refers to the ability to understand, communicate, or justify how 
 A black-box model may be acceptable in low-risk settings where errors are minor and reversible, such as recommending a movie. It is more problematic when decisions affect loans, diagnoses, sentencing, hiring, insurance, or public benefits.
 
 Explainability matters for several reasons:
+
 - **Debugging:** Understanding model behavior helps detect errors.
 - __Trust__: Users are more likely to accept systems they understand.
 - __Accountability__: Institutions must justify decisions.
