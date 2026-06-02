@@ -1,0 +1,1873 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.9.38">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Data Preparation and Model Design – Wan Dang</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<script src="../../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-15634bcf2e68342d4ad2dfa704d543f6.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap-0441d281c0042f78ca5e6da214781463.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+<style>html{ scroll-behavior: smooth; }</style>
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+<link rel="stylesheet" href="../../styles.css">
+</head>
+
+<body class="nav-sidebar docked nav-fixed quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="../../index.html">
+    <span class="navbar-title">Wan Dang</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../index.html"> 
+<span class="menu-text">Home</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link active" href="../../teaching/index.html" aria-current="page"> 
+<span class="menu-text">Teaching</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../research/index.html"> 
+<span class="menu-text">Research</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../projects/index.html"> 
+<span class="menu-text">Projects</span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../teaching/index.html">Teaching</a></li><li class="breadcrumb-item"><a href="../../teaching/cds-303/index.html">CDS 303: Scientific Data Mining</a></li><li class="breadcrumb-item"><a href="../../teaching/cds-303/chapter-3.html">Data Preparation and Model Design</a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation docked overflow-auto">
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="../../teaching/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Teaching</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="../../teaching/cds-303/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">CDS 303: Scientific Data Mining</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth2 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../teaching/cds-303/chapter-1.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Data Science, Data Mining, and the Process of Turning Data into Knowledge</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../teaching/cds-303/chapter-2.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Context and Data Understanding</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../teaching/cds-303/chapter-3.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text">Data Preparation and Model Design</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../teaching/cds-303/chapter-4.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Data Modeling - Regression</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../teaching/cds-303/chapter-5.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Data Modeling - Tree-based Models</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#data-preparation" id="toc-data-preparation" class="nav-link active" data-scroll-target="#data-preparation">1. Data Preparation</a></li>
+  <li><a href="#missing-values-and-inconsistencies" id="toc-missing-values-and-inconsistencies" class="nav-link" data-scroll-target="#missing-values-and-inconsistencies">2. Missing Values and Inconsistencies</a>
+  <ul class="collapse">
+  <li><a href="#why-missingness-matters" id="toc-why-missingness-matters" class="nav-link" data-scroll-target="#why-missingness-matters">2.1. Why Missingness Matters</a></li>
+  <li><a href="#common-strategies" id="toc-common-strategies" class="nav-link" data-scroll-target="#common-strategies">2.2. Common Strategies</a></li>
+  </ul></li>
+  <li><a href="#feature-scaling" id="toc-feature-scaling" class="nav-link" data-scroll-target="#feature-scaling">3. Feature Scaling</a>
+  <ul class="collapse">
+  <li><a href="#why-scaling-is-necessary" id="toc-why-scaling-is-necessary" class="nav-link" data-scroll-target="#why-scaling-is-necessary">3.1. Why Scaling is Necessary</a></li>
+  <li><a href="#normalization-and-standardization" id="toc-normalization-and-standardization" class="nav-link" data-scroll-target="#normalization-and-standardization">3.2. Normalization and Standardization</a></li>
+  </ul></li>
+  <li><a href="#encoding-categorical-variables" id="toc-encoding-categorical-variables" class="nav-link" data-scroll-target="#encoding-categorical-variables">4. Encoding Categorical Variables</a></li>
+  <li><a href="#text-processing" id="toc-text-processing" class="nav-link" data-scroll-target="#text-processing">5. Text Processing</a>
+  <ul class="collapse">
+  <li><a href="#high-dimensional-data" id="toc-high-dimensional-data" class="nav-link" data-scroll-target="#high-dimensional-data">5.1. High-Dimensional Data</a></li>
+  <li><a href="#tokenization" id="toc-tokenization" class="nav-link" data-scroll-target="#tokenization">5.2. Tokenization</a></li>
+  <li><a href="#stop-words" id="toc-stop-words" class="nav-link" data-scroll-target="#stop-words">5.3. Stop-words</a></li>
+  <li><a href="#stemming-and-lemmatization" id="toc-stemming-and-lemmatization" class="nav-link" data-scroll-target="#stemming-and-lemmatization">5.4. Stemming and Lemmatization</a></li>
+  </ul></li>
+  <li><a href="#image-preparation-and-data-augmentation" id="toc-image-preparation-and-data-augmentation" class="nav-link" data-scroll-target="#image-preparation-and-data-augmentation">6. Image Preparation and Data Augmentation</a></li>
+  <li><a href="#machine-learning" id="toc-machine-learning" class="nav-link" data-scroll-target="#machine-learning">7. Machine Learning</a>
+  <ul class="collapse">
+  <li><a href="#defining-machine-learning" id="toc-defining-machine-learning" class="nav-link" data-scroll-target="#defining-machine-learning">7.1. Defining Machine Learning</a></li>
+  <li><a href="#supervised-learning" id="toc-supervised-learning" class="nav-link" data-scroll-target="#supervised-learning">7.2. Supervised Learning</a></li>
+  <li><a href="#unsupervised-learning" id="toc-unsupervised-learning" class="nav-link" data-scroll-target="#unsupervised-learning">7.3. Unsupervised Learning</a></li>
+  <li><a href="#reinforcement-learning" id="toc-reinforcement-learning" class="nav-link" data-scroll-target="#reinforcement-learning">7.4. Reinforcement Learning</a></li>
+  </ul></li>
+  <li><a href="#model-design" id="toc-model-design" class="nav-link" data-scroll-target="#model-design">8. Model Design</a></li>
+  <li><a href="#train-validation-and-test-splits" id="toc-train-validation-and-test-splits" class="nav-link" data-scroll-target="#train-validation-and-test-splits">9. Train, Validation, and Test Splits</a>
+  <ul class="collapse">
+  <li><a href="#why-splitting-matters" id="toc-why-splitting-matters" class="nav-link" data-scroll-target="#why-splitting-matters">9.1. Why Splitting Matters</a></li>
+  <li><a href="#overfitting" id="toc-overfitting" class="nav-link" data-scroll-target="#overfitting">9.2. Overfitting</a></li>
+  </ul></li>
+  <li><a href="#cross-validation" id="toc-cross-validation" class="nav-link" data-scroll-target="#cross-validation">10. Cross-Validation</a></li>
+  <li><a href="#hyperparameter-tuning" id="toc-hyperparameter-tuning" class="nav-link" data-scroll-target="#hyperparameter-tuning">11. Hyperparameter Tuning</a>
+  <ul class="collapse">
+  <li><a href="#parameters-versus-hyperparameters" id="toc-parameters-versus-hyperparameters" class="nav-link" data-scroll-target="#parameters-versus-hyperparameters">11.1. Parameters Versus Hyperparameters</a></li>
+  <li><a href="#grid-search-and-random-search" id="toc-grid-search-and-random-search" class="nav-link" data-scroll-target="#grid-search-and-random-search">11.2. Grid Search and Random Search</a></li>
+  <li><a href="#bayesian-optimization" id="toc-bayesian-optimization" class="nav-link" data-scroll-target="#bayesian-optimization">11.3. Bayesian Optimization</a></li>
+  </ul></li>
+  <li><a href="#pipelines-and-leakage-prevention" id="toc-pipelines-and-leakage-prevention" class="nav-link" data-scroll-target="#pipelines-and-leakage-prevention">12. Pipelines and Leakage Prevention</a></li>
+  <li><a href="#bayesian-and-optimization-driven-model-design" id="toc-bayesian-and-optimization-driven-model-design" class="nav-link" data-scroll-target="#bayesian-and-optimization-driven-model-design">13. Bayesian and Optimization-Driven model Design</a></li>
+  <li><a href="#automated-machine-learning-and-neural-architecture-search" id="toc-automated-machine-learning-and-neural-architecture-search" class="nav-link" data-scroll-target="#automated-machine-learning-and-neural-architecture-search">14. Automated Machine Learning and Neural Architecture Search</a>
+  <ul class="collapse">
+  <li><a href="#automl" id="toc-automl" class="nav-link" data-scroll-target="#automl">14.1. AutoML</a></li>
+  <li><a href="#neural-architecture-search" id="toc-neural-architecture-search" class="nav-link" data-scroll-target="#neural-architecture-search">14.2. Neural Architecture Search</a></li>
+  </ul></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../teaching/index.html">Teaching</a></li><li class="breadcrumb-item"><a href="../../teaching/cds-303/index.html">CDS 303: Scientific Data Mining</a></li><li class="breadcrumb-item"><a href="../../teaching/cds-303/chapter-3.html">Data Preparation and Model Design</a></li></ol></nav>
+<div class="quarto-title">
+<h1 class="title">Data Preparation and Model Design</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<p><a href="../../teaching/cds-303/chapter-2.html">The previous chapter</a> argued that data are produced through <em>context</em>, measurement systems, institutional purposes, and observer choices. Once a data scientist understands the meaning and limitations of a dataset, the next task is to transform that dataset into a form that can support modeling. <em>Data preparation</em> determines what a model is able to learn, what assumptions are built into the learning process, and what kinds of error the final system may produce.</p>
+<p>In this sense, data preparation is an act of <strong>epistemological refinement</strong>. It converts a contextually produced dataset into an analytical object. Each decision (which we will discuss later) changes the structure of the evidence available to the model.</p>
+<p><em>Model design</em> then turns this prepare evidence into a formal learning system. A model is designed through assumptions, objectives, constraints, hyperparameters, evaluation metrics, and validation procedures. So our main question of this chapter are: <strong>What kind of function should be learned? What should count as success? How much complexity is justified? How should the model be tested?</strong></p>
+<p>This chapter develops two connected arguments:</p>
+<blockquote class="blockquote">
+<p><strong>Data preparation determines the form of evidence. Model design determines the form of learning.</strong></p>
+</blockquote>
+<p>Together, they represent the bridge between data understanding and machine learning.</p>
+<section id="data-preparation" class="level2">
+<h2 class="anchored" data-anchor-id="data-preparation">1. Data Preparation</h2>
+<p>Data preparation is the process of selecting, cleaning, transforming, and organizing data so that it can be used by analytical or machine learning methods. In applied data science, this stage is often more consuming than model training itself. Real-world data are usually incomplete, inconsistent, duplicated, incorrectly formatted, noisy, or measured at the wrong level of granularity.</p>
+<div class="callout callout-style-default callout-tip callout-titled" title="Example">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>Example
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Suppose a dataset records customer transactions. The same customer may appear under multiple IDs. Some transaction dates may be missing. Product categories may change over time. Currency values may be recorded in different formats. Refunds may appear as negative sales.</p>
+</div>
+</div>
+<p>A mechanical cleaning process might remove “bad” records, but a scientific preparation process asks what each irregularity means. A missing transaction may indicate a logging failure, or may also indicate that no transaction occurred. A duplicate may be a database error, or it may represent two legitimate purchases made at the same time. An outlier may be a mistake, or it maybe the most important case in the dataset.</p>
+</section>
+<section id="missing-values-and-inconsistencies" class="level2">
+<h2 class="anchored" data-anchor-id="missing-values-and-inconsistencies">2. Missing Values and Inconsistencies</h2>
+<section id="why-missingness-matters" class="level3">
+<h3 class="anchored" data-anchor-id="why-missingness-matters">2.1. Why Missingness Matters</h3>
+<p>Missing data are one of the most common problems in data preparation. A value may be missing because it was not collected, not applicable, lost during transfer, intentionally withheld, corrupted by a sensor, or removed for privacy reasons. The technical symbol may be the same (NaN, NULL, blank, or None), but the meaning can differ greatly.</p>
+<p>For example, in a medical dataset, missing income may indicate that the patient declined to answer. In a sensor dataset, missing temperature may indicate device failure. In a sales dataset, missing Sunday transaction data may indicate that the store was closed, the logging system failed, or the data file was not uploaded.</p>
+<p>The treatment of missingness should depend on the reason for the missingness. Removing all rows with missing values is simple, but it may introduce bias if the missingness is systematic. Imputation can preserve sample size, but it may create artificial certainty if the imputed values are treated as truly observed.</p>
+<p>A conceptual distinction is among three types of missingness:</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 25%">
+<col style="width: 39%">
+<col style="width: 34%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Types</th>
+<th>Meaning</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Missing Completely at Random (MCAR)</td>
+<td>Missingness is unrelated to observed or unobserved data</td>
+<td>A random database export error remove 2% of rows</td>
+</tr>
+<tr class="even">
+<td>Missing at Random (MAR)</td>
+<td>Missingness depends on observed variables</td>
+<td>Younger users are less likely to report income</td>
+</tr>
+<tr class="odd">
+<td>Missing Not at Random (MNAR)</td>
+<td>Missing depends on the missing value itself</td>
+<td>High-income respondents avoid reporting income</td>
+</tr>
+</tbody>
+</table>
+<p>These categories matter because the validity of imputation depends on the mechanism that produced the missingness. If income is missing mainly among high-income individuals, replacing missing income with the mean may distort the distribution and weaken the model’s understanding of purchasing power.</p>
+</section>
+<section id="common-strategies" class="level3">
+<h3 class="anchored" data-anchor-id="common-strategies">2.2. Common Strategies</h3>
+<p>Common strategies include:</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 18%">
+<col style="width: 43%">
+<col style="width: 38%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Strategy</th>
+<th>Description</th>
+<th>Risk</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Deletion</td>
+<td>Remove rows or columns with missing values</td>
+<td>Can reduce sample size and introduce bias</td>
+</tr>
+<tr class="even">
+<td>Mean/median imputation</td>
+<td>Fill missing numeric values with central tendency</td>
+<td>Can shrink variance and hide uncertainty</td>
+</tr>
+<tr class="odd">
+<td>Mode imputation</td>
+<td>Fill categorical values with most frequent category</td>
+<td>Can overrepresent majority category</td>
+</tr>
+<tr class="even">
+<td>Constant imputation</td>
+<td>Fill with “Unknown” or fixed value</td>
+<td>Can be useful if missingness is informative</td>
+</tr>
+<tr class="odd">
+<td>Model-based imputation</td>
+<td>Predict missing values from other variables</td>
+<td>Can leak information if done incorrectly</td>
+</tr>
+<tr class="even">
+<td>Missingness indicator</td>
+<td>Add binary flag for whether value was missing</td>
+<td>Useful when missingness itself carries signal</td>
+</tr>
+</tbody>
+</table>
+<div class="callout callout-style-default callout-tip callout-titled" title="Example: Missing Sunday Sales">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>Example: Missing Sunday Sales
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Suppose a retail store records daily sales, but one Sunday is missing. We cannot drop the missing day because if the model is learning weekly seasonality, removing that Sunday breaks the time structure. A more appropriate strategy may be impute the missing Sunday using the average of nearby Sundays.</p>
+</div>
+</div>
+<div id="cell-fig-missing-sunday-sales" class="cell" data-execution_count="1">
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Create example daily sales data</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>dates <span class="op">=</span> pd.date_range(<span class="st">"2026-01-01"</span>, periods<span class="op">=</span><span class="dv">35</span>, freq<span class="op">=</span><span class="st">"D"</span>)</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>rng <span class="op">=</span> np.random.default_rng(<span class="dv">42</span>)</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>sales <span class="op">=</span> <span class="dv">200</span> <span class="op">+</span> <span class="dv">30</span> <span class="op">*</span> np.sin(np.arange(<span class="dv">35</span>) <span class="op">*</span> <span class="dv">2</span> <span class="op">*</span> np.pi <span class="op">/</span> <span class="dv">7</span>) <span class="op">+</span> rng.normal(<span class="dv">0</span>, <span class="dv">10</span>, <span class="dv">35</span>)</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pd.DataFrame({<span class="st">"date"</span>: dates, <span class="st">"sales"</span>: sales})</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a><span class="co"># Create one missing Sunday</span></span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>missing_date <span class="op">=</span> pd.Timestamp(<span class="st">"2026-01-11"</span>)</span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>df.loc[df[<span class="st">"date"</span>] <span class="op">==</span> missing_date, <span class="st">"sales"</span>] <span class="op">=</span> np.nan</span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a><span class="co"># Impute using average of other Sundays</span></span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>df[<span class="st">"day_name"</span>] <span class="op">=</span> df[<span class="st">"date"</span>].dt.day_name()</span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>sunday_mean <span class="op">=</span> df.loc[df[<span class="st">"day_name"</span>] <span class="op">==</span> <span class="st">"Sunday"</span>, <span class="st">"sales"</span>].mean()</span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a>df[<span class="st">"sales_imputed"</span>] <span class="op">=</span> df[<span class="st">"sales"</span>].fillna(sunday_mean)</span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a><span class="co"># Plot original and imputed data</span></span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">10</span>, <span class="dv">5</span>))</span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a>plt.plot(df[<span class="st">"date"</span>], df[<span class="st">"sales"</span>], marker<span class="op">=</span><span class="st">"o"</span>, label<span class="op">=</span><span class="st">"Observed sales"</span>)</span>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a>plt.plot(df[<span class="st">"date"</span>], df[<span class="st">"sales_imputed"</span>], marker<span class="op">=</span><span class="st">"x"</span>, linestyle<span class="op">=</span><span class="st">"--"</span>, label<span class="op">=</span><span class="st">"After Sunday-mean imputation"</span>)</span>
+<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a>plt.axvline(missing_date, linestyle<span class="op">=</span><span class="st">":"</span>, label<span class="op">=</span><span class="st">"Missing Sunday"</span>)</span>
+<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">"Imputing a Missing Sunday Sales Value"</span>)</span>
+<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">"Date"</span>)</span>
+<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">"Sales"</span>)</span>
+<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a>plt.legend()</span>
+<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-display">
+<div id="fig-missing-sunday-sales" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-missing-sunday-sales-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="chapter-3_files/figure-html/fig-missing-sunday-sales-output-1.png" width="948" height="470" class="figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-missing-sunday-sales-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;1: Imputing a Missing Sunday Sales Value
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="feature-scaling" class="level2">
+<h2 class="anchored" data-anchor-id="feature-scaling">3. Feature Scaling</h2>
+<section id="why-scaling-is-necessary" class="level3">
+<h3 class="anchored" data-anchor-id="why-scaling-is-necessary">3.1. Why Scaling is Necessary</h3>
+<p>Many machine learning algorithms are sensitive to the scale of input variables. Algorithms based on distances, gradients, or regularization can behave poorly if one variable has a much larger numeric range than another.</p>
+<div class="callout callout-style-default callout-tip callout-titled" title="Example">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>Example
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Suppose a health model uses blood pressure and body temperature. Blood pressure may range from 80 to 180, while body temperature may range from 36 to 40. If a distance-based model is used, blood pressure may dominate the calculation simply because its numbers vary more widely.</p>
+</div>
+</div>
+<p>Feature scaling prevents numeric magnitude from being mistaken for importance.</p>
+</section>
+<section id="normalization-and-standardization" class="level3">
+<h3 class="anchored" data-anchor-id="normalization-and-standardization">3.2. Normalization and Standardization</h3>
+<p>Two common scaling techniques are normalization and standardization.</p>
+<blockquote class="blockquote">
+<p><strong>Min-Max Normalization</strong></p>
+</blockquote>
+<p>Min-max normalization transforms a feature into a fixed range, often <span class="math inline">\([0,1]\)</span>:</p>
+<p><span class="math display">\[
+x'=\frac{x-x_{\min}}{x_{\max}-x_{\min}}
+\]</span></p>
+<p>This is useful when the feature range is known and bounded.</p>
+<blockquote class="blockquote">
+<p><strong>Standardization</strong></p>
+</blockquote>
+<p>Standardization subtracts the mean and divides by the standard deviation:</p>
+<p><span class="math display">\[
+z=\frac{x-\mu}{\sigma}
+\]</span> This centers the variable around zero and expresses values in units of standardization.</p>
+<blockquote class="blockquote">
+<p><strong>Max-Abs Scaling</strong></p>
+</blockquote>
+<p>MaxAbs scaling is a technique used to scale the data by dividing each feature by its maximum absolute value.</p>
+<p><span class="math display">\[
+x'=\frac{x}{\max|X|}
+\]</span></p>
+<p>This method is useful when the data contains both positive negative values and we want to preserve the sign of the data while scaling it to the range of -1 to 1.</p>
+<div class="callout callout-style-default callout-tip callout-titled" title="Example">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>Example
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Suppose a model uses blood pressure and body temperature to predict heart disease. Without scaling, a distance-based algorithm such as K-Nearest Neighbors may treat differences in blood pressure as much more important than differences in temperature. After scaling, both variables contribute more proportionally.</p>
+</div>
+</div>
+<div id="cell-fig-feature-scaling-comparison" class="cell" data-execution_count="2">
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.preprocessing <span class="im">import</span> StandardScaler, MinMaxScaler, MaxAbsScaler</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>rng <span class="op">=</span> np.random.default_rng(<span class="dv">123</span>)</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Simulated health data</span></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>n <span class="op">=</span> <span class="dv">120</span></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>blood_pressure <span class="op">=</span> rng.normal(<span class="dv">130</span>, <span class="dv">18</span>, n)</span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>body_temperature <span class="op">=</span> rng.normal(<span class="dv">37</span>, <span class="fl">0.5</span>, n)</span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>X <span class="op">=</span> pd.DataFrame({</span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>    <span class="st">"blood_pressure"</span>: blood_pressure,</span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>    <span class="st">"body_temperature"</span>: body_temperature</span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>    })</span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a><span class="co"># Standardize</span></span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a>scaler <span class="op">=</span> StandardScaler()</span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a>X_std <span class="op">=</span> pd.DataFrame(</span>
+<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a>    scaler.fit_transform(X),</span>
+<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a>    columns<span class="op">=</span>[<span class="st">"blood_pressure_scaled"</span>, <span class="st">"body_temperature_scaled"</span>]</span>
+<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a><span class="co"># Min-max scale</span></span>
+<span id="cb2-25"><a href="#cb2-25" aria-hidden="true" tabindex="-1"></a>min_max_scaler <span class="op">=</span> MinMaxScaler()</span>
+<span id="cb2-26"><a href="#cb2-26" aria-hidden="true" tabindex="-1"></a>X_minmax <span class="op">=</span> pd.DataFrame(</span>
+<span id="cb2-27"><a href="#cb2-27" aria-hidden="true" tabindex="-1"></a>    min_max_scaler.fit_transform(X),</span>
+<span id="cb2-28"><a href="#cb2-28" aria-hidden="true" tabindex="-1"></a>    columns<span class="op">=</span>[<span class="st">"blood_pressure_minmax"</span>, <span class="st">"body_temperature_minmax"</span>]</span>
+<span id="cb2-29"><a href="#cb2-29" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb2-30"><a href="#cb2-30" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-31"><a href="#cb2-31" aria-hidden="true" tabindex="-1"></a><span class="co"># Max-abs scale</span></span>
+<span id="cb2-32"><a href="#cb2-32" aria-hidden="true" tabindex="-1"></a>max_abs_scaler <span class="op">=</span> MaxAbsScaler()</span>
+<span id="cb2-33"><a href="#cb2-33" aria-hidden="true" tabindex="-1"></a>X_maxabs <span class="op">=</span> pd.DataFrame(</span>
+<span id="cb2-34"><a href="#cb2-34" aria-hidden="true" tabindex="-1"></a>    max_abs_scaler.fit_transform(X),</span>
+<span id="cb2-35"><a href="#cb2-35" aria-hidden="true" tabindex="-1"></a>    columns<span class="op">=</span>[<span class="st">"blood_pressure_maxabs"</span>, <span class="st">"body_temperature_maxabs"</span>]</span>
+<span id="cb2-36"><a href="#cb2-36" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb2-37"><a href="#cb2-37" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-38"><a href="#cb2-38" aria-hidden="true" tabindex="-1"></a>fig, axes <span class="op">=</span> plt.subplots(<span class="dv">2</span>, <span class="dv">2</span>, figsize<span class="op">=</span>(<span class="dv">15</span>, <span class="dv">10</span>))</span>
+<span id="cb2-39"><a href="#cb2-39" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>, <span class="dv">0</span>].scatter(X[<span class="st">"blood_pressure"</span>], X[<span class="st">"body_temperature"</span>], alpha<span class="op">=</span><span class="fl">0.7</span>)</span>
+<span id="cb2-40"><a href="#cb2-40" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>, <span class="dv">0</span>].set_title(<span class="st">"Raw Feature Scales"</span>)</span>
+<span id="cb2-41"><a href="#cb2-41" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>, <span class="dv">0</span>].set_xlabel(<span class="st">"Blood Pressure"</span>)</span>
+<span id="cb2-42"><a href="#cb2-42" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>, <span class="dv">0</span>].set_ylabel(<span class="st">"Body Temperature"</span>)</span>
+<span id="cb2-43"><a href="#cb2-43" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>, <span class="dv">1</span>].scatter(X_minmax[<span class="st">"blood_pressure_minmax"</span>], X_minmax[<span class="st">"body_temperature_minmax"</span>], alpha<span class="op">=</span><span class="fl">0.7</span>)</span>
+<span id="cb2-44"><a href="#cb2-44" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>, <span class="dv">1</span>].set_title(<span class="st">"Min-Max Scaled Feature Scales"</span>)</span>
+<span id="cb2-45"><a href="#cb2-45" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>, <span class="dv">1</span>].set_xlabel(<span class="st">"Blood Pressure (min-max scaled)"</span>)</span>
+<span id="cb2-46"><a href="#cb2-46" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>, <span class="dv">1</span>].set_ylabel(<span class="st">"Body Temperature (min-max scaled)"</span>)</span>
+<span id="cb2-47"><a href="#cb2-47" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">1</span>, <span class="dv">0</span>].scatter(X_maxabs[<span class="st">"blood_pressure_maxabs"</span>], X_maxabs[<span class="st">"body_temperature_maxabs"</span>], alpha<span class="op">=</span><span class="fl">0.7</span>)</span>
+<span id="cb2-48"><a href="#cb2-48" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">1</span>, <span class="dv">0</span>].set_title(<span class="st">"Max-Abs Scaled Feature Scales"</span>)</span>
+<span id="cb2-49"><a href="#cb2-49" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">1</span>, <span class="dv">0</span>].set_xlabel(<span class="st">"Blood Pressure (max-abs scaled)"</span>)</span>
+<span id="cb2-50"><a href="#cb2-50" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">1</span>, <span class="dv">0</span>].set_ylabel(<span class="st">"Body Temperature (max-abs scaled)"</span>)</span>
+<span id="cb2-51"><a href="#cb2-51" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">1</span>, <span class="dv">1</span>].scatter(X_std[<span class="st">"blood_pressure_scaled"</span>], X_std[<span class="st">"body_temperature_scaled"</span>], alpha<span class="op">=</span><span class="fl">0.7</span>)</span>
+<span id="cb2-52"><a href="#cb2-52" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">1</span>, <span class="dv">1</span>].set_title(<span class="st">"Standardized Feature Scales"</span>)</span>
+<span id="cb2-53"><a href="#cb2-53" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">1</span>, <span class="dv">1</span>].set_xlabel(<span class="st">"Blood Pressure (standardized)"</span>)</span>
+<span id="cb2-54"><a href="#cb2-54" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">1</span>, <span class="dv">1</span>].set_ylabel(<span class="st">"Body Temperature (standardized)"</span>)</span>
+<span id="cb2-55"><a href="#cb2-55" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb2-56"><a href="#cb2-56" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-display">
+<div id="fig-feature-scaling-comparison" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-feature-scaling-comparison-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="chapter-3_files/figure-html/fig-feature-scaling-comparison-output-1.png" width="1430" height="950" class="figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-feature-scaling-comparison-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;2: Comparing raw, min-max, max-abs, and standardized feature scales
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="encoding-categorical-variables" class="level2">
+<h2 class="anchored" data-anchor-id="encoding-categorical-variables">4. Encoding Categorical Variables</h2>
+<p>Most machine learning algorithms operate on numerical arrays. Therefore, categorical variables must (often) be transformed into numerical representations. Encoding encodes assumptions about the relationship among categories.</p>
+<p>There are two broad types of categorical variables:</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 9%">
+<col style="width: 45%">
+<col style="width: 24%">
+<col style="width: 21%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Type</th>
+<th>Meaning</th>
+<th>Example</th>
+<th>Common Encoding</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Nominal</td>
+<td>Categories have no natural order</td>
+<td>Genre, color, city</td>
+<td>One-hot encoding</td>
+</tr>
+<tr class="even">
+<td>Ordinal</td>
+<td>Categories have a meaningful order</td>
+<td>Low, medium, high</td>
+<td>Ordinal encoding</td>
+</tr>
+</tbody>
+</table>
+<p>Using the wrong encoding can mislead a model. For example, encoding movie genres as Action = 1, Comedy = 2, Horror = 3 implies that Horror is numerically greater than Comedy and that Comedy lies between Action and Horror. That ordering is meaningless.</p>
+<div class="callout callout-style-default callout-tip callout-titled" title="Example">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>Example
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Suppose a movie dataset includes a genre variable with three categories: Action, Comedy, and Horror. <code>OneHotEncoding</code> creates three binary columns:</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Movie</th>
+<th>Genre</th>
+<th>Action</th>
+<th>Comedy</th>
+<th>Horror</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>A</td>
+<td>Action</td>
+<td>1</td>
+<td>0</td>
+<td>0</td>
+</tr>
+<tr class="even">
+<td>B</td>
+<td>Comedy</td>
+<td>0</td>
+<td>1</td>
+<td>0</td>
+</tr>
+<tr class="odd">
+<td>C</td>
+<td>Horror</td>
+<td>0</td>
+<td>0</td>
+<td>1</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div id="cell-fig-one-hot-encoding" class="cell" data-execution_count="3">
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.preprocessing <span class="im">import</span> OneHotEncoder</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>movies <span class="op">=</span> pd.DataFrame({</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>    <span class="st">"movie"</span>: [<span class="st">"Movie A"</span>, <span class="st">"Movie B"</span>, <span class="st">"Movie C"</span>, <span class="st">"Movie D"</span>, <span class="st">"Movie E"</span>],</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>    <span class="st">"genre"</span>: [<span class="st">"Action"</span>, <span class="st">"Comedy"</span>, <span class="st">"Horror"</span>, <span class="st">"Action"</span>, <span class="st">"Comedy"</span>]</span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>})</span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>encoder <span class="op">=</span> OneHotEncoder(sparse_output<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>encoded <span class="op">=</span> encoder.fit_transform(movies[[<span class="st">"genre"</span>]])</span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>encoded_df <span class="op">=</span> pd.DataFrame(</span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>    encoded,</span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a>    columns<span class="op">=</span>encoder.get_feature_names_out([<span class="st">"genre"</span>])</span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a>plot_df <span class="op">=</span> encoded_df.copy()</span>
+<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a>plot_df.index <span class="op">=</span> movies[<span class="st">"movie"</span>]</span>
+<span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-21"><a href="#cb3-21" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">7</span>, <span class="dv">4</span>))</span>
+<span id="cb3-22"><a href="#cb3-22" aria-hidden="true" tabindex="-1"></a>plt.imshow(plot_df, aspect<span class="op">=</span><span class="st">"auto"</span>)</span>
+<span id="cb3-23"><a href="#cb3-23" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">"One-Hot Encoding of Movie Genre"</span>)</span>
+<span id="cb3-24"><a href="#cb3-24" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">"Encoded Genre Columns"</span>)</span>
+<span id="cb3-25"><a href="#cb3-25" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">"Movie"</span>)</span>
+<span id="cb3-26"><a href="#cb3-26" aria-hidden="true" tabindex="-1"></a>plt.xticks(<span class="bu">range</span>(<span class="bu">len</span>(plot_df.columns)), plot_df.columns, rotation<span class="op">=</span><span class="dv">45</span>)</span>
+<span id="cb3-27"><a href="#cb3-27" aria-hidden="true" tabindex="-1"></a>plt.yticks(<span class="bu">range</span>(<span class="bu">len</span>(plot_df.index)), plot_df.index)</span>
+<span id="cb3-28"><a href="#cb3-28" aria-hidden="true" tabindex="-1"></a>plt.colorbar(label<span class="op">=</span><span class="st">"Binary value"</span>)</span>
+<span id="cb3-29"><a href="#cb3-29" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb3-30"><a href="#cb3-30" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-display">
+<div id="fig-one-hot-encoding" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-one-hot-encoding-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="chapter-3_files/figure-html/fig-one-hot-encoding-output-1.png" width="638" height="374" class="figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-one-hot-encoding-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;3: One-hot encoding representation of movie genres
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="text-processing" class="level2">
+<h2 class="anchored" data-anchor-id="text-processing">5. Text Processing</h2>
+<section id="high-dimensional-data" class="level3">
+<h3 class="anchored" data-anchor-id="high-dimensional-data">5.1. High-Dimensional Data</h3>
+<p>Text data require specialized preparation because language is unstructured, sparse, and context-dependent. Before a model can classify emails, summarize documents, detect sentiment, or cluster topics, text must be transformed into a numerical representation.</p>
+<p>Traditional natural language preprocessing includes: - Tokenization - Lowercasing - Stop-word removal - Stemming - Lemmatization - Vectorization - Term weighting</p>
+<p>The specific steps depend on the task. For example, stop-word removal may be useful in topic modeling but harmful in authorship detection or legal text analysis, where function words may carry stylistic or procedural meaning.</p>
+</section>
+<section id="tokenization" class="level3">
+<h3 class="anchored" data-anchor-id="tokenization">5.2. Tokenization</h3>
+<p>Tokenization splits text into smaller units, such as words, subwords, or characters. For example:</p>
+<blockquote class="blockquote">
+<p>“The movie was surprisingly good.”</p>
+</blockquote>
+<p>may become:</p>
+<pre><code>["the", "movie", "was", "supprisingly", "good"]</code></pre>
+</section>
+<section id="stop-words" class="level3">
+<h3 class="anchored" data-anchor-id="stop-words">5.3. Stop-words</h3>
+<p>Stop-words are common words such as “the”, “is”, “and”, or “of”. They are often removed because they appear frequently and may carry little topical information. In some cases (such as sentiment analysis), negation words such as “not” are crucial; removing “not” from “not good” changes the meaning.</p>
+</section>
+<section id="stemming-and-lemmatization" class="level3">
+<h3 class="anchored" data-anchor-id="stemming-and-lemmatization">5.4. Stemming and Lemmatization</h3>
+<p>Stemming reduces words to crude roots, while lemmatization reduces words to linguistically meaningful base forms.</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Word</th>
+<th>Stemming</th>
+<th>Lemmatization</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>studies</td>
+<td>studi</td>
+<td>study</td>
+</tr>
+<tr class="even">
+<td>running</td>
+<td>run</td>
+<td>run</td>
+</tr>
+<tr class="odd">
+<td>better</td>
+<td>better</td>
+<td>good</td>
+</tr>
+</tbody>
+</table>
+<p>Stemming is faster but rougher. Lemmatization is more linguistically informed.</p>
+<div class="callout callout-style-default callout-tip callout-titled" title="Example">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>Example
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>In spam detection, preprocessing may convert raw email text into a matrix of term frequencies or TF-IDF values. Words such as “free”, “winner”, “urgent”, or “click” may become predictive signals.</p>
+</div>
+</div>
+<div id="cell-fig-email-word-frequencies" class="cell" data-execution_count="4">
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.feature_extraction.text <span class="im">import</span> CountVectorizer</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>emails <span class="op">=</span> [</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Win money now click urgent prize"</span>,</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Meeting schedule attached for tomorrow"</span>,</span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Urgent winner claim your free prize now"</span>,</span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Project update and meeting notes attached"</span>,</span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Free money offer click now"</span></span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>]</span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>labels <span class="op">=</span> [<span class="st">"spam"</span>, <span class="st">"not spam"</span>, <span class="st">"spam"</span>, <span class="st">"not spam"</span>, <span class="st">"spam"</span>]</span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a>vectorizer <span class="op">=</span> CountVectorizer(stop_words<span class="op">=</span><span class="st">"english"</span>)</span>
+<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a>X <span class="op">=</span> vectorizer.fit_transform(emails)</span>
+<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a>word_counts <span class="op">=</span> X.toarray().<span class="bu">sum</span>(axis<span class="op">=</span><span class="dv">0</span>)</span>
+<span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a>terms <span class="op">=</span> vectorizer.get_feature_names_out()</span>
+<span id="cb5-20"><a href="#cb5-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-21"><a href="#cb5-21" aria-hidden="true" tabindex="-1"></a>freq_df <span class="op">=</span> pd.DataFrame({</span>
+<span id="cb5-22"><a href="#cb5-22" aria-hidden="true" tabindex="-1"></a>    <span class="st">"term"</span>: terms,</span>
+<span id="cb5-23"><a href="#cb5-23" aria-hidden="true" tabindex="-1"></a>    <span class="st">"count"</span>: word_counts</span>
+<span id="cb5-24"><a href="#cb5-24" aria-hidden="true" tabindex="-1"></a>}).sort_values(<span class="st">"count"</span>, ascending<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb5-25"><a href="#cb5-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-26"><a href="#cb5-26" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">8</span>, <span class="dv">5</span>))</span>
+<span id="cb5-27"><a href="#cb5-27" aria-hidden="true" tabindex="-1"></a>plt.bar(freq_df[<span class="st">"term"</span>], freq_df[<span class="st">"count"</span>])</span>
+<span id="cb5-28"><a href="#cb5-28" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">"Word Frequencies in Example Email Corpus"</span>)</span>
+<span id="cb5-29"><a href="#cb5-29" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">"Term"</span>)</span>
+<span id="cb5-30"><a href="#cb5-30" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">"Frequency"</span>)</span>
+<span id="cb5-31"><a href="#cb5-31" aria-hidden="true" tabindex="-1"></a>plt.xticks(rotation<span class="op">=</span><span class="dv">45</span>)</span>
+<span id="cb5-32"><a href="#cb5-32" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb5-33"><a href="#cb5-33" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-display">
+<div id="fig-email-word-frequencies" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-email-word-frequencies-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="chapter-3_files/figure-html/fig-email-word-frequencies-output-1.png" width="758" height="470" class="figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-email-word-frequencies-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;4: Word frequencies in the example email corpus
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="image-preparation-and-data-augmentation" class="level2">
+<h2 class="anchored" data-anchor-id="image-preparation-and-data-augmentation">6. Image Preparation and Data Augmentation</h2>
+<p>Image data are high-dimensional arrays of pixel values. A small image of size <span class="math inline">\(222\times 224\)</span> with three color channels contains 150,528 numeric values. Deep learning models can learn powerful visual representations from such data, but they often require large, diverse datasets.</p>
+<p>Image preparation may include: - Resizing - Cropping - Normalizing pixel values - Color correction - Label verification - Augmentation</p>
+<div class="callout callout-style-default callout-note callout-titled" title="Definition: Data Augmentation">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Definition: Data Augmentation
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Data augmentation creates modified versions of training images to improve generalization.</p>
+</div>
+</div>
+<p>Common augmentations include rotation, flipping, zooming, cropping, brightness adjustment, and small translations. If a model must recognize cats, it should recognize a cat whether the image is slightly rotated, shifted, or zoomed. Augmentation teaches the model that such transformations should not change the label.</p>
+<div id="cell-fig-image-augmentation" class="cell" data-execution_count="5">
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> scipy.ndimage <span class="im">import</span> rotate, shift, zoom</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>img <span class="op">=</span> np.zeros((<span class="dv">64</span>, <span class="dv">64</span>))</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>img[<span class="dv">20</span>:<span class="dv">44</span>, <span class="dv">20</span>:<span class="dv">44</span>] <span class="op">=</span> <span class="fl">1.0</span></span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Create augmentations</span></span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>rotated <span class="op">=</span> rotate(img, angle<span class="op">=</span><span class="dv">20</span>, reshape<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>shifted <span class="op">=</span> shift(img, shift<span class="op">=</span>(<span class="dv">8</span>, <span class="op">-</span><span class="dv">5</span>))</span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>zoomed <span class="op">=</span> zoom(img, zoom<span class="op">=</span><span class="fl">1.2</span>)</span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a><span class="co"># Crop zoomed image back to 64x64</span></span>
+<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a>start <span class="op">=</span> (zoomed.shape[<span class="dv">0</span>] <span class="op">-</span> <span class="dv">64</span>) <span class="op">//</span> <span class="dv">2</span></span>
+<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a>zoomed_crop <span class="op">=</span> zoomed[start:start<span class="op">+</span><span class="dv">64</span>, start:start<span class="op">+</span><span class="dv">64</span>]</span>
+<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a>images <span class="op">=</span> [img, rotated, shifted, zoomed_crop]</span>
+<span id="cb6-18"><a href="#cb6-18" aria-hidden="true" tabindex="-1"></a>titles <span class="op">=</span> [<span class="st">"Original"</span>, <span class="st">"Rotated"</span>, <span class="st">"Shifted"</span>, <span class="st">"Zoomed"</span>]</span>
+<span id="cb6-19"><a href="#cb6-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-20"><a href="#cb6-20" aria-hidden="true" tabindex="-1"></a>fig, axes <span class="op">=</span> plt.subplots(<span class="dv">2</span>, <span class="dv">2</span>, figsize<span class="op">=</span>(<span class="dv">10</span>, <span class="dv">5</span>))</span>
+<span id="cb6-21"><a href="#cb6-21" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> ax, image, title <span class="kw">in</span> <span class="bu">zip</span>(axes.flatten(), images, titles):</span>
+<span id="cb6-22"><a href="#cb6-22" aria-hidden="true" tabindex="-1"></a>    ax.imshow(image, cmap<span class="op">=</span><span class="st">"gray"</span>)</span>
+<span id="cb6-23"><a href="#cb6-23" aria-hidden="true" tabindex="-1"></a>    ax.set_title(title)</span>
+<span id="cb6-24"><a href="#cb6-24" aria-hidden="true" tabindex="-1"></a>    ax.axis(<span class="st">"off"</span>)</span>
+<span id="cb6-25"><a href="#cb6-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-26"><a href="#cb6-26" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb6-27"><a href="#cb6-27" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-display">
+<div id="fig-image-augmentation" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-image-augmentation-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="chapter-3_files/figure-html/fig-image-augmentation-output-1.png" width="605" height="470" class="figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-image-augmentation-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;5: Simple image augmentation examples
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="machine-learning" class="level2">
+<h2 class="anchored" data-anchor-id="machine-learning">7. Machine Learning</h2>
+<section id="defining-machine-learning" class="level3">
+<h3 class="anchored" data-anchor-id="defining-machine-learning">7.1. Defining Machine Learning</h3>
+<p>Machine learning<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a> is the stage where prepared data are used to train models.</p>
+<div class="callout callout-style-default callout-note callout-titled" title="Definition: Machine Learning">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Definition: Machine Learning
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><em>A computer program is said to <strong>learn</strong> from experience <span class="math inline">\(E\)</span>, with respect to some class of task <span class="math inline">\(T\)</span> and performance measure <span class="math inline">\(P\)</span>, if its performance at tasks in <span class="math inline">\(T\)</span>, as measured by <span class="math inline">\(P\)</span>, improves with experience <span class="math inline">\(E\)</span>.</em></p>
+</div>
+</div>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 18%">
+<col style="width: 47%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Component</th>
+<th>Meaning</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Experience <span class="math inline">\(E\)</span></td>
+<td>Data or interactions used for learning</td>
+<td>Labeled email examples</td>
+</tr>
+<tr class="even">
+<td>Task <span class="math inline">\(T\)</span></td>
+<td>What the system must do</td>
+<td>Classify spam</td>
+</tr>
+<tr class="odd">
+<td>Performance <span class="math inline">\(P\)</span></td>
+<td>How success is measured</td>
+<td>Accuracy, precision, recall</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="supervised-learning" class="level3">
+<h3 class="anchored" data-anchor-id="supervised-learning">7.2. Supervised Learning</h3>
+<p>In supervised learning, the model receives labeled examples. Each observation includes input variables and a known output.</p>
+<p>Common supervised tasks include classification and regression.</p>
+<p><strong>Classification:</strong> predicts discrete labels.</p>
+<p>Examples: - Fraud or non-fraud, spam or not spam. - Under-estimate, normal, over-estimate. - Disease or no disease (or belonging to what type of disease).</p>
+<p><strong>Regression</strong>: predicts continuous numeric outcomes.</p>
+<p>Examples: - House price, salary. - Rainfall amount, energy demand. - Travel time.</p>
+</section>
+<section id="unsupervised-learning" class="level3">
+<h3 class="anchored" data-anchor-id="unsupervised-learning">7.3. Unsupervised Learning</h3>
+<p>In unsupervised learning, the model receives data without labeled outputs. The goal is to discover structure.</p>
+<p>Examples: - Customer segmentation - Topic discovery - Anomaly detection - Dimensionality reduction</p>
+</section>
+<section id="reinforcement-learning" class="level3">
+<h3 class="anchored" data-anchor-id="reinforcement-learning">7.4. Reinforcement Learning</h3>
+<p>In reinforcement learning, an agent interacts with an environment and learns through rewards or penalties. Instead of learning only from a fixed labeled dataset, the agent learns by taking actions and observing consequences.</p>
+<p>Examples: - Game-playing systems - Robotics - Dynamic pricing - Autonomous navigation - Resource allocation</p>
+<p>AlphaGo is a famous example of reinforcement learning and search methods applied to strategic game play. The AlphaGo system combined deep neural networks with tree search and achieved superhuman performance in Go, a game long considered difficult for artificial intelligence.</p>
+</section>
+</section>
+<section id="model-design" class="level2">
+<h2 class="anchored" data-anchor-id="model-design">8. Model Design</h2>
+<p>Model design is the process of selecting and configuring a learning system. It is a structured contest among possible representations of the problem.</p>
+<p>A data scientist must decide: - What is the prediction target? - What features are available at prediction time? - What family of models is appropriate? - What assumptions are acceptable? - What metric reflects success? - What errors are most costly? - How much interpretability is needed? - How will the model be validated? - How will the model be maintained?</p>
+<p>This is why model design is iterative, as discussed <a href="../../teaching/cds-303/chapter-1.html#the-data-science-cycle">previously</a>. Early results often reveal that the target is poorly defined, a feature leaks future information, a model is too complex, or the metric does not match the real decision problem.</p>
+<blockquote class="blockquote">
+<p><strong>Candidate Models</strong></p>
+</blockquote>
+<p>The first design decision is often the model family.</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 23%">
+<col style="width: 39%">
+<col style="width: 36%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Model Family</th>
+<th>Strength</th>
+<th>Limitation</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Linear regression</td>
+<td>Simple and interpretable</td>
+<td>Limited nonlinear structure</td>
+</tr>
+<tr class="even">
+<td>Logistic regression</td>
+<td>Strong baseline for classification</td>
+<td>Linear decision boundary</td>
+</tr>
+<tr class="odd">
+<td>Decision tree</td>
+<td>Interpretable nonlinear rules</td>
+<td>Can overfit</td>
+</tr>
+<tr class="even">
+<td>Random forest</td>
+<td>Robust nonlinear model</td>
+<td>Less interpretable than one tree</td>
+</tr>
+<tr class="odd">
+<td>Gradient boosting</td>
+<td>Strong tabular performance</td>
+<td>Require tuning</td>
+</tr>
+<tr class="even">
+<td>Support vector machine</td>
+<td>Effective in high-dimensional spaces</td>
+<td>Can be hard to scale</td>
+</tr>
+<tr class="odd">
+<td>Neural network</td>
+<td>Flexible representation learning</td>
+<td>Data-hungry and less interpretable</td>
+</tr>
+<tr class="even">
+<td>Gaussian process</td>
+<td>Uncertainty-aware nonparametric model</td>
+<td>Computationally expensive at scale</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="train-validation-and-test-splits" class="level2">
+<h2 class="anchored" data-anchor-id="train-validation-and-test-splits">9. Train, Validation, and Test Splits</h2>
+<section id="why-splitting-matters" class="level3">
+<h3 class="anchored" data-anchor-id="why-splitting-matters">9.1. Why Splitting Matters</h3>
+<p>A model that performs well on the training data may simply have memorized it. To estimate generalization performance, the data scientist must evaluate the model on data not used during training.</p>
+<p>A common split is:</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Split</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Training set</td>
+<td>Fit model parameters</td>
+</tr>
+<tr class="even">
+<td>Validation set</td>
+<td>Tune hyperparameters and compare models</td>
+</tr>
+<tr class="odd">
+<td>Test set</td>
+<td>Estimate final generalization performance</td>
+</tr>
+</tbody>
+</table>
+<p>The test set should be used only at the end. If the test set is repeatedly used to guide model design, it stops being an unbiased estimate of future performance.</p>
+</section>
+<section id="overfitting" class="level3">
+<h3 class="anchored" data-anchor-id="overfitting">9.2. Overfitting</h3>
+<p>Overfitting occurs when a model captures noise or accidental structure in the training data rather stable patterns. A highly flexible model may achieve near-perfect training performance but fail on new observations.</p>
+<div id="cell-fig-overfitting-example" class="cell" data-execution_count="6">
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.preprocessing <span class="im">import</span> PolynomialFeatures</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.linear_model <span class="im">import</span> LinearRegression</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.pipeline <span class="im">import</span> Pipeline</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>rng <span class="op">=</span> np.random.default_rng(<span class="dv">42</span>)</span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Synthetic nonlinear data</span></span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>X <span class="op">=</span> np.linspace(<span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">25</span>).reshape(<span class="op">-</span><span class="dv">1</span>, <span class="dv">1</span>)</span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>y <span class="op">=</span> np.sin(<span class="dv">2</span> <span class="op">*</span> np.pi <span class="op">*</span> X).ravel() <span class="op">+</span> rng.normal(<span class="dv">0</span>, <span class="fl">0.25</span>, X.shape[<span class="dv">0</span>])</span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>X_grid <span class="op">=</span> np.linspace(<span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">300</span>).reshape(<span class="op">-</span><span class="dv">1</span>, <span class="dv">1</span>)</span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a>degrees <span class="op">=</span> [<span class="dv">1</span>, <span class="dv">4</span>, <span class="dv">15</span>]</span>
+<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">7</span>, <span class="dv">5</span>))</span>
+<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a>plt.scatter(X, y, label<span class="op">=</span><span class="st">"Training data"</span>)</span>
+<span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> degree <span class="kw">in</span> degrees:</span>
+<span id="cb7-20"><a href="#cb7-20" aria-hidden="true" tabindex="-1"></a>    model <span class="op">=</span> Pipeline([</span>
+<span id="cb7-21"><a href="#cb7-21" aria-hidden="true" tabindex="-1"></a>        (<span class="st">"poly"</span>, PolynomialFeatures(degree<span class="op">=</span>degree)),</span>
+<span id="cb7-22"><a href="#cb7-22" aria-hidden="true" tabindex="-1"></a>        (<span class="st">"linear"</span>, LinearRegression())</span>
+<span id="cb7-23"><a href="#cb7-23" aria-hidden="true" tabindex="-1"></a>        ])</span>
+<span id="cb7-24"><a href="#cb7-24" aria-hidden="true" tabindex="-1"></a>    model.fit(X, y)</span>
+<span id="cb7-25"><a href="#cb7-25" aria-hidden="true" tabindex="-1"></a>    y_pred <span class="op">=</span> model.predict(X_grid)</span>
+<span id="cb7-26"><a href="#cb7-26" aria-hidden="true" tabindex="-1"></a>    plt.plot(X_grid, y_pred, label<span class="op">=</span><span class="ss">f"Polynomial degree </span><span class="sc">{</span>degree<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb7-27"><a href="#cb7-27" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">"X"</span>)</span>
+<span id="cb7-28"><a href="#cb7-28" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">"y"</span>)</span>
+<span id="cb7-29"><a href="#cb7-29" aria-hidden="true" tabindex="-1"></a>plt.legend()</span>
+<span id="cb7-30"><a href="#cb7-30" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb7-31"><a href="#cb7-31" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-display">
+<div id="fig-overfitting-example" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-overfitting-example-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="chapter-3_files/figure-html/fig-overfitting-example-output-1.png" width="662" height="470" class="figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-overfitting-example-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;6: Polynomial models with different complexity on the same dataset
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="cross-validation" class="level2">
+<h2 class="anchored" data-anchor-id="cross-validation">10. Cross-Validation</h2>
+<p>A single train-validation split may produce unstable estimates, especially with small datasets. Cross-validation reduces this instability by evaluating the model across multiple splits.</p>
+<p>In <span class="math inline">\(k\)</span>-fold cross-validation<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a>, the dataset is divided into <span class="math inline">\(k\)</span> folds. The model is trained <span class="math inline">\(k\)</span> times. Each time, one fold is used for validation and the remaining <span class="math inline">\(k-1\)</span> folds are used for training.</p>
+</section>
+<section id="hyperparameter-tuning" class="level2">
+<h2 class="anchored" data-anchor-id="hyperparameter-tuning">11. Hyperparameter Tuning</h2>
+<section id="parameters-versus-hyperparameters" class="level3">
+<h3 class="anchored" data-anchor-id="parameters-versus-hyperparameters">11.1. Parameters Versus Hyperparameters</h3>
+<p>A model has two kinds of quantities:</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 14%">
+<col style="width: 39%">
+<col style="width: 46%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Type</th>
+<th>Meaning</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Parameter</td>
+<td>Learned from data during training</td>
+<td>Regression coefficient</td>
+</tr>
+<tr class="even">
+<td>Hyperparameter</td>
+<td>Chosen before or during model selection</td>
+<td>Tree depth, learning rate, number of neighbors</td>
+</tr>
+</tbody>
+</table>
+<p>Hyperparameters control the behavior of the learning algorithm. For example: - <span class="math inline">\(k\)</span> in K-Nearest Neighbors - Maximum depth in a decision tree - Number of trees in a random forest - Learning rate in gradient boosting - Regularization strength in logistic regression - Number of layers in a neural network</p>
+</section>
+<section id="grid-search-and-random-search" class="level3">
+<h3 class="anchored" data-anchor-id="grid-search-and-random-search">11.2. Grid Search and Random Search</h3>
+<p>Grid search tests every combination in a predefined hyperparameter grid. It is simple but can be inefficient.</p>
+<p>Random search samples combinations from a distribution. It can be more efficient when only some hyperparameters strongly affect performance.</p>
+</section>
+<section id="bayesian-optimization" class="level3">
+<h3 class="anchored" data-anchor-id="bayesian-optimization">11.3. Bayesian Optimization</h3>
+<p>Bayesian optimization<a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a> treats hyperparameter tuning as a sequential decision problem. Instead of blindly trying combinations, it builds a probabilistic model of performance and chooses promising configurations to evaluate next.</p>
+<div id="cell-fig-hyperparameter-surface" class="cell" data-execution_count="7">
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>x <span class="op">=</span> np.linspace(<span class="dv">0</span>, <span class="dv">10</span>, <span class="dv">100</span>)</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>y <span class="op">=</span> np.linspace(<span class="dv">0</span>, <span class="dv">10</span>, <span class="dv">100</span>)</span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>X, Y <span class="op">=</span> np.meshgrid(x, y)</span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>Z <span class="op">=</span> np.sin(X <span class="op">/</span> <span class="fl">1.5</span>) <span class="op">*</span> np.cos(Y <span class="op">/</span> <span class="dv">2</span>) <span class="op">+</span> np.exp(<span class="op">-</span>((X <span class="op">-</span> <span class="dv">7</span>)<span class="op">**</span><span class="dv">2</span> <span class="op">+</span> (Y <span class="op">-</span> <span class="dv">3</span>)<span class="op">**</span><span class="dv">2</span>) <span class="op">/</span> <span class="dv">5</span>)</span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">7</span>, <span class="dv">5</span>))</span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>contour <span class="op">=</span> plt.contourf(X, Y, Z, levels<span class="op">=</span><span class="dv">20</span>)</span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">"Hyperparameter Performance Surface"</span>)</span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">"Hyperparameter 1"</span>)</span>
+<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">"Hyperparameter 2"</span>)</span>
+<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a>plt.colorbar(contour, label<span class="op">=</span><span class="st">"Validation score"</span>)</span>
+<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-display">
+<div id="fig-hyperparameter-surface" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-hyperparameter-surface-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="chapter-3_files/figure-html/fig-hyperparameter-surface-output-1.png" width="651" height="470" class="figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-hyperparameter-surface-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;7: Illustrative hyperparameter performance surface
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="pipelines-and-leakage-prevention" class="level2">
+<h2 class="anchored" data-anchor-id="pipelines-and-leakage-prevention">12. Pipelines and Leakage Prevention</h2>
+<p>Data leakage occurs when information from outside the training process enters the model inappropriately. Leakage can make validation performance look excellent while real-world performance fails.</p>
+<p>Common leakage examples include: - Scaling the full dataset before train-test splitting - Imputing missing values using full-dataset statistics - Using future information to predict the past - Including variables created after the prediction time - Accidentally duplicating observations across train and test sets - Tuning hyperparameters on the test set</p>
+<p>Leakage is one of the most serious threats to model validity because it produces false confidence.</p>
+<blockquote class="blockquote">
+<p><strong>Pipelines</strong></p>
+</blockquote>
+<p>A model pipeline ensures that preprocessing steps are fit on the training data and then applied to validation or test data. In scikit-learn, pipelines are commonly used to combine imputation, scaling, encoding, and modeling into one reproducible workflow.</p>
+<div id="5429835c" class="cell" data-execution_count="8">
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.compose <span class="im">import</span> ColumnTransformer</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.impute <span class="im">import</span> SimpleImputer</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.preprocessing <span class="im">import</span> OneHotEncoder, StandardScaler</span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.pipeline <span class="im">import</span> Pipeline</span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.linear_model <span class="im">import</span> LogisticRegression</span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.model_selection <span class="im">import</span> train_test_split</span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Example dataset</span></span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pd.DataFrame({</span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a>    <span class="st">"age"</span>: [<span class="dv">22</span>, <span class="dv">35</span>, <span class="dv">41</span>, <span class="va">None</span>, <span class="dv">58</span>, <span class="dv">29</span>],</span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a>    <span class="st">"income"</span>: [<span class="dv">45000</span>, <span class="dv">62000</span>, <span class="va">None</span>, <span class="dv">52000</span>, <span class="dv">88000</span>, <span class="dv">39000</span>],</span>
+<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a>    <span class="st">"genre_preference"</span>: [<span class="st">"Action"</span>, <span class="st">"Comedy"</span>, <span class="st">"Horror"</span>, <span class="st">"Action"</span>, <span class="va">None</span>, <span class="st">"Comedy"</span>],</span>
+<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a>    <span class="st">"purchased"</span>: [<span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">0</span>]</span>
+<span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a>})</span>
+<span id="cb9-16"><a href="#cb9-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-17"><a href="#cb9-17" aria-hidden="true" tabindex="-1"></a>X <span class="op">=</span> df.drop(columns<span class="op">=</span>[<span class="st">"purchased"</span>])</span>
+<span id="cb9-18"><a href="#cb9-18" aria-hidden="true" tabindex="-1"></a>y <span class="op">=</span> df[<span class="st">"purchased"</span>]</span>
+<span id="cb9-19"><a href="#cb9-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-20"><a href="#cb9-20" aria-hidden="true" tabindex="-1"></a>numeric_features <span class="op">=</span> [<span class="st">"age"</span>, <span class="st">"income"</span>]</span>
+<span id="cb9-21"><a href="#cb9-21" aria-hidden="true" tabindex="-1"></a>categorical_features <span class="op">=</span> [<span class="st">"genre_preference"</span>]</span>
+<span id="cb9-22"><a href="#cb9-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-23"><a href="#cb9-23" aria-hidden="true" tabindex="-1"></a>numeric_pipeline <span class="op">=</span> Pipeline([</span>
+<span id="cb9-24"><a href="#cb9-24" aria-hidden="true" tabindex="-1"></a>    (<span class="st">"imputer"</span>, SimpleImputer(strategy<span class="op">=</span><span class="st">"median"</span>)),</span>
+<span id="cb9-25"><a href="#cb9-25" aria-hidden="true" tabindex="-1"></a>    (<span class="st">"scaler"</span>, StandardScaler())</span>
+<span id="cb9-26"><a href="#cb9-26" aria-hidden="true" tabindex="-1"></a>])</span>
+<span id="cb9-27"><a href="#cb9-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-28"><a href="#cb9-28" aria-hidden="true" tabindex="-1"></a>categorical_pipeline <span class="op">=</span> Pipeline([</span>
+<span id="cb9-29"><a href="#cb9-29" aria-hidden="true" tabindex="-1"></a>    (<span class="st">"imputer"</span>, SimpleImputer(strategy<span class="op">=</span><span class="st">"most_frequent"</span>)),</span>
+<span id="cb9-30"><a href="#cb9-30" aria-hidden="true" tabindex="-1"></a>    (<span class="st">"encoder"</span>, OneHotEncoder(handle_unknown<span class="op">=</span><span class="st">"ignore"</span>))</span>
+<span id="cb9-31"><a href="#cb9-31" aria-hidden="true" tabindex="-1"></a>])</span>
+<span id="cb9-32"><a href="#cb9-32" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-33"><a href="#cb9-33" aria-hidden="true" tabindex="-1"></a>preprocessor <span class="op">=</span> ColumnTransformer([</span>
+<span id="cb9-34"><a href="#cb9-34" aria-hidden="true" tabindex="-1"></a>    (<span class="st">"num"</span>, numeric_pipeline, numeric_features),</span>
+<span id="cb9-35"><a href="#cb9-35" aria-hidden="true" tabindex="-1"></a>    (<span class="st">"cat"</span>, categorical_pipeline, categorical_features)</span>
+<span id="cb9-36"><a href="#cb9-36" aria-hidden="true" tabindex="-1"></a>])</span>
+<span id="cb9-37"><a href="#cb9-37" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-38"><a href="#cb9-38" aria-hidden="true" tabindex="-1"></a>model_pipeline <span class="op">=</span> Pipeline([</span>
+<span id="cb9-39"><a href="#cb9-39" aria-hidden="true" tabindex="-1"></a>    (<span class="st">"preprocess"</span>, preprocessor),</span>
+<span id="cb9-40"><a href="#cb9-40" aria-hidden="true" tabindex="-1"></a>    (<span class="st">"model"</span>, LogisticRegression())</span>
+<span id="cb9-41"><a href="#cb9-41" aria-hidden="true" tabindex="-1"></a>])</span>
+<span id="cb9-42"><a href="#cb9-42" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-43"><a href="#cb9-43" aria-hidden="true" tabindex="-1"></a>X_train, X_test, y_train, y_test <span class="op">=</span> train_test_split(</span>
+<span id="cb9-44"><a href="#cb9-44" aria-hidden="true" tabindex="-1"></a>    X, y, test_size<span class="op">=</span><span class="fl">0.33</span>, random_state<span class="op">=</span><span class="dv">42</span></span>
+<span id="cb9-45"><a href="#cb9-45" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb9-46"><a href="#cb9-46" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-47"><a href="#cb9-47" aria-hidden="true" tabindex="-1"></a>model_pipeline.fit(X_train, y_train)</span>
+<span id="cb9-48"><a href="#cb9-48" aria-hidden="true" tabindex="-1"></a>test_score <span class="op">=</span> model_pipeline.score(X_test, y_test)</span>
+<span id="cb9-49"><a href="#cb9-49" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-50"><a href="#cb9-50" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Test score:"</span>, test_score)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>Test score: 0.5</code></pre>
+</div>
+</div>
+</section>
+<section id="bayesian-and-optimization-driven-model-design" class="level2">
+<h2 class="anchored" data-anchor-id="bayesian-and-optimization-driven-model-design">13. Bayesian and Optimization-Driven model Design</h2>
+<p>In Bayesian model design, the analyst specifies prior beliefs, a likelihood model, and a procedure for updating beliefs after observing data. This approach is useful when uncertainty matters, sample sizes are limited, or prior scientific knowledge should be incorporated explicitly.</p>
+<div class="callout callout-style-default callout-tip callout-titled" title="Example">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>Example
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>In Gaussian process regression, the model is defined through a prior mean function and covariance kernel. The kernel encodes assumptions about smoothness, periodicity, and similarity.</p>
+</div>
+</div>
+<div class="callout callout-style-default callout-important callout-titled" title="Important">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Important</span>Important
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Choosing a kernel is a modeling assumption about the structure of the unknown function.</p>
+</div>
+</div>
+<p>A Gaussian process can model nonlinear functions with uncertainty bands. It is especially useful when data are limited and uncertainty estimates are important.</p>
+<div id="cell-fig-gaussian-process-uncertainty" class="cell" data-execution_count="9">
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.gaussian_process <span class="im">import</span> GaussianProcessRegressor</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.gaussian_process.kernels <span class="im">import</span> RBF, WhiteKernel</span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>rng <span class="op">=</span> np.random.default_rng(<span class="dv">42</span>)</span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Training data</span></span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a>X_train <span class="op">=</span> np.linspace(<span class="dv">0</span>, <span class="dv">10</span>, <span class="dv">12</span>).reshape(<span class="op">-</span><span class="dv">1</span>, <span class="dv">1</span>)</span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a>y_train <span class="op">=</span> np.sin(X_train).ravel() <span class="op">+</span> rng.normal(<span class="dv">0</span>, <span class="fl">0.2</span>, X_train.shape[<span class="dv">0</span>])</span>
+<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a><span class="co"># Test grid</span></span>
+<span id="cb11-13"><a href="#cb11-13" aria-hidden="true" tabindex="-1"></a>X_grid <span class="op">=</span> np.linspace(<span class="dv">0</span>, <span class="dv">10</span>, <span class="dv">300</span>).reshape(<span class="op">-</span><span class="dv">1</span>, <span class="dv">1</span>)</span>
+<span id="cb11-14"><a href="#cb11-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-15"><a href="#cb11-15" aria-hidden="true" tabindex="-1"></a><span class="co"># GP model</span></span>
+<span id="cb11-16"><a href="#cb11-16" aria-hidden="true" tabindex="-1"></a>kernel <span class="op">=</span> RBF(length_scale<span class="op">=</span><span class="fl">1.0</span>) <span class="op">+</span> WhiteKernel(noise_level<span class="op">=</span><span class="fl">0.1</span>)</span>
+<span id="cb11-17"><a href="#cb11-17" aria-hidden="true" tabindex="-1"></a>gp <span class="op">=</span> GaussianProcessRegressor(kernel<span class="op">=</span>kernel, random_state<span class="op">=</span><span class="dv">42</span>)</span>
+<span id="cb11-18"><a href="#cb11-18" aria-hidden="true" tabindex="-1"></a>gp.fit(X_train, y_train)</span>
+<span id="cb11-19"><a href="#cb11-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-20"><a href="#cb11-20" aria-hidden="true" tabindex="-1"></a>y_mean, y_std <span class="op">=</span> gp.predict(X_grid, return_std<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb11-21"><a href="#cb11-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-22"><a href="#cb11-22" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">8</span>, <span class="dv">5</span>))</span>
+<span id="cb11-23"><a href="#cb11-23" aria-hidden="true" tabindex="-1"></a>plt.scatter(X_train, y_train, label<span class="op">=</span><span class="st">"Observed data"</span>)</span>
+<span id="cb11-24"><a href="#cb11-24" aria-hidden="true" tabindex="-1"></a>plt.plot(X_grid, y_mean, label<span class="op">=</span><span class="st">"GP mean prediction"</span>)</span>
+<span id="cb11-25"><a href="#cb11-25" aria-hidden="true" tabindex="-1"></a>plt.fill_between(</span>
+<span id="cb11-26"><a href="#cb11-26" aria-hidden="true" tabindex="-1"></a>    X_grid.ravel(),</span>
+<span id="cb11-27"><a href="#cb11-27" aria-hidden="true" tabindex="-1"></a>    y_mean <span class="op">-</span> <span class="dv">2</span> <span class="op">*</span> y_std,</span>
+<span id="cb11-28"><a href="#cb11-28" aria-hidden="true" tabindex="-1"></a>    y_mean <span class="op">+</span> <span class="dv">2</span> <span class="op">*</span> y_std,</span>
+<span id="cb11-29"><a href="#cb11-29" aria-hidden="true" tabindex="-1"></a>    alpha<span class="op">=</span><span class="fl">0.2</span>,</span>
+<span id="cb11-30"><a href="#cb11-30" aria-hidden="true" tabindex="-1"></a>    label<span class="op">=</span><span class="st">"Approx. 95</span><span class="sc">% u</span><span class="st">ncertainty band"</span></span>
+<span id="cb11-31"><a href="#cb11-31" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb11-32"><a href="#cb11-32" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">"Gaussian Process Regression with Uncertainty"</span>)</span>
+<span id="cb11-33"><a href="#cb11-33" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">"X"</span>)</span>
+<span id="cb11-34"><a href="#cb11-34" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">"y"</span>)</span>
+<span id="cb11-35"><a href="#cb11-35" aria-hidden="true" tabindex="-1"></a>plt.legend()</span>
+<span id="cb11-36"><a href="#cb11-36" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb11-37"><a href="#cb11-37" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-display">
+<div id="fig-gaussian-process-uncertainty" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-gaussian-process-uncertainty-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="chapter-3_files/figure-html/fig-gaussian-process-uncertainty-output-1.png" width="758" height="470" class="figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-gaussian-process-uncertainty-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;8: Gaussian process regression with uncertainty bands
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="automated-machine-learning-and-neural-architecture-search" class="level2">
+<h2 class="anchored" data-anchor-id="automated-machine-learning-and-neural-architecture-search">14. Automated Machine Learning and Neural Architecture Search</h2>
+<section id="automl" class="level3">
+<h3 class="anchored" data-anchor-id="automl">14.1. AutoML</h3>
+<p>Automated Machine Learning<a href="#fn4" class="footnote-ref" id="fnref4" role="doc-noteref"><sup>4</sup></a>, or AutoML, attempts to automate parts of the model design process, including preprocessing, model selection, hyperparameter tuning, and sometimes feature engineering.</p>
+<div class="callout callout-style-default callout-note callout-titled" title="Definition">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Definition
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><em><strong>AutoML</strong> is a field that aims to make machine learning decisions in a data-driven and automated way, allowing systems to determine strong approaches for particular applications.</em></p>
+</div>
+</div>
+<p>AutoML can be useful because model design involves many repetitive and technical choices. However, AutoML does not remove the need for data understanding. An AutoML system can optimize a metric, but it cannot by itself determine whether the metric represents the real-world objective, whether the data are biased, or whether the model is ethically appropriate.</p>
+</section>
+<section id="neural-architecture-search" class="level3">
+<h3 class="anchored" data-anchor-id="neural-architecture-search">14.2. Neural Architecture Search</h3>
+<p>Neural Architecture Search, or NAS, automates the search for neural network architectures. Instead of manually designing every layer, filter size, and connection pattern, NAS uses search algorithms to explore possible architectures.</p>
+<p>EfficientNet<a href="#fn5" class="footnote-ref" id="fnref5" role="doc-noteref"><sup>5</sup></a> is a well-known example of architecture design and scaling. It is a compound scaling method that balances network depth, width, and input resolution, using neural architecture search to design a baseline network and then scaling it efficiently.</p>
+<hr>
+<p>Data preparation and model design are the technical core of applied data science. They translate contextual understanding into computational learning.</p>
+<p>Data preparation determines how the world is represented to the model. Missing values, scaling choices, categorical encoding, text preprocessing, image augmentation, and pipeline construction all shape what the model can learn. They encode assumptions about measurement, similarity, relevance, and uncertainty.</p>
+<p>Model design determines how learning occurs. The data scientist must choose among supervised, unsupervised, and reinforcement learning paradigms; select model families; tune hyperparameters; prevent overfitting; validate performance; and balance accuracy against interpretability, stability, fairness, and cost.</p>
+<p>The central lesson is that successful data science is achieved by constructing a reliable chain from prepare evidence to validated learning. A strong model is one whose data preparation, design assumptions, validation strategy, and decision context are scientifically defensible.</p>
+<p>Next chapter: <a href="../../teaching/cds-303/chapter-4.html">Data Modeling - Regression</a></p>
+<hr>
+
+
+</section>
+</section>
+
+
+<div id="quarto-appendix" class="default"><section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes"><h2 class="anchored quarto-appendix-heading">Footnotes</h2>
+
+<ol>
+<li id="fn1"><p>Mitchell, Tom M. <em>Machine Learning</em>. McGraw-Hill Series in Computer Science. McGraw-Hill, 1997.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn2"><p>Kohavi, Ron. “A Study of Cross-Validation and Bootstrap for Accuracy Estimation and Model Selection.” <em>Proceedings of the 14th International Joint Conference on Artificial Intelligence - Volume 2</em> (San Francisco, CA, USA), IJCAI’95, August 20, 1995, 1137–43.<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn3"><p>Snoek, Jasper, Hugo Larochelle, and Ryan P. Adams. “Practical Bayesian Optimization of Machine Learning Algorithms.” arXiv:1206.2944. Preprint, arXiv, August 29, 2012. <a href="https://doi.org/10.48550/arXiv.1206.2944">https://doi.org/10.48550/arXiv.1206.2944</a>.<a href="#fnref3" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn4"><p>Hutter, Frank, Lars Kotthoff, and Joaquin Vanschoren, eds.&nbsp;<em>Automated Machine Learning: Methods, Systems, Challenges</em>. The Springer Series on Challenges in Machine Learning. Springer International Publishing, 2019. <a href="https://doi.org/10.1007/978-3-030-05318-5">https://doi.org/10.1007/978-3-030-05318-5</a>.<a href="#fnref4" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn5"><p>Tan, Mingxing, and Quoc V. Le. “EfficientNet: Rethinking Model Scaling for Convolutional Neural Networks.” arXiv:1905.11946. Preprint, arXiv, September 11, 2020. <a href="https://doi.org/10.48550/arXiv.1905.11946">https://doi.org/10.48550/arXiv.1905.11946</a>.<a href="#fnref5" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+</ol>
+</section></div></main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp("https:\/\/wdangds\.github\.io\/blog\/");
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+            // default icon
+            link.classList.add("external");
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+
+
+
+
+<script src="../../site_libs/quarto-html/zenscroll-min.js"></script>
+</body></html>

@@ -1,0 +1,1346 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.9.38">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Data Science, Data Mining, and the Process of Turning Data into Knowledge – Wan Dang</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<script src="../../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-15634bcf2e68342d4ad2dfa704d543f6.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap-0441d281c0042f78ca5e6da214781463.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+<style>html{ scroll-behavior: smooth; }</style>
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+<link rel="stylesheet" href="../../styles.css">
+</head>
+
+<body class="nav-sidebar docked nav-fixed quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="../../index.html">
+    <span class="navbar-title">Wan Dang</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../index.html"> 
+<span class="menu-text">Home</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link active" href="../../teaching/index.html" aria-current="page"> 
+<span class="menu-text">Teaching</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../research/index.html"> 
+<span class="menu-text">Research</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../projects/index.html"> 
+<span class="menu-text">Projects</span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../teaching/index.html">Teaching</a></li><li class="breadcrumb-item"><a href="../../teaching/cds-303/index.html">CDS 303: Scientific Data Mining</a></li><li class="breadcrumb-item"><a href="../../teaching/cds-303/chapter-1.html">Data Science, Data Mining, and the Process of Turning Data into Knowledge</a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation docked overflow-auto">
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="../../teaching/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Teaching</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="../../teaching/cds-303/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">CDS 303: Scientific Data Mining</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth2 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../teaching/cds-303/chapter-1.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text">Data Science, Data Mining, and the Process of Turning Data into Knowledge</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../teaching/cds-303/chapter-2.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Context and Data Understanding</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../teaching/cds-303/chapter-3.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Data Preparation and Model Design</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../teaching/cds-303/chapter-4.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Data Modeling - Regression</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../teaching/cds-303/chapter-5.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Data Modeling - Tree-based Models</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#introduction-what-is-data-science" id="toc-introduction-what-is-data-science" class="nav-link active" data-scroll-target="#introduction-what-is-data-science">1. Introduction: What is Data Science?</a></li>
+  <li><a href="#the-interdisciplinary-nature-of-data-science" id="toc-the-interdisciplinary-nature-of-data-science" class="nav-link" data-scroll-target="#the-interdisciplinary-nature-of-data-science">2. The Interdisciplinary Nature of Data Science</a>
+  <ul class="collapse">
+  <li><a href="#data-analysis" id="toc-data-analysis" class="nav-link" data-scroll-target="#data-analysis">2.1. Data Analysis</a></li>
+  <li><a href="#software-engineering" id="toc-software-engineering" class="nav-link" data-scroll-target="#software-engineering">2.2. Software Engineering</a></li>
+  <li><a href="#domain-expertise" id="toc-domain-expertise" class="nav-link" data-scroll-target="#domain-expertise">2.3. Domain Expertise</a></li>
+  </ul></li>
+  <li><a href="#data-mining-and-knowledge-discovery" id="toc-data-mining-and-knowledge-discovery" class="nav-link" data-scroll-target="#data-mining-and-knowledge-discovery">3. Data Mining and Knowledge Discovery</a></li>
+  <li><a href="#the-data-science-cycle" id="toc-the-data-science-cycle" class="nav-link" data-scroll-target="#the-data-science-cycle">4. The Data Science Cycle</a></li>
+  <li><a href="#problem-formulation" id="toc-problem-formulation" class="nav-link" data-scroll-target="#problem-formulation">5. Problem Formulation</a></li>
+  <li><a href="#data-capture-and-selection" id="toc-data-capture-and-selection" class="nav-link" data-scroll-target="#data-capture-and-selection">6. Data Capture and Selection</a></li>
+  <li><a href="#data-understanding-and-exploratory-analysis" id="toc-data-understanding-and-exploratory-analysis" class="nav-link" data-scroll-target="#data-understanding-and-exploratory-analysis">7. Data Understanding and Exploratory Analysis</a></li>
+  <li><a href="#data-preparation-and-preprocessing" id="toc-data-preparation-and-preprocessing" class="nav-link" data-scroll-target="#data-preparation-and-preprocessing">8. Data Preparation and Preprocessing</a></li>
+  <li><a href="#transformation-and-feature-engineering" id="toc-transformation-and-feature-engineering" class="nav-link" data-scroll-target="#transformation-and-feature-engineering">9. Transformation and Feature Engineering</a></li>
+  <li><a href="#the-curse-of-dimensionality" id="toc-the-curse-of-dimensionality" class="nav-link" data-scroll-target="#the-curse-of-dimensionality">10. The Curse of Dimensionality</a></li>
+  <li><a href="#modeling-data-mining-and-machine-learning" id="toc-modeling-data-mining-and-machine-learning" class="nav-link" data-scroll-target="#modeling-data-mining-and-machine-learning">11. Modeling, Data Mining, and Machine Learning</a>
+  <ul class="collapse">
+  <li><a href="#supervised-learning" id="toc-supervised-learning" class="nav-link" data-scroll-target="#supervised-learning">11.1. Supervised Learning</a></li>
+  <li><a href="#unsupervised-learning" id="toc-unsupervised-learning" class="nav-link" data-scroll-target="#unsupervised-learning">11.2. Unsupervised Learning</a></li>
+  <li><a href="#predictive-versus-explanatory-modeling" id="toc-predictive-versus-explanatory-modeling" class="nav-link" data-scroll-target="#predictive-versus-explanatory-modeling">11.3. Predictive Versus Explanatory Modeling</a></li>
+  </ul></li>
+  <li><a href="#evaluation-and-interpretation" id="toc-evaluation-and-interpretation" class="nav-link" data-scroll-target="#evaluation-and-interpretation">12. Evaluation and Interpretation</a></li>
+  <li><a href="#inference-deployment-and-knowledge-application" id="toc-inference-deployment-and-knowledge-application" class="nav-link" data-scroll-target="#inference-deployment-and-knowledge-application">13. Inference, Deployment, and Knowledge Application</a></li>
+  <li><a href="#data-science-compared-with-related-fields" id="toc-data-science-compared-with-related-fields" class="nav-link" data-scroll-target="#data-science-compared-with-related-fields">14. Data Science Compared with Related Fields</a>
+  <ul class="collapse">
+  <li><a href="#data-science-and-statistics" id="toc-data-science-and-statistics" class="nav-link" data-scroll-target="#data-science-and-statistics">14.1. Data Science and Statistics</a></li>
+  <li><a href="#data-science-and-machine-learning" id="toc-data-science-and-machine-learning" class="nav-link" data-scroll-target="#data-science-and-machine-learning">14.2. Data Science and Machine Learning</a></li>
+  <li><a href="#data-science-and-artificial-intelligence" id="toc-data-science-and-artificial-intelligence" class="nav-link" data-scroll-target="#data-science-and-artificial-intelligence">14.3. Data Science and Artificial Intelligence</a></li>
+  <li><a href="#data-science-and-software-engineering" id="toc-data-science-and-software-engineering" class="nav-link" data-scroll-target="#data-science-and-software-engineering">14.4. Data Science and Software Engineering</a></li>
+  </ul></li>
+  <li><a href="#example-predicting-car-purchases" id="toc-example-predicting-car-purchases" class="nav-link" data-scroll-target="#example-predicting-car-purchases">15. Example: Predicting Car Purchases</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../teaching/index.html">Teaching</a></li><li class="breadcrumb-item"><a href="../../teaching/cds-303/index.html">CDS 303: Scientific Data Mining</a></li><li class="breadcrumb-item"><a href="../../teaching/cds-303/chapter-1.html">Data Science, Data Mining, and the Process of Turning Data into Knowledge</a></li></ol></nav>
+<div class="quarto-title">
+<h1 class="title">Data Science, Data Mining, and the Process of Turning Data into Knowledge</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="introduction-what-is-data-science" class="level2">
+<h2 class="anchored" data-anchor-id="introduction-what-is-data-science">1. Introduction: What is Data Science?</h2>
+<p>Data science can be understood as the modern practice of applying the scientific method to data through computation. Its purpose is not merely to collect data, summarize, or build software systems, but to transform raw observations into reliable explanations, predictions, and decisions. In this sense, data science is both a technical discipline and an applied problem-solving framework. It combines statistical reasoning, computation implementation, and domain knowledge in order to extract useful information from complex data.</p>
+<p>The rise of data science did not happen suddenly. Its intellectual roots can be traced to earlier discussions about “data analysis” as a field in its own right. John Tukey argued in 1962 that data analysis deserved recognition as more than a branch of mathematical statistics; it was a practical science concerned with learning from data<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>. Later, William Cleveland proposed expanding statistics into what he called <code>data science</code>, emphasizing computation, models, applications, pedagogy, and tools for practicing data analysts<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a>. David Donoho later described the modern data science movement as part of a longer historical trajectory that includes statistics, computation, visualization, machine learning, and reproducible research<a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a>.</p>
+<div class="callout callout-style-default callout-note callout-titled" title="Definition">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Definition
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><em>Data science is the interdisciplinary process of using data, computation, statistical reasoning, and domain knowledge to understand phenomena, make predictions, and support decisions.</em></p>
+</div>
+</div>
+<p>This definition is intentionally broad. A data scientist may use regression models, neural networks, visualization, databases, simulation, causal reasoning, or cloud-based pipelines. What unifies these activities is the goal: to convert data into knowledge that can be evaluated, communicated, and used.</p>
+</section>
+<section id="the-interdisciplinary-nature-of-data-science" class="level2">
+<h2 class="anchored" data-anchor-id="the-interdisciplinary-nature-of-data-science">2. The Interdisciplinary Nature of Data Science</h2>
+<p>A common way to explain data science is through three overlapping skill areas: <strong>data analysis</strong>, <strong>software engineering</strong>, and <strong>domain expertise</strong>.</p>
+<section id="data-analysis" class="level3">
+<h3 class="anchored" data-anchor-id="data-analysis">2.1. Data Analysis</h3>
+<p>The first dimension is data analysis. This includes descriptive statistics, visualization, statistical inference, machine learning, predictive modeling, uncertainty quantification, and evaluation. A data scientist must know how to ask questions such as: - What patterns are visible in the data? - Which variables appear to be associated? - Can we predicted an outcome accurately? - How uncertain are the predictions? - Are the observed relationships meaningful or accidental? - Does the model generalize to unseen data? Data analysis provides the scientific and mathematical foundation of data science. Without it, data science becomes a collection of software tools without a reliable way to judge truth, uncertainty, or error.</p>
+</section>
+<section id="software-engineering" class="level3">
+<h3 class="anchored" data-anchor-id="software-engineering">2.2. Software Engineering</h3>
+<p>The second dimension is software engineering. Real data science rarely happens in perfectly-clean textbook datasets. Data must be collected, stored, queried, cleaned, transformed, merged, modeled, visualized, and deployed. These tasks require programming ability and system-level thinking.</p>
+<p>Software engineering matters because data science is often performed at scale. A model that works on a small CSV file may fail when applied to millions of records, streaming data, distributed databases, or production systems. Therefore, data scientists must often understand some (programming) languages such as Python, R, SQL, or Julia; tools for data pipelines; version control; reproducibility; and computational efficiency.</p>
+<p>This is one reason data science differs from traditional statistical analysis. The data scientist is not only concerned with the mathematical validity of a model, but also with whether the full computational workflow can be reproduced, maintained, scaled, and deployed.</p>
+</section>
+<section id="domain-expertise" class="level3">
+<h3 class="anchored" data-anchor-id="domain-expertise">2.3. Domain Expertise</h3>
+<p>The third dimension is domain expertise. Data do not explain themselves. A dataset about hospital patients, airline delays, financial transactions, customer behavior, or climate observations requires contextual understanding. Domain expertise helps the data scientist formulate meaningful questions, define correct target variables, identify impossible values, interpret model results, or even decide predictions make practical sense.</p>
+<p>For example, a model may discover that a certain medical treatment is associated with worse patient outcomes. Without medical knowledge, one might incorrectly conclude that the treatment causes harm. However, the treatment may be given only to the most severe patients. In this case, the apparent relationship reflects selection bias or confounding rather than a simple causal effect. Domain expertise is necessary to avoid such mistakes.</p>
+<p>Thus, data science sits at the intersection of three forms of knowledge:</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 16%">
+<col style="width: 37%">
+<col style="width: 45%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Dimension</th>
+<th>Main Question</th>
+<th>Example Skill</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Data analysis</td>
+<td>What can be learned from the data?</td>
+<td>Statistics, machine learning, visualization</td>
+</tr>
+<tr class="even">
+<td>Software engineering</td>
+<td>How can the process be implemented reliably?</td>
+<td>Programming, databases, pipelines</td>
+</tr>
+<tr class="odd">
+<td>Domain expertise</td>
+<td>What does the result mean in context?</td>
+<td>Business, medicine, transportation, climate, education</td>
+</tr>
+</tbody>
+</table>
+<p>A strong data science requires all three. A technical elegant model may be useless if it answers the wrong question. A meaningful question may remain unanswered if the data pipeline is broken. A large dataset may produce misleading results if the analysis ignore bias, missingness, or uncertainty.</p>
+</section>
+</section>
+<section id="data-mining-and-knowledge-discovery" class="level2">
+<h2 class="anchored" data-anchor-id="data-mining-and-knowledge-discovery">3. Data Mining and Knowledge Discovery</h2>
+<p>The term <code>data mining</code> is often used alongside data science. In everyday usage, data mining may refer to finding useful patterns in data. However, in the classical Knowledge Discovery in Databases literature, data mining has a more specific meaning. Fayyad, Piatetsky, Piatetsky-Shapiro, and Smyth define Knowledge Discovery in Databases, or KDD, as the broader of discovering useful knowledge from data, while data mining is the algorithmic step within that larger process where patterns or models are extracted<a href="#fn4" class="footnote-ref" id="fnref4" role="doc-noteref"><sup>4</sup></a>.</p>
+<p>This distinction is important. Data mining is not the entire data science process. It is one part of it. Before mining patterns, the data scientist must understand the problem, select data, clean the data, transform variables, and decide what type of pattern would be useful. After mining patterns, the data scientist must evaluate them, interpret them, and determine whether they should be used in practice.</p>
+<div class="callout callout-style-default callout-note callout-titled" title="Distinction">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Distinction
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ul>
+<li><strong>KDD/Data science process</strong>: The full workflow from problem formulation to deployed knowledge.</li>
+<li><strong>Data mining</strong>: The modeling or pattern-discovery stage inside that workflow.</li>
+</ul>
+</div>
+</div>
+<div class="callout callout-style-default callout-tip callout-titled" title="Example">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>Example
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Suppose a retail company wants to identify customers likely to buy a new product. The data mining step might involve training a classification model. But the broader data science process includes defining what “likely to buy” means, selecting customer records, cleaning missing values, engineering behavior features, evaluating performance, explaining the model to marketing teams, and monitoring the model after deployment.</p>
+</div>
+</div>
+</section>
+<section id="the-data-science-cycle" class="level2">
+<h2 class="anchored" data-anchor-id="the-data-science-cycle">4. The Data Science Cycle</h2>
+<p>Data science is often mistakenly described as a linear sequence: collect data, clean data, train a model, deploy it. In practice, the process is iterative. A visualization may reveal missing values, forcing the analyst to revisit data collection. A model may perform poorly, forcing new feature engineering. Deployment may expose changing data patterns, requiring model retraining.</p>
+<p>The CRISP-DM framework, one of the most widely cited process models for data mining projects, organizes the life cycle into six phases: <a href="../../teaching/cds-303/chapter-2.html">business understanding</a>, <a href="../../teaching/cds-303/chapter-2.html">data understanding</a>, <a href="../../teaching/cds-303/chapter-3.html">data preparation</a>, modeling, evaluation, and deployment. These phases are not linear; feedback loops are expected.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://enterprise-knowledge.com/wp-content/uploads/2025/03/CRISP-DM-1.png" class="img-fluid figure-img"></p>
+<figcaption>CRISP-DM framework</figcaption>
+</figure>
+</div>
+<p>From my perspective, the process can be presented in the following expanded form:</p>
+<pre class="mermaid"><code>flowchart LR
+A[Problem formulation] --&gt; B[Data capture and selection]  
+B --&gt; C[Data understanding and exploratory analysis]  
+C --&gt; D[Data preparation and preprocessing]  
+D --&gt; E[Transformation and feature engineering]  
+E --&gt; F[Modeling and data mining]  
+F --&gt; G[Evaluation and interpretation]  
+G --&gt; H[Deployment and decision support]  
+H --&gt; I[Monitoring, feedback, and revision]  
+  
+I --&gt; A  
+C --&gt; B
+G --&gt; F</code></pre>
+<ol type="1">
+<li>Problem formulation</li>
+<li>Data capture and selection</li>
+<li><a href="../../teaching/cds-303/chapter-2.html">Data understanding</a> and exploratory analysis</li>
+<li><a href="../../teaching/cds-303/chapter-3.html">Data preparation and preprocessing</a></li>
+<li>Transformation and feature engineering</li>
+<li>Modeling and data mining</li>
+<li>Evaluation and interpretation</li>
+<li>Deployment and decision support</li>
+<li>Monitoring, feedback, and revision</li>
+</ol>
+<p>Each stage is discussed below.</p>
+</section>
+<section id="problem-formulation" class="level2">
+<h2 class="anchored" data-anchor-id="problem-formulation">5. Problem Formulation</h2>
+<p>The first stage of data science is not data collection. We have to define the problem first. Before building a dataset or choosing an algorithm, the data scientist must define the question.</p>
+<p>A weak question is vague:</p>
+<blockquote class="blockquote">
+<p>“Can we use data to improve sales?”</p>
+</blockquote>
+<p>A stronger data science question is operational:</p>
+<blockquote class="blockquote">
+<p>“Can we predict, at the time of first customer inquiry, whether a customer is likely to purchase a new car within the next 30 days?”</p>
+</blockquote>
+<p>The second question is better because it defines the unit of analysis, prediction target, time horizon, and decision context. It also suggests what data might be needed: customer demographics, inquiry channel, previous purchases, income range, geographic region, and interaction history.</p>
+<p>Problem formulation usually requires collaboration with domain experts. The data scientist must translate a practical concern into a technical objective. For example:</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 32%">
+<col style="width: 67%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Practice Goal</th>
+<th>Data Science Translation</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Reduce customer churn</td>
+<td>Predict probability of churn within 60 days.</td>
+</tr>
+<tr class="even">
+<td>Improve hospital operations</td>
+<td>Forecast emergency department arrivals by hour.</td>
+</tr>
+<tr class="odd">
+<td>Detect fraud</td>
+<td>Classify transactions as fraudulent or legitimate.</td>
+</tr>
+<tr class="even">
+<td>Improve marketing</td>
+<td>Segment customers by purchase behavior.</td>
+</tr>
+<tr class="odd">
+<td>Predict salary</td>
+<td>Estimate salary from experience, education, and job type.</td>
+</tr>
+</tbody>
+</table>
+<p>A data science project can make no sense if this stage is rushed. A technically impressive model may have little value if it solves a poorly defined problem.</p>
+</section>
+<section id="data-capture-and-selection" class="level2">
+<h2 class="anchored" data-anchor-id="data-capture-and-selection">6. Data Capture and Selection</h2>
+<p>Once the problem is formulated, the next step is to identify relevant data sources. Data may come from internal databases, surveys, sensors, transaction logs, public APIs, web data, text documents, images, or experimental measurements.</p>
+<div class="callout callout-style-default callout-tip callout-titled" title="Example">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>Example
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>In a project predicting whether customers will buy a new car, a company may collect information from sales inquiries: age, gender, occupation, annual income, previous purchase history, location, inquiry date, vehicle type, and whether the customer eventually purchased the car.</p>
+</div>
+</div>
+<p>Data selection involves deciding which observations and variables belong in the project. Sometimes, the current available data may not match the desired problem. A company may want to predict future purchases, but its database may only include customers who already interacted with the company. This creates selection bias: the data represent only a subset of the real population.</p>
+<p>Important questions at this stage include: - Who or what is represented in the data? - What population is missing? - How were the data collected? - Are the measurements reliable? - Is the target variable available? - Are there legal, ethical, or privacy restrictions? - Does the data source reflect the decision context?</p>
+<p>Data capture shapes everything that follows.</p>
+</section>
+<section id="data-understanding-and-exploratory-analysis" class="level2">
+<h2 class="anchored" data-anchor-id="data-understanding-and-exploratory-analysis">7. Data Understanding and Exploratory Analysis</h2>
+<p>After data are collected, the data scientist must understand them. This stage often uses exploratory data analysis, visualization, descriptive statistics, and data quality checks.</p>
+<p>Exploratory analysis may reveal: - Missing values - Duplicate records - Outliers - Impossible values - Inconsistent categories - Class imbalance - Time trends - Spatial patterns - Correlated variables - Data leakage</p>
+<div class="callout callout-style-default callout-tip callout-titled" title="Example">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>Example
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Suppose a rainfall prediction project uses sensor readings from weather stations. A visualization may show negative rainfall values or extremely large readings far outside the physical range of the sensor. These observations may indicate sensor malfunction, unit conversion errors, or data entry mistakes. In that case, the analyst may need to return to the data capture stage and obtain corrected readings.</p>
+</div>
+</div>
+<p>Exploratory analysis is not separate from modeling. It directly affects modeling choices. If the target class is rare, accuracy may be misleading. If time trends exist, random train-test splitting may cause leakage. If variables are highly skewed, transformations may be needed. If geographic patterns are present, spatial features may improve prediction.</p>
+</section>
+<section id="data-preparation-and-preprocessing" class="level2">
+<h2 class="anchored" data-anchor-id="data-preparation-and-preprocessing">8. Data Preparation and Preprocessing</h2>
+<p>Raw data are usually messy. Data preparation converts raw observations into a reliable modeling dataset. This stage often takes more time than modeling itself.</p>
+<p>Common preprocessing tasks include:</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 37%">
+<col style="width: 62%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Task</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Removing duplicates</td>
+<td>Prevent repeated records from distorting results</td>
+</tr>
+<tr class="even">
+<td>Handling missing values</td>
+<td>Avoid biased or invalid model inputs</td>
+</tr>
+<tr class="odd">
+<td>Correcting errors</td>
+<td>Fix impossible or inconsistent values</td>
+</tr>
+<tr class="even">
+<td>Standardizing formats</td>
+<td>Make variables comparable</td>
+</tr>
+<tr class="odd">
+<td>Normalizing or scaling</td>
+<td>Prepare variables for algorithms sensitive to scale</td>
+</tr>
+<tr class="even">
+<td>Encoding categorical variables</td>
+<td>Convert text categories into numerical form</td>
+</tr>
+<tr class="odd">
+<td>Merge datasets</td>
+<td>Combine information from multiple sources</td>
+</tr>
+<tr class="even">
+<td>Filtering observations</td>
+<td>Keep only relevant cases</td>
+</tr>
+<tr class="odd">
+<td>Creating train/test splits</td>
+<td>Evaluate generalization</td>
+</tr>
+</tbody>
+</table>
+<div class="callout callout-style-default callout-tip callout-titled" title="Example">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>Example
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>A customer dataset may contain annual income as both “50000” and “$50,000,” dates in different formats, missing occupations, and duplicate customer IDs. If these issues are ignored, the model may learn artifacts of the database instead of meaningful behavior.</p>
+</div>
+</div>
+<p>Data cleaning should also be documented. A reproducible project should make clear which observations were removed, how missing values were handled, and why certain transformations were applied.</p>
+</section>
+<section id="transformation-and-feature-engineering" class="level2">
+<h2 class="anchored" data-anchor-id="transformation-and-feature-engineering">9. Transformation and Feature Engineering</h2>
+<p>Feature engineering is the process of transforming raw data into variables that better represent the underlying problem. It is one of the most important stages in applied data science because models often depend more on the quality of features than on the complexity of algorithms.</p>
+<p>A raw timestamp such as <span style="font-family: monospace">1550563843</span> may not be directly useful to a model. But it can be transformed into features such as hour of day, day of week, month, holiday indicator, season, or time since last purchase. In a sales prediction problem, these features may capture shopping patterns that the raw timestamp hides.</p>
+<p>Feature engineering can include: - Extracting date/time features - Creating ratios or rates - Aggregating behavior over time windows - Encoding geographic distance - Creating lag variables - Measuring frequency or recency - Transforming skewed variables - Reducing dimensionality - Selecting important predictors</p>
+<div class="callout callout-style-default callout-tip callout-titled" title="Example">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>Example
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>In a salary prediction model, years of experience may be a useful feature. A simple regression model might estimate a relationship such as: <span class="math display">\[
+\text{Salary} = 8\times \text{Experience} + 40
+\]</span> It is a simplified representation of an assumed relationship: salary increases with experience. Whether that relationship is realistic depends on the domain, the dataset, and the modeling assumptions.</p>
+</div>
+</div>
+</section>
+<section id="the-curse-of-dimensionality" class="level2">
+<h2 class="anchored" data-anchor-id="the-curse-of-dimensionality">10. The Curse of Dimensionality</h2>
+<p>A major challenge in feature engineering is the <strong>curse of dimensionality</strong>. As the number of features increases, the data space grows rapidly. Data points become sparse, distances become less informative, and models may require much more data to generalize well.</p>
+<p>Suppose a dataset has only two features: age and income. With enough observations, the data scientist may find meaningful neighborhoods of similar customers. But if the dataset has hundreds or thousands of features, each customer may appear unique. There may be too few comparable observations in any local region of the feature space. Algorithms that depend on similarity, distance, or interpolation may then perform poorly.</p>
+<p>Dimensionality is not always bad. Additional features can improve a model if they contain useful signal. The problem occurs when many features are irrelevant, noisy, redundant, or sparse. In that case, the model may overfit - it learns accidental patterns in the training data rather than stable patterns that generalize.</p>
+<p>Common strategies for addressing high dimensionality include: - Feature selection - Regularization - Principal Component Analysis - Autoencoders - Domain-guided variable construction - Removing redundant variables - Increasing sample size - Using models robust to irrelevant features.</p>
+<p>Principal Component Analysis, or PCA, is one classical dimensionality reduction method. It transforms correlated variables into a smaller set of uncorrelated components that preserve as much variation as possible. PCA is somehow consider as a central method for reducing dimensionality while retaining much of the information in the original variables<a href="#fn5" class="footnote-ref" id="fnref5" role="doc-noteref"><sup>5</sup></a>.</p>
+</section>
+<section id="modeling-data-mining-and-machine-learning" class="level2">
+<h2 class="anchored" data-anchor-id="modeling-data-mining-and-machine-learning">11. Modeling, Data Mining, and Machine Learning</h2>
+<p>The modeling stage is where data mining and machine learning methods are usually applied. The goal is to learn patterns, relationships, or structures from data.</p>
+<section id="supervised-learning" class="level3">
+<h3 class="anchored" data-anchor-id="supervised-learning">11.1. Supervised Learning</h3>
+<p>In supervised learning, the models learns from labeled examples. Each observation has input features and a known output. The model learns a mapping from inputs to outputs.</p>
+<p>Common supervised learning tasks include:</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 20%">
+<col style="width: 22%">
+<col style="width: 57%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Task</th>
+<th>Output Type</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Regression</td>
+<td>Continuos value</td>
+<td>Predict salary, price, rainfall, demand</td>
+</tr>
+<tr class="even">
+<td>Classification</td>
+<td>Category label</td>
+<td>Predict spam/not spam, fraud/not fraud</td>
+</tr>
+<tr class="odd">
+<td>Ranking</td>
+<td>Ordered list</td>
+<td>Rank search results or recommendations</td>
+</tr>
+</tbody>
+</table>
+<div class="callout callout-style-default callout-tip callout-titled" title="Example">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>Example
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>In spam detection, the input may be the text of an email, sender information, links, and metadata. The output is a label: spam or not spam. The modern learns from past labeled emails and produces predictions for new incoming messages.</p>
+</div>
+</div>
+</section>
+<section id="unsupervised-learning" class="level3">
+<h3 class="anchored" data-anchor-id="unsupervised-learning">11.2. Unsupervised Learning</h3>
+<p>In supervised learning, the data do not include a labeled output. The goal is to discover hidden structure.</p>
+<p>Common unsupervised learning tasks include:</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 29%">
+<col style="width: 32%">
+<col style="width: 38%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Task</th>
+<th>Purpose</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Clustering</td>
+<td>Group similar observations</td>
+<td>Segment customers</td>
+</tr>
+<tr class="even">
+<td>Dimensionality reduction</td>
+<td>Compress variables</td>
+<td>Visualize high-dimensional data</td>
+</tr>
+<tr class="odd">
+<td>Association discovery</td>
+<td>Find co-occurring patterns</td>
+<td>Market basket analysis</td>
+</tr>
+<tr class="even">
+<td>Anomaly detection</td>
+<td>Identify unusual cases</td>
+<td>Detect abnormal transactions</td>
+</tr>
+</tbody>
+</table>
+<div class="callout callout-style-default callout-tip callout-titled" title="Example">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>Example
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>A retail store may use clustering to group customers based on purchase history. One cluster may contain frequent high-value buyers, another may contain seasonal buyers, and another may contain discount-driven buyers. The company can then design different marketing strategies for each group.</p>
+</div>
+</div>
+</section>
+<section id="predictive-versus-explanatory-modeling" class="level3">
+<h3 class="anchored" data-anchor-id="predictive-versus-explanatory-modeling">11.3. Predictive Versus Explanatory Modeling</h3>
+<p>Not all models serve the same purpose. Some models are designed primarily for prediction. Others are designed for explanation or inference.</p>
+<p>There are two cultures of statistical modeling<a href="#fn6" class="footnote-ref" id="fnref6" role="doc-noteref"><sup>6</sup></a>. One culture assumes that data are generated by a specified stochastic model and focuses on estimating interpretable parameters. The other culture treats the data-generating mechanism as unknown and focuses on algorithmic prediction. Some practical projects often require both predictive accuracy and interpretability.</p>
+<div class="callout callout-style-default callout-tip callout-titled" title="Example">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>Example
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>A hospital may want the most accurate model possible for predicting patient readmission, but doctors may also need to understand which factors drive the prediction. Similarly, a bank may use a complex model to detect fraud, but regulators may require explanations for adverse decision.</p>
+</div>
+</div>
+<p>A good data science project must therefore ask: - Is the goal prediction, explanation, or decision support? - Is interpretability required? - Are causal claims being made? - What errors are most costly? - Who will use the model output? - What constraints exist in deployment?</p>
+</section>
+</section>
+<section id="evaluation-and-interpretation" class="level2">
+<h2 class="anchored" data-anchor-id="evaluation-and-interpretation">12. Evaluation and Interpretation</h2>
+<p>A model is not useful simply because it fits the training data. It must generalize to new data. Evaluation is the process of testing whether the model performs well on unseen observations.</p>
+<p>The simplest approach is to split the data into training and test sets. The model is trained on one portion and evaluated on another. More advanced approaches include validation sets, cross-validation, time-based splits, bootstrap evaluation, and external validation.</p>
+<p>Different tasks require different metrics.</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 18%">
+<col style="width: 12%">
+<col style="width: 69%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Task</th>
+<th>Metric</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Classification</td>
+<td>Accuracy</td>
+<td>Fraction of correct predictions</td>
+</tr>
+<tr class="even">
+<td></td>
+<td>Precision</td>
+<td>Of predicted positives, how many were truly positive</td>
+</tr>
+<tr class="odd">
+<td></td>
+<td>Recall</td>
+<td>Of actual positives, how many were detected</td>
+</tr>
+<tr class="even">
+<td></td>
+<td>F1-score</td>
+<td>Balance between precision and recall</td>
+</tr>
+<tr class="odd">
+<td></td>
+<td>ROC-AUC</td>
+<td>Ability to rank positives above negatives</td>
+</tr>
+<tr class="even">
+<td></td>
+<td>PR-AUC</td>
+<td>Useful for imbalanced classification</td>
+</tr>
+<tr class="odd">
+<td>Regression</td>
+<td>MAE</td>
+<td>Average absolute prediction error</td>
+</tr>
+<tr class="even">
+<td></td>
+<td>MSE</td>
+<td>Average squared prediction error</td>
+</tr>
+<tr class="odd">
+<td></td>
+<td>RMSE</td>
+<td>Square root of MSE, in original units</td>
+</tr>
+<tr class="even">
+<td></td>
+<td><span class="math inline">\(R^2\)</span></td>
+<td>Proportion of variance explained</td>
+</tr>
+<tr class="odd">
+<td></td>
+<td>MAPE</td>
+<td>Percentage error, when appropriate</td>
+</tr>
+</tbody>
+</table>
+<p>Evaluation must reflect the decision context.</p>
+<div class="callout callout-style-default callout-tip callout-titled" title="Example">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>Example
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>In disease screening, recall may be more important than precision because missing a true case is costly. In fraud prediction, precision may matter because false accusations can harm customers. In weather prediction, calibration may matter because decision-makers need reliable probabilities.</p>
+</div>
+</div>
+<p>Interpretation is also essential. A model may have strong performance metrics but still be unusable if its behavior is unstable, biased, or impossible to explain. Data scientists must inspect errors, compare model behavior across groups, check whether important variables make sense, and communicate uncertainty.</p>
+</section>
+<section id="inference-deployment-and-knowledge-application" class="level2">
+<h2 class="anchored" data-anchor-id="inference-deployment-and-knowledge-application">13. Inference, Deployment, and Knowledge Application</h2>
+<p>The final goal of data science is not a model file. The goal is usable knowledge. Deployment means integrating the model or analysis into a real decision process.</p>
+<p>Deployment may take many forms: - A dashboard for managers - A real-time prediction API - A weekly report - A recommender system - A fraud alert system - A risk score - A scientific conclusion - A policy recommendation</p>
+<div class="callout callout-style-default callout-tip callout-titled" title="Example">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>Example
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>A retail company may deploy a customer segmentation model so that marketing teams can design targeted campaigns. A transportation agency may use a forecasting model to plan staffing. A hospital may use a readmission model to identify patients needing follow-up care.</p>
+</div>
+</div>
+<p>Deployment introduces new challenges. The data available in production may differ from the training data. User behavior may change. Sensors may fall. A model trained last year may become less accurate this year. This phenomenon is often called <em>data drift</em> or <em>concept drift</em>.</p>
+<p>Therefore, deployment should include monitoring. A deployed model should be checked for: - Prediction accuracy over time - Changes in input distributions - Bias across subgroups - Unexpected errors - System failures - User feedback - Need for retraining</p>
+<p>A data science project is not finished when the model is deployed. It enters a maintenance stage where the model must be evaluated continuously.</p>
+</section>
+<section id="data-science-compared-with-related-fields" class="level2">
+<h2 class="anchored" data-anchor-id="data-science-compared-with-related-fields">14. Data Science Compared with Related Fields</h2>
+<p>Data science overlaps with several fields but isn’t identical to them.</p>
+<section id="data-science-and-statistics" class="level3">
+<h3 class="anchored" data-anchor-id="data-science-and-statistics">14.1. Data Science and Statistics</h3>
+<p>Statistics provides many of the foundations of data science, including probability, inference, regression, experimental design, uncertainty, and model evaluation. However, data science usually places greater emphasis on computation, data pipelines, large-scale processing, machine learning, and deployment.</p>
+<p>This distinction should not be exaggerated. Modern statistics and data science are deeply connected. Data science can be viewed as an expansion of statistical thinking into computational and applied environments.</p>
+</section>
+<section id="data-science-and-machine-learning" class="level3">
+<h3 class="anchored" data-anchor-id="data-science-and-machine-learning">14.2. Data Science and Machine Learning</h3>
+<p>Machine learning focuses on algorithms that learn patterns from data. Data science uses machine learning, tho also includes problem formulation, data engineering, exploratory analysis, evaluation, communication, and deployment.</p>
+<p>A machine learning model is one component of a data science project. The broader data science process determines whether that model is meaningful, valid, and useful.</p>
+</section>
+<section id="data-science-and-artificial-intelligence" class="level3">
+<h3 class="anchored" data-anchor-id="data-science-and-artificial-intelligence">14.3. Data Science and Artificial Intelligence</h3>
+<p>Artificial intelligence, or AI, is a broad field concerned with building systems that perform tasks associated with intelligent behavior, such as perception, reasoning, planning, language understanding, and decision-making. Data science can support AI by providing data-driven models, but not all data science is AI, and not all AI is data science.</p>
+<div class="callout callout-style-default callout-tip callout-titled" title="Example">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>Example
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>A sales dashboard with statistical summaries is data science but not necessarily AI. A symbolic planning system may be AI but not necessarily data science. A spam classifier trained from labeled emails belongs to both.</p>
+</div>
+</div>
+</section>
+<section id="data-science-and-software-engineering" class="level3">
+<h3 class="anchored" data-anchor-id="data-science-and-software-engineering">14.4. Data Science and Software Engineering</h3>
+<p>Software engineering focuses on building reliable software systems. Data science depends on software engineering, especially when models must be deployed, automated, and maintained. However, data science also requires statistical and domain reasoning that may not be central in ordinary software development.</p>
+</section>
+</section>
+<section id="example-predicting-car-purchases" class="level2">
+<h2 class="anchored" data-anchor-id="example-predicting-car-purchases">15. Example: Predicting Car Purchases</h2>
+<p>To see the full process, consider a company that wants to predict which customers are likely to buy a new car.</p>
+<p><strong>Step 1: Problem Formulation</strong></p>
+<p>The company defines the objective: <span class="math display">\[
+\boxed{
+\text{Predict whether a customer who submits an inquiry will purchase a car within 30 days.}
+}
+\]</span> The target variable is binary: purchase or no purchase.</p>
+<p><strong>Step 2: Data Capture</strong></p>
+<p>The company collects customer information: - Age - Gender - Occupation - Annual income - Location - Inquiry data - Vehicle type - Previous purchase history - Website interactions - Sales representative notes</p>
+<p><strong>Step 3: Data Understanding</strong></p>
+<p>The data scientist explores the dataset and finds: - Some income values are missing. - Occupations are entered inconsistently. - Some customers appear multiple times. - Purchase rates vary by vehicle type. - Weekend inquiries have different conversion patterns.</p>
+<p><strong>Step 4: Data Preparation</strong></p>
+<p>The analyst removes duplicates, standardizes categories, handles missing income values, and creates a clean modeling table.</p>
+<p><strong>Step 5: Feature Engineering</strong></p>
+<p>The analyst creates new features: - Day of Week - Month - Income bracket - Prior inquiry count - Distance to dealership - Vehicle price range - Time since last interaction</p>
+<p><strong>Step 6: Modeling</strong></p>
+<p>Several models are trained: - Logistic regression - Decision tree - Random forest - Gradient boosting classifier</p>
+<p><strong>Step 7: Evaluation</strong></p>
+<p>The models are evaluated on unseen test data. Accuracy alone may not be enough because the company cares about identifying likely buyers. Precision, recall, and calibration may be more useful.</p>
+<p><strong>Step 8: Deployment</strong></p>
+<p>The final model produces a purchase probability for each new inquiry. Sales teams prioritize high-probability customers while still maintaining fair and responsible outreach practices.</p>
+<p><strong>Step 9: Monitoring</strong></p>
+<p>The company monitors whether predictors remain accurate as customer behavior changes, new car models are introduced, or economic conditions shift.</p>
+<hr>
+<p>Data science is best understood as an interdisciplinary, iterative, and applied process for transforming data into knowledge. It combines the scientific method with computation, statistical reasoning, and domain expertise. Data mining and machine learning are central parts of this process, but they do not define the entire field.</p>
+<p>A complete data science project begins with a meaningful problem, not an algorithm. It requires careful data capture, cleaning, transformation, modeling, evaluation, deployment, and monitoring. It also requires judgement: the ability to decide whether a pattern is meaningful, whether a model is reliable, whether a prediction is useful, and whether the result makes sense in the real world. In modern scientific, business, or social contexts, data science provides a framework for making sense of complex data and converting that understanding into informed action.</p>
+<p>Next chapter: <a href="../../teaching/cds-303/chapter-2.html">Context and Data Understanding in Data Science</a></p>
+<hr>
+
+
+</section>
+
+
+<div id="quarto-appendix" class="default"><section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes"><h2 class="anchored quarto-appendix-heading">Footnotes</h2>
+
+<ol>
+<li id="fn1"><p>JTukey, J. W. (1962).&nbsp;<em>The future of data analysis</em>. Annals of Mathematical Statistics, 33(1), 1–67. <a href="https://doi.org/10.1214/aoms/1177704711">https://doi.org/10.1214/aoms/1177704711</a>.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn2"><p>Cleveland, W. S. (2001).&nbsp;<em>Data science: An action plan for expanding the technical areas of the field of statistics</em>. International Statistical Review, 69(1), 21–26. <a href="https://www.jstor.org/stable/1403527">https://www.jstor.org/stable/1403527</a>.<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn3"><p>Donoho, D. (2017).&nbsp;<em>50 years of data science</em>. Journal of Computational and Graphical Statistics, 26(4), 745–766.&nbsp;<a href="https://doi.org/10.1080/10618600.2017.1384734">https://doi.org/10.1080/10618600.2017.1384734</a><a href="#fnref3" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn4"><p>Fayyad, U., Piatetsky-Shapiro, G., &amp; Smyth, P. (1996).&nbsp;<em>From data mining to knowledge discovery in databases</em>. AI Magazine, 17(3), 37–54. <a href="https://www.kdnuggets.com/gpspubs/aimag-kdd-overview-1996-Fayyad.pdf">https://www.kdnuggets.com/gpspubs/aimag-kdd-overview-1996-Fayyad.pdf</a><a href="#fnref4" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn5"><p>Jolliffe, I. T. (2002). <em>Principal component analysis</em> (2nd ed.). Springer. <a href="https://link.springer.com/book/10.1007/978-1-4757-1904-8">https://link.springer.com/book/10.1007/978-1-4757-1904-8</a><a href="#fnref5" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn6"><p>Breiman, L. (2001). <em>Statistical modeling: The two cultures</em>. Statistical Science, 16(3), 199–231.<a href="#fnref6" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+</ol>
+</section></div></main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp("https:\/\/wdangds\.github\.io\/blog\/");
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+            // default icon
+            link.classList.add("external");
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+
+
+
+
+<script src="../../site_libs/quarto-html/zenscroll-min.js"></script>
+</body></html>

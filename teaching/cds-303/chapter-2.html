@@ -1,0 +1,1192 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.9.38">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Context and Data Understanding – Wan Dang</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<script src="../../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-15634bcf2e68342d4ad2dfa704d543f6.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap-0441d281c0042f78ca5e6da214781463.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+<style>html{ scroll-behavior: smooth; }</style>
+
+
+<link rel="stylesheet" href="../../styles.css">
+</head>
+
+<body class="nav-sidebar docked nav-fixed quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="../../index.html">
+    <span class="navbar-title">Wan Dang</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../index.html"> 
+<span class="menu-text">Home</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link active" href="../../teaching/index.html" aria-current="page"> 
+<span class="menu-text">Teaching</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../research/index.html"> 
+<span class="menu-text">Research</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../projects/index.html"> 
+<span class="menu-text">Projects</span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../teaching/index.html">Teaching</a></li><li class="breadcrumb-item"><a href="../../teaching/cds-303/index.html">CDS 303: Scientific Data Mining</a></li><li class="breadcrumb-item"><a href="../../teaching/cds-303/chapter-2.html">Context and Data Understanding</a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation docked overflow-auto">
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="../../teaching/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Teaching</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="../../teaching/cds-303/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">CDS 303: Scientific Data Mining</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth2 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../teaching/cds-303/chapter-1.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Data Science, Data Mining, and the Process of Turning Data into Knowledge</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../teaching/cds-303/chapter-2.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text">Context and Data Understanding</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../teaching/cds-303/chapter-3.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Data Preparation and Model Design</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../teaching/cds-303/chapter-4.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Data Modeling - Regression</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../teaching/cds-303/chapter-5.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Data Modeling - Tree-based Models</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#context" id="toc-context" class="nav-link active" data-scroll-target="#context">1. Context</a></li>
+  <li><a href="#the-ontology-of-data-why-raw-data-is-misleading" id="toc-the-ontology-of-data-why-raw-data-is-misleading" class="nav-link" data-scroll-target="#the-ontology-of-data-why-raw-data-is-misleading">2. The Ontology of Data: Why “Raw Data” is Misleading</a>
+  <ul class="collapse">
+  <li><a href="#data-are-produced" id="toc-data-are-produced" class="nav-link" data-scroll-target="#data-are-produced">2.1. Data are Produced</a></li>
+  <li><a href="#theory-ladenness-of-data" id="toc-theory-ladenness-of-data" class="nav-link" data-scroll-target="#theory-ladenness-of-data">2.2. Theory-Ladenness of Data</a></li>
+  <li><a href="#the-vantage-point-problem" id="toc-the-vantage-point-problem" class="nav-link" data-scroll-target="#the-vantage-point-problem">2.3. The Vantage Point Problem</a></li>
+  </ul></li>
+  <li><a href="#data-understanding-as-scientific-practice" id="toc-data-understanding-as-scientific-practice" class="nav-link" data-scroll-target="#data-understanding-as-scientific-practice">3. Data Understanding as Scientific Practice</a>
+  <ul class="collapse">
+  <li><a href="#beyond-summary-statistics" id="toc-beyond-summary-statistics" class="nav-link" data-scroll-target="#beyond-summary-statistics">3.1. Beyond Summary Statistics</a></li>
+  <li><a href="#the-shape-of-data" id="toc-the-shape-of-data" class="nav-link" data-scroll-target="#the-shape-of-data">3.2. The Shape of Data</a></li>
+  </ul></li>
+  <li><a href="#the-illusion-of-n-all" id="toc-the-illusion-of-n-all" class="nav-link" data-scroll-target="#the-illusion-of-n-all">5. The Illusion of “n = all”</a>
+  <ul class="collapse">
+  <li><a href="#big-data-is-not-whole-data" id="toc-big-data-is-not-whole-data" class="nav-link" data-scroll-target="#big-data-is-not-whole-data">5.1. Big Data is Not Whole Data</a></li>
+  <li><a href="#bounded-rationality-and-partial-observation" id="toc-bounded-rationality-and-partial-observation" class="nav-link" data-scroll-target="#bounded-rationality-and-partial-observation">5.2. Bounded Rationality and Partial Observation</a></li>
+  </ul></li>
+  <li><a href="#information-fusion-and-situation-awareness" id="toc-information-fusion-and-situation-awareness" class="nav-link" data-scroll-target="#information-fusion-and-situation-awareness">6. Information Fusion and Situation Awareness</a>
+  <ul class="collapse">
+  <li><a href="#information-fusion" id="toc-information-fusion" class="nav-link" data-scroll-target="#information-fusion">6.1. Information Fusion</a></li>
+  <li><a href="#four-levels-of-inference" id="toc-four-levels-of-inference" class="nav-link" data-scroll-target="#four-levels-of-inference">6.2. Four Levels of Inference</a></li>
+  </ul></li>
+  <li><a href="#context-aware-systems" id="toc-context-aware-systems" class="nav-link" data-scroll-target="#context-aware-systems">7. Context-Aware Systems</a>
+  <ul class="collapse">
+  <li><a href="#context-aware-recommendation" id="toc-context-aware-recommendation" class="nav-link" data-scroll-target="#context-aware-recommendation">7.1. Context-Aware Recommendation</a></li>
+  <li><a href="#context-as-model-input-v.s.-context-as-interpretation" id="toc-context-as-model-input-v.s.-context-as-interpretation" class="nav-link" data-scroll-target="#context-as-model-input-v.s.-context-as-interpretation">7.2. Context as Model Input v.s. Context as Interpretation</a></li>
+  </ul></li>
+  <li><a href="#adaptive-learning-in-dynamic-environments" id="toc-adaptive-learning-in-dynamic-environments" class="nav-link" data-scroll-target="#adaptive-learning-in-dynamic-environments">8. Adaptive Learning in Dynamic Environments</a>
+  <ul class="collapse">
+  <li><a href="#the-problem-of-change" id="toc-the-problem-of-change" class="nav-link" data-scroll-target="#the-problem-of-change">8.1. The Problem of Change</a></li>
+  <li><a href="#types-of-change" id="toc-types-of-change" class="nav-link" data-scroll-target="#types-of-change">8.2. Types of Change</a></li>
+  <li><a href="#the-red-queen-view-of-adaptive-systems" id="toc-the-red-queen-view-of-adaptive-systems" class="nav-link" data-scroll-target="#the-red-queen-view-of-adaptive-systems">8.3. The Red Queen View of Adaptive Systems</a></li>
+  </ul></li>
+  <li><a href="#business-context-and-modeling-culture" id="toc-business-context-and-modeling-culture" class="nav-link" data-scroll-target="#business-context-and-modeling-culture">9. Business Context and Modeling Culture</a>
+  <ul class="collapse">
+  <li><a href="#from-business-question-to-modeling-strategy" id="toc-from-business-question-to-modeling-strategy" class="nav-link" data-scroll-target="#from-business-question-to-modeling-strategy">9.1. From Business Question to Modeling Strategy</a></li>
+  <li><a href="#two-modeling-cultures" id="toc-two-modeling-cultures" class="nav-link" data-scroll-target="#two-modeling-cultures">9.2. Two Modeling Cultures</a></li>
+  <li><a href="#the-roi-imperative" id="toc-the-roi-imperative" class="nav-link" data-scroll-target="#the-roi-imperative">9.3. The ROI Imperative</a></li>
+  </ul></li>
+  <li><a href="#explainability-and-the-black-box-problem" id="toc-explainability-and-the-black-box-problem" class="nav-link" data-scroll-target="#explainability-and-the-black-box-problem">10. Explainability and the Black Box Problem</a>
+  <ul class="collapse">
+  <li><a href="#why-explainability-matters" id="toc-why-explainability-matters" class="nav-link" data-scroll-target="#why-explainability-matters">10.1. Why Explainability Matters</a></li>
+  </ul></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../teaching/index.html">Teaching</a></li><li class="breadcrumb-item"><a href="../../teaching/cds-303/index.html">CDS 303: Scientific Data Mining</a></li><li class="breadcrumb-item"><a href="../../teaching/cds-303/chapter-2.html">Context and Data Understanding</a></li></ol></nav>
+<div class="quarto-title">
+<h1 class="title">Context and Data Understanding</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<p>Data science does not begin with data. It begins with a situation.</p>
+<p>A dataset is never a complete copy of reality. It is a partial, structured, and historically produced representation of some phenomenon. Every row, column, label, sensor reading, transaction record, or survey response has already passed through a chain of choices: what to observe, who to observe, when to observe, how to measure, what to exclude, how to store, and how to interpret. For this reason, data understanding have to be a scientific and ethical act.</p>
+<p><a href="../../teaching/cds-303/chapter-1.html">The previous chapter</a> introduced data science as an interdisciplinary process for transforming data into knowledge. This chapter moves one level deeper. We want to know <strong>“What does it mean to understand data before modeling it?”</strong>. The answer is that one must understand the <strong>context</strong> in which data are produced, the <strong>limitations</strong> of what they represent, the <strong>social and technical systems</strong> that shape them, and the <strong>ethical consequences</strong> of using them for decisions.</p>
+<p>At this point, one must move beyond the idea of data as a static resource. Data should instead be viewed as a <strong>socio-technological construct</strong>: something produced by people, institutions, instruments, software systems, economic incentives, and historical circumstances. For example, consider a dataset of hospital readmission records. Technically, it may contain variables such as age, diagnosis code, length of stay, insurance type, prior visits, and readmission status. But the data are also shaped by hospital policy, insurance coverage, physician judgement, patient behavior, coding practices, and structural inequalities in healthcare access. A model trained on such data does not simply learn “health risk”; it may also learn the structure of the healthcare system that produced the observations.</p>
+<p>So we come to the central argument of this chapter:</p>
+<blockquote class="blockquote">
+<p><strong>Data understanding requires context understanding. Without context, data means nothing.</strong></p>
+</blockquote>
+<section id="context" class="level2">
+<h2 class="anchored" data-anchor-id="context">1. Context</h2>
+<p>In data science, <strong>context</strong> refers to the circumstances, conditions, relationships, and meanings surrounding an observation. It includes the environment in which data are generated, the purpose for which they are collected, the actors involved, the measurement process, and the decision setting in which the data will be used.</p>
+<div class="callout callout-style-default callout-note callout-titled" title="Definition">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Definition
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><strong>Context is the situational frame that gives data meaning.</strong></p>
+</div>
+</div>
+<p>Context is therefore part of the structure that determines what the data are, what they mean, and how they can be responsibly used.</p>
+<p>Paul Dourish argues that conventional approaches often treat context as something that can be represented in advance as a stable set of measure variables, but this misses the way context emerges through activity and interaction. In his view, context is relational, dynamic, and produced through practice<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>. A variable may have one meaning in one decision environment and another meaning elsewhere. For example, “number of previous purchases” in a retail dataset may indicate customer loyalty, but in another setting it may indicate financial pressure, seasonal demand, or limited product alternatives. The variable itself does not carry a universal meaning; it depends on its context.</p>
+<div class="callout callout-style-default callout-tip callout-titled" title="Example">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>Example
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>“Temperature” may be a relevant contextual variable in several systems, but its meaning changes by activity:</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Setting</th>
+<th>Temperature Means</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Weather forecasting</td>
+<td>Atmospheric condition</td>
+</tr>
+<tr class="even">
+<td>Retail recommendation</td>
+<td>Seasonal purchase signal</td>
+</tr>
+<tr class="odd">
+<td>Food storage</td>
+<td>Safety condition</td>
+</tr>
+<tr class="even">
+<td>Manufacturing</td>
+<td>Process-control variable</td>
+</tr>
+<tr class="odd">
+<td>Healthcare</td>
+<td>Possible symptom</td>
+</tr>
+</tbody>
+</table>
+<p>The same measured value can support different interpretations depending on the task. A temperature of 38°C may indicate a hot summer day in one dataset, a dangerous fever in a clinical dataset, or an equipment warning in an industrial sensor stream.</p>
+</div>
+</div>
+<p>Thus, data understanding requires asking: - What activity produced this data? - What entity is being represented? - What environment surrounds the observation? - What decision will be made from the data? - What assumptions connect the measurement to the phenomenon of interest?</p>
+<p>A dataset without these answers is scientifically fragile.</p>
+</section>
+<section id="the-ontology-of-data-why-raw-data-is-misleading" class="level2">
+<h2 class="anchored" data-anchor-id="the-ontology-of-data-why-raw-data-is-misleading">2. The Ontology of Data: Why “Raw Data” is Misleading</h2>
+<section id="data-are-produced" class="level3">
+<h3 class="anchored" data-anchor-id="data-are-produced">2.1. Data are Produced</h3>
+<p>A critical idea in modern data studies is that “raw data” is a misleading phrase. Data are not naturally occurring objects waiting to be collected. They are produced through instruments, categories, protocols, database schemas, institutional incentives, and human decisions. As the result, data are always already shaped by the conditions of their production<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a>. Similarly, large-scale data should not be treated as neutral or self-explanatory; big data is embedded in social, methodological, and interpretive assumptions<a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a>.</p>
+<p>This does not mean that data are useless or purely subjective. Rather, it means data must be interpreted as evidence produced under specific conditions. Data are powerful precisely because they can support systematic analysis, but their evidentiary value depends on understanding how they cam into being.</p>
+</section>
+<section id="theory-ladenness-of-data" class="level3">
+<h3 class="anchored" data-anchor-id="theory-ladenness-of-data">2.2. Theory-Ladenness of Data</h3>
+<p>All data collection depends on prior theory, even when that theory is implicit. Before collecting data, we must decide what counts as an object, event, variable, category, or outcome.</p>
+<div class="callout callout-style-default callout-tip callout-titled" title="Example">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>Example
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>In an educational dataset, the variable “student success” might be measured by course grade, graduation status, retention, GPA, employment, or self-reported learning. Each choice encodes a different theory of what “success” means. A model trained on course grades learns patterns associated with grades, not necessarily learning, intellectual development, or long-term achievement.</p>
+<p>Similarly, in criminal justice data, “crime rate” may reflect reported crimes, arrests, convictions, police deployment, neighborhood surveillance, or legal definitions. Treating such a variable as a direct measure of criminal behavior ignores the institutional process that produced it.</p>
+</div>
+</div>
+</section>
+<section id="the-vantage-point-problem" class="level3">
+<h3 class="anchored" data-anchor-id="the-vantage-point-problem">2.3. The Vantage Point Problem</h3>
+<p>Every dataset is collected from a vantage point. This vantage point determines what becomes visible and what remains invisible.</p>
+<p>A company’s customer dataset captures people who interacted with the company, not everyone who might need the product. A hospital dataset captures people who reached the hospital, not everyone who was sick. A social media dataset captures those who use the platform, not society as a whole. A sensor network captures locations where sensors were installed, not necessarily the true spatial distribution of the phenomenon.</p>
+<p>This is the <em>vantage point problem</em>: data reflect the position of the observer. In data science, the observer may be a person, organization, platform, institution, or measurement device. Understanding the observer is part of understanding the data.</p>
+</section>
+</section>
+<section id="data-understanding-as-scientific-practice" class="level2">
+<h2 class="anchored" data-anchor-id="data-understanding-as-scientific-practice">3. Data Understanding as Scientific Practice</h2>
+<section id="beyond-summary-statistics" class="level3">
+<h3 class="anchored" data-anchor-id="beyond-summary-statistics">3.1. Beyond Summary Statistics</h3>
+<p>Data understanding is often associated with Exploratory Data Analysis, or EDA. EDA is a scientific practice of becoming familiar with the structure, limitations, anomalies, and possible meanings of a dataset.</p>
+<p>Summary statistics are useful, but they are incomplete. A mean, median, standard deviation, or correlation coefficient compresses a distribution into a small number of values. That compression may hide skewness, multimodality, outliers, nonlinear relationships, missingness patterns, or subgroup differences.</p>
+<div class="callout callout-style-default callout-tip callout-titled" title="Example">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>Example
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Suppose a dataset of house prices has a median price of $160,000. That number may be accurate, but it does not reveal whether most houses are clustered near the median, whether a few luxury homes create a long right tail, whether there are multiple housing submarkets, or whether some values are erroneous. A histogram, box-plot, density plot, or geographic visualization may reveal structure that a table of summary statistics cannot.</p>
+</div>
+</div>
+<p>We will discuss about EDA more carefully in <a href="../../teaching/cds-303/chapter-3.html">Chapter 3</a></p>
+</section>
+<section id="the-shape-of-data" class="level3">
+<h3 class="anchored" data-anchor-id="the-shape-of-data">3.2. The Shape of Data</h3>
+<p>To understand data, we must inspect the “shape” of the dataset. Shape refers to the distributional, relational, temporal, and structural patterns within the data.</p>
+<p>Important questions include:</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 15%">
+<col style="width: 84%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Aspect</th>
+<th>Guiding Question</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Distribution</td>
+<td>Are variables symmetric, skewed, heavy-tailed, or multimodal?</td>
+</tr>
+<tr class="even">
+<td>Missingness</td>
+<td>Which values are missing, and is the missingness random or systematic?</td>
+</tr>
+<tr class="odd">
+<td>Outliers</td>
+<td>Are extreme value errors, rare events, or meaningful cases?</td>
+</tr>
+<tr class="even">
+<td>Dependence</td>
+<td>Are observations independent, clustered, temporal, or spatial?</td>
+</tr>
+<tr class="odd">
+<td>Class balance</td>
+<td>Are some outcomes rare?</td>
+</tr>
+<tr class="even">
+<td>Measurement</td>
+<td>Are variables measured consistently?</td>
+</tr>
+<tr class="odd">
+<td>Granularity</td>
+<td>Are observations recorded at the correct level of detail?</td>
+</tr>
+<tr class="even">
+<td>Stability</td>
+<td>Does the data-generating process change over time?</td>
+</tr>
+</tbody>
+</table>
+<div class="callout callout-style-default callout-tip callout-titled" title="Example: House Price Data">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>Example: House Price Data
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Consider a housing dataset with the following variables: - Sale price - Square footage - Number of bedrooms - Number of bathrooms - Year built - Neighborhood - School district - Distance to city center - Sale date</p>
+<p>A novice analysis may begin by calculating average price and fitting a regression model. A deeper data understanding process would ask: - Are prices skewed? - Are luxury properties creating outliers? - Are neighborhoods mixing different housing markets? - Are sale prices inflation-adjusted? - Are there seasonal effects? - Are missing values concentrated in older homes? - Are square footage values measured consistently? - Is the model being asked to predict current prices using information only available after sale?</p>
+</div>
+</div>
+</section>
+</section>
+<section id="the-illusion-of-n-all" class="level2">
+<h2 class="anchored" data-anchor-id="the-illusion-of-n-all">5. The Illusion of “n = all”</h2>
+<section id="big-data-is-not-whole-data" class="level3">
+<h3 class="anchored" data-anchor-id="big-data-is-not-whole-data">5.1. Big Data is Not Whole Data</h3>
+<p>One of the most dangerous mistakes is modern data science is the belief that large data automatically solves the problem of representation. This is sometimes called the illusion of “<strong>n = all</strong>”. The analyst assumes that because the dataset is large, it must be complete.</p>
+<p>But large data are often incomplete in systematic ways. A dataset may contain millions of observations and still exclude the most important population. Social media data may be massive but biased toward platform users. Search query data may be enormous but shaped by interface design and media attention. Customer data may be large but limited to people already inside the company’s ecosystem.</p>
+<p>Scale can create a false sense of objectivity and completeness. The size of a dataset does not remove the need for interpretation, sampling logic, or methodological caution.</p>
+</section>
+<section id="bounded-rationality-and-partial-observation" class="level3">
+<h3 class="anchored" data-anchor-id="bounded-rationality-and-partial-observation">5.2. Bounded Rationality and Partial Observation</h3>
+<p>Because data are incomplete, decision-making always occurs under bounded rationality. Bounded rationality refers to describe decision-making under limited information, limited cognitive capacity, and limited time<a href="#fn4" class="footnote-ref" id="fnref4" role="doc-noteref"><sup>4</sup></a>. In data science, bounded rationality appears because models are built from partial observations of a complex world.</p>
+<p>A model may optimize within the boundaries of available data, but those boundaries may not align with the real decision problem. For example, a hiring model may predict which applicants resemble historically successful employees. But if historical hiring was biased, then the model’s apparent rationality is bounded by the organization’s behavior.</p>
+<p>Thus, data scientist must ask: - What part of reality is captured? - What part is missing? - Who is absent from the data? - Which variables are proxies rather than direct measurements? - What historical process produced the labels? - Are we optimizing for the true goal or a convenient substitute?</p>
+<p>A large dataset does not eliminate uncertainty; in fact, it can hide uncertainty behind volume.</p>
+</section>
+</section>
+<section id="information-fusion-and-situation-awareness" class="level2">
+<h2 class="anchored" data-anchor-id="information-fusion-and-situation-awareness">6. Information Fusion and Situation Awareness</h2>
+<section id="information-fusion" class="level3">
+<h3 class="anchored" data-anchor-id="information-fusion">6.1. Information Fusion</h3>
+<p>Data analysts more often combine heterogeneous sources rather than a single dataset: transaction records, sensor streams, demographic data, whether data, geographic information, text, images, logs, and expert knowledge. This process is often called <strong>information fusion</strong>.</p>
+<div class="callout callout-style-default callout-note callout-titled" title="Definition">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Definition
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><strong>Information fusion is the process of combining information from multiple sources into a more coherent representation of a situation.</strong></p>
+</div>
+</div>
+<p>In human factors research, situation awareness is commonly defined through three levels: perceiving relevant elements in the environment, comprehending their meaning, and projecting their future status. We often use Endsley’s theory of situation awareness in dynamic decision-making systems such as aviation, emergency response, healthcare, and control systems<a href="#fn5" class="footnote-ref" id="fnref5" role="doc-noteref"><sup>5</sup></a>. Many applied systems must do the same thing within the framework: 1. <em>Perceive</em> signals from data. 2. <em>Comprehend</em> what those signals mean in context. 3. <em>Project</em> likely future states. 4. <em>Act</em> through a decision, recommendation, alert, or intervention.</p>
+</section>
+<section id="four-levels-of-inference" class="level3">
+<h3 class="anchored" data-anchor-id="four-levels-of-inference">6.2. Four Levels of Inference</h3>
+<p>An adaptive data system can be understood through four levels of inference.</p>
+<p><strong>(1) Data Inference</strong></p>
+<p>Data inference refers to conclusions drawn directly from observed data. For example: - Sales increased by 12% last month. - A sensor recorded a temperature spike. - A customer clicked on three product pages. - A patient’s heart rate increased.</p>
+<p>This level is descriptive. It tells us what was observed.</p>
+<p><strong>(2) Context Inference</strong></p>
+<p>Context inference interprets the observation in relation to other conditions. For example: - Sales increased because of a holiday promotion. - The temperature spike occurred during a known equipment cycle. - The customer was browsing during a seasonal sale. - The patient’s heart rate increased after medication.</p>
+<p>This level adds situational meaning.</p>
+<p><strong>(3) Decision Inference</strong></p>
+<p>Decision inference connects the interpreted situation to an action. For example: - Increase inventory for similar products. - Ignore the temperature spike if it matches normal operating behavior. - Recommend related products. - Alert a clinician if the heart rate pattern is abnormal.</p>
+<p>This level asks what should be done.</p>
+<p><strong>(4) System Inference</strong></p>
+<p>System inference considers a broader system and its evolution. For example: - Will promotions train customers to wait for discounts? - Will ignoring repeated equipment spikes increase long-term risk? - Will recommendations narrow user exposure and reduce diversity? - Will clinical alerts create alarm fatigue?</p>
+<p>This level asks how decisions affect the systems over time.</p>
+</section>
+</section>
+<section id="context-aware-systems" class="level2">
+<h2 class="anchored" data-anchor-id="context-aware-systems">7. Context-Aware Systems</h2>
+<section id="context-aware-recommendation" class="level3">
+<h3 class="anchored" data-anchor-id="context-aware-recommendation">7.1. Context-Aware Recommendation</h3>
+<p>A useful example of context-aware data science is the recommender system. A context-aware recommender systems is described as systems that adapt recommendations to the user’s contextual situation, such as time, location, social setting, device, weather, or activity<a href="#fn6" class="footnote-ref" id="fnref6" role="doc-noteref"><sup>6</sup></a>.</p>
+<div class="callout callout-style-default callout-tip callout-titled" title="Example">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>Example
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>An e-commerce platform might recommend: - Swimwear in July but coats in December. - Umbrellas when local weather indicates rain. - Quick meals during weekday evenings. - Travel accessories before a scheduled trip. - Different products on mobile versus desktop.</p>
+</div>
+</div>
+<p>The same user may have different preferences under different conditions. Context-aware modeling recognizes that preference is situated.</p>
+</section>
+<section id="context-as-model-input-v.s.-context-as-interpretation" class="level3">
+<h3 class="anchored" data-anchor-id="context-as-model-input-v.s.-context-as-interpretation">7.2. Context as Model Input v.s. Context as Interpretation</h3>
+<p>There are two ways context appears in data science.</p>
+<p>The first is <em>context as model input</em>. Here, contextual variables are added to the model: time, location, weather, device type, user state, economic conditions, or social setting.</p>
+<p>The second is <em>context as interpretation</em>. Here, context is the reasoning framework used to understand whether the model output makes sense.</p>
+<div class="callout callout-style-default callout-tip callout-titled" title="Example">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>Example
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>A model may predict high demand for emergency services in neighborhood. Contextual variables may include time of day, weather, and prior incidents. But interpretation requires asking deeper questions: is demand higher because of actual need, lack of preventive care, reporting practices, or unequal access to services?</p>
+</div>
+</div>
+<p>Both forms of context are necessary. Adding context variables can improve prediction, but context-aware interpretation prevents shallow or harmful conclusions.</p>
+</section>
+</section>
+<section id="adaptive-learning-in-dynamic-environments" class="level2">
+<h2 class="anchored" data-anchor-id="adaptive-learning-in-dynamic-environments">8. Adaptive Learning in Dynamic Environments</h2>
+<section id="the-problem-of-change" class="level3">
+<h3 class="anchored" data-anchor-id="the-problem-of-change">8.1. The Problem of Change</h3>
+<p>Many data science systems are built under the assumption that the future will resemble the past. This assumption is often incorrect. Customer behavior changes, markets shift, weather patterns vary, disease dynamics evolve, adversaries adapt, and institutions modify their policies.</p>
+<p>When the relationship between input variables and the target variable changes over time, the problem is known as <em>concept drift</em><a href="#fn7" class="footnote-ref" id="fnref7" role="doc-noteref"><sup>7</sup></a>.</p>
+<div class="callout callout-style-default callout-note callout-titled" title="Definition">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Definition
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><em><strong>Concept drift</strong> is a situation in ==online supervised learning== where the relation between inputs and outputs changes over time. We need an adaptation strategies, algorithms, and evaluation methods for such non-stationary environments.</em></p>
+</div>
+</div>
+<p>Relatedly, <em>dataset shift</em> refers to a mismatch between training and deployment distributions. This is a central problem in machine learning when training and test conditions differ<a href="#fn8" class="footnote-ref" id="fnref8" role="doc-noteref"><sup>8</sup></a>.</p>
+</section>
+<section id="types-of-change" class="level3">
+<h3 class="anchored" data-anchor-id="types-of-change">8.2. Types of Change</h3>
+<p>Dynamic environments can change in different ways.</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 20%">
+<col style="width: 39%">
+<col style="width: 40%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Type of Change</th>
+<th>Description</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Covariate shift</td>
+<td>Input distribution changes</td>
+<td>Customers become younger over time</td>
+</tr>
+<tr class="even">
+<td>Prior probability shift</td>
+<td>Outcome prevalence changes</td>
+<td>Fraud becomes more common</td>
+</tr>
+<tr class="odd">
+<td>Concept drift</td>
+<td>Relationship between input and output changes</td>
+<td>Old fraud signals stop working</td>
+</tr>
+<tr class="even">
+<td>Label drift</td>
+<td>Meaning or coding of labels changes</td>
+<td>Hospital diagnosis codes are updated</td>
+</tr>
+<tr class="odd">
+<td>Behavioral adaptation</td>
+<td>Users respond to the model</td>
+<td>Sellers change behavior to game ranking systems</td>
+</tr>
+</tbody>
+</table>
+<p>The last case is especially important. Once a model is deployed, it can change the environment it measures. A recommendation system changes what users see. A credit scoring system changes who receives loans. A predictive policing system changes where police are sent, which changes what crime is recorded. The model is not outside the system; it becomes part of the system.</p>
+</section>
+<section id="the-red-queen-view-of-adaptive-systems" class="level3">
+<h3 class="anchored" data-anchor-id="the-red-queen-view-of-adaptive-systems">8.3. The Red Queen View of Adaptive Systems</h3>
+<p>The Red Queen metaphor comes from evolutionary thinking: one must keep running just to stay in the same place. In adaptive machine learning, this means that a model’s environment may evolve in response to the model itself. Fraud detection, cybersecurity, advertising, finance, and recommender systems are all examples where the system and its users co-evolve.</p>
+<p>A fraud model may identify suspicious transaction patterns. Fraudsters then change their behavior. The model must adapt. But if it adapts too quickly, it may overreact to noise. If it adapts too slowly, it becomes obsolete.</p>
+<p>Adaptive learning therefore requires balance: - Stability versus flexibility. - Historical knowledge versus new evidence. - Sensitivity to drift versus robustness to noise. - Automation versus human oversight. - Short-term performance versus long-term system effects.</p>
+</section>
+</section>
+<section id="business-context-and-modeling-culture" class="level2">
+<h2 class="anchored" data-anchor-id="business-context-and-modeling-culture">9. Business Context and Modeling Culture</h2>
+<section id="from-business-question-to-modeling-strategy" class="level3">
+<h3 class="anchored" data-anchor-id="from-business-question-to-modeling-strategy">9.1. From Business Question to Modeling Strategy</h3>
+<p>In applied data science, modeling choices should be guided by the decision problem. Some questions require explanation, some require forecasting, some require causal inference, some require optimization, and some require monitoring.</p>
+<p>For example:</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 45%">
+<col style="width: 54%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Business Question</th>
+<th>Modeling Translation</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Which customers are likely to churn?</td>
+<td>Predictive classification</td>
+</tr>
+<tr class="even">
+<td>Why are customers leaving?</td>
+<td>Explanatory analysis or causal inference</td>
+</tr>
+<tr class="odd">
+<td>Which intervention reduces churn?</td>
+<td>Experimentation or causal modeling</td>
+</tr>
+<tr class="even">
+<td>How many products should be stocked?</td>
+<td>Forecasting and optimization</td>
+</tr>
+<tr class="odd">
+<td>Which process factor controls yield?</td>
+<td>Interpretable modeling and process analysis</td>
+</tr>
+</tbody>
+</table>
+<p>A common failure occurs when the technical team solves a prediction problem while the business needed an explanation problem.</p>
+</section>
+<section id="two-modeling-cultures" class="level3">
+<h3 class="anchored" data-anchor-id="two-modeling-cultures">9.2. Two Modeling Cultures</h3>
+<p>There are two cultures of statistical modeling: one focused on modeling the data-generating process and another focused on algorithmic prediction<a href="#fn9" class="footnote-ref" id="fnref9" role="doc-noteref"><sup>9</sup></a>. For the purpose of this chapter, we can describe them as follows:</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 14%">
+<col style="width: 50%">
+<col style="width: 35%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Factor</th>
+<th>Explanatory Culture</th>
+<th>Predictive Culture</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Informal label</td>
+<td>“Monks”</td>
+<td>“Cowboys”</td>
+</tr>
+<tr class="even">
+<td>Main goal</td>
+<td>Understand mechanism, causation, long-term structure</td>
+<td>Maximize predictive performance</td>
+</tr>
+<tr class="odd">
+<td>Typical question</td>
+<td>Why does this happen?</td>
+<td>What will happen next?</td>
+</tr>
+<tr class="even">
+<td>Evaluation</td>
+<td>Theoretical plausibility, validity, causal identification</td>
+<td>Accuracy, error, ranking, calibration</td>
+</tr>
+<tr class="odd">
+<td>Strength</td>
+<td>Interpretability and scientific explanation</td>
+<td>Practical performance at scale</td>
+</tr>
+<tr class="even">
+<td>Risk</td>
+<td>Overly restrictive assumptions</td>
+<td>Black-box decisions without understanding</td>
+</tr>
+</tbody>
+</table>
+<p>If the business asks, “Which customers are most likely to respond to this campaign?” a predictive model may be appropriate. If the business asks, “What caused the decline in customer retention?” prediction along is insufficient. If the business asks, “Which process variable should we adjust to increase chemical yield?” a black-box predictor may not provide actionable knowledge.</p>
+</section>
+<section id="the-roi-imperative" class="level3">
+<h3 class="anchored" data-anchor-id="the-roi-imperative">9.3. The ROI Imperative</h3>
+<p>In business settings, data science sometimes connect to return on investment (ROI). ROI may include revenue growth, cost reduction, risk reduction, time savings, improved reliability, customer satisfaction, fairness, regulatory compliance, or scientific insight.</p>
+<p>Before a project begins, the route to value should be explicit: 1. What decision will change? 2. Who will use the result? 3. What action will the model support? 4. What cost is reduced or value is created? 5. What risk does the model introduce? 6. How will success be measured?</p>
+<p>A model with high predictive accuracy can still fail if it does not support action.</p>
+<div class="callout callout-style-default callout-tip callout-titled" title="Example">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>Example
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Suppose a company uses a complex neural network to predict chemical yield with excellent accuracy. If the model cannot explain which process variables influence yield, engineers may be unable to improve the process. In that case, predictive performance does not translate into business value.</p>
+</div>
+</div>
+</section>
+</section>
+<section id="explainability-and-the-black-box-problem" class="level2">
+<h2 class="anchored" data-anchor-id="explainability-and-the-black-box-problem">10. Explainability and the Black Box Problem</h2>
+<section id="why-explainability-matters" class="level3">
+<h3 class="anchored" data-anchor-id="why-explainability-matters">10.1. Why Explainability Matters</h3>
+<p>Explainability refers to the ability to understand, communicate, or justify how a model produces its outputs. It is important in high-stakes domains such as healthcare, banking, criminal justice, education, and employment.</p>
+<p>A black-box model may be acceptable in low-risk settings where errors are minor and reversible, such as recommending a movie. It is more problematic when decisions affect loans, diagnoses, sentencing, hiring, insurance, or public benefits.</p>
+<p>Explainability matters for several reasons: - <strong>Debugging:</strong> Understanding model behavior helps detect errors. - <strong>Trust</strong>: Users are more likely to accept systems they understand. - <strong>Accountability</strong>: Institutions must justify decisions. - <strong>Fairness</strong>: Explanations help identify discriminatory patterns. - <strong>Scientific learning</strong>: Explanatory models can reveal mechanisms. - <strong>Actionability</strong>: Decision-makers need to know what can be changed.</p>
+<p>However, explainability is not a single property. A model may be mathematically interpretable to a statistician but not understandable to a business manager. A local explanation may describe one prediction without explaining the global model. A simplified explanation may be intuitive but inaccurate.</p>
+<p>Thus, the right question is:</p>
+<blockquote class="blockquote">
+<p><strong>Explainable to whom, for what purpose, and at what level of detail?</strong></p>
+</blockquote>
+<hr>
+<p>Context and data understanding form the foundation of responsible data science. A dataset is a structured representation of a situation, produced through social, technical, institutional, and historical processes.</p>
+<p>To understand data, one must understand how the data were generated, what they include, what they exclude, what assumptions shape them, and how they will be used. Exploratory analysis, visualization, documentation, and domain knowledge are central to scientific integrity.</p>
+<p>We all have argued that context operates at several levels. It gives meaning to variables, shapes data collection, determines the appropriateness of data use, affects model performance over time, and defines ethical responsibility. Context-aware data science therefore requires more than adding contextual features to a model; it requires a disciplined way of thinking about data as situated evidence.</p>
+<p>Next chapter: <a href="../../teaching/cds-303/chapter-3.html">Data Preparation and Model Design</a></p>
+<hr>
+
+
+</section>
+</section>
+
+
+<div id="quarto-appendix" class="default"><section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes"><h2 class="anchored quarto-appendix-heading">Footnotes</h2>
+
+<ol>
+<li id="fn1"><p>Dourish, Paul. “What We Talk about When We Talk about Context.” <em>Personal and Ubiquitous Computing</em> 8, no. 1 (2004): 19–30. <a href="https://doi.org/10.1007/s00779-003-0253-8">https://doi.org/10.1007/s00779-003-0253-8</a>.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn2"><p>Gitelman, Lisa, ed.&nbsp;<em>“Raw Data” Is an Oxymoron</em>. The MIT Press, 2013. <a href="https://doi.org/10.7551/mitpress/9302.001.0001">https://doi.org/10.7551/mitpress/9302.001.0001</a>.<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn3"><p>Boyd, Danah, and Kate Crawford. “CRITICAL QUESTIONS FOR BIG DATA: Provocations for a Cultural, Technological, and Scholarly Phenomenon.” <em>Information, Communication &amp; Society</em> 15, no. 5 (2012): 662–79. <a href="https://doi.org/10.1080/1369118X.2012.678878">https://doi.org/10.1080/1369118X.2012.678878</a>.<a href="#fnref3" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn4"><p>Selten, Reinhard. “Bounded Rationality.” <em>Journal of Institutional and Theoretical Economics (JITE) / Zeitschrift Für Die Gesamte Staatswissenschaft</em> 146, no. 4 (1990): 649–58.<a href="#fnref4" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn5"><p>Endsley, Mica R. “Toward a Theory of Situation Awareness in Dynamic Systems.” <em>Human Factors</em> 37, no. 1 (1995): 32–64. <a href="https://doi.org/10.1518/001872095779049543">https://doi.org/10.1518/001872095779049543</a>.<a href="#fnref5" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn6"><p>Adomavicius, Gediminas, Bamshad Mobasher, Francesco Ricci, and Alex Tuzhilin. “Context‐Aware Recommender Systems.” <em>AI Magazine</em> 32, no. 3 (2011): 67–80. <a href="https://doi.org/10.1609/aimag.v32i3.2364">https://doi.org/10.1609/aimag.v32i3.2364</a>.<a href="#fnref6" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn7"><p>Gama, João, Indrė Žliobaitė, Albert Bifet, Mykola Pechenizkiy, and Abdelhamid Bouchachia. “A Survey on Concept Drift Adaptation.” <em>ACM Comput. Surv.</em> 46, no. 4 (2014): 44:1-44:37. <a href="https://doi.org/10.1145/2523813">https://doi.org/10.1145/2523813</a>.<a href="#fnref7" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn8"><p>Quiñonero-Candela, Joaquin, ed.&nbsp;<em>Dataset Shift in Machine Learning</em>. Neural Information Processing Series. MIT Press, 2009.<a href="#fnref8" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn9"><p>Breiman, Leo. “Statistical Modeling: The Two Cultures.” <em>Statistical Science</em> 16, no. 3 (2001): 199–215.<a href="#fnref9" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+</ol>
+</section></div></main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp("https:\/\/wdangds\.github\.io\/blog\/");
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+            // default icon
+            link.classList.add("external");
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+
+
+
+
+<script src="../../site_libs/quarto-html/zenscroll-min.js"></script>
+</body></html>
