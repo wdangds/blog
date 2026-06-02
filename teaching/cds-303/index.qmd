@@ -1,0 +1,12 @@
+---
+title: "CDS 303: Scientific Data Mining"
+sidebar: teaching
+---
+
+## Chapters
+
+1. [Chapter 1: Data Science, Data Mining, and the Process of Turning Data into Knowledge](chapter-1.qmd)
+2. [Chapter 2: Context and Data Understanding](chapter-2.qmd)
+3. [Chapter 3: Data Preparation and Model Design](chapter-3.qmd)
+4. [Chapter 4: Data Modeling - Regression](chapter-4.qmd)
+5. [Chapter 5: Data Modeling - Tree-based Models](chapter-5.qmd)

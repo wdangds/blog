@@ -1,0 +1,10 @@
+PyYAML
+notebook
+nbformat
+nbclient
+nbconvert
+numpy
+pandas
+matplotlib
+scipy
+scikit-learn

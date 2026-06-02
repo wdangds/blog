@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 920 560" role="img" aria-labelledby="title desc">
+  <title id="title">Data Science Diagram</title>
+  <desc id="desc">Three overlapping circles labeled Math and Statistics, Programming and CS, and Domain Knowledge with Data Science in the center overlap.</desc>
+  <defs>
+    <style>
+      .bg { fill: #faf7f0; }
+      .circle-a { fill: #d9a441; fill-opacity: 0.58; }
+      .circle-b { fill: #4f7f8c; fill-opacity: 0.58; }
+      .circle-c { fill: #c96a56; fill-opacity: 0.58; }
+      .stroke { stroke: #3a312d; stroke-width: 3; }
+      .label { font: 700 32px "Avenir Next", "Helvetica Neue", Arial, sans-serif; fill: #2b2320; }
+      .sub { font: 600 22px "Avenir Next", "Helvetica Neue", Arial, sans-serif; fill: #2b2320; }
+      .center { font: 800 34px "Avenir Next", "Helvetica Neue", Arial, sans-serif; fill: #1f1a17; }
+    </style>
+  </defs>
+  <rect class="bg" x="0" y="0" width="920" height="560" rx="24" />
+  <circle class="circle-a stroke" cx="340" cy="250" r="170" />
+  <circle class="circle-b stroke" cx="580" cy="250" r="170" />
+  <circle class="circle-c stroke" cx="460" cy="380" r="170" />
+  <text class="label" x="210" y="150">Math &amp;</text>
+  <text class="label" x="175" y="190">Statistics</text>
+  <text class="label" x="555" y="150">Programming</text>
+  <text class="label" x="622" y="190">&amp; CS</text>
+  <text class="label" x="370" y="505">Domain Knowledge</text>
+  <text class="center" x="375" y="285">Data Science</text>
+  <text class="sub" x="307" y="315">Curiosity, judgment,</text>
+  <text class="sub" x="339" y="345">and messy reality</text>
+</svg>

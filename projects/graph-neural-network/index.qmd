@@ -1,0 +1,10 @@
+---
+title: "Understanding Graph Machine Learning Models through Replication and Parameter Exploration"
+sidebar: projects
+---
+
+## Table of Contents
+
+| Section | Title | Tags |
+| ------- | ----- | ---- |
+| 0 | [Replicating a Simple GNN on Cora](replicating-a-simple-gnn-on-cora.qmd) | `#GNN` `#Cora` |

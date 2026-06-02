@@ -1,0 +1,51 @@
+:root {
+  --brand-ink: #203040;
+  --brand-accent: #2f6f89;
+  --brand-soft: #eef5f7;
+}
+
+body {
+  line-height: 1.7;
+}
+
+.navbar {
+  border-bottom: 1px solid rgba(32, 48, 64, 0.08);
+}
+
+.quarto-title-block .title {
+  color: var(--brand-ink);
+  letter-spacing: -0.02em;
+}
+
+.hero-note {
+  background: linear-gradient(135deg, rgba(47, 111, 137, 0.08), rgba(132, 165, 157, 0.16));
+  border: 1px solid rgba(47, 111, 137, 0.12);
+  border-radius: 16px;
+  padding: 1.25rem;
+  margin: 1.5rem 0 2rem;
+}
+
+.hero-note p:last-child {
+  margin-bottom: 0;
+}
+
+.profile-photo {
+  border-radius: 18px;
+  box-shadow: 0 18px 40px rgba(32, 48, 64, 0.12);
+  margin: 1rem 0 1.5rem;
+}
+
+.cell-output-display,
+.quarto-figure {
+  max-width: 100%;
+}
+
+.cell-output-display img,
+.quarto-figure img,
+img.figure-img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+  margin-left: auto;
+  margin-right: auto;
+}

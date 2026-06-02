@@ -1,0 +1,10 @@
+---
+title: "Projects"
+sidebar: projects
+---
+
+This section collects longer technical writeups, experiments, and project-based learning notes.
+
+## Current Project
+
+- [Understanding Graph Machine Learning Models through Replication and Parameter Exploration](graph-neural-network/index.qmd)

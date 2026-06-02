@@ -1,0 +1,10 @@
+---
+title: "Teaching"
+sidebar: teaching
+---
+
+Here are the courses I have supported so far.
+
+- Summer 2026: [CDS 303: Scientific Data Mining](../teaching/cds-303/index.qmd)
+- Spring 2026: CDS 201: Introduction to Computational Social Science, CDS 303: Scientific Data Mining
+- Fall 2025: CDS 230: Modeling and Simulation I

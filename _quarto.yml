@@ -1,0 +1,65 @@
+project:
+  type: website
+  output-dir: _site
+  render:
+    - index.qmd
+    - teaching/**/*.qmd
+    - research/**/*.qmd
+    - projects/**/*.qmd
+  resources:
+    - assets/**
+
+website:
+  title: "Wan Dang"
+  site-url: https://wdangds.github.io/blog/
+  repo-url: https://github.com/wdangds/blog
+  navbar:
+    left:
+      - href: index.qmd
+        text: Home
+      - href: teaching/index.qmd
+        text: Teaching
+      - href: research/index.qmd
+        text: Research
+      - href: projects/index.qmd
+        text: Projects
+  sidebar:
+    - id: teaching
+      style: docked
+      search: true
+      contents:
+        - section: "Teaching"
+          href: teaching/index.qmd
+          contents:
+            - section: "CDS 303: Scientific Data Mining"
+              href: teaching/cds-303/index.qmd
+              contents:
+                - teaching/cds-303/chapter-1.qmd
+                - teaching/cds-303/chapter-2.qmd
+                - teaching/cds-303/chapter-3.qmd
+                - teaching/cds-303/chapter-4.qmd
+                - teaching/cds-303/chapter-5.qmd
+    - id: projects
+      style: docked
+      search: true
+      contents:
+        - section: "Projects"
+          href: projects/index.qmd
+          contents:
+            - section: "Understanding Graph Machine Learning Models through Replication and Parameter Exploration"
+              href: projects/graph-neural-network/index.qmd
+              contents:
+                - projects/graph-neural-network/replicating-a-simple-gnn-on-cora.qmd
+format:
+  html:
+    theme: cosmo
+    css: styles.css
+    toc: true
+    toc-depth: 3
+    code-copy: true
+    code-overflow: wrap
+    link-external-icon: true
+    smooth-scroll: true
+
+execute:
+  freeze: auto
