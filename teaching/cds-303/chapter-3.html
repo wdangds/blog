@@ -786,7 +786,16 @@ Figure&nbsp;3: One-hot encoding representation of movie genres
 <section id="high-dimensional-data" class="level3">
 <h3 class="anchored" data-anchor-id="high-dimensional-data">5.1. High-Dimensional Data</h3>
 <p>Text data require specialized preparation because language is unstructured, sparse, and context-dependent. Before a model can classify emails, summarize documents, detect sentiment, or cluster topics, text must be transformed into a numerical representation.</p>
-<p>Traditional natural language preprocessing includes: - Tokenization - Lowercasing - Stop-word removal - Stemming - Lemmatization - Vectorization - Term weighting</p>
+<p>Traditional natural language preprocessing includes:</p>
+<ul>
+<li>Tokenization</li>
+<li>Lowercasing</li>
+<li>Stop-word removal</li>
+<li>Stemming</li>
+<li>Lemmatization</li>
+<li>Vectorization</li>
+<li>Term weighting</li>
+</ul>
 <p>The specific steps depend on the task. For example, stop-word removal may be useful in topic modeling but harmful in authorship detection or legal text analysis, where function words may carry stylistic or procedural meaning.</p>
 </section>
 <section id="tokenization" class="level3">
@@ -900,7 +909,15 @@ Figure&nbsp;4: Word frequencies in the example email corpus
 <section id="image-preparation-and-data-augmentation" class="level2">
 <h2 class="anchored" data-anchor-id="image-preparation-and-data-augmentation">6. Image Preparation and Data Augmentation</h2>
 <p>Image data are high-dimensional arrays of pixel values. A small image of size <span class="math inline">\(222\times 224\)</span> with three color channels contains 150,528 numeric values. Deep learning models can learn powerful visual representations from such data, but they often require large, diverse datasets.</p>
-<p>Image preparation may include: - Resizing - Cropping - Normalizing pixel values - Color correction - Label verification - Augmentation</p>
+<p>Image preparation may include:</p>
+<ul>
+<li>Resizing</li>
+<li>Cropping</li>
+<li>Normalizing pixel values</li>
+<li>Color correction</li>
+<li>Label verification</li>
+<li>Augmentation</li>
+</ul>
 <div class="callout callout-style-default callout-note callout-titled" title="Definition: Data Augmentation">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -1015,26 +1032,60 @@ Figure&nbsp;5: Simple image augmentation examples
 <p>In supervised learning, the model receives labeled examples. Each observation includes input variables and a known output.</p>
 <p>Common supervised tasks include classification and regression.</p>
 <p><strong>Classification:</strong> predicts discrete labels.</p>
-<p>Examples: - Fraud or non-fraud, spam or not spam. - Under-estimate, normal, over-estimate. - Disease or no disease (or belonging to what type of disease).</p>
+<p>Examples:</p>
+<ul>
+<li>Fraud or non-fraud, spam or not spam.</li>
+<li>Under-estimate, normal, over-estimate.</li>
+<li>Disease or no disease (or belonging to what type of disease).</li>
+</ul>
 <p><strong>Regression</strong>: predicts continuous numeric outcomes.</p>
-<p>Examples: - House price, salary. - Rainfall amount, energy demand. - Travel time.</p>
+<p>Examples:</p>
+<ul>
+<li>House price, salary.</li>
+<li>Rainfall amount, energy demand.</li>
+<li>Travel time.</li>
+</ul>
 </section>
 <section id="unsupervised-learning" class="level3">
 <h3 class="anchored" data-anchor-id="unsupervised-learning">7.3. Unsupervised Learning</h3>
 <p>In unsupervised learning, the model receives data without labeled outputs. The goal is to discover structure.</p>
-<p>Examples: - Customer segmentation - Topic discovery - Anomaly detection - Dimensionality reduction</p>
+<p>Examples:</p>
+<ul>
+<li>Customer segmentation</li>
+<li>Topic discovery</li>
+<li>Anomaly detection</li>
+<li>Dimensionality reduction</li>
+</ul>
 </section>
 <section id="reinforcement-learning" class="level3">
 <h3 class="anchored" data-anchor-id="reinforcement-learning">7.4. Reinforcement Learning</h3>
 <p>In reinforcement learning, an agent interacts with an environment and learns through rewards or penalties. Instead of learning only from a fixed labeled dataset, the agent learns by taking actions and observing consequences.</p>
-<p>Examples: - Game-playing systems - Robotics - Dynamic pricing - Autonomous navigation - Resource allocation</p>
+<p>Examples:</p>
+<ul>
+<li>Game-playing systems</li>
+<li>Robotics</li>
+<li>Dynamic pricing</li>
+<li>Autonomous navigation</li>
+<li>Resource allocation</li>
+</ul>
 <p>AlphaGo is a famous example of reinforcement learning and search methods applied to strategic game play. The AlphaGo system combined deep neural networks with tree search and achieved superhuman performance in Go, a game long considered difficult for artificial intelligence.</p>
 </section>
 </section>
 <section id="model-design" class="level2">
 <h2 class="anchored" data-anchor-id="model-design">8. Model Design</h2>
 <p>Model design is the process of selecting and configuring a learning system. It is a structured contest among possible representations of the problem.</p>
-<p>A data scientist must decide: - What is the prediction target? - What features are available at prediction time? - What family of models is appropriate? - What assumptions are acceptable? - What metric reflects success? - What errors are most costly? - How much interpretability is needed? - How will the model be validated? - How will the model be maintained?</p>
+<p>A data scientist must decide:</p>
+<ul>
+<li>What is the prediction target?</li>
+<li>What features are available at prediction time?</li>
+<li>What family of models is appropriate?</li>
+<li>What assumptions are acceptable?</li>
+<li>What metric reflects success?</li>
+<li>What errors are most costly?</li>
+<li>How much interpretability is needed?</li>
+<li>How will the model be validated?</li>
+<li>How will the model be maintained?</li>
+</ul>
 <p>This is why model design is iterative, as discussed <a href="../../teaching/cds-303/chapter-1.html#the-data-science-cycle">previously</a>. Early results often reveal that the target is poorly defined, a feature leaks future information, a model is too complex, or the metric does not match the real decision problem.</p>
 <blockquote class="blockquote">
 <p><strong>Candidate Models</strong></p>
@@ -1216,7 +1267,15 @@ Figure&nbsp;6: Polynomial models with different complexity on the same dataset
 </tr>
 </tbody>
 </table>
-<p>Hyperparameters control the behavior of the learning algorithm. For example: - <span class="math inline">\(k\)</span> in K-Nearest Neighbors - Maximum depth in a decision tree - Number of trees in a random forest - Learning rate in gradient boosting - Regularization strength in logistic regression - Number of layers in a neural network</p>
+<p>Hyperparameters control the behavior of the learning algorithm. For example:</p>
+<ul>
+<li><span class="math inline">\(k\)</span> in K-Nearest Neighbors</li>
+<li>Maximum depth in a decision tree</li>
+<li>Number of trees in a random forest</li>
+<li>Learning rate in gradient boosting</li>
+<li>Regularization strength in logistic regression</li>
+<li>Number of layers in a neural network</li>
+</ul>
 </section>
 <section id="grid-search-and-random-search" class="level3">
 <h3 class="anchored" data-anchor-id="grid-search-and-random-search">11.2. Grid Search and Random Search</h3>
@@ -1265,13 +1324,21 @@ Figure&nbsp;7: Illustrative hyperparameter performance surface
 <section id="pipelines-and-leakage-prevention" class="level2">
 <h2 class="anchored" data-anchor-id="pipelines-and-leakage-prevention">12. Pipelines and Leakage Prevention</h2>
 <p>Data leakage occurs when information from outside the training process enters the model inappropriately. Leakage can make validation performance look excellent while real-world performance fails.</p>
-<p>Common leakage examples include: - Scaling the full dataset before train-test splitting - Imputing missing values using full-dataset statistics - Using future information to predict the past - Including variables created after the prediction time - Accidentally duplicating observations across train and test sets - Tuning hyperparameters on the test set</p>
+<p>Common leakage examples include:</p>
+<ul>
+<li>Scaling the full dataset before train-test splitting</li>
+<li>Imputing missing values using full-dataset statistics</li>
+<li>Using future information to predict the past</li>
+<li>Including variables created after the prediction time</li>
+<li>Accidentally duplicating observations across train and test sets</li>
+<li>Tuning hyperparameters on the test set</li>
+</ul>
 <p>Leakage is one of the most serious threats to model validity because it produces false confidence.</p>
 <blockquote class="blockquote">
 <p><strong>Pipelines</strong></p>
 </blockquote>
 <p>A model pipeline ensures that preprocessing steps are fit on the training data and then applied to validation or test data. In scikit-learn, pipelines are commonly used to combine imputation, scaling, encoding, and modeling into one reproducible workflow.</p>
-<div id="5429835c" class="cell" data-execution_count="8">
+<div id="9aa7279a" class="cell" data-execution_count="8">
 <details class="code-fold">
 <summary>Show code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>

@@ -364,15 +364,27 @@ torch.Size([2, 10556])</code></pre>
 \mathcal{L}=I-D^{-\frac{1}{2}}AD^{-\frac{1}{2}}
 \]</span> For a graph with (normalized) Laplacian, its <strong>Eigendecomposition</strong>: <span class="math display">\[
 \mathcal{L}=U\Lambda U^\intercal
-\]</span> where: - <span class="math inline">\(U\in \mathbb{R}^{n\times n}\)</span> has orthonormal <strong>eigenvectors</strong> (graph Fourier basis). - <span class="math inline">\(\Lambda=\text{diag}(\lambda_1, \dots, \lambda_n)\)</span> has <strong>eigenvalues</strong> (graph frequencies).</p>
+\]</span> where:</p>
+<ul>
+<li><span class="math inline">\(U\in \mathbb{R}^{n\times n}\)</span> has orthonormal <strong>eigenvectors</strong> (graph Fourier basis).</li>
+<li><span class="math inline">\(\Lambda=\text{diag}(\lambda_1, \dots, \lambda_n)\)</span> has <strong>eigenvalues</strong> (graph frequencies).</li>
+</ul>
 <p>A <strong>graph Fourier transform (GFT)</strong> of a signal <span class="math inline">\(x\in \mathbb{R}^n\)</span> is: <span class="math display">\[
 \hat{x}=U^\intercal x, \qquad x=U\hat{x}
-\]</span> - Intuition: each column <span class="math inline">\(u_k\)</span> of <span class="math inline">\(U\)</span> is a “frequency mode” on the graph; projecting onto it gives the amplitude at that “frequency”.</p>
+\]</span></p>
+<ul>
+<li>Intuition: each column <span class="math inline">\(u_k\)</span> of <span class="math inline">\(U\)</span> is a “frequency mode” on the graph; projecting onto it gives the amplitude at that “frequency”.</li>
+</ul>
 <p>For <strong>node features</strong> <span class="math inline">\(X\in \mathbb{R}^{n\times d}\)</span> (<span class="math inline">\(d\)</span> channels): <span class="math display">\[
 \widehat{X}=U^\intercal X \quad\text{(apply per column)}, \qquad X=U\widehat{X}
 \]</span> On graph, the notion of “shifting” a signal is tied to an operator that encodes the graph’s structure (e.g, <span class="math inline">\(\mathcal{L}\)</span> or <span class="math inline">\(A\)</span>). A <strong>linear, shift-invariant</strong> graph filter is one that <strong>commutes</strong> with <span class="math inline">\(\mathcal{L}\)</span> and (equivalently) is a <strong>function of <span class="math inline">\(\mathcal{L}\)</span></strong>: <span class="math display">\[
 g_\theta * X=U\, g_\theta(\Lambda)U^\intercal X
-\]</span> where: - <span class="math inline">\(U^\intercal X\)</span>: graph Fourier transform (to spectral domain) - <span class="math inline">\(g_\theta(\Lambda)\)</span>: <strong>diagonal</strong> matrix; the <span class="math inline">\(k\)</span>-th diagonal entry is <span class="math inline">\(g_\theta(\lambda_k)\)</span>. This <strong>scales each frequency independently</strong>. - <span class="math inline">\(U(\cdot)\)</span>: inverse GFT (back to nodes).</p>
+\]</span> where:</p>
+<ul>
+<li><span class="math inline">\(U^\intercal X\)</span>: graph Fourier transform (to spectral domain)</li>
+<li><span class="math inline">\(g_\theta(\Lambda)\)</span>: <strong>diagonal</strong> matrix; the <span class="math inline">\(k\)</span>-th diagonal entry is <span class="math inline">\(g_\theta(\lambda_k)\)</span>. This <strong>scales each frequency independently</strong>.</li>
+<li><span class="math inline">\(U(\cdot)\)</span>: inverse GFT (back to nodes).</li>
+</ul>
 <p>If we keep one feature channel, we can view <span class="math inline">\(g_\theta(\Lambda)\)</span> as a length-<span class="math inline">\(n\)</span> vector of learnable gains, one per eigenvalue/frequency.</p>
 <p>Computing <span class="math inline">\(U\)</span> (full eigenvectors) is <span class="math inline">\(O(n^3)\)</span> - too expensive for large graphs. We need a version that avoids explicit eigendecomposition.</p>
 <p>Approximate <span class="math inline">\(g_\theta(\lambda)\)</span> by a <strong>low-degree polynomial</strong>: <span class="math display">\[
@@ -385,7 +397,12 @@ g_\theta *X \approx \sum_{k=0}^K\theta_k\mathcal{L}^kX
 \hat{A}=A+I, \quad \hat{D}_{ii}=\sum_j\hat{A}_{ij}
 \]</span> Then the <strong>GCN layer</strong> becomes: <span class="math display">\[
 H^{(l+1)}=\sigma(\underbrace{\hat{D}^{-\frac{1}{2}}\hat{A}\hat{D}^{-\frac{1}{2}}}_{\text{normalized neighbor averaging}}H^{(l)}W^{(l)})
-\]</span> where: - <span class="math inline">\(H^{(0)}=X\)</span>, - <span class="math inline">\(W^{(l)}\)</span> are trainable weights, - <span class="math inline">\(\sigma\)</span> is a nonlinearity (ReLU)</p>
+\]</span> where:</p>
+<ul>
+<li><span class="math inline">\(H^{(0)}=X\)</span>,</li>
+<li><span class="math inline">\(W^{(l)}\)</span> are trainable weights,</li>
+<li><span class="math inline">\(\sigma\)</span> is a nonlinearity (ReLU)</li>
+</ul>
 <div class="callout callout-style-default callout-tip callout-titled" title="Intuition vs. logistic regression">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -404,13 +421,18 @@ H^{(l+1)}=\sigma(\underbrace{\hat{D}^{-\frac{1}{2}}\hat{A}\hat{D}^{-\frac{1}{2}}
 </div>
 <section id="b.-message-passing-view" class="level3">
 <h3 class="anchored" data-anchor-id="b.-message-passing-view">b. Message-passing view</h3>
-<p>For each node <span class="math inline">\(i\)</span>, let <span class="math inline">\(\mathcal{N}(i)\)</span> be its neighbors (including <span class="math inline">\(i\)</span> itself with self-loop). A simplified per-node cartoon: 1. <strong>Message from neighbor <span class="math inline">\(j\)</span> to <span class="math inline">\(i\)</span></strong>: <span class="math display">\[
+<p>For each node <span class="math inline">\(i\)</span>, let <span class="math inline">\(\mathcal{N}(i)\)</span> be its neighbors (including <span class="math inline">\(i\)</span> itself with self-loop). A simplified per-node cartoon:</p>
+<ol type="1">
+<li><p><strong>Message from neighbor <span class="math inline">\(j\)</span> to <span class="math inline">\(i\)</span></strong>: <span class="math display">\[
 m_{j\to i}^{(l)}=\frac{1}{\sqrt{\hat{d}_i\hat{d}_j}}h^{(l)}_j
-\]</span> 2. <strong>Aggregate messages (sum/avg)</strong>: <span class="math display">\[
+\]</span></p></li>
+<li><p><strong>Aggregate messages (sum/avg)</strong>: <span class="math display">\[
 \tilde{h}_i^{(l)}=\sum_{j\in \mathcal{N}(i)}m^{(l)}_{j\to i}
-\]</span> 3. <strong>Update with learnable transform + nonlinearity</strong>: <span class="math display">\[
+\]</span></p></li>
+<li><p><strong>Update with learnable transform + nonlinearity</strong>: <span class="math display">\[
 h_i^{(l+1)}=\sigma(\tilde{h}_i^{(l)}W^{(l)})
-\]</span></p>
+\]</span></p></li>
+</ol>
 <p>Stacking 2 layers lets information flow <strong>two hops</strong> away, etc.</p>
 <div class="callout callout-style-default callout-tip callout-titled" title="Example">
 <div class="callout-header d-flex align-content-center">
@@ -528,7 +550,11 @@ h_i^{(l)}=[1,0,0],\quad h_j^{(l)}=[0,1,0],\quad h_k^{(l)}=[0,0,1]
 <blockquote class="blockquote">
 <p><strong>Validation pass (no gradient)</strong></p>
 </blockquote>
-<p>We compute <strong>train</strong> and <strong>validation</strong> accuracies: - Train acc helps detect under/overfit trend. - <strong>Val acc</strong> is the <strong>selection signal</strong> for early stoping.</p>
+<p>We compute <strong>train</strong> and <strong>validation</strong> accuracies:</p>
+<ul>
+<li>Train acc helps detect under/overfit trend.</li>
+<li><strong>Val acc</strong> is the <strong>selection signal</strong> for early stoping.</li>
+</ul>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb20"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>    model.<span class="bu">eval</span>()</span>
 <span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">with</span> torch.no_grad(): <span class="co"># saves memory and time by not tracking gradients</span></span>
 <span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>        logits <span class="op">=</span> model(data.x, data.edge_index)</span>
@@ -537,7 +563,11 @@ h_i^{(l)}=[1,0,0],\quad h_j^{(l)}=[0,1,0],\quad h_k^{(l)}=[0,0,1]
 <blockquote class="blockquote">
 <p><strong>Update best checkpoint or count “bad” epochs</strong></p>
 </blockquote>
-<p>If validation improved, we <strong>snapshot</strong> the model: - <code>state_dict()</code> returns all parameters/buffers. - <code>.detach().cpu().clone()</code> makes a clean, independent copy on CPU (safe from future in-place changes and GPU memory pressure).</p>
+<p>If validation improved, we <strong>snapshot</strong> the model:</p>
+<ul>
+<li><code>state_dict()</code> returns all parameters/buffers.</li>
+<li><code>.detach().cpu().clone()</code> makes a clean, independent copy on CPU (safe from future in-place changes and GPU memory pressure).</li>
+</ul>
 <p>Otherwise, increment <code>bad_epochs</code>.</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> val_acc <span class="op">&gt;</span> best_val:</span>
 <span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>        best_val <span class="op">=</span> val_acc</span>
@@ -574,14 +604,28 @@ epoch  75 | loss 0.0150 | train 1.000 | val 0.778
 epoch 100 | loss 0.0137 | train 1.000 | val 0.774
 
 0.7919999957084656</code></pre>
-<p><img src="../../assets/images/projects/graph-neural-network/base-train-val-loss.png" class="img-fluid" alt="base-train-val-loss.png"> <strong>What we see</strong>: - <strong>Loss</strong>: plunges in the first 10-15 epochs, then approximately 0.0 <span class="math inline">\(\Rightarrow\)</span> the model fits the training nodes almost perfectly. - <strong>Train accuracy</strong>: hits nearly 100% by nearly 10 epochs and stays there <span class="math inline">\(\Rightarrow\)</span> with only 140 train nodes in Cora, a 2-layer GCN(64) can memorize them easily. - <strong>Val accuracy</strong>: rises quickly to <span class="math inline">\(0.76-0.79\)</span> and plateaus with small noise <span class="math inline">\(\Rightarrow\)</span> this is our true generalization level for this config.</p>
-<p>That shape (fast drop, train approx 1.0, val approx 0.78) is typical for a plain 2-layer GCN on Cora. It means: - Not underfitting (train=1.0) - Mild overfitting (train-val gap=0.2), but expected on a tiny train split. - Early stopping would sensibly choose an epoch around the <strong>first plateau</strong> (8-15)</p>
+<p><img src="../../assets/images/projects/graph-neural-network/base-train-val-loss.png" class="img-fluid" alt="base-train-val-loss.png"> <strong>What we see</strong>:</p>
+<ul>
+<li><strong>Loss</strong>: plunges in the first 10-15 epochs, then approximately 0.0 <span class="math inline">\(\Rightarrow\)</span> the model fits the training nodes almost perfectly.</li>
+<li><strong>Train accuracy</strong>: hits nearly 100% by nearly 10 epochs and stays there <span class="math inline">\(\Rightarrow\)</span> with only 140 train nodes in Cora, a 2-layer GCN(64) can memorize them easily.</li>
+<li><strong>Val accuracy</strong>: rises quickly to <span class="math inline">\(0.76-0.79\)</span> and plateaus with small noise <span class="math inline">\(\Rightarrow\)</span> this is our true generalization level for this config.</li>
+</ul>
+<p>That shape (fast drop, train approx 1.0, val approx 0.78) is typical for a plain 2-layer GCN on Cora. It means:</p>
+<ul>
+<li>Not underfitting (train=1.0)</li>
+<li>Mild overfitting (train-val gap=0.2), but expected on a tiny train split.</li>
+<li>Early stopping would sensibly choose an epoch around the <strong>first plateau</strong> (8-15)</li>
+</ul>
 </section>
 <section id="evaluate-on-the-test-split" class="level2">
 <h2 class="anchored" data-anchor-id="evaluate-on-the-test-split">5. Evaluate on the test split</h2>
-<p><strong>Metrics</strong>: - <strong>Accuracy</strong> (fraction correct) on test nodes. - <strong>Macro-f1</strong>: compute F1 per class, then average. <span class="math display">\[
+<p><strong>Metrics</strong>:</p>
+<ul>
+<li><strong>Accuracy</strong> (fraction correct) on test nodes.</li>
+<li><strong>Macro-f1</strong>: compute F1 per class, then average. <span class="math display">\[
 F1_c=\frac{2\times\text{Precision}_c\times \text{Recall}_c}{\text{Precision}_c+\text{Recall}_c},\qquad \text{MacroF1}=\frac{1}{C}\sum F1_c
-\]</span></p>
+\]</span></li>
+</ul>
 <div class="callout callout-style-default callout-warning callout-titled" title="Q-A">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -614,7 +658,12 @@ F1_c=\frac{2\times\text{Precision}_c\times \text{Recall}_c}{\text{Precision}_c+\
 </section>
 <section id="hidden-size-layers-dropout" class="level2">
 <h2 class="anchored" data-anchor-id="hidden-size-layers-dropout">6. Hidden size, layers, dropout</h2>
-<p>We sweep a few hyperparameters and record performance. This shows <strong>sensitivity</strong>: - <strong>Hidden dimension</strong>: capacity of the representation. Small <span class="math inline">\(\rightarrow\)</span> underfit; very large <span class="math inline">\(\rightarrow\)</span> overfit. - <strong>Number of layers</strong>: more hops of information. Too deep can cause <strong>over-smoothing</strong> (embeddings become too similar, the classifier loses contrast). - <strong>Dropout</strong>: regularization; often improves generalization on small graphs.</p>
+<p>We sweep a few hyperparameters and record performance. This shows <strong>sensitivity</strong>:</p>
+<ul>
+<li><strong>Hidden dimension</strong>: capacity of the representation. Small <span class="math inline">\(\rightarrow\)</span> underfit; very large <span class="math inline">\(\rightarrow\)</span> overfit.</li>
+<li><strong>Number of layers</strong>: more hops of information. Too deep can cause <strong>over-smoothing</strong> (embeddings become too similar, the classifier loses contrast).</li>
+<li><strong>Dropout</strong>: regularization; often improves generalization on small graphs.</li>
+</ul>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb29"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>rows <span class="op">=</span> []</span>
 <span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> hidden <span class="kw">in</span> [<span class="dv">16</span>, <span class="dv">64</span>, <span class="dv">128</span>]:</span>
 <span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> layers <span class="kw">in</span> [<span class="dv">2</span>, <span class="dv">3</span>]:</span>

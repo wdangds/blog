@@ -318,7 +318,12 @@ f:\mathcal X \to \mathbb R.
 <p>Tree-based models take a different view.</p>
 <p>Instead of assuming a global equation, a tree-based model divides the feature space into a collection of simpler regions and makes a prediction within each region. The model then asks: “How can input space be split into subpopulations whose outcomes are more homogeneous?”</p>
 <p>This makes tree-based models especially useful when the relationship between predictors and target variables is nonlinear, discontinuous, interaction-heavy, or difficult to express through a simple parametric equation.</p>
-<p>A decision tree can be understood as a <strong>recursive partitioning model</strong>. Starting from the full dataset, the algorithm repeatedly chooses a feature and a threshold, splits the data into two child nodes, and continues until a stopping rule is reached. The result is a rooted tree: - internal nodes contain decision rules, - branches represent outcomes of those rules, - terminal nodes, or leaves, contain predictions.</p>
+<p>A decision tree can be understood as a <strong>recursive partitioning model</strong>. Starting from the full dataset, the algorithm repeatedly chooses a feature and a threshold, splits the data into two child nodes, and continues until a stopping rule is reached. The result is a rooted tree:</p>
+<ul>
+<li>internal nodes contain decision rules,</li>
+<li>branches represent outcomes of those rules,</li>
+<li>terminal nodes, or leaves, contain predictions.</li>
+</ul>
 <p>The classical framework for this approach is <strong>Classification and Regression Trees</strong>, commonly called <strong>CART</strong>, introduced by Breiman, Friedman, Olshen, and Stone in 1984<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>. CART formalized tree learning for both regression and classification through recursive binary splitting and cost-complexity pruning.</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
@@ -529,7 +534,12 @@ Figure&nbsp;2: Regression tree structure
 <h3 class="anchored" data-anchor-id="node-impurity-measures">3.1. Node Impurity Measures</h3>
 <p>Unlike regression trees, classification trees do not minimize squared residuals. They minimize <strong>impurity</strong>. A pure node contains observations from only one class. An impure node contains a mixture of classes.</p>
 <p>Let <span class="math inline">\(\hat p_{mk}\)</span> be the proportion of class <span class="math inline">\(k\)</span> observations in node <span class="math inline">\(m\)</span>.</p>
-<p>Three common impurity measures are: 1. Misclassification error, 2. Gini index, 3. Cross-entropy, also called deviance.</p>
+<p>Three common impurity measures are:</p>
+<ol type="1">
+<li>Misclassification error,</li>
+<li>Gini index,</li>
+<li>Cross-entropy, also called deviance.</li>
+</ol>
 <section id="misclassification-error" class="level4">
 <h4 class="anchored" data-anchor-id="misclassification-error">3.1.1. Misclassification Error</h4>
 <p>The misclassification error at node <span class="math inline">\(m\)</span> is <span class="math display">\[
@@ -703,7 +713,11 @@ R(T) = \sum_{m=1}^{|T|} N_mQ_m(T),
 \]</span> where <span class="math inline">\(Q_m(T)\)</span> is the impurity or loss in terminal node <span class="math inline">\(m\)</span>.</p>
 <p>The cost-complexity criterion is <span class="math display">\[
 C_\alpha(T) = R(T) + \alpha |T|,
-\]</span> where <span class="math inline">\(a\geq 0\)</span> is a tuning parameter. - If <span class="math inline">\(\alpha = 0\)</span>, the criterion favors the largest tree with lowest training error. - If <span class="math inline">\(\alpha\)</span> is large, the criterion penalizes complexity more heavily and favors a smaller tree.</p>
+\]</span> where <span class="math inline">\(a\geq 0\)</span> is a tuning parameter.</p>
+<ul>
+<li>If <span class="math inline">\(\alpha = 0\)</span>, the criterion favors the largest tree with lowest training error.</li>
+<li>If <span class="math inline">\(\alpha\)</span> is large, the criterion penalizes complexity more heavily and favors a smaller tree.</li>
+</ul>
 <div class="callout callout-style-default callout-note callout-titled" title="Cost-Complexity Pruning">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -830,7 +844,11 @@ x_j \leq s \Longleftrightarrow g(x_j)\leq g(s).
 </section>
 <section id="limitations-of-single-trees" class="level3">
 <h3 class="anchored" data-anchor-id="limitations-of-single-trees">5.3. Limitations of Single Trees</h3>
-<p>Single trees have several weakness: 1. <em>High variance</em>. Small changes in training data can produce different tree structures. 2. __</p>
+<p>Single trees have several weakness:</p>
+<ol type="1">
+<li><em>High variance</em>. Small changes in training data can produce different tree structures.</li>
+<li>__</li>
+</ol>
 
 
 </section>
