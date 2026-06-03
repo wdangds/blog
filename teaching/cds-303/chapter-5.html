@@ -287,6 +287,13 @@ window.Quarto = {
   <li><a href="#invariance-to-monotone-transformations" id="toc-invariance-to-monotone-transformations" class="nav-link" data-scroll-target="#invariance-to-monotone-transformations">5.2. Invariance to Monotone Transformations</a></li>
   <li><a href="#limitations-of-single-trees" id="toc-limitations-of-single-trees" class="nav-link" data-scroll-target="#limitations-of-single-trees">5.3. Limitations of Single Trees</a></li>
   </ul></li>
+  <li><a href="#bagging-and-random-forests" id="toc-bagging-and-random-forests" class="nav-link" data-scroll-target="#bagging-and-random-forests">6. Bagging and Random Forests</a>
+  <ul class="collapse">
+  <li><a href="#bagging-bootstrap-aggregation" id="toc-bagging-bootstrap-aggregation" class="nav-link" data-scroll-target="#bagging-bootstrap-aggregation">6.1. Bagging: Bootstrap Aggregation</a></li>
+  <li><a href="#variance-reduction-by-averaging" id="toc-variance-reduction-by-averaging" class="nav-link" data-scroll-target="#variance-reduction-by-averaging">6.2. Variance Reduction by Averaging</a></li>
+  <li><a href="#random-forests" id="toc-random-forests" class="nav-link" data-scroll-target="#random-forests">6.3. Random Forests</a></li>
+  <li><a href="#feature-importance-in-random-forests" id="toc-feature-importance-in-random-forests" class="nav-link" data-scroll-target="#feature-importance-in-random-forests">6.4. Feature Importance in Random Forests</a></li>
+  </ul></li>
   </ul>
 </nav>
     </div>
@@ -525,9 +532,11 @@ Figure&nbsp;2: Regression tree structure
 <div class="callout-body-container callout-body">
 <p><em>A <strong>classification tree</strong> is a recursive partitioning model for categorical responses <span class="math inline">\(Y\in \{1,\dots, K\}\)</span>. Each terminal region <span class="math inline">\(R_m\)</span> estimates class probabilities</em> <span class="math display">\[
 \hat p_mk = \frac{1}{N_m}\sum_{x_i\in R_m} \mathbf I\{y_i=k\}
-\]</span> <em>and predicts the majority class</em> <span class="math display">\[
+\]</span></p>
+<p><em>and predicts the majority class</em> <span class="math display">\[
 \hat k(x) = \arg \max_k \hat p_mk \quad \text{ for } x\in R_m
-\]</span> <em>The goal of splitting is to produce child nodes that are more homogeneous than their parent node.</em></p>
+\]</span></p>
+<p><em>The goal of splitting is to produce child nodes that are more homogeneous than their parent node.</em></p>
 </div>
 </div>
 <section id="node-impurity-measures" class="level3">
@@ -554,19 +563,23 @@ Q_{m}^{ME} = 1-0.8=0.2.
 <h4 class="anchored" data-anchor-id="gini-index">3.1.2. Gini Index</h4>
 <p>The Gini index is <span class="math display">\[
 Q_{m}^{\text{Gini}} = \sum_{k=1}^K\hat p_{mk}(1-\hat p_{mk})
-\]</span> This can also be written as <span class="math display">\[
+\]</span></p>
+<p>This can also be written as <span class="math display">\[
 Q_m^{\text{Gini}} = 1-\sum_{k=1}^K \hat p_{mk}^2
-\]</span> If one randomly labels an observation according to the class distribution in the node, the Gini index is the expected probability of incorrect classification. A pure node has one class probability equal to 1 and all others equal to 0, so <span class="math inline">\(Q_m^\text{Gini}=0\)</span>. A maximal mixed binary node with <span class="math inline">\(\hat p_{m1} = \hat p_{m2}=0.5\)</span> has <span class="math inline">\(Q_m^\text{Gini}=1-(0.5^2+0.5^2)=0.5\)</span>.</p>
+\]</span></p>
+<p>If one randomly labels an observation according to the class distribution in the node, the Gini index is the expected probability of incorrect classification. A pure node has one class probability equal to 1 and all others equal to 0, so <span class="math inline">\(Q_m^\text{Gini}=0\)</span>. A maximal mixed binary node with <span class="math inline">\(\hat p_{m1} = \hat p_{m2}=0.5\)</span> has <span class="math inline">\(Q_m^\text{Gini}=1-(0.5^2+0.5^2)=0.5\)</span>.</p>
 </section>
 <section id="cross-entropy-deviance" class="level4">
 <h4 class="anchored" data-anchor-id="cross-entropy-deviance">3.1.3. Cross-Entropy / Deviance</h4>
 <p>The cross-entropy impurity is <span class="math display">\[
 Q_m^\text{Entropy} = -\sum_{k=1}^K \hat p_{mk}\log (\hat p_{mk})
-\]</span> By convention, <span class="math inline">\(0\log0 = 0\)</span>.</p>
+\]</span></p>
+<p>By convention, <span class="math inline">\(0\log0 = 0\)</span>.</p>
 <p>Entropy measures uncertainty in the class distribution. A pure node has entropy 0. A uniformly mixed node has high entropy.</p>
 <p>For binary classification, if <span class="math inline">\(p=\hat p_{m1}\)</span>, then: <span class="math display">\[
 Q_m^\text{Entropy}(p) = -p\log p - (1-p)\log (1-p)
-\]</span> Entropy is connected to information theory and likelihood-based classification. It penalizes uncertain class distribution strongly.</p>
+\]</span></p>
+<p>Entropy is connected to information theory and likelihood-based classification. It penalizes uncertain class distribution strongly.</p>
 <div id="cell-fig-classification-impurity" class="cell" data-execution_count="3">
 <details class="code-fold">
 <summary>Show code</summary>
@@ -847,8 +860,153 @@ x_j \leq s \Longleftrightarrow g(x_j)\leq g(s).
 <p>Single trees have several weakness:</p>
 <ol type="1">
 <li><em>High variance</em>. Small changes in training data can produce different tree structures.</li>
-<li>__</li>
+<li><em>Greedy optimization</em>. Each split is locally optimal, not globally optimal.</li>
+<li><em>Piecewise-constant predictions</em>. Regression trees may poorly approximate smooth functions.</li>
+<li><em>Axis-aligned boundaries</em>. Splits are usually of the form <span class="math inline">\(x_j\leq s\)</span>, which can be inefficient for diagonal or curved boundaries.</li>
+<li><em>Bias toward variables with many split points</em>. Some tree algorithms can favor predictors with many possible thresholds.</li>
+<li><em>Weak predictive power alone</em>. A shallow tree may be interpretable but inaccurate; a deep tree may be accurate on training data but unstable.</li>
 </ol>
+<p>These limitations motivate ensemble methods.</p>
+</section>
+</section>
+<section id="bagging-and-random-forests" class="level2">
+<h2 class="anchored" data-anchor-id="bagging-and-random-forests">6. Bagging and Random Forests</h2>
+<p>An ensemble combines multiple models to produce a stronger predictor. For trees, ensemble learning is especially effective since we already know that individuals trees have high variance. Averaging many high-variance but low-bias models can reduce variance substantially.</p>
+<p>This is the foundation of bagging and random forests.</p>
+<section id="bagging-bootstrap-aggregation" class="level3">
+<h3 class="anchored" data-anchor-id="bagging-bootstrap-aggregation">6.1. Bagging: Bootstrap Aggregation</h3>
+<p>Bagging, short for <strong>bootstrap aggregation</strong>, trains many trees on bootstrap samples of the training data. A bootstrap sample is formed by sampling <span class="math inline">\(n\)</span> observations <em>with replacement</em> from the original training set.</p>
+<p>Let <span class="math inline">\(\mathcal D^{*(b)}\)</span> be the <span class="math inline">\(b\)</span>-th bootstrap sample, and let <span class="math inline">\(\hat f^{*(b)}(x)\)</span> be the tree trained on that sample.</p>
+<p>For regression, the bagged predictor is</p>
+<p><span class="math display">\[
+\hat f_{\text{bag}}(x) = \frac{1}{B}\sum_{b=1}^B \hat f^{*(b)}(x).
+\]</span></p>
+<p>For classification, the ensemble usually predicts by majority vote:</p>
+<p><span class="math display">\[
+\hat k_\text{bag}(x) = mode\{\hat k^{*(1)}(x), \dots, \hat k^{*(B)}(x)\}
+\]</span></p>
+</section>
+<section id="variance-reduction-by-averaging" class="level3">
+<h3 class="anchored" data-anchor-id="variance-reduction-by-averaging">6.2. Variance Reduction by Averaging</h3>
+<p>Suppose each tree prediction has variance <span class="math inline">\(\sigma^2\)</span>, and suppose the pairwise correlation between tree predictions is <span class="math inline">\(\rho\)</span>. Let the ensemble average be</p>
+<p><span class="math display">\[
+\overline f(x) = \frac{1}{B}\sum_{b=1}^B f_{b}(x).
+\]</span></p>
+<p>Then the variance of the average is approximately</p>
+<p><span class="math display">\[
+\text{Var}\left[\overline f(x)\right]=\rho\sigma^2+\frac{1-\rho}{B}\sigma^2
+\]</span></p>
+<p>As <span class="math inline">\(B\to \infty\)</span>, the second term vanishes: <span class="math inline">\(\frac{1-\rho}{B}\sigma^2\to 0\)</span>. But the first term remains <span class="math inline">\(\rho \sigma^2\)</span>. Therefore, adding more tree reduces variance caused by finite averaging, but if the trees are highly correlated, the ensemble still has a nonzero correlation-driven variance component. This motivates random forests, which try to reduce <span class="math inline">\(\rho\)</span>.</p>
+</section>
+<section id="random-forests" class="level3">
+<h3 class="anchored" data-anchor-id="random-forests">6.3. Random Forests</h3>
+<p>A <strong>random forest</strong> modifies bagging by adding random feature selection.</p>
+<p>At each split in each tree:</p>
+<ol type="1">
+<li>Select a random subset of features <span class="math display">\[\mathcal M \subseteq \{1,\dots, p\}, \qquad |\mathcal M|=m. \]</span></li>
+<li>Search for the best split only among features in <span class="math inline">\(\mathcal M\)</span>.</li>
+<li>Grow each tree deeply, often without pruning.</li>
+</ol>
+<p>The final prediction is an average for regression or a majority vote for classification.</p>
+<div class="callout callout-style-default callout-note callout-titled" title="Definition: Random Forest Regression Predictor">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Definition: Random Forest Regression Predictor
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><em>Given <span class="math inline">\(B\)</span> randomized trees</em></p>
+<p><span class="math display">\[
+\hat f_1, \hat f_2, \dots, \hat f_B,
+\]</span></p>
+<p><em>the random forest regression predictor is</em></p>
+<p><span class="math display">\[
+\hat f_{RF} (x) = \frac{1}{B}\sum_{b=1}^B \hat{f}_b(x)
+\]</span></p>
+</div>
+</div>
+<div class="callout callout-style-default callout-note callout-titled" title="Definition: Random Forest Classification Predictor">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Definition: Random Forest Classification Predictor
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>For classification,</p>
+<p><span class="math display">\[
+\hat k_{RF}(x) = \arg \max_k \sum_{b=1}^B \mathbf 1\{\hat k_b(x) = k\}
+\]</span></p>
+</div>
+</div>
+<p>Random forests are strong default models for many tabular datasets because they capture nonlinearities and interactions, reduce variance, and require relatively little feature scaling.</p>
+<div id="cell-fig-single-tree-vs-random-forest" class="cell" data-execution_count="6">
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.tree <span class="im">import</span> DecisionTreeRegressor</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.ensemble <span class="im">import</span> RandomForestRegressor</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>rng <span class="op">=</span> np.random.default_rng(<span class="dv">42</span>)</span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>X <span class="op">=</span> np.linspace(<span class="dv">0</span>, <span class="dv">10</span>, <span class="dv">120</span>).reshape(<span class="op">-</span><span class="dv">1</span>, <span class="dv">1</span>)</span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>y <span class="op">=</span> np.sin(X).ravel() <span class="op">+</span> <span class="fl">0.35</span> <span class="op">*</span> rng.normal(size<span class="op">=</span>X.shape[<span class="dv">0</span>])</span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>single_tree <span class="op">=</span> DecisionTreeRegressor(max_depth<span class="op">=</span><span class="va">None</span>, random_state<span class="op">=</span><span class="dv">42</span>)</span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>forest <span class="op">=</span> RandomForestRegressor(</span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>    n_estimators<span class="op">=</span><span class="dv">200</span>,</span>
+<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a>    max_features<span class="op">=</span><span class="fl">1.0</span>,</span>
+<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a>    random_state<span class="op">=</span><span class="dv">42</span></span>
+<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-18"><a href="#cb6-18" aria-hidden="true" tabindex="-1"></a>single_tree.fit(X, y)</span>
+<span id="cb6-19"><a href="#cb6-19" aria-hidden="true" tabindex="-1"></a>forest.fit(X, y)</span>
+<span id="cb6-20"><a href="#cb6-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-21"><a href="#cb6-21" aria-hidden="true" tabindex="-1"></a>X_grid <span class="op">=</span> np.linspace(<span class="dv">0</span>, <span class="dv">10</span>, <span class="dv">500</span>).reshape(<span class="op">-</span><span class="dv">1</span>, <span class="dv">1</span>)</span>
+<span id="cb6-22"><a href="#cb6-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-23"><a href="#cb6-23" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">8</span>, <span class="dv">5</span>))</span>
+<span id="cb6-24"><a href="#cb6-24" aria-hidden="true" tabindex="-1"></a>plt.scatter(X, y, alpha<span class="op">=</span><span class="fl">0.5</span>, label<span class="op">=</span><span class="st">"Observed data"</span>)</span>
+<span id="cb6-25"><a href="#cb6-25" aria-hidden="true" tabindex="-1"></a>plt.plot(X_grid, single_tree.predict(X_grid), label<span class="op">=</span><span class="st">"Single tree"</span>)</span>
+<span id="cb6-26"><a href="#cb6-26" aria-hidden="true" tabindex="-1"></a>plt.plot(X_grid, forest.predict(X_grid), label<span class="op">=</span><span class="st">"Random forest"</span>)</span>
+<span id="cb6-27"><a href="#cb6-27" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">"Single Tree vs. Random Forest Regression"</span>)</span>
+<span id="cb6-28"><a href="#cb6-28" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">"x"</span>)</span>
+<span id="cb6-29"><a href="#cb6-29" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">"y"</span>)</span>
+<span id="cb6-30"><a href="#cb6-30" aria-hidden="true" tabindex="-1"></a>plt.legend()</span>
+<span id="cb6-31"><a href="#cb6-31" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb6-32"><a href="#cb6-32" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-display">
+<div id="fig-single-tree-vs-random-forest" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-single-tree-vs-random-forest-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="chapter-5_files/figure-html/fig-single-tree-vs-random-forest-output-1.png" width="758" height="470" class="figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-single-tree-vs-random-forest-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;6: Single Tree vs.&nbsp;Random Forest Regression
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="feature-importance-in-random-forests" class="level3">
+<h3 class="anchored" data-anchor-id="feature-importance-in-random-forests">6.4. Feature Importance in Random Forests</h3>
+<p>Random forests can produce feature importance scores. A common measure is mean decrease in impurity:</p>
+<p><span class="math display">\[
+FI_j = \sum_{\text{splits on } j} \Delta Q_\text{split}
+\]</span></p>
+<p>where <span class="math inline">\(\Delta Q_\text{split}\)</span> is the impurity reduction caused by splits using feature <span class="math inline">\(j\)</span>, averaged over all trees.</p>
+<p>However, impurity-based feature importance can be biased toward variables with many possible split points. Permutation importance is often more reliable:</p>
+<p><span class="math display">\[
+PI_j = \text{Score}(\hat f, \mathcal D)-\text{Score}(\hat f, \mathcal D_{\pi(j)})
+\]</span></p>
+<p>where <span class="math inline">\(\mathcal D_{\pi(j)}\)</span> is the dataset after randomly permuting feature <span class="math inline">\(j\)</span>. If shuffling <span class="math inline">\(j\)</span> greatly worsens performance, then feature <span class="math inline">\(j\)</span></p>
 
 
 </section>
