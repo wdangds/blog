@@ -1,0 +1,10 @@
+{
+  // Force Quarto extension to use the installed Quarto binary
+  "quarto.quartoPath": "/Applications/quarto/bin/quarto",
+
+  // Ensure integrated terminals see the conda python; this helps if you open a terminal inside VS Code
+  "terminal.integrated.env.osx": {
+    "QUARTO_PYTHON": "/opt/miniconda3/bin/python3",
+    "PATH": "/opt/miniconda3/bin:${env:PATH}"
+  }
+}

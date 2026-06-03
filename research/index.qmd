@@ -6,7 +6,7 @@ As a student switching from Computer Science to Data Science, and somehow ending
 
 <div align="center">
 
-![Data Science Diagram](../assets/images/research/data-science-diagram.svg)
+![Data Science Diagram](../assets/images/research/data-science-diagram.png)
 
 </div>
 

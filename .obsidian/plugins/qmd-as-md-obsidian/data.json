@@ -1,0 +1,13 @@
+{
+  "quartoPath": "/usr/local/bin/quarto",
+  "enableQmdLinking": true,
+  "quartoTypst": "",
+  "openPdfInObsidian": false,
+  "previewInObsidian": true,
+  "previewMarkdownFiles": false,
+  "outlineMarkdownFiles": false,
+  "showYamlFiles": false,
+  "showLuaFiles": false,
+  "showOutline": false,
+  "templatesFolder": ""
+}
