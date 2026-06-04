@@ -246,6 +246,7 @@ window.Quarto = {
   <li><a href="#load-cora-inspect" id="toc-load-cora-inspect" class="nav-link active" data-scroll-target="#load-cora-inspect">1. Load Cora &amp; inspect</a></li>
   <li><a href="#define-a-minimal-gcn-model" id="toc-define-a-minimal-gcn-model" class="nav-link" data-scroll-target="#define-a-minimal-gcn-model">2. Define a minimal GCN model</a>
   <ul class="collapse">
+  <li><a href="#a.-matrix-view" id="toc-a.-matrix-view" class="nav-link" data-scroll-target="#a.-matrix-view">a. Matrix view</a></li>
   <li><a href="#b.-message-passing-view" id="toc-b.-message-passing-view" class="nav-link" data-scroll-target="#b.-message-passing-view">b. Message-passing view</a></li>
   </ul></li>
   <li><a href="#training-utilities-and-early-stopping" id="toc-training-utilities-and-early-stopping" class="nav-link" data-scroll-target="#training-utilities-and-early-stopping">3. Training utilities and early stopping</a>
@@ -360,7 +361,10 @@ torch.Size([2, 10556])</code></pre>
 </section>
 <section id="define-a-minimal-gcn-model" class="level2">
 <h2 class="anchored" data-anchor-id="define-a-minimal-gcn-model">2. Define a minimal GCN model</h2>
-<p>This is the core theory. A <strong>GCN layer</strong> takes current node representations and returns updated ones by <strong>mixing neighbors’ information</strong>. ### a. Matrix view For an undirected graph with adjacency <span class="math inline">\(A\)</span> and degree matrix <span class="math inline">\(D\)</span>, the (normalized) Laplacian is <span class="math display">\[
+<p>This is the core theory. A <strong>GCN layer</strong> takes current node representations and returns updated ones by <strong>mixing neighbors’ information</strong>.</p>
+<section id="a.-matrix-view" class="level3">
+<h3 class="anchored" data-anchor-id="a.-matrix-view">a. Matrix view</h3>
+<p>For an undirected graph with adjacency <span class="math inline">\(A\)</span> and degree matrix <span class="math inline">\(D\)</span>, the (normalized) Laplacian is <span class="math display">\[
 \mathcal{L}=I-D^{-\frac{1}{2}}AD^{-\frac{1}{2}}
 \]</span> For a graph with (normalized) Laplacian, its <strong>Eigendecomposition</strong>: <span class="math display">\[
 \mathcal{L}=U\Lambda U^\intercal
@@ -419,6 +423,7 @@ H^{(l+1)}=\sigma(\underbrace{\hat{D}^{-\frac{1}{2}}\hat{A}\hat{D}^{-\frac{1}{2}}
 </ul>
 </div>
 </div>
+</section>
 <section id="b.-message-passing-view" class="level3">
 <h3 class="anchored" data-anchor-id="b.-message-passing-view">b. Message-passing view</h3>
 <p>For each node <span class="math inline">\(i\)</span>, let <span class="math inline">\(\mathcal{N}(i)\)</span> be its neighbors (including <span class="math inline">\(i\)</span> itself with self-loop). A simplified per-node cartoon:</p>
