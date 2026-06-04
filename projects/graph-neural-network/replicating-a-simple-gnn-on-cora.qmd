@@ -119,6 +119,7 @@ torch.Size([2708])
 
 ## 2. Define a minimal GCN model
 This is the core theory. A **GCN layer** takes current node representations and returns updated ones by **mixing neighbors' information**.
+
 ###  a. Matrix view 
 For an undirected graph with adjacency $A$ and degree matrix $D$, the (normalized) Laplacian is
 $$

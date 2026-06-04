@@ -11,14 +11,10 @@
             "id": "a77617d8d519f67c",
             "type": "leaf",
             "state": {
-              "type": "markdown",
-              "state": {
-                "file": "teaching/cds-303/chapter-5.qmd",
-                "mode": "source",
-                "source": false
-              },
+              "type": "empty",
+              "state": {},
               "icon": "lucide-file",
-              "title": "chapter-5"
+              "title": "New tab"
             }
           }
         ]
@@ -78,8 +74,7 @@
       }
     ],
     "direction": "horizontal",
-    "width": 200,
-    "collapsed": true
+    "width": 200
   },
   "right": {
     "id": "9bbd21cf42bdba39",
@@ -95,7 +90,6 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "teaching/cds-303/chapter-5.qmd",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -105,7 +99,7 @@
                 "unlinkedCollapsed": true
               },
               "icon": "links-coming-in",
-              "title": "Backlinks for chapter-5"
+              "title": "Backlinks"
             }
           },
           {
@@ -114,12 +108,11 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "teaching/cds-303/chapter-5.qmd",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               },
               "icon": "links-going-out",
-              "title": "Outgoing links from chapter-5"
+              "title": "Outgoing links"
             }
           },
           {
@@ -157,13 +150,12 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "teaching/cds-303/chapter-5.qmd",
                 "followCursor": false,
                 "showSearch": false,
                 "searchQuery": ""
               },
               "icon": "lucide-list",
-              "title": "Outline of chapter-5"
+              "title": "Outline"
             }
           }
         ],
@@ -187,28 +179,40 @@
       "qmd-as-md-obsidian:Render Quarto to PDF": false
     }
   },
-  "active": "a77617d8d519f67c",
+  "active": "e56b18091438a41f",
   "lastOpenFiles": [
-    "site_libs/quarto-html/tabsets/tabsets.js",
-    "site_libs/quarto-search/fuse.min.js",
-    "site_libs/quarto-search/quarto-search.js",
-    "site_libs/quarto-search/autocomplete.umd.js",
-    "site_libs/quarto-nav/quarto-nav.js",
-    "site_libs/bootstrap/bootstrap-icons.woff",
-    "site_libs/quarto-nav/headroom.min.js",
-    "site_libs/bootstrap/bootstrap.min.js",
-    "site_libs/bootstrap/bootstrap-0441d281c0042f78ca5e6da214781463.min.css",
-    "site_libs/bootstrap/bootstrap-icons.css",
-    "site_libs/quarto-html/zenscroll-min.js",
-    "teaching/cds-303/chapter-5_files/figure-html/fig-single-tree-vs-random-forest-output-1.png",
-    "teaching/cds-303/chapter-5_files/figure-html/fig-regression-tree-structure-output-1.png",
-    "teaching/cds-303/chapter-5_files/figure-html/fig-regression-tree-fit-output-1.png",
-    "teaching/cds-303/chapter-5_files/figure-html/fig-health-risk-tree-output-1.png",
-    "teaching/cds-303/chapter-5_files/figure-html/fig-cost-complexity-pruning-output-1.png",
-    "teaching/cds-303/chapter-5_files/figure-html/fig-classification-impurity-output-1.png",
-    "teaching/cds-303/chapter-5_files/figure-html/fig-single-tre-output-1.png",
-    "teaching/cds-303/chapter-5_files/figure-html/cell-7-output-1.png",
-    "_site/teaching/cds-303/chapter-5_files/figure-html/fig-single-tree-vs-random-forest-output-1.png",
-    "_freeze/teaching/cds-303/chapter-5/figure-html/fig-single-tree-vs-random-forest-output-1.png"
+    "teaching/index.qmd",
+    "teaching/cds-303/index.qmd",
+    "teaching/cds-303/chapter-5.qmd",
+    "teaching/cds-303/chapter-4.qmd",
+    "teaching/cds-303/chapter-3.qmd",
+    "teaching/cds-303/chapter-2.qmd",
+    "teaching/cds-303/chapter-1.qmd",
+    "teaching/cds-303/_metadata.yml",
+    "research/index.qmd",
+    "requirements-quarto.txt",
+    "projects/index.qmd",
+    "assets/images/research/data-science-diagram.png",
+    "archive/quartz-content/static/megl-present.jpg",
+    "archive/quartz-content/index.md",
+    "archive/quartz-content/Teaching/CDS 303/static/decision-tree.png",
+    "archive/quartz-content/Teaching/CDS 303/static/c5-ex5.png",
+    "archive/quartz-content/Teaching/CDS 303/static/c5-ex4.png",
+    "archive/quartz-content/Teaching/CDS 303/static/c5-ex3.png",
+    "archive/quartz-content/Teaching/CDS 303/static/c5-ex2.png",
+    "archive/quartz-content/Teaching/CDS 303/static/c5-ex1.2.png",
+    "archive/quartz-content/Teaching/CDS 303/static/c5-ex1.1.png",
+    "archive/quartz-content/Teaching/CDS 303/static/c4-ex9.png",
+    "archive/quartz-content/Teaching/CDS 303/index.md",
+    "archive/quartz-content/Teaching/CDS 303/Chapter 5.md",
+    "archive/quartz-content/Teaching/CDS 303/Chapter 4.md",
+    "archive/quartz-content/Teaching/CDS 303/Chapter 3.md",
+    "archive/quartz-content/Teaching/CDS 303/Chapter 2.md",
+    "archive/quartz-content/Teaching/CDS 303/Chapter 1.md",
+    "archive/quartz-content/Teaching/index.md",
+    "archive/quartz-content/Research/index.md",
+    "archive/quartz-content/Project/Graph-Neural-Network/index.md",
+    "archive/quartz-content/Project/Graph-Neural-Network/Replicating a Simple GNN on Cora.md",
+    "README.md"
   ]
 }

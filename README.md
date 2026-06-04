@@ -18,7 +18,19 @@ quarto preview
 
 ## Deployment
 
-Pushing to the `v4` branch triggers the GitHub Actions workflow in `.github/workflows/publish.yml`, which publishes the site to GitHub Pages.
+Pushing to the `v4` branch triggers the GitHub Actions workflow in `.github/workflows/publish.yml`.
+
+Deployment layout:
+
+- `v4` contains the Quarto source files (`.qmd`, `_quarto.yml`, assets, and `_freeze`).
+- `gh-pages` contains the rendered HTML site that GitHub Pages serves.
+
+GitHub Pages should therefore publish from:
+
+- branch: `gh-pages`
+- folder: `/ (root)`
+
+The `v4` branch is not a directly publishable website branch because the rendered `_site/` output is not committed there.
 
 ## Archive
 
