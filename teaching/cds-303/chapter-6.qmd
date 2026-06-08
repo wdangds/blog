@@ -14,7 +14,7 @@ This chapter studies KNN as a mathematical model of __local constancy__. The bas
 
 > __Point close to each other in feature space tend to have similar responses.__
 
-For classification, this means nearby points tend to share the same class label. For regression, nearby points tend to have similar numerical target values. KNN therefore is sometimes used in [unsupervised learning](chapter-1.qmd### 7.3. Unsupervised Learning) tasks. 
+For classification, this means nearby points tend to share the same class label. For regression, nearby points tend to have similar numerical target values. KNN therefore is sometimes used in [unsupervised learning](chapter-1.qmd#unsupervised-learning) tasks. 
 
 KNN is often called a __lazy learner__ because it performs almost no explicit model fitting during training. The training phase stores the data. The main computational work happens during prediction, when the algorithm searches for the nearest training points to a query point.
 
@@ -89,6 +89,5 @@ _A function $d:\mathcal X \times \mathcal X \to [0, \infty)$ is a __metric__ if 
 :::
 
 Not every similarity score is a metric. Cosine similarity, for example, is usually a similarity measure rather than a metric, although related angular distances can be constructed.
-
 
 

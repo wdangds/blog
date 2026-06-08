@@ -1,0 +1,12 @@
+{
+  "hash": "a2f94737f06e365f6d8e1aaaf864dfe0",
+  "result": {
+    "engine": "jupyter",
+    "markdown": "---\ntitle: Chapter 12\njupyter: python3\ntags:\n  - machine-learning\nsidebar: teaching\n---\n\n## Overview\n\nAdd your Chapter 12 content here.\n\n",
+    "supporting": [
+      "chapter-12_files"
+    ],
+    "filters": [],
+    "includes": {}
+  }
+}

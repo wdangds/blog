@@ -39,6 +39,13 @@ website:
                 - teaching/cds-303/chapter-3.qmd
                 - teaching/cds-303/chapter-4.qmd
                 - teaching/cds-303/chapter-5.qmd
+                - teaching/cds-303/chapter-6.qmd
+                - teaching/cds-303/chapter-7.qmd
+                - teaching/cds-303/chapter-8.qmd
+                - teaching/cds-303/chapter-9.qmd
+                - teaching/cds-303/chapter-10.qmd
+                - teaching/cds-303/chapter-11.qmd
+                - teaching/cds-303/chapter-12.qmd
     - id: projects
       style: docked
       search: true
