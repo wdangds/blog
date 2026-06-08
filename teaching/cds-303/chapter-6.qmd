@@ -1,0 +1,94 @@
+---
+title: Data Modeling - KNN
+jupyter: python3
+tags:
+  - machine-learning
+  - unsupervised-learning
+  - classification
+  - KNN
+sidebar: teaching
+---
+While [regression models](chapter-4.qmd) approximate an unknown relationship through an mathematical function and [tree-based models](chapter-5.qmd) approximate the response by recursively partitioning the feature space into regions, __K-Nearest Neighbors__, usually abbreviated as __KNN__ or $\mathbf k$-__NN__, predicts by comparing a new observation to the most similar observations already seen. KNN is a _non-parametric_, _instance-based_, and _memory-based_ learning method. 
+
+This chapter studies KNN as a mathematical model of __local constancy__. The basic assumption is:
+
+> __Point close to each other in feature space tend to have similar responses.__
+
+For classification, this means nearby points tend to share the same class label. For regression, nearby points tend to have similar numerical target values. KNN therefore is sometimes used in [unsupervised learning](chapter-1.qmd### 7.3. Unsupervised Learning) tasks. 
+
+KNN is often called a __lazy learner__ because it performs almost no explicit model fitting during training. The training phase stores the data. The main computational work happens during prediction, when the algorithm searches for the nearest training points to a query point.
+
+## 1. Formal Setup
+
+Let the training data be 
+
+$$
+\mathcal D_n = \{(x_i, y_i)\}_{i=1}^n
+$$
+
+where  $x_i\in \mathbb R^p$ is a feature vector with $p$ variables.
+
+For classification, $y_i\in \{1, 2, \dots, K\}$. For regression, $y_i\in \mathbb R$. 
+
+Let 
+
+$$
+d: \mathcal X \times \mathcal X \to [0, \infty)
+$$
+
+be a distance function. For a query point $x$, KNN identifies the $k$ training points closest to $x$.
+
+::: {.callout-note title="Definition: K-Nearest Neighbor Set"}
+
+_Given a query point $x$, a distance function $d$, and an integer $k\geq 1$, the $k$-__nearest neighbor set__ of $x$ is_
+
+$$
+N_k(x) = \{i_1, i_2, \dots, i_k\},
+$$
+
+_where_ 
+
+$$
+d(x, x_{i_1}) \leq d(x, x_{i_2}) \leq \dots \leq d(x, x_{i_k})
+$$
+
+_and $i_1, \dots, i_k$ are the indices of the $k$ closest training observations to $x$._
+
+:::
+
+If ties occur, they are usually broken arbitrarily or according to an implementation-specific rule. The KNN prediction depends entirely on $N_k(x)$.
+
+
+## 2. Distance, Geometry, and Similarity
+
+KNN does not learn coefficients, tree splits, or any weights. Instead, the distance function determines the geometry of the model. 
+
+A distance function decides which points count as similar. Therefore, choosing a distance metric equivalent to choosing the model's notion of relevance.
+
+::: {.callout-example title="Example"}
+
+In a medical dataset, two patients may be close if they have similar age, blood pressure, cholesterol, and heart rate. In a text dataset, two documents may be close if they use similar vocabulary. In a recommender system, two users may be close if they rate the same movies similarly.
+
+:::
+
+Thus, KNN depends on the question: 
+
+> **What does similarity mean in this problem?**
+
+### 2.1. Metric Spaces
+
+::: {.callout-note title="Definition: Metric"}
+
+_A function $d:\mathcal X \times \mathcal X \to [0, \infty)$ is a __metric__ if for all $x, y, z \in \mathcal X$, it satisfies:
+
+1. __Non-negativity__: $d(x, y) \geq 0$.
+2. **Identify of indiscernibles**: $d(x, y)=0 \Leftrightarrow x=y$.
+3. **Symmetry**: $d(x, y) = d(y,x)$.
+4. **Triangle inequality**: $d(x, z) \leq d(x, y) + d(y, z)$.
+
+:::
+
+Not every similarity score is a metric. Cosine similarity, for example, is usually a similarity measure rather than a metric, although related angular distances can be constructed.
+
+
+

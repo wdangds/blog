@@ -4,17 +4,21 @@
     "type": "split",
     "children": [
       {
-        "id": "4fae9502fefd1997",
+        "id": "ae9d9e3709760308",
         "type": "tabs",
         "children": [
           {
-            "id": "a77617d8d519f67c",
+            "id": "014bb0f0928e3f46",
             "type": "leaf",
             "state": {
-              "type": "empty",
-              "state": {},
+              "type": "markdown",
+              "state": {
+                "file": "teaching/cds-303/chapter-6.qmd",
+                "mode": "source",
+                "source": false
+              },
               "icon": "lucide-file",
-              "title": "New tab"
+              "title": "chapter-6"
             }
           }
         ]
@@ -49,7 +53,7 @@
             "state": {
               "type": "search",
               "state": {
-                "query": "",
+                "query": "unsuper",
                 "matchingCase": false,
                 "explainSearch": false,
                 "collapseAll": false,
@@ -74,7 +78,8 @@
       }
     ],
     "direction": "horizontal",
-    "width": 200
+    "width": 200,
+    "collapsed": true
   },
   "right": {
     "id": "9bbd21cf42bdba39",
@@ -90,6 +95,7 @@
             "state": {
               "type": "backlink",
               "state": {
+                "file": "teaching/cds-303/chapter-6.qmd",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -99,7 +105,7 @@
                 "unlinkedCollapsed": true
               },
               "icon": "links-coming-in",
-              "title": "Backlinks"
+              "title": "Backlinks for chapter-6"
             }
           },
           {
@@ -108,11 +114,12 @@
             "state": {
               "type": "outgoing-link",
               "state": {
+                "file": "teaching/cds-303/chapter-6.qmd",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               },
               "icon": "links-going-out",
-              "title": "Outgoing links"
+              "title": "Outgoing links from chapter-6"
             }
           },
           {
@@ -150,12 +157,13 @@
             "state": {
               "type": "outline",
               "state": {
+                "file": "teaching/cds-303/chapter-6.qmd",
                 "followCursor": false,
                 "showSearch": false,
                 "searchQuery": ""
               },
               "icon": "lucide-list",
-              "title": "Outline"
+              "title": "Outline of chapter-6"
             }
           }
         ],
@@ -179,36 +187,37 @@
       "qmd-as-md-obsidian:Render Quarto to PDF": false
     }
   },
-  "active": "e56b18091438a41f",
+  "active": "014bb0f0928e3f46",
   "lastOpenFiles": [
-    "teaching/index.qmd",
-    "teaching/cds-303/index.qmd",
     "teaching/cds-303/chapter-5.qmd",
+    "teaching/cds-303/chapter-6.qmd",
+    "teaching/cds-303/chapter-1.qmd",
+    "teaching/cds-303/index.qmd",
+    "archive/quartz-content/Teaching/CDS 303/Chapter 3.md",
+    "archive/quartz-content/Teaching/CDS 303/Chapter 1.md",
     "teaching/cds-303/chapter-4.qmd",
     "teaching/cds-303/chapter-3.qmd",
-    "teaching/cds-303/chapter-2.qmd",
-    "teaching/cds-303/chapter-1.qmd",
-    "teaching/cds-303/_metadata.yml",
-    "research/index.qmd",
-    "requirements-quarto.txt",
-    "projects/index.qmd",
-    "assets/images/research/data-science-diagram.png",
-    "archive/quartz-content/static/megl-present.jpg",
+    "teaching/index.qmd",
+    "teaching/index.html",
+    "teaching/index_files/mediabag",
+    "teaching/index_files",
+    "index.qmd",
+    "teaching/cds-303/chapter-5_files/figure-html/cell-11-output-2.png",
+    "teaching/cds-303/chapter-5_files/figure-html/cell-16-output-1.png",
+    "teaching/cds-303/chapter-5_files/figure-html/cell-21-output-1.png",
+    "teaching/cds-303/chapter-5_files/figure-html/cell-10-output-1.png",
+    "teaching/cds-303/chapter-5_files/figure-html/cell-12-output-1.png",
+    "teaching/cds-303/chapter-5_files/figure-html/cell-14-output-1.png",
+    "teaching/cds-303/chapter-5_files/figure-html/cell-19-output-1.png",
+    "teaching/cds-303/chapter-5_files/figure-html/cell-20-output-1.png",
+    "teaching/cds-303/chapter-5_files/figure-html/cell-18-output-1.png",
+    "teaching/cds-303/chapter-5_files/figure-html/cell-15-output-2.png",
+    "teaching/cds-303/Untitled.md",
     "archive/quartz-content/index.md",
-    "archive/quartz-content/Teaching/CDS 303/static/decision-tree.png",
-    "archive/quartz-content/Teaching/CDS 303/static/c5-ex5.png",
-    "archive/quartz-content/Teaching/CDS 303/static/c5-ex4.png",
-    "archive/quartz-content/Teaching/CDS 303/static/c5-ex3.png",
-    "archive/quartz-content/Teaching/CDS 303/static/c5-ex2.png",
-    "archive/quartz-content/Teaching/CDS 303/static/c5-ex1.2.png",
-    "archive/quartz-content/Teaching/CDS 303/static/c5-ex1.1.png",
-    "archive/quartz-content/Teaching/CDS 303/static/c4-ex9.png",
     "archive/quartz-content/Teaching/CDS 303/index.md",
     "archive/quartz-content/Teaching/CDS 303/Chapter 5.md",
     "archive/quartz-content/Teaching/CDS 303/Chapter 4.md",
-    "archive/quartz-content/Teaching/CDS 303/Chapter 3.md",
     "archive/quartz-content/Teaching/CDS 303/Chapter 2.md",
-    "archive/quartz-content/Teaching/CDS 303/Chapter 1.md",
     "archive/quartz-content/Teaching/index.md",
     "archive/quartz-content/Research/index.md",
     "archive/quartz-content/Project/Graph-Neural-Network/index.md",
