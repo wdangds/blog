@@ -59,53 +59,53 @@
   {
     "objectID": "teaching/cds-303/chapter-9.html",
     "href": "teaching/cds-303/chapter-9.html",
-    "title": "Chapter 9",
+    "title": "Data modeling - Bayesian Inference",
     "section": "",
-    "text": "Add your Chapter 9 content here.",
+    "text": "Add your Chapter 9 content here.\nPrevious chapter: Data modeling - ANN\nNext chapter: Data Modeling - PCA",
     "crumbs": [
       "Home",
       "Teaching",
       "CDS 303: Scientific Data Mining",
-      "Chapter 9"
+      "Data modeling - Bayesian Inference"
     ]
   },
   {
     "objectID": "teaching/cds-303/chapter-9.html#overview",
     "href": "teaching/cds-303/chapter-9.html#overview",
-    "title": "Chapter 9",
+    "title": "Data modeling - Bayesian Inference",
     "section": "",
-    "text": "Add your Chapter 9 content here.",
+    "text": "Add your Chapter 9 content here.\nPrevious chapter: Data modeling - ANN\nNext chapter: Data Modeling - PCA",
     "crumbs": [
       "Home",
       "Teaching",
       "CDS 303: Scientific Data Mining",
-      "Chapter 9"
+      "Data modeling - Bayesian Inference"
     ]
   },
   {
     "objectID": "teaching/cds-303/chapter-7.html",
     "href": "teaching/cds-303/chapter-7.html",
-    "title": "Chapter 7",
+    "title": "Data Modeling - SVM",
     "section": "",
-    "text": "Add your Chapter 7 content here.",
+    "text": "Add your Chapter 7 content here.\nPrevious chapter: Data Modeling - KNN\nNext chapter: Data modeling - ANN",
     "crumbs": [
       "Home",
       "Teaching",
       "CDS 303: Scientific Data Mining",
-      "Chapter 7"
+      "Data Modeling - SVM"
     ]
   },
   {
     "objectID": "teaching/cds-303/chapter-7.html#overview",
     "href": "teaching/cds-303/chapter-7.html#overview",
-    "title": "Chapter 7",
+    "title": "Data Modeling - SVM",
     "section": "",
-    "text": "Add your Chapter 7 content here.",
+    "text": "Add your Chapter 7 content here.\nPrevious chapter: Data Modeling - KNN\nNext chapter: Data modeling - ANN",
     "crumbs": [
       "Home",
       "Teaching",
       "CDS 303: Scientific Data Mining",
-      "Chapter 7"
+      "Data Modeling - SVM"
     ]
   },
   {
@@ -436,53 +436,53 @@
   {
     "objectID": "teaching/cds-303/chapter-12.html",
     "href": "teaching/cds-303/chapter-12.html",
-    "title": "Chapter 12",
+    "title": "Debugging and Evaluating",
     "section": "",
-    "text": "Add your Chapter 12 content here.",
+    "text": "Add your Chapter 12 content here.\nPrevious chapter: Data Modeling - Clustering",
     "crumbs": [
       "Home",
       "Teaching",
       "CDS 303: Scientific Data Mining",
-      "Chapter 12"
+      "Debugging and Evaluating"
     ]
   },
   {
     "objectID": "teaching/cds-303/chapter-12.html#overview",
     "href": "teaching/cds-303/chapter-12.html#overview",
-    "title": "Chapter 12",
+    "title": "Debugging and Evaluating",
     "section": "",
-    "text": "Add your Chapter 12 content here.",
+    "text": "Add your Chapter 12 content here.\nPrevious chapter: Data Modeling - Clustering",
     "crumbs": [
       "Home",
       "Teaching",
       "CDS 303: Scientific Data Mining",
-      "Chapter 12"
+      "Debugging and Evaluating"
     ]
   },
   {
     "objectID": "teaching/cds-303/chapter-10.html",
     "href": "teaching/cds-303/chapter-10.html",
-    "title": "Chapter 10",
+    "title": "Data Modeling - PCA",
     "section": "",
-    "text": "Add your Chapter 10 content here.",
+    "text": "Add your Chapter 10 content here.\nPrevious chapter: Data modeling - Bayesian Inference\nNext chapter: Data Modeling - Clustering",
     "crumbs": [
       "Home",
       "Teaching",
       "CDS 303: Scientific Data Mining",
-      "Chapter 10"
+      "Data Modeling - PCA"
     ]
   },
   {
     "objectID": "teaching/cds-303/chapter-10.html#overview",
     "href": "teaching/cds-303/chapter-10.html#overview",
-    "title": "Chapter 10",
+    "title": "Data Modeling - PCA",
     "section": "",
-    "text": "Add your Chapter 10 content here.",
+    "text": "Add your Chapter 10 content here.\nPrevious chapter: Data modeling - Bayesian Inference\nNext chapter: Data Modeling - Clustering",
     "crumbs": [
       "Home",
       "Teaching",
       "CDS 303: Scientific Data Mining",
-      "Chapter 10"
+      "Data Modeling - PCA"
     ]
   },
   {
@@ -730,27 +730,27 @@
   {
     "objectID": "teaching/cds-303/chapter-11.html",
     "href": "teaching/cds-303/chapter-11.html",
-    "title": "Chapter 11",
+    "title": "Data Modeling - Clustering",
     "section": "",
-    "text": "Add your Chapter 11 content here.",
+    "text": "Add your Chapter 11 content here.\nPrevious chapter: Data Modeling - PCA\nNext chapter: Debugging and Evaluating",
     "crumbs": [
       "Home",
       "Teaching",
       "CDS 303: Scientific Data Mining",
-      "Chapter 11"
+      "Data Modeling - Clustering"
     ]
   },
   {
     "objectID": "teaching/cds-303/chapter-11.html#overview",
     "href": "teaching/cds-303/chapter-11.html#overview",
-    "title": "Chapter 11",
+    "title": "Data Modeling - Clustering",
     "section": "",
-    "text": "Add your Chapter 11 content here.",
+    "text": "Add your Chapter 11 content here.\nPrevious chapter: Data Modeling - PCA\nNext chapter: Debugging and Evaluating",
     "crumbs": [
       "Home",
       "Teaching",
       "CDS 303: Scientific Data Mining",
-      "Chapter 11"
+      "Data Modeling - Clustering"
     ]
   },
   {
@@ -1120,27 +1120,27 @@
   {
     "objectID": "teaching/cds-303/chapter-8.html",
     "href": "teaching/cds-303/chapter-8.html",
-    "title": "Chapter 8",
+    "title": "Data modeling - ANN",
     "section": "",
-    "text": "Add your Chapter 8 content here.",
+    "text": "Add your Chapter 8 content here.\nPrevious chapter: Data Modeling - SVM\nNext chapter: Data modeling - Bayesian Inference",
     "crumbs": [
       "Home",
       "Teaching",
       "CDS 303: Scientific Data Mining",
-      "Chapter 8"
+      "Data modeling - ANN"
     ]
   },
   {
     "objectID": "teaching/cds-303/chapter-8.html#overview",
     "href": "teaching/cds-303/chapter-8.html#overview",
-    "title": "Chapter 8",
+    "title": "Data modeling - ANN",
     "section": "",
-    "text": "Add your Chapter 8 content here.",
+    "text": "Add your Chapter 8 content here.\nPrevious chapter: Data Modeling - SVM\nNext chapter: Data modeling - Bayesian Inference",
     "crumbs": [
       "Home",
       "Teaching",
       "CDS 303: Scientific Data Mining",
-      "Chapter 8"
+      "Data modeling - ANN"
     ]
   },
   {
@@ -1148,7 +1148,7 @@
     "href": "teaching/cds-303/index.html",
     "title": "CDS 303: Scientific Data Mining",
     "section": "",
-    "text": "Chapter 1: Data Science, Data Mining, and the Process of Turning Data into Knowledge\nChapter 2: Context and Data Understanding\nChapter 3: Data Preparation and Model Design\nChapter 4: Data Modeling - Regression\nChapter 5: Data Modeling - Tree-based Models\nChapter 6: Data Modeling - KNN\nChapter 7: Coming Soon\nChapter 8: Coming Soon\nChapter 9: Coming Soon\nChapter 10: Coming Soon\nChapter 11: Coming Soon\nChapter 12: Coming Soon",
+    "text": "Chapter 1: Data Science, Data Mining, and the Process of Turning Data into Knowledge\nChapter 2: Context and Data Understanding\nChapter 3: Data Preparation and Model Design\nChapter 4: Data Modeling - Regression\nChapter 5: Data Modeling - Tree-based Models\nChapter 6: Data Modeling - KNN\nChapter 7: Data Modeling - SVM\nChapter 8: Data Modeling - ANN\nChapter 9: Data Modeling - Bayesian Inference\nChapter 10: Data Modeling - PCA\nChapter 11: Data Modeling - Clustering\nChapter 12: Debugging and Evaluating",
     "crumbs": [
       "Home",
       "Teaching",
@@ -1160,7 +1160,7 @@
     "href": "teaching/cds-303/index.html#chapters",
     "title": "CDS 303: Scientific Data Mining",
     "section": "",
-    "text": "Chapter 1: Data Science, Data Mining, and the Process of Turning Data into Knowledge\nChapter 2: Context and Data Understanding\nChapter 3: Data Preparation and Model Design\nChapter 4: Data Modeling - Regression\nChapter 5: Data Modeling - Tree-based Models\nChapter 6: Data Modeling - KNN\nChapter 7: Coming Soon\nChapter 8: Coming Soon\nChapter 9: Coming Soon\nChapter 10: Coming Soon\nChapter 11: Coming Soon\nChapter 12: Coming Soon",
+    "text": "Chapter 1: Data Science, Data Mining, and the Process of Turning Data into Knowledge\nChapter 2: Context and Data Understanding\nChapter 3: Data Preparation and Model Design\nChapter 4: Data Modeling - Regression\nChapter 5: Data Modeling - Tree-based Models\nChapter 6: Data Modeling - KNN\nChapter 7: Data Modeling - SVM\nChapter 8: Data Modeling - ANN\nChapter 9: Data Modeling - Bayesian Inference\nChapter 10: Data Modeling - PCA\nChapter 11: Data Modeling - Clustering\nChapter 12: Debugging and Evaluating",
     "crumbs": [
       "Home",
       "Teaching",

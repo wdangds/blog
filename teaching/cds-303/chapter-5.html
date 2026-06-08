@@ -264,37 +264,37 @@ window.Quarto = {
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../../teaching/cds-303/chapter-7.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Chapter 7</span></a>
+ <span class="menu-text">Data Modeling - SVM</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../../teaching/cds-303/chapter-8.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Chapter 8</span></a>
+ <span class="menu-text">Data modeling - ANN</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../../teaching/cds-303/chapter-9.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Chapter 9</span></a>
+ <span class="menu-text">Data modeling - Bayesian Inference</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../../teaching/cds-303/chapter-10.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Chapter 10</span></a>
+ <span class="menu-text">Data Modeling - PCA</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../../teaching/cds-303/chapter-11.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Chapter 11</span></a>
+ <span class="menu-text">Data Modeling - Clustering</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../../teaching/cds-303/chapter-12.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Chapter 12</span></a>
+ <span class="menu-text">Debugging and Evaluating</span></a>
   </div>
 </li>
       </ul>
@@ -1322,7 +1322,7 @@ N_B \geq N_{\min}.
 \]</span></p>
 <p>PRIM works by “peeling” away small portions of the data to increase the response average inside the remaining box. PRIM differs from CART because its primary goal is not to partition the entire feature space. Its goal is to find an especially interesting region.</p>
 <p>Let create synthetic data with one hidden high-response bump</p>
-<div id="57c3940f" class="cell" data-execution_count="9">
+<div id="2a07c8de" class="cell" data-execution_count="9">
 <details class="code-fold">
 <summary>Show code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
@@ -1370,7 +1370,7 @@ N_B \geq N_{\min}.
 </div>
 </div>
 <p>CART fits a regression tree that partitions the <strong>entire</strong> feature space.</p>
-<div id="e2c21f8a" class="cell" data-execution_count="10">
+<div id="21ef92a9" class="cell" data-execution_count="10">
 <details class="code-fold">
 <summary>Show code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.tree <span class="im">import</span> DecisionTreeRegressor, plot_tree, export_text</span>
@@ -1431,7 +1431,7 @@ N_B \geq N_{\min}.
 </div>
 </div>
 </div>
-<div id="2dc57b1b" class="cell" data-execution_count="11">
+<div id="4a75a745" class="cell" data-execution_count="11">
 <details class="code-fold">
 <summary>Show code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>xx, yy <span class="op">=</span> np.meshgrid(</span>
@@ -1464,7 +1464,7 @@ N_B \geq N_{\min}.
 </div>
 </div>
 <p>Now let make a simple version of PRIM. It starts with the full data box, then repeatedly removes small slices from the edges if doing so increases the average response inside the box.</p>
-<div id="fd1ebfc0" class="cell" data-execution_count="12">
+<div id="29fd2e5e" class="cell" data-execution_count="12">
 <details class="code-fold">
 <summary>Show code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> SimplePRIM:</span>
@@ -1614,7 +1614,7 @@ Mean Y outside PRIM box: 0.058258882743774075
 Support: 0.052</code></pre>
 </div>
 </div>
-<div id="fc6ef925" class="cell" data-execution_count="13">
+<div id="d8526fc5" class="cell" data-execution_count="13">
 <details class="code-fold">
 <summary>Show code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> matplotlib.patches <span class="im">import</span> Rectangle</span>
@@ -1649,7 +1649,7 @@ Support: 0.052</code></pre>
 </div>
 </div>
 </div>
-<div id="58ea4a03" class="cell" data-execution_count="14">
+<div id="8447ba1c" class="cell" data-execution_count="14">
 <details class="code-fold">
 <summary>Show code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>history <span class="op">=</span> pd.DataFrame({</span>
@@ -1706,7 +1706,7 @@ x_j \leq s \quad \text{or} \quad x_j &gt; s
 <p>where each <span class="math inline">\(f_m(x)\)</span> may be a linear or logistic regression model.</p>
 <p>HME can be interpreted as a soft decision tree: instead of assigning an input to a single leaf, it blends expert predictions.</p>
 <p>Again, we create synthetic data. Here, the true response follows different linear patterns in different regions of <span class="math inline">\(x\)</span>.</p>
-<div id="37086a86" class="cell" data-execution_count="15">
+<div id="15185985" class="cell" data-execution_count="15">
 <details class="code-fold">
 <summary>Show code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
@@ -1760,7 +1760,7 @@ x_j \leq s \quad \text{or} \quad x_j &gt; s
 \hat y(x) = \sum_{m=1}^4 \pi_m(x) f_m(x)
 \]</span></p>
 <p>where each <span class="math inline">\(\pi_m(x)\)</span> is the probability of reaching expert <span class="math inline">\(m\)</span>.</p>
-<div id="83c5c213" class="cell" data-execution_count="16">
+<div id="26aa6059" class="cell" data-execution_count="16">
 <details class="code-fold">
 <summary>Show code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> DepthTwoHME(nn.Module):</span>
@@ -1844,7 +1844,7 @@ Epoch 2000, Loss: 0.3269
 Epoch 2500, Loss: 0.2129</code></pre>
 </div>
 </div>
-<div id="ee495c83" class="cell" data-execution_count="17">
+<div id="c8ef7a1f" class="cell" data-execution_count="17">
 <details class="code-fold">
 <summary>Show code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">7</span>, <span class="dv">5</span>))</span>
@@ -1862,7 +1862,7 @@ Epoch 2500, Loss: 0.2129</code></pre>
 </div>
 </div>
 </div>
-<div id="e3fdb363" class="cell" data-execution_count="18">
+<div id="a16eed62" class="cell" data-execution_count="18">
 <details class="code-fold">
 <summary>Show code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb22"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>x_grid <span class="op">=</span> np.linspace(<span class="op">-</span><span class="dv">4</span>, <span class="dv">4</span>, <span class="dv">400</span>).reshape(<span class="op">-</span><span class="dv">1</span>, <span class="dv">1</span>).astype(np.float32)</span>
@@ -1893,7 +1893,7 @@ Epoch 2500, Loss: 0.2129</code></pre>
 </div>
 </div>
 <p>These curves show how the HME softly assigns each input to different experts.</p>
-<div id="95f19cc5" class="cell" data-execution_count="19">
+<div id="c50d11e5" class="cell" data-execution_count="19">
 <details class="code-fold">
 <summary>Show code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb23"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">7</span>, <span class="dv">5</span>))</span>
@@ -1916,7 +1916,7 @@ Epoch 2500, Loss: 0.2129</code></pre>
 </div>
 </div>
 <p>Each expert is just a linear regression model. The final HME curve combines them using the learned probabilities.</p>
-<div id="cec5dfed" class="cell" data-execution_count="20">
+<div id="89043ba3" class="cell" data-execution_count="20">
 <details class="code-fold">
 <summary>Show code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb24"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">7</span>, <span class="dv">5</span>))</span>
@@ -1943,7 +1943,7 @@ Epoch 2500, Loss: 0.2129</code></pre>
 </div>
 </div>
 </div>
-<div id="3f44eafd" class="cell" data-execution_count="21">
+<div id="56dd7fda" class="cell" data-execution_count="21">
 <details class="code-fold">
 <summary>Show code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb25"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>test_points <span class="op">=</span> np.array([</span>
@@ -2032,7 +2032,7 @@ Epoch 2500, Loss: 0.2129</code></pre>
 <p>Tree-based models provide a fundamentally different approach to supervised learning than the regression methods. Regression models often begin with a functional equation. Tree-based models begin with a partition of the feature space.</p>
 <p>A regression tree approximates an unknown function by dividing the input space into disjoint regions and assigning each region a constant prediction. A classification tree uses the same recursive partitioning logic but chooses splits that reduce class impurity. CART formalizes this process through binary recursive splitting and cost-complexity pruning.</p>
 <p>Single trees are interpretable but unstable. They can represent nonlinear interactions and rule-like structures, but they often have high variance and may struggle with smooth additive functions. Ensemble methods solve many of these weaknesses. Bagging reduces variance by averaging trees trained on bootstrap samples. Random forests improve bagging by decorrelating trees through random forest feature selection. Boosting builds an additive model sequentially, fitting each new tree to the errors or gradient of the current model.</p>
-<p>Next chapter: <a href="../../teaching/cds-303/chapter-5.html">Data Modeling: KNN</a></p>
+<p>Next chapter: <a href="../../teaching/cds-303/chapter-6.html">Data Modeling: KNN</a></p>
 <hr>
 
 
