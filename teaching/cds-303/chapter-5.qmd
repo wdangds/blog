@@ -529,7 +529,7 @@ Thus, the observations sent to the left child and right child are unchanged unde
 
 :::
 
-This is why trees do not require feature scaling in the same way that KNN, K-means, or [gradient-based regression models](chapter-4.qmd#gradient-descent-for-regression) often do. Scaling is often unnecessary for tree split rules because trees depend on order.
+This is why trees do not require feature scaling in the same way that [KNN](chapter-6.qmd), [K-means](chapter-11.qmd), or [gradient-based regression models](chapter-4.qmd#gradient-descent-for-regression) often do. Scaling is often unnecessary for tree split rules because trees depend on order.
 
 ### 5.3. Limitations of Single Trees
 

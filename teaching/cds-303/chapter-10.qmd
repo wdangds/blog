@@ -1,5 +1,5 @@
 ---
-title: Chapter 10
+title: Data Modeling - PCA
 jupyter: python3
 tags:
   - machine-learning
@@ -9,3 +9,7 @@ sidebar: teaching
 ## Overview
 
 Add your Chapter 10 content here.
+
+Previous chapter: [Data modeling - Bayesian Inference](chapter-9.qmd)
+
+Next chapter: [Data Modeling - Clustering](chapter-11.qmd)

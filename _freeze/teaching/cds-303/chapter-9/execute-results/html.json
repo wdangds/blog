@@ -1,10 +1,10 @@
 {
-  "hash": "06af49bd0560e385a3ed82e544432343",
+  "hash": "0b646d7e2e75278ec59d4261d957d424",
   "result": {
     "engine": "jupyter",
-    "markdown": "---\ntitle: Chapter 9\njupyter: python3\ntags:\n  - machine-learning\nsidebar: teaching\n---\n\n## Overview\n\nAdd your Chapter 9 content here.\n\n",
+    "markdown": "---\ntitle: Data modeling - Bayesian Inference\njupyter: python3\ntags:\n  - machine-learning\nsidebar: teaching\n---\n\n## Overview\n\nAdd your Chapter 9 content here.\n\nPrevious chapter: [Data modeling - ANN](chapter-8.qmd)\n\nNext chapter: [Data Modeling - PCA](chapter-10.qmd)\n\n",
     "supporting": [
-      "chapter-9_files"
+      "chapter-9_files/figure-html"
     ],
     "filters": [],
     "includes": {}

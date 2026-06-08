@@ -605,10 +605,10 @@ Hyperparameters control the behavior of the learning algorithm. For example:
 
 - $k$ in K-Nearest Neighbors
 - Maximum depth in a decision tree
-- Number of trees in a random forest
+- Number of trees in a [random forest](chapter-5.qmd#bagging-and-random-forests)
 - Learning rate in gradient boosting
-- Regularization strength in logistic regression
-- Number of layers in a neural network
+- Regularization strength in [logistic regression](chapter-4.qmd#logistic-regression)
+- Number of layers in a [neural network](chapter-8.qmd)
 
 ### 11.2. Grid Search and Random Search
 
@@ -616,9 +616,9 @@ Grid search tests every combination in a predefined hyperparameter grid. It is s
 
 Random search samples combinations from a distribution. It can be more efficient when only some hyperparameters strongly affect performance.
 
-### 11.3. Bayesian Optimization
+### 11.3. [Bayesian Optimization](chapter-9.qmd)
 
-Bayesian optimization[^3] treats hyperparameter tuning as a sequential decision problem. Instead of blindly trying combinations, it builds a probabilistic model of performance and chooses promising configurations to evaluate next. 
+[Bayesian optimization](chapter-9.qmd)[^3] treats hyperparameter tuning as a sequential decision problem. Instead of blindly trying combinations, it builds a probabilistic model of performance and chooses promising configurations to evaluate next. 
 
 ```{python}
 #| label: fig-hyperparameter-surface
@@ -714,9 +714,9 @@ test_score = model_pipeline.score(X_test, y_test)
 print("Test score:", test_score)
 ```
 
-## 13. Bayesian and Optimization-Driven model Design
+## 13. [Bayesian](chapter-9.qmd) and Optimization-Driven model Design
 
-In Bayesian model design, the analyst specifies prior beliefs, a likelihood model, and a procedure for updating beliefs after observing data. This approach is useful when uncertainty matters, sample sizes are limited, or prior scientific knowledge should be incorporated explicitly. 
+In [Bayesian](chapter-9.qmd) model design, the analyst specifies prior beliefs, a likelihood model, and a procedure for updating beliefs after observing data. This approach is useful when uncertainty matters, sample sizes are limited, or prior scientific knowledge should be incorporated explicitly. 
 
 ::: {.callout-tip title="Example"}
 
@@ -790,7 +790,7 @@ AutoML can be useful because model design involves many repetitive and technical
 
 ### 14.2. Neural Architecture Search
 
-Neural Architecture Search, or NAS, automates the search for neural network architectures. Instead of manually designing every layer, filter size, and connection pattern, NAS uses search algorithms to explore possible architectures.
+Neural Architecture Search, or NAS, automates the search for [neural network](chapter-8.qmd) architectures. Instead of manually designing every layer, filter size, and connection pattern, NAS uses search algorithms to explore possible architectures.
 
 EfficientNet[^5] is a well-known example of architecture design and scaling. It is a compound scaling method that balances network depth, width, and input resolution, using neural architecture search to design a baseline network and then scaling it efficiently. 
 

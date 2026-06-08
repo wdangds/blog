@@ -1,10 +1,10 @@
 {
-  "hash": "973315aae3d9b2d255573227f695da9d",
+  "hash": "ac52108c8ef19229046ab0fddaf76017",
   "result": {
     "engine": "jupyter",
-    "markdown": "---\ntitle: Chapter 11\njupyter: python3\ntags:\n  - machine-learning\nsidebar: teaching\n---\n\n## Overview\n\nAdd your Chapter 11 content here.\n\n",
+    "markdown": "---\ntitle: Data Modeling - Clustering\njupyter: python3\ntags:\n  - machine-learning\nsidebar: teaching\n---\n\n## Overview\n\nAdd your Chapter 11 content here.\n\nPrevious chapter: [Data Modeling - PCA](chapter-10.qmd)\n\nNext chapter: [Debugging and Evaluating](chapter-12.qmd)\n\n",
     "supporting": [
-      "chapter-11_files"
+      "chapter-11_files/figure-html"
     ],
     "filters": [],
     "includes": {}

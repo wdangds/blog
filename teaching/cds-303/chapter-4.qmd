@@ -527,7 +527,7 @@ is invertible for $\lambda>0$, assuming standard conditions.
 
 #### 8.1.3. Bayesian Interpretation of Ridge
 
-Ridge regression also has a Bayesian interpretation. Suppose
+[Ridge regression](#ridge-regression) also has a [Bayesian](chapter-9.qmd) interpretation. Suppose
 $$
 y|\theta \sim \mathcal N(\Phi\theta, \sigma^2 I)
 $$
@@ -547,7 +547,7 @@ Minimizing this expression is equivalent to ridge regression with
 $$
 \lambda = \frac{\sigma^2}{\tau^2}
 $$
-Thus, ridge can be interpreted as maximum a posteriori estimation under a Gaussian prior. Bayesian linear regression and its connection to regularized least squares are a topic in probabilistic machine learning treatments.
+Thus, ridge can be interpreted as maximum a posteriori estimation under a Gaussian prior. [Bayesian](chapter-9.qmd) linear regression and its connection to regularized least squares are a topic in probabilistic machine learning treatments.
 
 ### 8.2. Lasso Regression
 

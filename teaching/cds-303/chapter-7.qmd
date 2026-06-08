@@ -1,5 +1,5 @@
 ---
-title: Chapter 7
+title: Data Modeling - SVM
 jupyter: python3
 tags:
   - machine-learning
@@ -9,3 +9,7 @@ sidebar: teaching
 ## Overview
 
 Add your Chapter 7 content here.
+
+Previous chapter: [Data Modeling - KNN](chapter-6.qmd)
+
+Next chapter: [Data modeling - ANN](chapter-8.qmd)

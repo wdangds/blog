@@ -1,10 +1,10 @@
 {
-  "hash": "51e622a65878a4e8076fe7331bd1549c",
+  "hash": "46959237a496cdc22ee1d25c7c39e23a",
   "result": {
     "engine": "jupyter",
-    "markdown": "---\ntitle: Chapter 10\njupyter: python3\ntags:\n  - machine-learning\nsidebar: teaching\n---\n\n## Overview\n\nAdd your Chapter 10 content here.\n\n",
+    "markdown": "---\ntitle: Data Modeling - PCA\njupyter: python3\ntags:\n  - machine-learning\nsidebar: teaching\n---\n\n## Overview\n\nAdd your Chapter 10 content here.\n\nPrevious chapter: [Data modeling - Bayesian Inference](chapter-9.qmd)\n\nNext chapter: [Data Modeling - Clustering](chapter-11.qmd)\n\n",
     "supporting": [
-      "chapter-10_files"
+      "chapter-10_files/figure-html"
     ],
     "filters": [],
     "includes": {}

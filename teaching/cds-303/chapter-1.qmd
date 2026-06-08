@@ -19,7 +19,7 @@ The rise of data science did not happen suddenly. Its intellectual roots can be 
 
 :::
 
-This definition is intentionally broad. A data scientist may use regression models, neural networks, visualization, databases, simulation, causal reasoning, or cloud-based pipelines. What unifies these activities is the goal: to convert data into knowledge that can be evaluated, communicated, and used.
+This definition is intentionally broad. A data scientist may use [regression models](chapter-4.qmd), [neural networks](chapter-8.qmd), visualization, databases, simulation, causal reasoning, or cloud-based pipelines. What unifies these activities is the goal: to convert data into knowledge that can be evaluated, communicated, and used.
 
 ## 2. The Interdisciplinary Nature of Data Science
 
@@ -259,14 +259,14 @@ Common strategies for addressing high dimensionality include:
 
 - Feature selection
 - Regularization
-- Principal Component Analysis
+- [Principal Component Analysis](chapter-10.qmd)
 - Autoencoders
 - Domain-guided variable construction
 - Removing redundant variables
 - Increasing sample size
 - Using models robust to irrelevant features.
 
-Principal Component Analysis, or PCA, is one classical dimensionality reduction method. It transforms correlated variables into a smaller set of uncorrelated components that preserve as much variation as possible. PCA is somehow consider as a central method for reducing dimensionality while retaining much of the information in the original variables[^5].
+[Principal Component Analysis](chapter-10.qmd), or PCA, is one classical dimensionality reduction method. It transforms correlated variables into a smaller set of uncorrelated components that preserve as much variation as possible. PCA is somehow consider as a central method for reducing dimensionality while retaining much of the information in the original variables[^5].
 
 ## 11. Modeling, Data Mining, and Machine Learning
 
@@ -305,7 +305,7 @@ Common unsupervised learning tasks include:
 
 ::: {.callout-tip title="Example"}
 
-A retail store may use clustering to group customers based on purchase history. One cluster may contain frequent high-value buyers, another may contain seasonal buyers, and another may contain discount-driven buyers. The company can then design different marketing strategies for each group.
+A retail store may use [clustering](chapter-11.qmd) to group customers based on purchase history. One cluster may contain frequent high-value buyers, another may contain seasonal buyers, and another may contain discount-driven buyers. The company can then design different marketing strategies for each group.
 
 :::
 
@@ -486,9 +486,9 @@ The analyst creates new features:
 
 Several models are trained:
 
-- Logistic regression
-- Decision tree
-- Random forest
+- [Logistic regression](chapter-4.qmd#logistic-regression)
+- [Decision tree](chapter-5.qmd)
+- [Random forest](chapter-5.qmd#bagging-and-random-forests)
 - Gradient boosting classifier
 
 **Step 7: Evaluation**

@@ -1,5 +1,5 @@
 ---
-title: Chapter 8
+title: Data modeling - ANN
 jupyter: python3
 tags:
   - machine-learning
@@ -9,3 +9,7 @@ sidebar: teaching
 ## Overview
 
 Add your Chapter 8 content here.
+
+Previous chapter: [Data Modeling - SVM](chapter-7.qmd)
+
+Next chapter: [Data modeling - Bayesian Inference](chapter-9.qmd)

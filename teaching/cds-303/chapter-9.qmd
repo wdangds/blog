@@ -1,5 +1,5 @@
 ---
-title: Chapter 9
+title: Data modeling - Bayesian Inference
 jupyter: python3
 tags:
   - machine-learning
@@ -9,3 +9,7 @@ sidebar: teaching
 ## Overview
 
 Add your Chapter 9 content here.
+
+Previous chapter: [Data modeling - ANN](chapter-8.qmd)
+
+Next chapter: [Data Modeling - PCA](chapter-10.qmd)

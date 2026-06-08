@@ -1,10 +1,10 @@
 {
-  "hash": "639d411172aa21e4bccd646bae6d23bf",
+  "hash": "61ae70d8d40a57806a06741fa4d206bc",
   "result": {
     "engine": "jupyter",
-    "markdown": "---\ntitle: Chapter 8\njupyter: python3\ntags:\n  - machine-learning\nsidebar: teaching\n---\n\n## Overview\n\nAdd your Chapter 8 content here.\n\n",
+    "markdown": "---\ntitle: Data modeling - ANN\njupyter: python3\ntags:\n  - machine-learning\nsidebar: teaching\n---\n\n## Overview\n\nAdd your Chapter 8 content here.\n\nPrevious chapter: [Data Modeling - SVM](chapter-7.qmd)\n\nNext chapter: [Data modeling - Bayesian Inference](chapter-9.qmd)\n\n",
     "supporting": [
-      "chapter-8_files"
+      "chapter-8_files/figure-html"
     ],
     "filters": [],
     "includes": {}

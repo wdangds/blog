@@ -1,10 +1,10 @@
 {
-  "hash": "2edd1ab8c81f787e8f08d68d6a6e00e3",
+  "hash": "a624762419dff9c100e89aaab8681cbf",
   "result": {
     "engine": "jupyter",
-    "markdown": "---\ntitle: Chapter 7\njupyter: python3\ntags:\n  - machine-learning\nsidebar: teaching\n---\n\n## Overview\n\nAdd your Chapter 7 content here.\n\n",
+    "markdown": "---\ntitle: Data Modeling - SVM\njupyter: python3\ntags:\n  - machine-learning\nsidebar: teaching\n---\n\n## Overview\n\nAdd your Chapter 7 content here.\n\nPrevious chapter: [Data Modeling - KNN](chapter-6.qmd)\n\nNext chapter: [Data modeling - ANN](chapter-8.qmd)\n\n",
     "supporting": [
-      "chapter-7_files"
+      "chapter-7_files/figure-html"
     ],
     "filters": [],
     "includes": {}

@@ -1,5 +1,5 @@
 ---
-title: Chapter 12
+title: Debugging and Evaluating
 jupyter: python3
 tags:
   - machine-learning
@@ -9,3 +9,5 @@ sidebar: teaching
 ## Overview
 
 Add your Chapter 12 content here.
+
+Previous chapter: [Data Modeling - Clustering](chapter-11.qmd)

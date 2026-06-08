@@ -1,10 +1,10 @@
 {
-  "hash": "a2f94737f06e365f6d8e1aaaf864dfe0",
+  "hash": "9725e22253b7ecb229c67a436cad2105",
   "result": {
     "engine": "jupyter",
-    "markdown": "---\ntitle: Chapter 12\njupyter: python3\ntags:\n  - machine-learning\nsidebar: teaching\n---\n\n## Overview\n\nAdd your Chapter 12 content here.\n\n",
+    "markdown": "---\ntitle: Debugging and Evaluating\njupyter: python3\ntags:\n  - machine-learning\nsidebar: teaching\n---\n\n## Overview\n\nAdd your Chapter 12 content here.\n\nPrevious chapter: [Data Modeling - Clustering](chapter-11.qmd)\n\n",
     "supporting": [
-      "chapter-12_files"
+      "chapter-12_files/figure-html"
     ],
     "filters": [],
     "includes": {}

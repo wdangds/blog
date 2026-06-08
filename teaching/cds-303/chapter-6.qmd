@@ -90,4 +90,5 @@ _A function $d:\mathcal X \times \mathcal X \to [0, \infty)$ is a __metric__ if 
 
 Not every similarity score is a metric. Cosine similarity, for example, is usually a similarity measure rather than a metric, although related angular distances can be constructed.
 
+Next chapter: [Data Modeling - SVM](chapter-7.qmd)
 

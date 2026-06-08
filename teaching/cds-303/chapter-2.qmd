@@ -373,7 +373,7 @@ A model with high predictive accuracy can still fail if it does not support acti
 
 ::: {.callout-tip title="Example"}
 
-Suppose a company uses a complex neural network to predict chemical yield with excellent accuracy. If the model cannot explain which process variables influence yield, engineers may be unable to improve the process. In that case, predictive performance does not translate into business value.
+Suppose a company uses a complex [neural network](chapter-8.qmd) to predict chemical yield with excellent accuracy. If the model cannot explain which process variables influence yield, engineers may be unable to improve the process. In that case, predictive performance does not translate into business value.
 
 :::
 
