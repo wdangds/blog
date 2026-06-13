@@ -76,6 +76,7 @@ Under squared loss, the idea predictor is therefore
 $$
 g^* =\arg \min_g \mathbb E[(Y-g(X))^2]
 $$
+
 ### 1.3. The Bayes Predictor
 
 For squared loss, the optimal predictor is the conditional expectation:

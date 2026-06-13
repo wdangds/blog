@@ -148,9 +148,9 @@ A novice analysis may begin by calculating average price and fitting a regressio
 
 :::
 
-## 5. The Illusion of "n = all"
+## 4. The Illusion of "n = all"
 
-### 5.1. Big Data is Not Whole Data
+### 4.1. Big Data is Not Whole Data
 
 One of the most dangerous mistakes is modern data science is the belief that large data automatically solves the problem of representation. This is sometimes called the illusion of "__n = all__". The analyst assumes that because the dataset is large, it must be complete.
 
@@ -158,7 +158,7 @@ But large data are often incomplete in systematic ways. A dataset may contain mi
 
 Scale can create a false sense of objectivity and completeness. The size of a dataset does not remove the need for interpretation, sampling logic, or methodological caution.
 
-### 5.2. Bounded Rationality and Partial Observation
+### 4.2. Bounded Rationality and Partial Observation
 
 Because data are incomplete, decision-making always occurs under bounded rationality. Bounded rationality refers to describe decision-making under limited information, limited cognitive capacity, and limited time[^4]. In data science, bounded rationality appears because models are built from partial observations of a complex world.
 
@@ -175,9 +175,9 @@ Thus, data scientist must ask:
 
 A large dataset does not eliminate uncertainty; in fact, it can hide uncertainty behind volume.
 
-## 6. Information Fusion and Situation Awareness
+## 5. Information Fusion and Situation Awareness
 
-### 6.1. Information Fusion
+### 5.1. Information Fusion
 
 Data analysts more often combine heterogeneous sources rather than a single dataset: transaction records, sensor streams, demographic data, whether data, geographic information, text, images, logs, and expert knowledge. This process is often called __information fusion__.
 
@@ -194,7 +194,7 @@ In human factors research, situation awareness is commonly defined through three
 3. _Project_ likely future states.
 4. _Act_ through a decision, recommendation, alert, or intervention.
 
-### 6.2. Four Levels of Inference
+### 5.2. Four Levels of Inference
 
 An adaptive data system can be understood through four levels of inference.
 
@@ -242,9 +242,9 @@ System inference considers a broader system and its evolution. For example:
 
 This level asks how decisions affect the systems over time.
 
-## 7. Context-Aware Systems
+## 6. Context-Aware Systems
 
-### 7.1. Context-Aware Recommendation
+### 6.1. Context-Aware Recommendation
 
 A useful example of context-aware data science is the recommender system. A context-aware recommender systems is described as systems that adapt recommendations to the user's contextual situation, such as time, location, social setting, device, weather, or activity[^6].
 
@@ -263,7 +263,7 @@ An e-commerce platform might recommend:
 
 The same user may have different preferences under different conditions. Context-aware modeling recognizes that preference is situated.
 
-### 7.2. Context as Model Input v.s. Context as Interpretation
+### 6.2. Context as Model Input v.s. Context as Interpretation
 
 There are two ways context appears in data science.
 
@@ -279,9 +279,9 @@ A model may predict high demand for emergency services in neighborhood. Contextu
 
 Both forms of context are necessary. Adding context variables can improve prediction, but context-aware interpretation prevents shallow or harmful conclusions.
 
-## 8. Adaptive Learning in Dynamic Environments
+## 7. Adaptive Learning in Dynamic Environments
 
-### 8.1. The Problem of Change
+### 7.1. The Problem of Change
 
 Many data science systems are built under the assumption that the future will resemble the past. This assumption is often incorrect. Customer behavior changes, markets shift, weather patterns vary, disease dynamics evolve, adversaries adapt, and institutions modify their policies.
 
@@ -295,7 +295,7 @@ _**Concept drift** is a situation in ==online supervised learning== where the re
 
 Relatedly, _dataset shift_ refers to a mismatch between training and deployment distributions. This is a central problem in machine learning when training and test conditions differ[^8]. 
 
-### 8.2. Types of Change
+### 7.2. Types of Change
 
 Dynamic environments can change in different ways.
 
@@ -309,7 +309,7 @@ Dynamic environments can change in different ways.
 
 The last case is especially important. Once a model is deployed, it can change the environment it measures. A recommendation system changes what users see. A credit scoring system changes who receives loans. A predictive policing system changes where police are sent, which changes what crime is recorded. The model is not outside the system; it becomes part of the system.
 
-### 8.3. The Red Queen View of Adaptive Systems
+### 7.3. The Red Queen View of Adaptive Systems
 
 The Red Queen metaphor comes from evolutionary thinking: one must keep running just to stay in the same place. In adaptive machine learning, this means that a model's environment may evolve in response to the model itself. Fraud detection, cybersecurity, advertising, finance, and recommender systems are all examples where the system and its users co-evolve.
 
@@ -323,9 +323,9 @@ Adaptive learning therefore requires balance:
 - Automation versus human oversight.
 - Short-term performance versus long-term system effects.
 
-## 9. Business Context and Modeling Culture
+## 8. Business Context and Modeling Culture
 
-### 9.1. From Business Question to Modeling Strategy
+### 8.1. From Business Question to Modeling Strategy
 
 In applied data science, modeling choices should be guided by the decision problem. Some questions require explanation, some require forecasting, some require causal inference, some require optimization, and some require monitoring. 
 
@@ -341,7 +341,7 @@ For example:
 
 A common failure occurs when the technical team solves a prediction problem while the business needed an explanation problem.
 
-### 9.2. Two Modeling Cultures
+### 8.2. Two Modeling Cultures
 
 There are two cultures of statistical modeling: one focused on modeling the data-generating process and another focused on algorithmic prediction[^9]. For the purpose of this chapter, we can describe them as follows:
 
@@ -356,7 +356,7 @@ There are two cultures of statistical modeling: one focused on modeling the data
 
 If the business asks, "Which customers are most likely to respond to this campaign?" a predictive model may be appropriate. If the business asks, "What caused the decline in customer retention?" prediction along is insufficient. If the business asks, "Which process variable should we adjust to increase chemical yield?" a black-box predictor may not provide actionable knowledge.
 
-### 9.3. The ROI Imperative
+### 8.3. The ROI Imperative
 
 In business settings, data science sometimes connect to return on investment (ROI). ROI may include revenue growth, cost reduction, risk reduction, time savings, improved reliability, customer satisfaction, fairness, regulatory compliance, or scientific insight.
 
@@ -378,9 +378,7 @@ Suppose a company uses a complex [neural network](chapter-8.qmd) to predict chem
 :::
 
 
-## 10. Explainability and the Black Box Problem
-
-### 10.1. Why Explainability Matters
+## 9. Explainability and the Black Box Problem
 
 Explainability refers to the ability to understand, communicate, or justify how a model produces its outputs. It is important in high-stakes domains such as healthcare, banking, criminal justice, education, and employment.
 

@@ -4,21 +4,21 @@
     "type": "split",
     "children": [
       {
-        "id": "ae9d9e3709760308",
+        "id": "8208b7221a377859",
         "type": "tabs",
         "children": [
           {
-            "id": "014bb0f0928e3f46",
+            "id": "278edfeea4ca20f5",
             "type": "leaf",
             "state": {
               "type": "markdown",
               "state": {
-                "file": "teaching/cds-303/chapter-6.qmd",
+                "file": "teaching/cds-303/chapter-7.qmd",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "chapter-6"
+              "title": "chapter-7"
             }
           }
         ]
@@ -53,7 +53,7 @@
             "state": {
               "type": "search",
               "state": {
-                "query": "unsuper",
+                "query": "",
                 "matchingCase": false,
                 "explainSearch": false,
                 "collapseAll": false,
@@ -95,7 +95,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "teaching/cds-303/chapter-6.qmd",
+                "file": "teaching/cds-303/chapter-7.qmd",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -105,7 +105,7 @@
                 "unlinkedCollapsed": true
               },
               "icon": "links-coming-in",
-              "title": "Backlinks for chapter-6"
+              "title": "Backlinks for chapter-7"
             }
           },
           {
@@ -114,12 +114,12 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "teaching/cds-303/chapter-6.qmd",
+                "file": "teaching/cds-303/chapter-7.qmd",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               },
               "icon": "links-going-out",
-              "title": "Outgoing links from chapter-6"
+              "title": "Outgoing links from chapter-7"
             }
           },
           {
@@ -157,13 +157,13 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "teaching/cds-303/chapter-6.qmd",
+                "file": "teaching/cds-303/chapter-7.qmd",
                 "followCursor": false,
                 "showSearch": false,
                 "searchQuery": ""
               },
               "icon": "lucide-list",
-              "title": "Outline of chapter-6"
+              "title": "Outline of chapter-7"
             }
           }
         ],
@@ -187,31 +187,32 @@
       "qmd-as-md-obsidian:Render Quarto to PDF": false
     }
   },
-  "active": "014bb0f0928e3f46",
+  "active": "278edfeea4ca20f5",
   "lastOpenFiles": [
-    "teaching/cds-303/chapter-5.qmd",
-    "teaching/cds-303/chapter-6.qmd",
-    "teaching/cds-303/chapter-1.qmd",
-    "teaching/cds-303/index.qmd",
-    "archive/quartz-content/Teaching/CDS 303/Chapter 3.md",
+    "site_libs/quarto-html/tabsets/tabsets.js",
+    "site_libs/quarto-search/quarto-search.js",
+    "site_libs/quarto-search/fuse.min.js",
+    "site_libs/quarto-search/autocomplete.umd.js",
+    "site_libs/quarto-nav/quarto-nav.js",
+    "site_libs/quarto-nav/headroom.min.js",
+    "site_libs/quarto-html/zenscroll-min.js",
+    "site_libs/quarto-html/tippy.umd.min.js",
+    "site_libs/quarto-html/tippy.css",
+    "site_libs/quarto-html/tabsets",
+    "site_libs/quarto-html/quarto.js",
+    "teaching/cds-303/chapter-7_files/figure-html/cell-7-output-3.png",
+    "teaching/cds-303/chapter-7_files/figure-html/cell-8-output-1.png",
+    "teaching/cds-303/chapter-7_files/figure-html/fig-maximum-margin-hyperplane-output-1.png",
+    "teaching/cds-303/chapter-7_files/figure-html/fig-hinge-loss-output-1.png",
+    "teaching/cds-303/chapter-7_files/figure-html/cell-7-output-2.png",
+    "teaching/cds-303/chapter-7_files/figure-html/cell-7-output-1.png",
+    "teaching/cds-303/chapter-7_files/figure-html/cell-4-output-2.png",
+    "teaching/cds-303/chapter-7_files/figure-html/cell-3-output-1.png",
+    "teaching/cds-303/chapter-7_files/figure-html/cell-2-output-1.png",
+    "teaching/cds-303/chapter-7_files/figure-html/fig-comparing-distance-geometries-output-1.png",
     "archive/quartz-content/Teaching/CDS 303/Chapter 1.md",
-    "teaching/cds-303/chapter-4.qmd",
-    "teaching/cds-303/chapter-3.qmd",
-    "teaching/index.qmd",
-    "teaching/index.html",
-    "teaching/index_files/mediabag",
-    "teaching/index_files",
-    "index.qmd",
-    "teaching/cds-303/chapter-5_files/figure-html/cell-11-output-2.png",
-    "teaching/cds-303/chapter-5_files/figure-html/cell-16-output-1.png",
-    "teaching/cds-303/chapter-5_files/figure-html/cell-21-output-1.png",
-    "teaching/cds-303/chapter-5_files/figure-html/cell-10-output-1.png",
-    "teaching/cds-303/chapter-5_files/figure-html/cell-12-output-1.png",
-    "teaching/cds-303/chapter-5_files/figure-html/cell-14-output-1.png",
-    "teaching/cds-303/chapter-5_files/figure-html/cell-19-output-1.png",
-    "teaching/cds-303/chapter-5_files/figure-html/cell-20-output-1.png",
-    "teaching/cds-303/chapter-5_files/figure-html/cell-18-output-1.png",
-    "teaching/cds-303/chapter-5_files/figure-html/cell-15-output-2.png",
+    "Untitled.md",
+    "archive/quartz-content/Teaching/CDS 303/Chapter 3.md",
     "teaching/cds-303/Untitled.md",
     "archive/quartz-content/index.md",
     "archive/quartz-content/Teaching/CDS 303/index.md",
