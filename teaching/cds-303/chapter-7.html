@@ -23,6 +23,41 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
 </style>
 
 
@@ -42,7 +77,7 @@ ul.task-list li input[type="checkbox"] {
 <link href="../../site_libs/quarto-html/quarto-syntax-highlighting-15634bcf2e68342d4ad2dfa704d543f6.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../../site_libs/bootstrap/bootstrap-1f139d3010b4a58f5281e15ce172190a.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-29cebc34efabe65204eb70c28f5eb0b8.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -72,6 +107,35 @@ ul.task-list li input[type="checkbox"] {
 }</script>
 <style>html{ scroll-behavior: smooth; }</style>
 
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
 
 <link rel="stylesheet" href="../../styles.css">
 </head>
@@ -244,7 +308,34 @@ ul.task-list li input[type="checkbox"] {
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#overview" id="toc-overview" class="nav-link active" data-scroll-target="#overview">Overview</a></li>
+  <li><a href="#geometric-foundations" id="toc-geometric-foundations" class="nav-link active" data-scroll-target="#geometric-foundations">1. Geometric Foundations</a>
+  <ul class="collapse">
+  <li><a href="#hyperplanes" id="toc-hyperplanes" class="nav-link" data-scroll-target="#hyperplanes">1.1. Hyperplanes</a></li>
+  <li><a href="#functional-margin" id="toc-functional-margin" class="nav-link" data-scroll-target="#functional-margin">1.2. Functional Margin</a></li>
+  <li><a href="#geometric-margin" id="toc-geometric-margin" class="nav-link" data-scroll-target="#geometric-margin">1.3. Geometric Margin</a></li>
+  </ul></li>
+  <li><a href="#hard-margin-svm" id="toc-hard-margin-svm" class="nav-link" data-scroll-target="#hard-margin-svm">2. Hard-Margin SVM</a>
+  <ul class="collapse">
+  <li><a href="#canonical-scaling" id="toc-canonical-scaling" class="nav-link" data-scroll-target="#canonical-scaling">2.1. Canonical Scaling</a></li>
+  <li><a href="#hard-margin-optimization-problem" id="toc-hard-margin-optimization-problem" class="nav-link" data-scroll-target="#hard-margin-optimization-problem">2.2. Hard-Margin Optimization Problem</a></li>
+  </ul></li>
+  <li><a href="#support-vectors" id="toc-support-vectors" class="nav-link" data-scroll-target="#support-vectors">3. Support Vectors</a></li>
+  <li><a href="#lagrangian-and-kkt-conditions" id="toc-lagrangian-and-kkt-conditions" class="nav-link" data-scroll-target="#lagrangian-and-kkt-conditions">5. Lagrangian and KKT Conditions</a>
+  <ul class="collapse">
+  <li><a href="#lagrangian-and-dual-formulation" id="toc-lagrangian-and-dual-formulation" class="nav-link" data-scroll-target="#lagrangian-and-dual-formulation">5.1. Lagrangian and Dual Formulation</a></li>
+  <li><a href="#ktt-conditions" id="toc-ktt-conditions" class="nav-link" data-scroll-target="#ktt-conditions">5.2. KTT Conditions</a></li>
+  </ul></li>
+  <li><a href="#soft-margin-svm" id="toc-soft-margin-svm" class="nav-link" data-scroll-target="#soft-margin-svm">6. Soft-Margin SVM</a>
+  <ul class="collapse">
+  <li><a href="#slack-variables" id="toc-slack-variables" class="nav-link" data-scroll-target="#slack-variables">6.1. Slack Variables</a></li>
+  <li><a href="#hinge-loss-interpretation" id="toc-hinge-loss-interpretation" class="nav-link" data-scroll-target="#hinge-loss-interpretation">6.2. Hinge Loss Interpretation</a></li>
+  <li><a href="#soft-margin-dual-problem" id="toc-soft-margin-dual-problem" class="nav-link" data-scroll-target="#soft-margin-dual-problem">6.3. Soft-Margin Dual Problem</a></li>
+  </ul></li>
+  <li><a href="#kernels-and-nonlinear-svms" id="toc-kernels-and-nonlinear-svms" class="nav-link" data-scroll-target="#kernels-and-nonlinear-svms">7. Kernels and Nonlinear SVMs</a>
+  <ul class="collapse">
+  <li><a href="#why-kernels" id="toc-why-kernels" class="nav-link" data-scroll-target="#why-kernels">7.1. Why Kernels?</a></li>
+  <li><a href="#kernelized-dual-problem" id="toc-kernelized-dual-problem" class="nav-link" data-scroll-target="#kernelized-dual-problem">7.2. Kernelized Dual Problem</a></li>
+  </ul></li>
   </ul>
 </nav>
     </div>
@@ -270,16 +361,1054 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<section id="overview" class="level2">
-<h2 class="anchored" data-anchor-id="overview">Overview</h2>
-<p>Add your Chapter 7 content here.</p>
-<p>Previous chapter: <a href="../../teaching/cds-303/chapter-6.html">Data Modeling - KNN</a></p>
+<p>So far, we have known that <a href="../../teaching/cds-303/chapter-4.html">regression models</a> estimate explicit functional relationships, <a href="../../teaching/cds-303/chapter-5.html">tree-based models</a> recursively partition the feature space, and <a href="../../teaching/cds-303/chapter-6.html">K-Nearest Neighbors</a> predicts from local similarity. <strong>Support Vector Machines</strong>, or SVMs, introduce a different perspective: <em>classification and regression through maximum-margin optimization</em>.</p>
+<p>An SVM searches for a boundary that separates classes while maintaining the largest possible margin from the nearest training observations. The nearest observations are called <strong>support vectors</strong>, because they determine the position and orientation of the final decision boundary.</p>
+<p>For binary classification, the basic SVM problems begins with data <span class="math inline">\(\mathcal D_n=\{(x_i, y_i\}_{i=1}^n\)</span> where <span class="math inline">\(x_i\in \mathbb R^p\)</span> and <span class="math inline">\(y_i\in \{-1, +1\}\)</span>. The classifier is based on a decision function</p>
+<p><span class="math display">\[
+f(x) = w^\top x + b
+\]</span></p>
+<p>The predicted class is</p>
+<p><span class="math display">\[
+\hat y(x) = \text{sign}(f(x))
+\]</span></p>
+<p>The separating hyperplane is</p>
+<p><span class="math display">\[
+w^\top x + b = 0
+\]</span></p>
+<p>So the central mathematical question is:</p>
+<blockquote class="blockquote">
+<p><strong>Among all hyperplanes that separate the classes, which one has the largest margin?</strong></p>
+</blockquote>
+<p>This question leads to a convex quadratic optimization problem. The maximum-margin formulation makes SVMs different from models such as logistic regression. Logistic regression estimates class probabilities through a likelihood model, while SVMs focus on geometric separation and margin maximization.</p>
+<p>Historically, SVMs are connected to <strong>statistical learning theory</strong> and the principle of <strong>Structural Risk Minimization</strong>, or SRM. Instead of minimizing training error alone, SRM seeks to control model complexity in order to improve generalization. In SVMs, this control appears through the margin and regularization terms.</p>
+<section id="geometric-foundations" class="level2">
+<h2 class="anchored" data-anchor-id="geometric-foundations">1. Geometric Foundations</h2>
+<section id="hyperplanes" class="level3">
+<h3 class="anchored" data-anchor-id="hyperplanes">1.1. Hyperplanes</h3>
+<div class="callout callout-style-default callout-note callout-titled" title="Definition: Hyperplanes">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Definition: Hyperplanes
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><em>A hyperplane in <span class="math inline">\(\mathbb R^p\)</span> is <strong>the set</strong></em></p>
+<p><span class="math display">\[
+H=\{x\in \mathbb R^p: w^\top x+ b = 0\},
+\]</span></p>
+<p><em>where <span class="math inline">\(w\in \mathbb R^p\)</span> is the</em> <a href="https://en.wikipedia.org/wiki/Normal_(geometry)">normal vector</a> <em>and <span class="math inline">\(b\in \mathbb R\)</span> is the intercept. </em></p>
+</div>
+</div>
+<p>The vector <span class="math inline">\(w\)</span> in perpendicular to the hyperplane. The sign of <span class="math inline">\(w^\top x + b\)</span> determines on which side of the hyperplane the point <span class="math inline">\(x\)</span> lies.</p>
+<p>Thus, a linear binary classifier is</p>
+<p><span class="math display">\[
+\hat y(x) = \begin{cases}+1, &amp; w^\top x + b \geq 0\\
+-1,&amp; w^\top x+b &lt;0
+\end{cases}
+\]</span></p>
+<p>Equivalently,</p>
+<p><span class="math display">\[
+\hat y(x) = \text{sign}(w^\top x+b)
+\]</span></p>
+<div id="7308b1c5" class="cell" data-execution_count="1">
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> closest_point_on_hyperplane(w, b):</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="co">    Return the point on H closest to the origin.</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="co">    H = {x : w^T x + b = 0}</span></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="co">    The closest point is:</span></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="co">        x0 = -b * w / ||w||^2</span></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a><span class="co">    """</span></span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>    w <span class="op">=</span> np.array(w, dtype<span class="op">=</span><span class="bu">float</span>)</span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="op">-</span>b <span class="op">*</span> w <span class="op">/</span> np.dot(w, w)</span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>w <span class="op">=</span> np.array([<span class="dv">1</span>, <span class="dv">2</span>])</span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>b <span class="op">=</span> <span class="op">-</span><span class="dv">1</span></span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a>x1 <span class="op">=</span> np.linspace(<span class="op">-</span><span class="dv">3</span>, <span class="dv">3</span>, <span class="dv">200</span>)</span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a>x2 <span class="op">=</span> <span class="op">-</span>(w[<span class="dv">0</span>] <span class="op">*</span> x1 <span class="op">+</span> b) <span class="op">/</span> w[<span class="dv">1</span>]</span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a>x0 <span class="op">=</span> closest_point_on_hyperplane(w, b)</span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">7</span>, <span class="dv">6</span>))</span>
+<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a><span class="co"># Plot hyperplane</span></span>
+<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a>plt.plot(x1, x2, linewidth<span class="op">=</span><span class="fl">2.5</span>, label<span class="op">=</span><span class="vs">r"</span><span class="dv">$</span><span class="vs">H=</span><span class="ch">\{</span><span class="vs">x:w</span><span class="dv">^</span><span class="ch">\t</span><span class="vs">op x</span><span class="op">+</span><span class="vs">b=0</span><span class="ch">\}</span><span class="dv">$</span><span class="vs">"</span>)</span>
+<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a><span class="co"># Plot closest point on the hyperplane</span></span>
+<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a>plt.scatter(x0[<span class="dv">0</span>], x0[<span class="dv">1</span>], s<span class="op">=</span><span class="dv">80</span>, zorder<span class="op">=</span><span class="dv">5</span>, label<span class="op">=</span><span class="st">"Point on hyperplane"</span>)</span>
+<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a><span class="co"># Plot normal vector</span></span>
+<span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a>plt.arrow(</span>
+<span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a>    x0[<span class="dv">0</span>], x0[<span class="dv">1</span>],</span>
+<span id="cb1-35"><a href="#cb1-35" aria-hidden="true" tabindex="-1"></a>    w[<span class="dv">0</span>] <span class="op">*</span> <span class="fl">0.5</span>, w[<span class="dv">1</span>] <span class="op">*</span> <span class="fl">0.5</span>,</span>
+<span id="cb1-36"><a href="#cb1-36" aria-hidden="true" tabindex="-1"></a>    head_width<span class="op">=</span><span class="fl">0.15</span>,</span>
+<span id="cb1-37"><a href="#cb1-37" aria-hidden="true" tabindex="-1"></a>    length_includes_head<span class="op">=</span><span class="va">True</span>,</span>
+<span id="cb1-38"><a href="#cb1-38" aria-hidden="true" tabindex="-1"></a>    linewidth<span class="op">=</span><span class="dv">2</span>,</span>
+<span id="cb1-39"><a href="#cb1-39" aria-hidden="true" tabindex="-1"></a>    label<span class="op">=</span><span class="st">"Normal vector"</span></span>
+<span id="cb1-40"><a href="#cb1-40" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb1-41"><a href="#cb1-41" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-42"><a href="#cb1-42" aria-hidden="true" tabindex="-1"></a>plt.text(</span>
+<span id="cb1-43"><a href="#cb1-43" aria-hidden="true" tabindex="-1"></a>    x0[<span class="dv">0</span>] <span class="op">+</span> <span class="fl">0.3</span>,</span>
+<span id="cb1-44"><a href="#cb1-44" aria-hidden="true" tabindex="-1"></a>    x0[<span class="dv">1</span>] <span class="op">+</span> <span class="fl">0.7</span>,</span>
+<span id="cb1-45"><a href="#cb1-45" aria-hidden="true" tabindex="-1"></a>    <span class="vs">r"</span><span class="dv">$</span><span class="vs">w</span><span class="dv">$</span><span class="vs">"</span>,</span>
+<span id="cb1-46"><a href="#cb1-46" aria-hidden="true" tabindex="-1"></a>    fontsize<span class="op">=</span><span class="dv">14</span></span>
+<span id="cb1-47"><a href="#cb1-47" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb1-48"><a href="#cb1-48" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-49"><a href="#cb1-49" aria-hidden="true" tabindex="-1"></a>plt.axhline(<span class="dv">0</span>, linewidth<span class="op">=</span><span class="fl">0.8</span>)</span>
+<span id="cb1-50"><a href="#cb1-50" aria-hidden="true" tabindex="-1"></a>plt.axvline(<span class="dv">0</span>, linewidth<span class="op">=</span><span class="fl">0.8</span>)</span>
+<span id="cb1-51"><a href="#cb1-51" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-52"><a href="#cb1-52" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="vs">r"</span><span class="dv">$</span><span class="vs">x_1</span><span class="dv">$</span><span class="vs">"</span>)</span>
+<span id="cb1-53"><a href="#cb1-53" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="vs">r"</span><span class="dv">$</span><span class="vs">x_2</span><span class="dv">$</span><span class="vs">"</span>)</span>
+<span id="cb1-54"><a href="#cb1-54" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="vs">r"Hyperplane in </span><span class="dv">$\m</span><span class="vs">athbb{R}</span><span class="dv">^</span><span class="vs">2</span><span class="dv">$</span><span class="vs">: a line"</span>)</span>
+<span id="cb1-55"><a href="#cb1-55" aria-hidden="true" tabindex="-1"></a>plt.grid(alpha<span class="op">=</span><span class="fl">0.3</span>)</span>
+<span id="cb1-56"><a href="#cb1-56" aria-hidden="true" tabindex="-1"></a>plt.axis(<span class="st">"equal"</span>)</span>
+<span id="cb1-57"><a href="#cb1-57" aria-hidden="true" tabindex="-1"></a>plt.legend()</span>
+<span id="cb1-58"><a href="#cb1-58" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="chapter-7_files/figure-html/cell-2-output-1.png" width="587" height="527" class="figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<div id="ae34aca1" class="cell" data-execution_count="2">
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> mpl_toolkits.mplot3d <span class="im">import</span> Axes3D</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>w <span class="op">=</span> np.array([<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">1</span>])</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>b <span class="op">=</span> <span class="op">-</span><span class="dv">2</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>x1 <span class="op">=</span> np.linspace(<span class="op">-</span><span class="dv">2</span>, <span class="dv">2</span>, <span class="dv">40</span>)</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>x2 <span class="op">=</span> np.linspace(<span class="op">-</span><span class="dv">2</span>, <span class="dv">2</span>, <span class="dv">40</span>)</span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>X1, X2 <span class="op">=</span> np.meshgrid(x1, x2)</span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a><span class="co"># Solve w1*x1 + w2*x2 + w3*x3 + b = 0</span></span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>X3 <span class="op">=</span> <span class="op">-</span>(w[<span class="dv">0</span>] <span class="op">*</span> X1 <span class="op">+</span> w[<span class="dv">1</span>] <span class="op">*</span> X2 <span class="op">+</span> b) <span class="op">/</span> w[<span class="dv">2</span>]</span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>x0 <span class="op">=</span> closest_point_on_hyperplane(w, b)</span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a>fig <span class="op">=</span> plt.figure(figsize<span class="op">=</span>(<span class="dv">9</span>, <span class="dv">7</span>))</span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a>ax <span class="op">=</span> fig.add_subplot(<span class="dv">111</span>, projection<span class="op">=</span><span class="st">"3d"</span>)</span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a><span class="co"># Plot plane</span></span>
+<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a>ax.plot_surface(X1, X2, X3, alpha<span class="op">=</span><span class="fl">0.45</span>)</span>
+<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a><span class="co"># Plot closest point on plane</span></span>
+<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a>ax.scatter(</span>
+<span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a>    x0[<span class="dv">0</span>], x0[<span class="dv">1</span>], x0[<span class="dv">2</span>],</span>
+<span id="cb2-25"><a href="#cb2-25" aria-hidden="true" tabindex="-1"></a>    s<span class="op">=</span><span class="dv">80</span>,</span>
+<span id="cb2-26"><a href="#cb2-26" aria-hidden="true" tabindex="-1"></a>    label<span class="op">=</span><span class="st">"Point on hyperplane"</span></span>
+<span id="cb2-27"><a href="#cb2-27" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb2-28"><a href="#cb2-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-29"><a href="#cb2-29" aria-hidden="true" tabindex="-1"></a><span class="co"># Plot normal vector</span></span>
+<span id="cb2-30"><a href="#cb2-30" aria-hidden="true" tabindex="-1"></a>ax.quiver(</span>
+<span id="cb2-31"><a href="#cb2-31" aria-hidden="true" tabindex="-1"></a>    x0[<span class="dv">0</span>], x0[<span class="dv">1</span>], x0[<span class="dv">2</span>],</span>
+<span id="cb2-32"><a href="#cb2-32" aria-hidden="true" tabindex="-1"></a>    w[<span class="dv">0</span>], w[<span class="dv">1</span>], w[<span class="dv">2</span>],</span>
+<span id="cb2-33"><a href="#cb2-33" aria-hidden="true" tabindex="-1"></a>    length<span class="op">=</span><span class="fl">1.0</span>,</span>
+<span id="cb2-34"><a href="#cb2-34" aria-hidden="true" tabindex="-1"></a>    normalize<span class="op">=</span><span class="va">True</span>,</span>
+<span id="cb2-35"><a href="#cb2-35" aria-hidden="true" tabindex="-1"></a>    linewidth<span class="op">=</span><span class="dv">2</span>,</span>
+<span id="cb2-36"><a href="#cb2-36" aria-hidden="true" tabindex="-1"></a>    label<span class="op">=</span><span class="st">"Normal vector"</span></span>
+<span id="cb2-37"><a href="#cb2-37" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb2-38"><a href="#cb2-38" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-39"><a href="#cb2-39" aria-hidden="true" tabindex="-1"></a>ax.text(</span>
+<span id="cb2-40"><a href="#cb2-40" aria-hidden="true" tabindex="-1"></a>    x0[<span class="dv">0</span>] <span class="op">+</span> <span class="fl">0.4</span>,</span>
+<span id="cb2-41"><a href="#cb2-41" aria-hidden="true" tabindex="-1"></a>    x0[<span class="dv">1</span>] <span class="op">+</span> <span class="fl">0.4</span>,</span>
+<span id="cb2-42"><a href="#cb2-42" aria-hidden="true" tabindex="-1"></a>    x0[<span class="dv">2</span>] <span class="op">+</span> <span class="fl">0.4</span>,</span>
+<span id="cb2-43"><a href="#cb2-43" aria-hidden="true" tabindex="-1"></a>    <span class="vs">r"</span><span class="dv">$</span><span class="vs">w</span><span class="dv">$</span><span class="vs">"</span>,</span>
+<span id="cb2-44"><a href="#cb2-44" aria-hidden="true" tabindex="-1"></a>    fontsize<span class="op">=</span><span class="dv">14</span></span>
+<span id="cb2-45"><a href="#cb2-45" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb2-46"><a href="#cb2-46" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-47"><a href="#cb2-47" aria-hidden="true" tabindex="-1"></a>ax.set_xlabel(<span class="vs">r"</span><span class="dv">$</span><span class="vs">x_1</span><span class="dv">$</span><span class="vs">"</span>)</span>
+<span id="cb2-48"><a href="#cb2-48" aria-hidden="true" tabindex="-1"></a>ax.set_ylabel(<span class="vs">r"</span><span class="dv">$</span><span class="vs">x_2</span><span class="dv">$</span><span class="vs">"</span>)</span>
+<span id="cb2-49"><a href="#cb2-49" aria-hidden="true" tabindex="-1"></a>ax.set_zlabel(<span class="vs">r"</span><span class="dv">$</span><span class="vs">x_3</span><span class="dv">$</span><span class="vs">"</span>)</span>
+<span id="cb2-50"><a href="#cb2-50" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-51"><a href="#cb2-51" aria-hidden="true" tabindex="-1"></a>ax.set_title(<span class="vs">r"Hyperplane in </span><span class="dv">$\m</span><span class="vs">athbb{R}</span><span class="dv">^</span><span class="vs">3</span><span class="dv">$</span><span class="vs">: a plane"</span>)</span>
+<span id="cb2-52"><a href="#cb2-52" aria-hidden="true" tabindex="-1"></a>ax.legend()</span>
+<span id="cb2-53"><a href="#cb2-53" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-54"><a href="#cb2-54" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="chapter-7_files/figure-html/cell-3-output-1.png" width="542" height="560" class="figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="functional-margin" class="level3">
+<h3 class="anchored" data-anchor-id="functional-margin">1.2. Functional Margin</h3>
+<p>For a labeled observation <span class="math inline">\((x_i, y_i)\)</span>, define the <strong>functional margin</strong> as</p>
+<p><span class="math display">\[
+\gamma_i^{(f)} = y_i(w^\top x_i + b).
+\]</span></p>
+<ul>
+<li>If <span class="math inline">\(\gamma_i^{(f)}&gt;0\)</span> then <span class="math inline">\(x_i\)</span> is correctly classified.</li>
+<li>If <span class="math inline">\(\gamma_i^{(f)} &lt;0\)</span> then <span class="math inline">\(x_i\)</span> is misclassified.</li>
+<li>If <span class="math inline">\(\gamma_i^{(f)} = 0\)</span> then <span class="math inline">\(x_i\)</span> lies exactly on the decision boundary.</li>
+</ul>
+<p>However, the functional margin is not <a href="https://en.wikipedia.org/wiki/Scale_invariance">scale-invariant</a>. If we multiply <span class="math inline">\(w\)</span> and <span class="math inline">\(b\)</span> by a positive constant <span class="math inline">\(a&gt;0\)</span>, then</p>
+<p><span class="math display">\[
+w' = aw, \quad b' = ab
+\]</span></p>
+<p>and</p>
+<p><span class="math display">\[
+y_i((aw)^\top x_i+ab) = ay_i(w^\top x_i + b).
+\]</span></p>
+<p>Thus, the functional margin changes even though the separating hyperplane itself does not. To define a meaningful geometric margin, we must normalize by <span class="math inline">\(||w||\)</span>.</p>
+</section>
+<section id="geometric-margin" class="level3">
+<h3 class="anchored" data-anchor-id="geometric-margin">1.3. Geometric Margin</h3>
+<p>The signed distance from a point <span class="math inline">\(x_i\)</span> to the hyperplane <span class="math inline">\(w^\top x+b =0\)</span> is</p>
+<p><span class="math display">\[
+\frac{w^\top x_i+b}{||w||}.
+\]</span></p>
+<p>Including the class label gives the <strong>geometric margin</strong>:</p>
+<p><span class="math display">\[
+\gamma_i = \frac{y_i(w^\top x_i+b)}{||w||}
+\]</span></p>
+<p>The margin of the classifier is the minimum geometric margin over all training observations:</p>
+<p><span class="math display">\[
+\gamma = \min_{i=1,\dots, n} \frac{y_i(w^\top x_i+b)}{||w||}
+\]</span></p>
+<p>The maximum-margin classifier chooses <span class="math inline">\(w\)</span> and <span class="math inline">\(b\)</span> to maximize <span class="math inline">\(\gamma\)</span>.</p>
+<div id="838feba2" class="cell" data-execution_count="3">
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Define a simple 2D example</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Hyperplane:</span></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="co"># w^T x + b = 0</span></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a><span class="co"># x1 + x2 - 1 = 0</span></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>w <span class="op">=</span> np.array([<span class="fl">1.0</span>, <span class="fl">1.0</span>])</span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>b <span class="op">=</span> <span class="op">-</span><span class="fl">1.0</span></span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a><span class="co"># Scale factor</span></span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>a <span class="op">=</span> <span class="fl">3.0</span></span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a>w_scaled <span class="op">=</span> a <span class="op">*</span> w</span>
+<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a>b_scaled <span class="op">=</span> a <span class="op">*</span> b</span>
+<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a><span class="co"># Points and labels</span></span>
+<span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a><span class="co"># y = +1 means the point should be above the boundary</span></span>
+<span id="cb3-21"><a href="#cb3-21" aria-hidden="true" tabindex="-1"></a><span class="co"># y = -1 means the point should be below the boundary</span></span>
+<span id="cb3-22"><a href="#cb3-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-23"><a href="#cb3-23" aria-hidden="true" tabindex="-1"></a>X <span class="op">=</span> np.array([</span>
+<span id="cb3-24"><a href="#cb3-24" aria-hidden="true" tabindex="-1"></a>    [<span class="fl">1.4</span>, <span class="fl">1.0</span>],   <span class="co"># correctly classified positive</span></span>
+<span id="cb3-25"><a href="#cb3-25" aria-hidden="true" tabindex="-1"></a>    [<span class="fl">0.2</span>, <span class="fl">0.2</span>],   <span class="co"># correctly classified negative</span></span>
+<span id="cb3-26"><a href="#cb3-26" aria-hidden="true" tabindex="-1"></a>    [<span class="fl">0.6</span>, <span class="fl">0.4</span>],   <span class="co"># exactly on boundary</span></span>
+<span id="cb3-27"><a href="#cb3-27" aria-hidden="true" tabindex="-1"></a>    [<span class="fl">0.3</span>, <span class="fl">1.2</span>],   <span class="co"># misclassified negative</span></span>
+<span id="cb3-28"><a href="#cb3-28" aria-hidden="true" tabindex="-1"></a>    [<span class="fl">1.1</span>, <span class="fl">0.1</span>],   <span class="co"># correctly classified positive</span></span>
+<span id="cb3-29"><a href="#cb3-29" aria-hidden="true" tabindex="-1"></a>])</span>
+<span id="cb3-30"><a href="#cb3-30" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-31"><a href="#cb3-31" aria-hidden="true" tabindex="-1"></a>y <span class="op">=</span> np.array([<span class="dv">1</span>, <span class="op">-</span><span class="dv">1</span>, <span class="dv">1</span>, <span class="op">-</span><span class="dv">1</span>, <span class="dv">1</span>])</span>
+<span id="cb3-32"><a href="#cb3-32" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-33"><a href="#cb3-33" aria-hidden="true" tabindex="-1"></a>point_names <span class="op">=</span> [<span class="st">"A"</span>, <span class="st">"B"</span>, <span class="st">"C"</span>, <span class="st">"D"</span>, <span class="st">"E"</span>]</span>
+<span id="cb3-34"><a href="#cb3-34" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-35"><a href="#cb3-35" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> decision_score(X, w, b):</span>
+<span id="cb3-36"><a href="#cb3-36" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""</span></span>
+<span id="cb3-37"><a href="#cb3-37" aria-hidden="true" tabindex="-1"></a><span class="co">    Compute f(x) = w^T x + b.</span></span>
+<span id="cb3-38"><a href="#cb3-38" aria-hidden="true" tabindex="-1"></a><span class="co">    """</span></span>
+<span id="cb3-39"><a href="#cb3-39" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> X <span class="op">@</span> w <span class="op">+</span> b</span>
+<span id="cb3-40"><a href="#cb3-40" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-41"><a href="#cb3-41" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-42"><a href="#cb3-42" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> functional_margin(X, y, w, b):</span>
+<span id="cb3-43"><a href="#cb3-43" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""</span></span>
+<span id="cb3-44"><a href="#cb3-44" aria-hidden="true" tabindex="-1"></a><span class="co">    gamma_i^(f) = y_i (w^T x_i + b)</span></span>
+<span id="cb3-45"><a href="#cb3-45" aria-hidden="true" tabindex="-1"></a><span class="co">    """</span></span>
+<span id="cb3-46"><a href="#cb3-46" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> y <span class="op">*</span> decision_score(X, w, b)</span>
+<span id="cb3-47"><a href="#cb3-47" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-48"><a href="#cb3-48" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-49"><a href="#cb3-49" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> geometric_margin(X, y, w, b):</span>
+<span id="cb3-50"><a href="#cb3-50" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""</span></span>
+<span id="cb3-51"><a href="#cb3-51" aria-hidden="true" tabindex="-1"></a><span class="co">    gamma_i = y_i (w^T x_i + b) / ||w||</span></span>
+<span id="cb3-52"><a href="#cb3-52" aria-hidden="true" tabindex="-1"></a><span class="co">    """</span></span>
+<span id="cb3-53"><a href="#cb3-53" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> functional_margin(X, y, w, b) <span class="op">/</span> np.linalg.norm(w)</span>
+<span id="cb3-54"><a href="#cb3-54" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-55"><a href="#cb3-55" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-56"><a href="#cb3-56" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> project_to_hyperplane(x, w, b):</span>
+<span id="cb3-57"><a href="#cb3-57" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""</span></span>
+<span id="cb3-58"><a href="#cb3-58" aria-hidden="true" tabindex="-1"></a><span class="co">    Project a point x onto the hyperplane w^T x + b = 0.</span></span>
+<span id="cb3-59"><a href="#cb3-59" aria-hidden="true" tabindex="-1"></a><span class="co">    """</span></span>
+<span id="cb3-60"><a href="#cb3-60" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> x <span class="op">-</span> ((w <span class="op">@</span> x <span class="op">+</span> b) <span class="op">/</span> np.dot(w, w)) <span class="op">*</span> w</span>
+<span id="cb3-61"><a href="#cb3-61" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb3-62"><a href="#cb3-62" aria-hidden="true" tabindex="-1"></a>gamma_original <span class="op">=</span> functional_margin(X, y, w, b)</span>
+<span id="cb3-63"><a href="#cb3-63" aria-hidden="true" tabindex="-1"></a>gamma_scaled <span class="op">=</span> functional_margin(X, y, w_scaled, b_scaled)</span>
+<span id="cb3-64"><a href="#cb3-64" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-65"><a href="#cb3-65" aria-hidden="true" tabindex="-1"></a>geo_original <span class="op">=</span> geometric_margin(X, y, w, b)</span>
+<span id="cb3-66"><a href="#cb3-66" aria-hidden="true" tabindex="-1"></a>geo_scaled <span class="op">=</span> geometric_margin(X, y, w_scaled, b_scaled)</span>
+<span id="cb3-67"><a href="#cb3-67" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-68"><a href="#cb3-68" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Original functional margins:"</span>)</span>
+<span id="cb3-69"><a href="#cb3-69" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(gamma_original)</span>
+<span id="cb3-70"><a href="#cb3-70" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-71"><a href="#cb3-71" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st">Scaled functional margins:"</span>)</span>
+<span id="cb3-72"><a href="#cb3-72" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(gamma_scaled)</span>
+<span id="cb3-73"><a href="#cb3-73" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-74"><a href="#cb3-74" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st">Original geometric margins:"</span>)</span>
+<span id="cb3-75"><a href="#cb3-75" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(geo_original)</span>
+<span id="cb3-76"><a href="#cb3-76" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-77"><a href="#cb3-77" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st">Scaled geometric margins:"</span>)</span>
+<span id="cb3-78"><a href="#cb3-78" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(geo_scaled)</span>
+<span id="cb3-79"><a href="#cb3-79" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-80"><a href="#cb3-80" aria-hidden="true" tabindex="-1"></a>fig, axes <span class="op">=</span> plt.subplots(<span class="dv">1</span>, <span class="dv">3</span>, figsize<span class="op">=</span>(<span class="dv">18</span>, <span class="dv">5</span>))</span>
+<span id="cb3-81"><a href="#cb3-81" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-82"><a href="#cb3-82" aria-hidden="true" tabindex="-1"></a>x1_grid <span class="op">=</span> np.linspace(<span class="op">-</span><span class="fl">0.2</span>, <span class="fl">1.8</span>, <span class="dv">200</span>)</span>
+<span id="cb3-83"><a href="#cb3-83" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-84"><a href="#cb3-84" aria-hidden="true" tabindex="-1"></a><span class="co"># Since x1 + x2 - 1 = 0,</span></span>
+<span id="cb3-85"><a href="#cb3-85" aria-hidden="true" tabindex="-1"></a><span class="co"># x2 = 1 - x1</span></span>
+<span id="cb3-86"><a href="#cb3-86" aria-hidden="true" tabindex="-1"></a>x2_boundary <span class="op">=</span> <span class="dv">1</span> <span class="op">-</span> x1_grid</span>
+<span id="cb3-87"><a href="#cb3-87" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-88"><a href="#cb3-88" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-89"><a href="#cb3-89" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> plot_margin_panel(ax, w_plot, b_plot, title):</span>
+<span id="cb3-90"><a href="#cb3-90" aria-hidden="true" tabindex="-1"></a>    scores <span class="op">=</span> decision_score(X, w_plot, b_plot)</span>
+<span id="cb3-91"><a href="#cb3-91" aria-hidden="true" tabindex="-1"></a>    gamma <span class="op">=</span> functional_margin(X, y, w_plot, b_plot)</span>
+<span id="cb3-92"><a href="#cb3-92" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-93"><a href="#cb3-93" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Decision boundary</span></span>
+<span id="cb3-94"><a href="#cb3-94" aria-hidden="true" tabindex="-1"></a>    ax.plot(</span>
+<span id="cb3-95"><a href="#cb3-95" aria-hidden="true" tabindex="-1"></a>        x1_grid,</span>
+<span id="cb3-96"><a href="#cb3-96" aria-hidden="true" tabindex="-1"></a>        x2_boundary,</span>
+<span id="cb3-97"><a href="#cb3-97" aria-hidden="true" tabindex="-1"></a>        linewidth<span class="op">=</span><span class="fl">2.5</span>,</span>
+<span id="cb3-98"><a href="#cb3-98" aria-hidden="true" tabindex="-1"></a>        label<span class="op">=</span><span class="vs">r"Decision boundary: </span><span class="dv">$</span><span class="vs">w</span><span class="dv">^</span><span class="ch">\t</span><span class="vs">op x</span><span class="op">+</span><span class="vs">b=0</span><span class="dv">$</span><span class="vs">"</span></span>
+<span id="cb3-99"><a href="#cb3-99" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb3-100"><a href="#cb3-100" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-101"><a href="#cb3-101" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Positive and negative regions</span></span>
+<span id="cb3-102"><a href="#cb3-102" aria-hidden="true" tabindex="-1"></a>    ax.text(<span class="fl">1.35</span>, <span class="fl">1.35</span>, <span class="vs">r"</span><span class="dv">$</span><span class="vs">w</span><span class="dv">^</span><span class="ch">\t</span><span class="vs">op x</span><span class="op">+</span><span class="vs">b&gt;0</span><span class="dv">$</span><span class="vs">"</span>, fontsize<span class="op">=</span><span class="dv">12</span>)</span>
+<span id="cb3-103"><a href="#cb3-103" aria-hidden="true" tabindex="-1"></a>    ax.text(<span class="fl">0.05</span>, <span class="fl">0.05</span>, <span class="vs">r"</span><span class="dv">$</span><span class="vs">w</span><span class="dv">^</span><span class="ch">\t</span><span class="vs">op x</span><span class="op">+</span><span class="vs">b&lt;0</span><span class="dv">$</span><span class="vs">"</span>, fontsize<span class="op">=</span><span class="dv">12</span>)</span>
+<span id="cb3-104"><a href="#cb3-104" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-105"><a href="#cb3-105" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Plot points</span></span>
+<span id="cb3-106"><a href="#cb3-106" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> i, x <span class="kw">in</span> <span class="bu">enumerate</span>(X):</span>
+<span id="cb3-107"><a href="#cb3-107" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> gamma[i] <span class="op">&gt;</span> <span class="dv">0</span>:</span>
+<span id="cb3-108"><a href="#cb3-108" aria-hidden="true" tabindex="-1"></a>            edgecolor <span class="op">=</span> <span class="st">"green"</span></span>
+<span id="cb3-109"><a href="#cb3-109" aria-hidden="true" tabindex="-1"></a>            status <span class="op">=</span> <span class="st">"correct"</span></span>
+<span id="cb3-110"><a href="#cb3-110" aria-hidden="true" tabindex="-1"></a>        <span class="cf">elif</span> gamma[i] <span class="op">&lt;</span> <span class="dv">0</span>:</span>
+<span id="cb3-111"><a href="#cb3-111" aria-hidden="true" tabindex="-1"></a>            edgecolor <span class="op">=</span> <span class="st">"red"</span></span>
+<span id="cb3-112"><a href="#cb3-112" aria-hidden="true" tabindex="-1"></a>            status <span class="op">=</span> <span class="st">"wrong"</span></span>
+<span id="cb3-113"><a href="#cb3-113" aria-hidden="true" tabindex="-1"></a>        <span class="cf">else</span>:</span>
+<span id="cb3-114"><a href="#cb3-114" aria-hidden="true" tabindex="-1"></a>            edgecolor <span class="op">=</span> <span class="st">"black"</span></span>
+<span id="cb3-115"><a href="#cb3-115" aria-hidden="true" tabindex="-1"></a>            status <span class="op">=</span> <span class="st">"boundary"</span></span>
+<span id="cb3-116"><a href="#cb3-116" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-117"><a href="#cb3-117" aria-hidden="true" tabindex="-1"></a>        marker <span class="op">=</span> <span class="st">"o"</span> <span class="cf">if</span> y[i] <span class="op">==</span> <span class="dv">1</span> <span class="cf">else</span> <span class="st">"s"</span></span>
+<span id="cb3-118"><a href="#cb3-118" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-119"><a href="#cb3-119" aria-hidden="true" tabindex="-1"></a>        ax.scatter(</span>
+<span id="cb3-120"><a href="#cb3-120" aria-hidden="true" tabindex="-1"></a>            x[<span class="dv">0</span>], x[<span class="dv">1</span>],</span>
+<span id="cb3-121"><a href="#cb3-121" aria-hidden="true" tabindex="-1"></a>            s<span class="op">=</span><span class="dv">120</span>,</span>
+<span id="cb3-122"><a href="#cb3-122" aria-hidden="true" tabindex="-1"></a>            marker<span class="op">=</span>marker,</span>
+<span id="cb3-123"><a href="#cb3-123" aria-hidden="true" tabindex="-1"></a>            facecolors<span class="op">=</span><span class="st">"white"</span>,</span>
+<span id="cb3-124"><a href="#cb3-124" aria-hidden="true" tabindex="-1"></a>            edgecolors<span class="op">=</span>edgecolor,</span>
+<span id="cb3-125"><a href="#cb3-125" aria-hidden="true" tabindex="-1"></a>            linewidths<span class="op">=</span><span class="dv">2</span>,</span>
+<span id="cb3-126"><a href="#cb3-126" aria-hidden="true" tabindex="-1"></a>            zorder<span class="op">=</span><span class="dv">5</span></span>
+<span id="cb3-127"><a href="#cb3-127" aria-hidden="true" tabindex="-1"></a>        )</span>
+<span id="cb3-128"><a href="#cb3-128" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-129"><a href="#cb3-129" aria-hidden="true" tabindex="-1"></a>        ax.text(</span>
+<span id="cb3-130"><a href="#cb3-130" aria-hidden="true" tabindex="-1"></a>            x[<span class="dv">0</span>] <span class="op">+</span> <span class="fl">0.03</span>,</span>
+<span id="cb3-131"><a href="#cb3-131" aria-hidden="true" tabindex="-1"></a>            x[<span class="dv">1</span>] <span class="op">+</span> <span class="fl">0.03</span>,</span>
+<span id="cb3-132"><a href="#cb3-132" aria-hidden="true" tabindex="-1"></a>            <span class="ss">f"</span><span class="sc">{</span>point_names[i]<span class="sc">}</span><span class="ch">\n</span><span class="ss">$y=</span><span class="sc">{</span>y[i]<span class="sc">}</span><span class="ss">$</span><span class="ch">\n</span><span class="ss">$</span><span class="ch">\\</span><span class="ss">gamma^f=</span><span class="sc">{</span>gamma[i]<span class="sc">:.1f}</span><span class="ss">$"</span>,</span>
+<span id="cb3-133"><a href="#cb3-133" aria-hidden="true" tabindex="-1"></a>            fontsize<span class="op">=</span><span class="dv">9</span></span>
+<span id="cb3-134"><a href="#cb3-134" aria-hidden="true" tabindex="-1"></a>        )</span>
+<span id="cb3-135"><a href="#cb3-135" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-136"><a href="#cb3-136" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Draw perpendicular projection to the boundary</span></span>
+<span id="cb3-137"><a href="#cb3-137" aria-hidden="true" tabindex="-1"></a>        x_proj <span class="op">=</span> project_to_hyperplane(x, w, b)</span>
+<span id="cb3-138"><a href="#cb3-138" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-139"><a href="#cb3-139" aria-hidden="true" tabindex="-1"></a>        ax.plot(</span>
+<span id="cb3-140"><a href="#cb3-140" aria-hidden="true" tabindex="-1"></a>            [x[<span class="dv">0</span>], x_proj[<span class="dv">0</span>]],</span>
+<span id="cb3-141"><a href="#cb3-141" aria-hidden="true" tabindex="-1"></a>            [x[<span class="dv">1</span>], x_proj[<span class="dv">1</span>]],</span>
+<span id="cb3-142"><a href="#cb3-142" aria-hidden="true" tabindex="-1"></a>            linestyle<span class="op">=</span><span class="st">":"</span>,</span>
+<span id="cb3-143"><a href="#cb3-143" aria-hidden="true" tabindex="-1"></a>            linewidth<span class="op">=</span><span class="fl">1.5</span>,</span>
+<span id="cb3-144"><a href="#cb3-144" aria-hidden="true" tabindex="-1"></a>            color<span class="op">=</span><span class="st">"gray"</span></span>
+<span id="cb3-145"><a href="#cb3-145" aria-hidden="true" tabindex="-1"></a>        )</span>
+<span id="cb3-146"><a href="#cb3-146" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-147"><a href="#cb3-147" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Draw normal vector</span></span>
+<span id="cb3-148"><a href="#cb3-148" aria-hidden="true" tabindex="-1"></a>    x0 <span class="op">=</span> np.array([<span class="fl">0.5</span>, <span class="fl">0.5</span>])  <span class="co"># point on boundary</span></span>
+<span id="cb3-149"><a href="#cb3-149" aria-hidden="true" tabindex="-1"></a>    normal_unit <span class="op">=</span> w_plot <span class="op">/</span> np.linalg.norm(w_plot)</span>
+<span id="cb3-150"><a href="#cb3-150" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-151"><a href="#cb3-151" aria-hidden="true" tabindex="-1"></a>    ax.arrow(</span>
+<span id="cb3-152"><a href="#cb3-152" aria-hidden="true" tabindex="-1"></a>        x0[<span class="dv">0</span>],</span>
+<span id="cb3-153"><a href="#cb3-153" aria-hidden="true" tabindex="-1"></a>        x0[<span class="dv">1</span>],</span>
+<span id="cb3-154"><a href="#cb3-154" aria-hidden="true" tabindex="-1"></a>        <span class="fl">0.25</span> <span class="op">*</span> normal_unit[<span class="dv">0</span>],</span>
+<span id="cb3-155"><a href="#cb3-155" aria-hidden="true" tabindex="-1"></a>        <span class="fl">0.25</span> <span class="op">*</span> normal_unit[<span class="dv">1</span>],</span>
+<span id="cb3-156"><a href="#cb3-156" aria-hidden="true" tabindex="-1"></a>        head_width<span class="op">=</span><span class="fl">0.04</span>,</span>
+<span id="cb3-157"><a href="#cb3-157" aria-hidden="true" tabindex="-1"></a>        length_includes_head<span class="op">=</span><span class="va">True</span>,</span>
+<span id="cb3-158"><a href="#cb3-158" aria-hidden="true" tabindex="-1"></a>        linewidth<span class="op">=</span><span class="dv">2</span>,</span>
+<span id="cb3-159"><a href="#cb3-159" aria-hidden="true" tabindex="-1"></a>        color<span class="op">=</span><span class="st">"black"</span></span>
+<span id="cb3-160"><a href="#cb3-160" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb3-161"><a href="#cb3-161" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-162"><a href="#cb3-162" aria-hidden="true" tabindex="-1"></a>    ax.text(</span>
+<span id="cb3-163"><a href="#cb3-163" aria-hidden="true" tabindex="-1"></a>        x0[<span class="dv">0</span>] <span class="op">+</span> <span class="fl">0.2</span>,</span>
+<span id="cb3-164"><a href="#cb3-164" aria-hidden="true" tabindex="-1"></a>        x0[<span class="dv">1</span>] <span class="op">+</span> <span class="fl">0.22</span>,</span>
+<span id="cb3-165"><a href="#cb3-165" aria-hidden="true" tabindex="-1"></a>        <span class="vs">r"</span><span class="dv">$</span><span class="vs">w</span><span class="dv">$</span><span class="vs">"</span>,</span>
+<span id="cb3-166"><a href="#cb3-166" aria-hidden="true" tabindex="-1"></a>        fontsize<span class="op">=</span><span class="dv">14</span></span>
+<span id="cb3-167"><a href="#cb3-167" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb3-168"><a href="#cb3-168" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-169"><a href="#cb3-169" aria-hidden="true" tabindex="-1"></a>    ax.set_title(title)</span>
+<span id="cb3-170"><a href="#cb3-170" aria-hidden="true" tabindex="-1"></a>    ax.set_xlabel(<span class="vs">r"</span><span class="dv">$</span><span class="vs">x_1</span><span class="dv">$</span><span class="vs">"</span>)</span>
+<span id="cb3-171"><a href="#cb3-171" aria-hidden="true" tabindex="-1"></a>    ax.set_ylabel(<span class="vs">r"</span><span class="dv">$</span><span class="vs">x_2</span><span class="dv">$</span><span class="vs">"</span>)</span>
+<span id="cb3-172"><a href="#cb3-172" aria-hidden="true" tabindex="-1"></a>    ax.set_xlim(<span class="op">-</span><span class="fl">0.2</span>, <span class="fl">1.8</span>)</span>
+<span id="cb3-173"><a href="#cb3-173" aria-hidden="true" tabindex="-1"></a>    ax.set_ylim(<span class="op">-</span><span class="fl">0.2</span>, <span class="fl">1.8</span>)</span>
+<span id="cb3-174"><a href="#cb3-174" aria-hidden="true" tabindex="-1"></a>    ax.grid(alpha<span class="op">=</span><span class="fl">0.3</span>)</span>
+<span id="cb3-175"><a href="#cb3-175" aria-hidden="true" tabindex="-1"></a>    ax.set_aspect(<span class="st">"equal"</span>)</span>
+<span id="cb3-176"><a href="#cb3-176" aria-hidden="true" tabindex="-1"></a>    ax.legend(loc<span class="op">=</span><span class="st">"upper right"</span>)</span>
+<span id="cb3-177"><a href="#cb3-177" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-178"><a href="#cb3-178" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-179"><a href="#cb3-179" aria-hidden="true" tabindex="-1"></a><span class="co"># Left panel: original margin</span></span>
+<span id="cb3-180"><a href="#cb3-180" aria-hidden="true" tabindex="-1"></a>plot_margin_panel(</span>
+<span id="cb3-181"><a href="#cb3-181" aria-hidden="true" tabindex="-1"></a>    axes[<span class="dv">0</span>],</span>
+<span id="cb3-182"><a href="#cb3-182" aria-hidden="true" tabindex="-1"></a>    w,</span>
+<span id="cb3-183"><a href="#cb3-183" aria-hidden="true" tabindex="-1"></a>    b,</span>
+<span id="cb3-184"><a href="#cb3-184" aria-hidden="true" tabindex="-1"></a>    <span class="vs">r"Original: </span><span class="dv">$</span><span class="er">\</span><span class="vs">gamma_i</span><span class="dv">^</span><span class="vs">{</span><span class="kw">(</span><span class="vs">f</span><span class="kw">)</span><span class="vs">}=y_i</span><span class="kw">(</span><span class="vs">w</span><span class="dv">^</span><span class="ch">\t</span><span class="vs">op x_i</span><span class="op">+</span><span class="vs">b</span><span class="kw">)</span><span class="dv">$</span><span class="vs">"</span></span>
+<span id="cb3-185"><a href="#cb3-185" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb3-186"><a href="#cb3-186" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-187"><a href="#cb3-187" aria-hidden="true" tabindex="-1"></a><span class="co"># Middle panel: scaled margin</span></span>
+<span id="cb3-188"><a href="#cb3-188" aria-hidden="true" tabindex="-1"></a>plot_margin_panel(</span>
+<span id="cb3-189"><a href="#cb3-189" aria-hidden="true" tabindex="-1"></a>    axes[<span class="dv">1</span>],</span>
+<span id="cb3-190"><a href="#cb3-190" aria-hidden="true" tabindex="-1"></a>    w_scaled,</span>
+<span id="cb3-191"><a href="#cb3-191" aria-hidden="true" tabindex="-1"></a>    b_scaled,</span>
+<span id="cb3-192"><a href="#cb3-192" aria-hidden="true" tabindex="-1"></a>    <span class="vs">r"Scaled: </span><span class="dv">$</span><span class="vs">w'=3w,</span><span class="ch">\ </span><span class="vs">b'=3b</span><span class="dv">$</span><span class="vs">"</span></span>
+<span id="cb3-193"><a href="#cb3-193" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb3-194"><a href="#cb3-194" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-195"><a href="#cb3-195" aria-hidden="true" tabindex="-1"></a><span class="co"># Right panel: bar chart comparing margins</span></span>
+<span id="cb3-196"><a href="#cb3-196" aria-hidden="true" tabindex="-1"></a>bar_width <span class="op">=</span> <span class="fl">0.25</span></span>
+<span id="cb3-197"><a href="#cb3-197" aria-hidden="true" tabindex="-1"></a>positions <span class="op">=</span> np.arange(<span class="bu">len</span>(point_names))</span>
+<span id="cb3-198"><a href="#cb3-198" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-199"><a href="#cb3-199" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">2</span>].bar(</span>
+<span id="cb3-200"><a href="#cb3-200" aria-hidden="true" tabindex="-1"></a>    positions <span class="op">-</span> bar_width,</span>
+<span id="cb3-201"><a href="#cb3-201" aria-hidden="true" tabindex="-1"></a>    gamma_original,</span>
+<span id="cb3-202"><a href="#cb3-202" aria-hidden="true" tabindex="-1"></a>    width<span class="op">=</span>bar_width,</span>
+<span id="cb3-203"><a href="#cb3-203" aria-hidden="true" tabindex="-1"></a>    label<span class="op">=</span><span class="vs">r"Original functional margin"</span></span>
+<span id="cb3-204"><a href="#cb3-204" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb3-205"><a href="#cb3-205" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-206"><a href="#cb3-206" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">2</span>].bar(</span>
+<span id="cb3-207"><a href="#cb3-207" aria-hidden="true" tabindex="-1"></a>    positions,</span>
+<span id="cb3-208"><a href="#cb3-208" aria-hidden="true" tabindex="-1"></a>    gamma_scaled,</span>
+<span id="cb3-209"><a href="#cb3-209" aria-hidden="true" tabindex="-1"></a>    width<span class="op">=</span>bar_width,</span>
+<span id="cb3-210"><a href="#cb3-210" aria-hidden="true" tabindex="-1"></a>    label<span class="op">=</span><span class="vs">r"Scaled functional margin"</span></span>
+<span id="cb3-211"><a href="#cb3-211" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb3-212"><a href="#cb3-212" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-213"><a href="#cb3-213" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">2</span>].bar(</span>
+<span id="cb3-214"><a href="#cb3-214" aria-hidden="true" tabindex="-1"></a>    positions <span class="op">+</span> bar_width,</span>
+<span id="cb3-215"><a href="#cb3-215" aria-hidden="true" tabindex="-1"></a>    geo_original,</span>
+<span id="cb3-216"><a href="#cb3-216" aria-hidden="true" tabindex="-1"></a>    width<span class="op">=</span>bar_width,</span>
+<span id="cb3-217"><a href="#cb3-217" aria-hidden="true" tabindex="-1"></a>    label<span class="op">=</span><span class="vs">r"Geometric margin"</span></span>
+<span id="cb3-218"><a href="#cb3-218" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb3-219"><a href="#cb3-219" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-220"><a href="#cb3-220" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">2</span>].axhline(<span class="dv">0</span>, linewidth<span class="op">=</span><span class="dv">1</span>)</span>
+<span id="cb3-221"><a href="#cb3-221" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-222"><a href="#cb3-222" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">2</span>].set_xticks(positions)</span>
+<span id="cb3-223"><a href="#cb3-223" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">2</span>].set_xticklabels(point_names)</span>
+<span id="cb3-224"><a href="#cb3-224" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">2</span>].set_ylabel(<span class="st">"Margin value"</span>)</span>
+<span id="cb3-225"><a href="#cb3-225" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">2</span>].set_title(<span class="st">"Functional margin changes, geometric margin does not"</span>)</span>
+<span id="cb3-226"><a href="#cb3-226" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">2</span>].grid(axis<span class="op">=</span><span class="st">"y"</span>, alpha<span class="op">=</span><span class="fl">0.3</span>)</span>
+<span id="cb3-227"><a href="#cb3-227" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">2</span>].legend()</span>
+<span id="cb3-228"><a href="#cb3-228" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-229"><a href="#cb3-229" aria-hidden="true" tabindex="-1"></a>fig.suptitle(</span>
+<span id="cb3-230"><a href="#cb3-230" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Functional Margin: Correctness, Misclassification, Boundary, and Scale Dependence"</span>,</span>
+<span id="cb3-231"><a href="#cb3-231" aria-hidden="true" tabindex="-1"></a>    fontsize<span class="op">=</span><span class="dv">15</span>,</span>
+<span id="cb3-232"><a href="#cb3-232" aria-hidden="true" tabindex="-1"></a>    y<span class="op">=</span><span class="fl">1.05</span></span>
+<span id="cb3-233"><a href="#cb3-233" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb3-234"><a href="#cb3-234" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-235"><a href="#cb3-235" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb3-236"><a href="#cb3-236" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>Original functional margins:
+[ 1.4  0.6  0.  -0.5  0.2]
+
+Scaled functional margins:
+[ 4.2  1.8  0.  -1.5  0.6]
+
+Original geometric margins:
+[ 0.98994949  0.42426407  0.         -0.35355339  0.14142136]
+
+Scaled geometric margins:
+[ 0.98994949  0.42426407  0.         -0.35355339  0.14142136]</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="chapter-7_files/figure-html/cell-4-output-2.png" width="1652" height="509" class="figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="hard-margin-svm" class="level2">
+<h2 class="anchored" data-anchor-id="hard-margin-svm">2. Hard-Margin SVM</h2>
+<div class="callout callout-style-default callout-note callout-titled" title="Definition: Linearly Separable Data">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Definition: Linearly Separable Data
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><em>A binary training set <span class="math inline">\(\{x_i, y_i\}_{i=1}^n\)</span>, <span class="math inline">\(y_i\in \{-1,+1\}\)</span>, is <strong>linearly separable</strong> if there exist <span class="math inline">\(w\in \mathbb R^p\)</span> and <span class="math inline">\(b\in \mathbb R\)</span> such that</em></p>
+<p><span class="math display">\[
+y_i(w^\top x_i + b) &gt; 0
+\]</span></p>
+<p><em>for every <span class="math inline">\(i\)</span>.</em></p>
+</div>
+</div>
+<p>In the separable case, SVM seeks a hyperplane with maximum geometric margin.</p>
+<section id="canonical-scaling" class="level3">
+<h3 class="anchored" data-anchor-id="canonical-scaling">2.1. Canonical Scaling</h3>
+<p>Because the hyperplane is unchanged if <span class="math inline">\(w\)</span> and <span class="math inline">\(b\)</span> are multiplied by a positive constant, we can impose the normalization</p>
+<p><span class="math display">\[
+\min_i y_i(w^\top x_i + b) = 1
+\]</span></p>
+<p>Then the closest points satisfy</p>
+<p><span class="math display">\[
+y_i(w^\top x_i + b) = 1
+\]</span></p>
+<p>The two margin boundary hyperplanes are</p>
+<p><span class="math display">\[
+w^\top x + b = \pm 1
+\]</span></p>
+<p>The decision boundary is</p>
+<p><span class="math display">\[
+w^\top x + b = 0
+\]</span></p>
+<div class="callout callout-style-default callout-note callout-titled" title="Theorem 1: Margin Width of a Canonically Scaled SVM">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Theorem 1: Margin Width of a Canonically Scaled SVM
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><em>For the hyperplanes <span class="math inline">\(w^\top x + b = \pm 1\)</span>, the distance between them is</em></p>
+<p><span class="math display">\[
+\frac{2}{||w||}
+\]</span></p>
+</div>
+</div>
+</section>
+<section id="hard-margin-optimization-problem" class="level3">
+<h3 class="anchored" data-anchor-id="hard-margin-optimization-problem">2.2. Hard-Margin Optimization Problem</h3>
+<p>Maximizing <span class="math inline">\(\frac{2}{||w||}\)</span> is equivalent to minimizing <span class="math inline">\(\frac{1}{2}||w||^2\)</span>. Therefore, the hard-margin SVM solves</p>
+<p><span class="math display">\[
+\min_{w,b}\frac{1}{2}||w||^2 \qquad \text{subject to } y_i(w^\top x_i+b)\geq 1, \quad i=1,\dots, n
+\]</span></p>
+<p>This is a convex quadratic optimization problem with linear inequality constraints.</p>
+</section>
+</section>
+<section id="support-vectors" class="level2">
+<h2 class="anchored" data-anchor-id="support-vectors">3. Support Vectors</h2>
+<div class="callout callout-style-default callout-note callout-titled" title="Definition: Support Vector">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Definition: Support Vector
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><em>A training point <span class="math inline">\(x_i\)</span> is a <strong>support vector</strong> if it lies on the margin boundary:</em></p>
+<p><span class="math display">\[
+y_i(w^\top x_i + b) = 1
+\]</span></p>
+<p><em>These are the point closest to the separating hyperplane. They determine the final classifier.</em></p>
+</div>
+</div>
+<p>Point satisfying</p>
+<p><span class="math display">\[
+y_i(w^\top x_i + b) &gt; 1
+\]</span></p>
+<p>are correctly classified and lie outside the margin. In the hard-margin case, these non-support-vector points do not directly affect the final decision boundary once the support vectors are fixed.</p>
+<p>This is one of the most important conceptual differences between SVMs and many other models. <a href="../../teaching/cds-303/chapter-4.html">Linear regression</a> uses all observations in estimating the fitted line, while a hard-margin SVM boundary is determined only by the support vectors.</p>
+<div id="cell-fig-maximum-margin-hyperplane" class="cell" data-execution_count="4">
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.datasets <span class="im">import</span> make_blobs</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.svm <span class="im">import</span> SVC</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Create linearly separable data</span></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>X, y <span class="op">=</span> make_blobs(</span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>    n_samples<span class="op">=</span><span class="dv">80</span>,</span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>    centers<span class="op">=</span><span class="dv">2</span>,</span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>    cluster_std<span class="op">=</span><span class="fl">0.8</span>,</span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>    random_state<span class="op">=</span><span class="dv">42</span></span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a><span class="co"># Convert labels from {0,1} to {-1,+1} for conceptual consistency</span></span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a>y_signed <span class="op">=</span> np.where(y <span class="op">==</span> <span class="dv">0</span>, <span class="op">-</span><span class="dv">1</span>, <span class="dv">1</span>)</span>
+<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a><span class="co"># Fit linear SVM with large C to approximate hard margin</span></span>
+<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a>clf <span class="op">=</span> SVC(kernel<span class="op">=</span><span class="st">"linear"</span>, C<span class="op">=</span><span class="fl">1e6</span>)</span>
+<span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a>clf.fit(X, y_signed)</span>
+<span id="cb5-20"><a href="#cb5-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-21"><a href="#cb5-21" aria-hidden="true" tabindex="-1"></a>w <span class="op">=</span> clf.coef_[<span class="dv">0</span>]</span>
+<span id="cb5-22"><a href="#cb5-22" aria-hidden="true" tabindex="-1"></a>b <span class="op">=</span> clf.intercept_[<span class="dv">0</span>]</span>
+<span id="cb5-23"><a href="#cb5-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-24"><a href="#cb5-24" aria-hidden="true" tabindex="-1"></a><span class="co"># Plot data</span></span>
+<span id="cb5-25"><a href="#cb5-25" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">8</span>, <span class="dv">6</span>))</span>
+<span id="cb5-26"><a href="#cb5-26" aria-hidden="true" tabindex="-1"></a>plt.scatter(X[:, <span class="dv">0</span>], X[:, <span class="dv">1</span>], c<span class="op">=</span>y_signed, edgecolor<span class="op">=</span><span class="st">"k"</span>, s<span class="op">=</span><span class="dv">60</span>)</span>
+<span id="cb5-27"><a href="#cb5-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-28"><a href="#cb5-28" aria-hidden="true" tabindex="-1"></a><span class="co"># Plot decision boundary and margins</span></span>
+<span id="cb5-29"><a href="#cb5-29" aria-hidden="true" tabindex="-1"></a>ax <span class="op">=</span> plt.gca()</span>
+<span id="cb5-30"><a href="#cb5-30" aria-hidden="true" tabindex="-1"></a>xlim <span class="op">=</span> ax.get_xlim()</span>
+<span id="cb5-31"><a href="#cb5-31" aria-hidden="true" tabindex="-1"></a>xx <span class="op">=</span> np.linspace(xlim[<span class="dv">0</span>], xlim[<span class="dv">1</span>], <span class="dv">200</span>)</span>
+<span id="cb5-32"><a href="#cb5-32" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-33"><a href="#cb5-33" aria-hidden="true" tabindex="-1"></a><span class="co"># Decision boundary: w0*x + w1*y + b = 0</span></span>
+<span id="cb5-34"><a href="#cb5-34" aria-hidden="true" tabindex="-1"></a>decision_boundary <span class="op">=</span> <span class="op">-</span>(w[<span class="dv">0</span>] <span class="op">*</span> xx <span class="op">+</span> b) <span class="op">/</span> w[<span class="dv">1</span>]</span>
+<span id="cb5-35"><a href="#cb5-35" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-36"><a href="#cb5-36" aria-hidden="true" tabindex="-1"></a><span class="co"># Margin boundaries: w0*x + w1*y + b = +/- 1</span></span>
+<span id="cb5-37"><a href="#cb5-37" aria-hidden="true" tabindex="-1"></a>margin_positive <span class="op">=</span> <span class="op">-</span>(w[<span class="dv">0</span>] <span class="op">*</span> xx <span class="op">+</span> b <span class="op">-</span> <span class="dv">1</span>) <span class="op">/</span> w[<span class="dv">1</span>]</span>
+<span id="cb5-38"><a href="#cb5-38" aria-hidden="true" tabindex="-1"></a>margin_negative <span class="op">=</span> <span class="op">-</span>(w[<span class="dv">0</span>] <span class="op">*</span> xx <span class="op">+</span> b <span class="op">+</span> <span class="dv">1</span>) <span class="op">/</span> w[<span class="dv">1</span>]</span>
+<span id="cb5-39"><a href="#cb5-39" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-40"><a href="#cb5-40" aria-hidden="true" tabindex="-1"></a>plt.plot(xx, decision_boundary, label<span class="op">=</span><span class="st">"Decision boundary"</span>)</span>
+<span id="cb5-41"><a href="#cb5-41" aria-hidden="true" tabindex="-1"></a>plt.plot(xx, margin_positive, linestyle<span class="op">=</span><span class="st">"--"</span>, label<span class="op">=</span><span class="st">"Margin"</span>)</span>
+<span id="cb5-42"><a href="#cb5-42" aria-hidden="true" tabindex="-1"></a>plt.plot(xx, margin_negative, linestyle<span class="op">=</span><span class="st">"--"</span>)</span>
+<span id="cb5-43"><a href="#cb5-43" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-44"><a href="#cb5-44" aria-hidden="true" tabindex="-1"></a><span class="co"># Highlight support vectors</span></span>
+<span id="cb5-45"><a href="#cb5-45" aria-hidden="true" tabindex="-1"></a>plt.scatter(</span>
+<span id="cb5-46"><a href="#cb5-46" aria-hidden="true" tabindex="-1"></a>    clf.support_vectors_[:, <span class="dv">0</span>],</span>
+<span id="cb5-47"><a href="#cb5-47" aria-hidden="true" tabindex="-1"></a>    clf.support_vectors_[:, <span class="dv">1</span>],</span>
+<span id="cb5-48"><a href="#cb5-48" aria-hidden="true" tabindex="-1"></a>    s<span class="op">=</span><span class="dv">180</span>,</span>
+<span id="cb5-49"><a href="#cb5-49" aria-hidden="true" tabindex="-1"></a>    facecolors<span class="op">=</span><span class="st">"none"</span>,</span>
+<span id="cb5-50"><a href="#cb5-50" aria-hidden="true" tabindex="-1"></a>    edgecolors<span class="op">=</span><span class="st">"k"</span>,</span>
+<span id="cb5-51"><a href="#cb5-51" aria-hidden="true" tabindex="-1"></a>    linewidths<span class="op">=</span><span class="dv">2</span>,</span>
+<span id="cb5-52"><a href="#cb5-52" aria-hidden="true" tabindex="-1"></a>    label<span class="op">=</span><span class="st">"Support vectors"</span></span>
+<span id="cb5-53"><a href="#cb5-53" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb5-54"><a href="#cb5-54" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-55"><a href="#cb5-55" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">"Linear SVM: Maximum-Margin Hyperplane"</span>)</span>
+<span id="cb5-56"><a href="#cb5-56" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">"Feature 1"</span>)</span>
+<span id="cb5-57"><a href="#cb5-57" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">"Feature 2"</span>)</span>
+<span id="cb5-58"><a href="#cb5-58" aria-hidden="true" tabindex="-1"></a>plt.legend()</span>
+<span id="cb5-59"><a href="#cb5-59" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb5-60"><a href="#cb5-60" aria-hidden="true" tabindex="-1"></a>plt.show()</span>
+<span id="cb5-61"><a href="#cb5-61" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-62"><a href="#cb5-62" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"w:"</span>, w)</span>
+<span id="cb5-63"><a href="#cb5-63" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"b:"</span>, b)</span>
+<span id="cb5-64"><a href="#cb5-64" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Number of support vectors:"</span>, <span class="bu">len</span>(clf.support_vectors_))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-display">
+<div id="fig-maximum-margin-hyperplane" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-maximum-margin-hyperplane-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="chapter-7_files/figure-html/fig-maximum-margin-hyperplane-output-1.png" width="758" height="566" class="figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-maximum-margin-hyperplane-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;1: Maximum-Margin Hyperplane
+</figcaption>
+</figure>
+</div>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>w: [ 0.20049367 -0.17658289]
+b: 0.7845610916293154
+Number of support vectors: 3</code></pre>
+</div>
+</div>
+</section>
+<section id="lagrangian-and-kkt-conditions" class="level2">
+<h2 class="anchored" data-anchor-id="lagrangian-and-kkt-conditions">5. Lagrangian and KKT Conditions</h2>
+<section id="lagrangian-and-dual-formulation" class="level3">
+<h3 class="anchored" data-anchor-id="lagrangian-and-dual-formulation">5.1. Lagrangian and Dual Formulation</h3>
+<p>The dual formulation is central to SVMs because it allows the kernel trick. Recall, the hard-margin primal problem is</p>
+<p><span class="math display">\[
+\min_{w,b}\frac{1}{2}||w||^2 \qquad \text{subject to } y_i(w^\top x_i+b)\geq 1, \quad i=1,\dots, n
+\]</span></p>
+<p>Equivalently,</p>
+<p><span class="math display">\[
+1- y_i(w^\top x_i + b)\leq 0
+\]</span></p>
+<p>Introduce <a href="https://en.wikipedia.org/wiki/Lagrange_multiplier">Lagrange multipliers</a> <span class="math inline">\(\lambda_i\geq 0\)</span>. Then the Lagrangian is</p>
+<p><span class="math display">\[
+\begin{aligned}
+\mathcal L (w, b, \lambda) &amp;= \frac{1}{2}||w||^2 + \sum_{i=1}^n\lambda_i[1-y_i(w^\top x_i+b)]\\
+&amp;=\frac{1}{2}w^\top w + \sum_{i=1}^n \lambda_i - \sum_{i=1}^n\lambda_iy_iw^\top x_i -b\sum_{i=1}^n \lambda_i y_i
+\end{aligned}
+\]</span></p>
+<p>Now we calculate the gradient:</p>
+<p><span class="math display">\[
+\begin{aligned}
+\nabla_{w, b, \lambda}\mathcal L (w, b, \lambda)&amp;=\left(\frac{\partial \mathcal L}{\partial w},\frac{\partial \mathcal L}{\partial b},\frac{\partial \mathcal L}{\partial \lambda}\right)\\
+&amp;=\left(w-\sum_{i=1}^n\lambda_i y_ix_i, -\sum_{i=1}^n \lambda_i y_i ,n-\sum_{i=1}^ny_i(w^\top x_i+b)\right)
+\end{aligned}
+\]</span></p>
+<p>and therefore:</p>
+<p><span class="math display">\[
+\nabla_{w,b,\lambda}\mathcal L(w, b, \lambda)= 0\Longleftrightarrow \begin{cases}
+w=\sum_{i=1}^n \lambda_iy_ix_i\\
+\sum_{i=1}^n \lambda_iy_i=0\\
+n= \sum_{i=1}^ny_i(w^\top x_i+b)
+\end{cases}
+\]</span></p>
+<p>We substitute back to the Lagrangian; the dual problem becomes<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>:</p>
+<p><span class="math display">\[
+\begin{aligned}
+\max_\lambda \min_{w,b} \mathcal L(w,b, \lambda) &amp;\sim \max_\lambda \sum_{i=1}^n \lambda_i -\frac{1}{2}\sum_{i=1}^n\sum_{j=1}^n \lambda_i \lambda_jy_iy_jx^\top_ix_j\\
+\text{subject to }&amp; \lambda_i\geq 0, \, i=1,\dots, n \\&amp;\sum_{i=1}^n \lambda_iy_i =0
+\end{aligned}
+\]</span></p>
+<p>The decision function becomes</p>
+<p><span class="math display">\[
+f(x)=w^\top x+ b = \sum_{i=1}^n \lambda_iy_ix_i^\top x + b
+\]</span> Only points with <span class="math inline">\(\lambda_i&gt;0\)</span> contribute to the decision function. These are the support vectors.</p>
+</section>
+<section id="ktt-conditions" class="level3">
+<h3 class="anchored" data-anchor-id="ktt-conditions">5.2. KTT Conditions</h3>
+<p>The Karush-Kuhn-Tucker, or KTT, conditions characterize the optimal solution of the constrained convex optimization problem.</p>
+<p>For hard-margin SVM, the KKT conditions include:</p>
+<ol type="1">
+<li><em>Primal feasibility</em>: <span class="math inline">\(y_i(w^\top x_i + b) \geq 1\)</span>.</li>
+<li><em>Dual feasibility</em>: <span class="math inline">\(\lambda_i \geq 0\)</span>.</li>
+<li><em>Stationarity</em>: <span class="math inline">\(w= \sum_{i=1}^n \lambda_i y_i x_i,\qquad \sum_{i=1}^n \lambda_iy_i = 0.\)</span></li>
+<li><em>Complementary slackness</em>: <span class="math inline">\(\lambda_i [y_i(w^\top x_i+b)-1]=0.\)</span> Complementary slackness implies:
+<ul>
+<li>If <span class="math inline">\(y_i(w^\top x_i + b)&gt; 1\)</span> then <span class="math inline">\(\lambda_i = 0\)</span>.</li>
+<li>If <span class="math inline">\(\lambda_i &gt; 0\)</span>, then <span class="math inline">\(y_i (w^\top x_i + b)=1\)</span>.</li>
+</ul></li>
+</ol>
+<p>Thus, only margin points have positive dual coefficients.</p>
+</section>
+</section>
+<section id="soft-margin-svm" class="level2">
+<h2 class="anchored" data-anchor-id="soft-margin-svm">6. Soft-Margin SVM</h2>
+<p>Real-world data are often not linearly separable. Classes may overlap, labels may contain noise, or the true boundary may be nonlinear. A hard-margin SVM would fail if no separating hyperplane exists.</p>
+<p>Soft-margin SVM introduces slack variables <span class="math inline">\(\xi_i\geq 0\)</span> to allow margin violations. The constraints become</p>
+<p><span class="math display">\[
+y_i (w^\top x_i + b) \geq 1 - \xi_i.
+\]</span></p>
+<p>The soft-margin primal problem is</p>
+<p><span class="math display">\[
+\begin{aligned}
+\min_{w, b, \xi} \frac{1}{2}||w||^2 + C\sum_{i=1}^n \xi_i\qquad \text{subject to }&amp; y_i(w^\top x_i+b)\geq 1-\xi_i,\\
+&amp; \xi_i\geq 0
+\end{aligned}
+\]</span></p>
+<p>Here <span class="math inline">\(C&gt;0\)</span> is the regularization parameter.</p>
+<section id="slack-variables" class="level3">
+<h3 class="anchored" data-anchor-id="slack-variables">6.1. Slack Variables</h3>
+<p>The slack variables <span class="math inline">\(\xi_i\)</span> measures the violation of the margin constraint.</p>
+<p>For an observation <span class="math inline">\(i\)</span>:</p>
+<ol type="1">
+<li>If <span class="math inline">\(\xi_i=0\)</span>, then <span class="math inline">\(y_i(w^\top x_i + b) \geq 1\)</span>. The point is correctly classified and outside or on the margin.</li>
+<li>If <span class="math inline">\(0&lt;\xi_i&lt;1\)</span>, then <span class="math inline">\(0&lt;y_i(w^\top x_i + b)&lt;1\)</span>. The point is correctly classified but inside the margin.</li>
+<li>If <span class="math inline">\(\xi_i\geq 1\)</span>, then <span class="math inline">\(y_i(w^\top x_i + b)\leq 0\)</span>. The point is misclassified or lies on the decision boundary.</li>
+</ol>
+<p>The parameter <span class="math inline">\(C\)</span> controls the tradeoff between margin width and training violations.</p>
+<ul>
+<li>Large <span class="math inline">\(C\)</span>: violations are heavily penalized, so the model tries to classify training points correctly, potentially producing a smaller margin.</li>
+<li>Small <span class="math inline">\(C\)</span>: violations are tolerated, so the model prefers a wider margin and stronger regularization.</li>
+</ul>
+</section>
+<section id="hinge-loss-interpretation" class="level3">
+<h3 class="anchored" data-anchor-id="hinge-loss-interpretation">6.2. Hinge Loss Interpretation</h3>
+<p>The soft-margin SVM can also be written as unconstrained regularized empirical risk minimization using the <strong>hinge loss</strong>.</p>
+<p>The hinge loss is</p>
+<p><span class="math display">\[
+L(y, f(x)) = \max(0, 1-yf(x))
+\]</span></p>
+<p>For a linear SVM <span class="math inline">\(f(x) = w^\top x+ b\)</span>. Then the primal objective can be written as</p>
+<p><span class="math display">\[
+\min_{w,b} \frac{1}{2} ||w||^2 + C\sum_{i=1}^n \max (0, 1-y_i(w^\top x_i + b))
+\]</span></p>
+<p>The hinge loss is zero when</p>
+<p><span class="math display">\[
+y_if(x_i) \geq 1.
+\]</span></p>
+<p>It is positive when a point is inside the margin or misclassified.</p>
+<p>This distinguishes SVM from logistic regression. Logistic regression uses log-loss,</p>
+<p><span class="math display">\[
+\log (1+\exp (-yf(x)))
+\]</span></p>
+<p>which keeps penalizing all points, even those correctly classified with large margin. The hinge loss become zero once a point is correctly classified beyond the margin.</p>
+<div id="cell-fig-hinge-loss" class="cell" data-execution_count="5">
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>margin <span class="op">=</span> np.linspace(<span class="op">-</span><span class="dv">3</span>, <span class="dv">4</span>, <span class="dv">500</span>)</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>hinge <span class="op">=</span> np.maximum(<span class="dv">0</span>, <span class="dv">1</span> <span class="op">-</span> margin)</span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>logistic <span class="op">=</span> np.log(<span class="dv">1</span> <span class="op">+</span> np.exp(<span class="op">-</span>margin))</span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>zero_one <span class="op">=</span> (margin <span class="op">&lt;=</span> <span class="dv">0</span>).astype(<span class="bu">float</span>)</span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">8</span>, <span class="dv">5</span>))</span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>plt.plot(margin, hinge, label<span class="op">=</span><span class="st">"Hinge loss"</span>)</span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>plt.plot(margin, logistic, label<span class="op">=</span><span class="st">"Logistic loss"</span>)</span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>plt.plot(margin, zero_one, linestyle<span class="op">=</span><span class="st">"--"</span>, label<span class="op">=</span><span class="st">"0-1 loss"</span>)</span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a>plt.axvline(<span class="dv">1</span>, linestyle<span class="op">=</span><span class="st">":"</span>, label<span class="op">=</span><span class="st">"Margin = 1"</span>)</span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a>plt.axvline(<span class="dv">0</span>, linestyle<span class="op">=</span><span class="st">":"</span>, label<span class="op">=</span><span class="st">"Decision boundary"</span>)</span>
+<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">"Loss Functions as a Function of Signed Margin"</span>)</span>
+<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="vs">r"Signed margin </span><span class="dv">$</span><span class="vs">y f</span><span class="kw">(</span><span class="vs">x</span><span class="kw">)</span><span class="dv">$</span><span class="vs">"</span>)</span>
+<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">"Loss"</span>)</span>
+<span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a>plt.legend()</span>
+<span id="cb7-20"><a href="#cb7-20" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb7-21"><a href="#cb7-21" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-display">
+<div id="fig-hinge-loss" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-hinge-loss-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="chapter-7_files/figure-html/fig-hinge-loss-output-1.png" width="758" height="468" class="figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-hinge-loss-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;2: Hinge Loss
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="soft-margin-dual-problem" class="level3">
+<h3 class="anchored" data-anchor-id="soft-margin-dual-problem">6.3. Soft-Margin Dual Problem</h3>
+<p>For the soft-margin SVM, the dual problem becomes</p>
+<p><span class="math display">\[
+\begin{aligned}
+\max_\lambda \sum_{i=1}^n \lambda_i -\frac{1}{2}\sum_{i=1}^n\sum_{j=1}^n \lambda_i \lambda_jy_iy_jx^\top_ix_j\qquad
+\text{ subject to }&amp; 0\leq\lambda_i\leq C, \, i=1,\dots, n \\&amp;\sum_{i=1}^n \lambda_iy_i =0
+\end{aligned}
+\]</span></p>
+<p>Compared with the hard-margin dual, the only change is the upper bound <span class="math inline">\(\lambda_i\leq C\)</span>. This upper bound comes from the slack penalty. It limits how much influence any single training observation can have.</p>
+<p>The decision function remains</p>
+<p><span class="math display">\[
+f(x)=w^\top x+ b = \sum_{i=1}^n \lambda_iy_ix_i^\top x + b
+\]</span> In the soft-margin case, support vectors can include:</p>
+<ol type="1">
+<li>Points on the margin: <span class="math inline">\(0&lt;\lambda_i&lt;C\)</span>.</li>
+<li>Points inside the margin or misclassified points: <span class="math inline">\(\lambda_i = C\)</span>.</li>
+</ol>
+<p>The KKT conditions imply:</p>
+<ul>
+<li>If <span class="math inline">\(\lambda_i = 0\)</span>, the point is outside the margin and does not affect the boundary.</li>
+<li>If <span class="math inline">\(0&lt;\lambda_i&lt;C\)</span>, the point lies exactly on the margin.</li>
+<li>If <span class="math inline">\(\lambda_i =C\)</span>, the point is inside the margin or misclassified.</li>
+</ul>
+<div id="b2e03ab4" class="cell" data-execution_count="6">
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.datasets <span class="im">import</span> make_blobs</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.svm <span class="im">import</span> SVC</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>X, y <span class="op">=</span> make_blobs(</span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>    n_samples<span class="op">=</span><span class="dv">150</span>,</span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>    centers<span class="op">=</span><span class="dv">2</span>,</span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>    cluster_std<span class="op">=</span><span class="dv">1</span>,</span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>    random_state<span class="op">=</span><span class="dv">30</span></span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a>y_signed <span class="op">=</span> np.where(y <span class="op">==</span> <span class="dv">0</span>, <span class="op">-</span><span class="dv">1</span>, <span class="dv">1</span>)</span>
+<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a>x_min, x_max <span class="op">=</span> X[:, <span class="dv">0</span>].<span class="bu">min</span>() <span class="op">-</span> <span class="dv">1</span>, X[:, <span class="dv">0</span>].<span class="bu">max</span>() <span class="op">+</span> <span class="dv">1</span></span>
+<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a>y_min, y_max <span class="op">=</span> X[:, <span class="dv">1</span>].<span class="bu">min</span>() <span class="op">-</span> <span class="dv">1</span>, X[:, <span class="dv">1</span>].<span class="bu">max</span>() <span class="op">+</span> <span class="dv">1</span></span>
+<span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-18"><a href="#cb8-18" aria-hidden="true" tabindex="-1"></a>xx, yy <span class="op">=</span> np.meshgrid(</span>
+<span id="cb8-19"><a href="#cb8-19" aria-hidden="true" tabindex="-1"></a>    np.linspace(x_min, x_max, <span class="dv">400</span>),</span>
+<span id="cb8-20"><a href="#cb8-20" aria-hidden="true" tabindex="-1"></a>    np.linspace(y_min, y_max, <span class="dv">400</span>)</span>
+<span id="cb8-21"><a href="#cb8-21" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb8-22"><a href="#cb8-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-23"><a href="#cb8-23" aria-hidden="true" tabindex="-1"></a>grid <span class="op">=</span> np.c_[xx.ravel(), yy.ravel()]</span>
+<span id="cb8-24"><a href="#cb8-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-25"><a href="#cb8-25" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> C <span class="kw">in</span> [<span class="fl">0.1</span>, <span class="dv">1</span>, <span class="dv">100</span>]:</span>
+<span id="cb8-26"><a href="#cb8-26" aria-hidden="true" tabindex="-1"></a>    clf <span class="op">=</span> SVC(kernel<span class="op">=</span><span class="st">"linear"</span>, C<span class="op">=</span>C)</span>
+<span id="cb8-27"><a href="#cb8-27" aria-hidden="true" tabindex="-1"></a>    clf.fit(X, y_signed)</span>
+<span id="cb8-28"><a href="#cb8-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-29"><a href="#cb8-29" aria-hidden="true" tabindex="-1"></a>    Z <span class="op">=</span> clf.decision_function(grid).reshape(xx.shape)</span>
+<span id="cb8-30"><a href="#cb8-30" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-31"><a href="#cb8-31" aria-hidden="true" tabindex="-1"></a>    plt.figure(figsize<span class="op">=</span>(<span class="dv">7</span>, <span class="dv">6</span>))</span>
+<span id="cb8-32"><a href="#cb8-32" aria-hidden="true" tabindex="-1"></a>    plt.contourf(xx, yy, Z <span class="op">&gt;</span> <span class="dv">0</span>, alpha<span class="op">=</span><span class="fl">0.25</span>)</span>
+<span id="cb8-33"><a href="#cb8-33" aria-hidden="true" tabindex="-1"></a>    plt.contour(xx, yy, Z, levels<span class="op">=</span>[<span class="op">-</span><span class="dv">1</span>, <span class="dv">0</span>, <span class="dv">1</span>], linestyles<span class="op">=</span>[<span class="st">"--"</span>, <span class="st">"-"</span>, <span class="st">"--"</span>])</span>
+<span id="cb8-34"><a href="#cb8-34" aria-hidden="true" tabindex="-1"></a>    plt.scatter(X[:, <span class="dv">0</span>], X[:, <span class="dv">1</span>], c<span class="op">=</span>y_signed, edgecolor<span class="op">=</span><span class="st">"k"</span>, s<span class="op">=</span><span class="dv">50</span>)</span>
+<span id="cb8-35"><a href="#cb8-35" aria-hidden="true" tabindex="-1"></a>    plt.scatter(</span>
+<span id="cb8-36"><a href="#cb8-36" aria-hidden="true" tabindex="-1"></a>        clf.support_vectors_[:, <span class="dv">0</span>],</span>
+<span id="cb8-37"><a href="#cb8-37" aria-hidden="true" tabindex="-1"></a>        clf.support_vectors_[:, <span class="dv">1</span>],</span>
+<span id="cb8-38"><a href="#cb8-38" aria-hidden="true" tabindex="-1"></a>        s<span class="op">=</span><span class="dv">160</span>,</span>
+<span id="cb8-39"><a href="#cb8-39" aria-hidden="true" tabindex="-1"></a>        facecolors<span class="op">=</span><span class="st">"none"</span>,</span>
+<span id="cb8-40"><a href="#cb8-40" aria-hidden="true" tabindex="-1"></a>        edgecolors<span class="op">=</span><span class="st">"k"</span>,</span>
+<span id="cb8-41"><a href="#cb8-41" aria-hidden="true" tabindex="-1"></a>        linewidths<span class="op">=</span><span class="dv">2</span>,</span>
+<span id="cb8-42"><a href="#cb8-42" aria-hidden="true" tabindex="-1"></a>        label<span class="op">=</span><span class="st">"Support vectors"</span></span>
+<span id="cb8-43"><a href="#cb8-43" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb8-44"><a href="#cb8-44" aria-hidden="true" tabindex="-1"></a>    plt.title(<span class="ss">f"Soft-Margin Linear SVM with C=</span><span class="sc">{</span>C<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb8-45"><a href="#cb8-45" aria-hidden="true" tabindex="-1"></a>    plt.xlabel(<span class="st">"Feature 1"</span>)</span>
+<span id="cb8-46"><a href="#cb8-46" aria-hidden="true" tabindex="-1"></a>    plt.ylabel(<span class="st">"Feature 2"</span>)</span>
+<span id="cb8-47"><a href="#cb8-47" aria-hidden="true" tabindex="-1"></a>    plt.legend()</span>
+<span id="cb8-48"><a href="#cb8-48" aria-hidden="true" tabindex="-1"></a>    plt.tight_layout()</span>
+<span id="cb8-49"><a href="#cb8-49" aria-hidden="true" tabindex="-1"></a>    plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="chapter-7_files/figure-html/cell-7-output-1.png" width="662" height="566" class="figure-img"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="chapter-7_files/figure-html/cell-7-output-2.png" width="662" height="566" class="figure-img"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="chapter-7_files/figure-html/cell-7-output-3.png" width="662" height="566" class="figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="kernels-and-nonlinear-svms" class="level2">
+<h2 class="anchored" data-anchor-id="kernels-and-nonlinear-svms">7. Kernels and Nonlinear SVMs</h2>
+<section id="why-kernels" class="level3">
+<h3 class="anchored" data-anchor-id="why-kernels">7.1. Why Kernels?</h3>
+<p>A linear SVM can only produce a linear decision boundary in the original feature space. But many classification problems are not linearly separable.</p>
+<p>Suppose data in <span class="math inline">\(\mathbb R^2\)</span> form concentric circles. No straight line can separate the inner circle from the outer ring. However, if we map the data into a higher-dimensional space, a linear separator may become possible.</p>
+<div id="a48bf507" class="cell" data-execution_count="7">
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>np.random.seed(<span class="dv">42</span>)</span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>n <span class="op">=</span> <span class="dv">150</span></span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>theta_inner <span class="op">=</span> <span class="dv">2</span> <span class="op">*</span> np.pi <span class="op">*</span> np.random.rand(n)</span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>theta_outer <span class="op">=</span> <span class="dv">2</span> <span class="op">*</span> np.pi <span class="op">*</span> np.random.rand(n)</span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a>r_inner <span class="op">=</span> <span class="fl">1.0</span> <span class="op">+</span> <span class="fl">0.08</span> <span class="op">*</span> np.random.randn(n)</span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a>r_outer <span class="op">=</span> <span class="fl">2.0</span> <span class="op">+</span> <span class="fl">0.08</span> <span class="op">*</span> np.random.randn(n)</span>
+<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a>x_inner <span class="op">=</span> r_inner <span class="op">*</span> np.cos(theta_inner)</span>
+<span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a>y_inner <span class="op">=</span> r_inner <span class="op">*</span> np.sin(theta_inner)</span>
+<span id="cb9-16"><a href="#cb9-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-17"><a href="#cb9-17" aria-hidden="true" tabindex="-1"></a>x_outer <span class="op">=</span> r_outer <span class="op">*</span> np.cos(theta_outer)</span>
+<span id="cb9-18"><a href="#cb9-18" aria-hidden="true" tabindex="-1"></a>y_outer <span class="op">=</span> r_outer <span class="op">*</span> np.sin(theta_outer)</span>
+<span id="cb9-19"><a href="#cb9-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-20"><a href="#cb9-20" aria-hidden="true" tabindex="-1"></a><span class="co"># Labels</span></span>
+<span id="cb9-21"><a href="#cb9-21" aria-hidden="true" tabindex="-1"></a>label_inner <span class="op">=</span> np.zeros(n)</span>
+<span id="cb9-22"><a href="#cb9-22" aria-hidden="true" tabindex="-1"></a>label_outer <span class="op">=</span> np.ones(n)</span>
+<span id="cb9-23"><a href="#cb9-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-24"><a href="#cb9-24" aria-hidden="true" tabindex="-1"></a><span class="co"># Combine data</span></span>
+<span id="cb9-25"><a href="#cb9-25" aria-hidden="true" tabindex="-1"></a>X2 <span class="op">=</span> np.vstack([</span>
+<span id="cb9-26"><a href="#cb9-26" aria-hidden="true" tabindex="-1"></a>    np.column_stack([x_inner, y_inner]),</span>
+<span id="cb9-27"><a href="#cb9-27" aria-hidden="true" tabindex="-1"></a>    np.column_stack([x_outer, y_outer])</span>
+<span id="cb9-28"><a href="#cb9-28" aria-hidden="true" tabindex="-1"></a>])</span>
+<span id="cb9-29"><a href="#cb9-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-30"><a href="#cb9-30" aria-hidden="true" tabindex="-1"></a>y <span class="op">=</span> np.concatenate([label_inner, label_outer])</span>
+<span id="cb9-31"><a href="#cb9-31" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-32"><a href="#cb9-32" aria-hidden="true" tabindex="-1"></a>z_inner <span class="op">=</span> x_inner<span class="op">**</span><span class="dv">2</span> <span class="op">+</span> y_inner<span class="op">**</span><span class="dv">2</span></span>
+<span id="cb9-33"><a href="#cb9-33" aria-hidden="true" tabindex="-1"></a>z_outer <span class="op">=</span> x_outer<span class="op">**</span><span class="dv">2</span> <span class="op">+</span> y_outer<span class="op">**</span><span class="dv">2</span></span>
+<span id="cb9-34"><a href="#cb9-34" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-35"><a href="#cb9-35" aria-hidden="true" tabindex="-1"></a><span class="co"># Separating plane: z = constant</span></span>
+<span id="cb9-36"><a href="#cb9-36" aria-hidden="true" tabindex="-1"></a>z_plane <span class="op">=</span> <span class="fl">2.5</span></span>
+<span id="cb9-37"><a href="#cb9-37" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-38"><a href="#cb9-38" aria-hidden="true" tabindex="-1"></a>fig <span class="op">=</span> plt.figure(figsize<span class="op">=</span>(<span class="dv">12</span>, <span class="dv">5</span>))</span>
+<span id="cb9-39"><a href="#cb9-39" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-40"><a href="#cb9-40" aria-hidden="true" tabindex="-1"></a>ax1 <span class="op">=</span> fig.add_subplot(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">1</span>)</span>
+<span id="cb9-41"><a href="#cb9-41" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-42"><a href="#cb9-42" aria-hidden="true" tabindex="-1"></a>ax1.scatter(x_inner, y_inner, label<span class="op">=</span><span class="st">"Inner circle"</span>, alpha<span class="op">=</span><span class="fl">0.8</span>)</span>
+<span id="cb9-43"><a href="#cb9-43" aria-hidden="true" tabindex="-1"></a>ax1.scatter(x_outer, y_outer, label<span class="op">=</span><span class="st">"Outer ring"</span>, alpha<span class="op">=</span><span class="fl">0.8</span>)</span>
+<span id="cb9-44"><a href="#cb9-44" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-45"><a href="#cb9-45" aria-hidden="true" tabindex="-1"></a>ax1.set_title(<span class="st">"Original 2D space</span><span class="ch">\n</span><span class="st">Not linearly separable"</span>)</span>
+<span id="cb9-46"><a href="#cb9-46" aria-hidden="true" tabindex="-1"></a>ax1.set_xlabel(<span class="st">"$x_1$"</span>)</span>
+<span id="cb9-47"><a href="#cb9-47" aria-hidden="true" tabindex="-1"></a>ax1.set_ylabel(<span class="st">"$x_2$"</span>)</span>
+<span id="cb9-48"><a href="#cb9-48" aria-hidden="true" tabindex="-1"></a>ax1.set_aspect(<span class="st">"equal"</span>)</span>
+<span id="cb9-49"><a href="#cb9-49" aria-hidden="true" tabindex="-1"></a>ax1.legend()</span>
+<span id="cb9-50"><a href="#cb9-50" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-51"><a href="#cb9-51" aria-hidden="true" tabindex="-1"></a>ax2 <span class="op">=</span> fig.add_subplot(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">2</span>, projection<span class="op">=</span><span class="st">"3d"</span>)</span>
+<span id="cb9-52"><a href="#cb9-52" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-53"><a href="#cb9-53" aria-hidden="true" tabindex="-1"></a>ax2.scatter(x_inner, y_inner, z_inner, label<span class="op">=</span><span class="st">"Inner circle"</span>, alpha<span class="op">=</span><span class="fl">0.8</span>)</span>
+<span id="cb9-54"><a href="#cb9-54" aria-hidden="true" tabindex="-1"></a>ax2.scatter(x_outer, y_outer, z_outer, label<span class="op">=</span><span class="st">"Outer ring"</span>, alpha<span class="op">=</span><span class="fl">0.8</span>)</span>
+<span id="cb9-55"><a href="#cb9-55" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-56"><a href="#cb9-56" aria-hidden="true" tabindex="-1"></a><span class="co"># Draw separating plane z = 2.5</span></span>
+<span id="cb9-57"><a href="#cb9-57" aria-hidden="true" tabindex="-1"></a>xx, yy <span class="op">=</span> np.meshgrid(</span>
+<span id="cb9-58"><a href="#cb9-58" aria-hidden="true" tabindex="-1"></a>    np.linspace(<span class="op">-</span><span class="fl">2.5</span>, <span class="fl">2.5</span>, <span class="dv">20</span>),</span>
+<span id="cb9-59"><a href="#cb9-59" aria-hidden="true" tabindex="-1"></a>    np.linspace(<span class="op">-</span><span class="fl">2.5</span>, <span class="fl">2.5</span>, <span class="dv">20</span>)</span>
+<span id="cb9-60"><a href="#cb9-60" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb9-61"><a href="#cb9-61" aria-hidden="true" tabindex="-1"></a>zz <span class="op">=</span> z_plane <span class="op">*</span> np.ones_like(xx)</span>
+<span id="cb9-62"><a href="#cb9-62" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-63"><a href="#cb9-63" aria-hidden="true" tabindex="-1"></a>ax2.plot_surface(xx, yy, zz, alpha<span class="op">=</span><span class="fl">0.25</span>)</span>
+<span id="cb9-64"><a href="#cb9-64" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-65"><a href="#cb9-65" aria-hidden="true" tabindex="-1"></a>ax2.set_title(<span class="st">"Mapped 3D space</span><span class="ch">\n</span><span class="st">Linearly separable by a plane"</span>)</span>
+<span id="cb9-66"><a href="#cb9-66" aria-hidden="true" tabindex="-1"></a>ax2.set_xlabel(<span class="st">"$x_1$"</span>)</span>
+<span id="cb9-67"><a href="#cb9-67" aria-hidden="true" tabindex="-1"></a>ax2.set_ylabel(<span class="st">"$x_2$"</span>)</span>
+<span id="cb9-68"><a href="#cb9-68" aria-hidden="true" tabindex="-1"></a>ax2.set_zlabel(<span class="st">"$x_1^2 + x_2^2$"</span>)</span>
+<span id="cb9-69"><a href="#cb9-69" aria-hidden="true" tabindex="-1"></a>ax2.legend()</span>
+<span id="cb9-70"><a href="#cb9-70" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-71"><a href="#cb9-71" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb9-72"><a href="#cb9-72" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="chapter-7_files/figure-html/cell-8-output-1.png" width="986" height="471" class="figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Let <span class="math inline">\(\phi:\mathcal X \to \mathcal H\)</span> be a feature map from the input space into a possibly high-dimensional feature space <span class="math inline">\(\mathcal H\)</span>. A linear SVM in feature space uses</p>
+<p><span class="math display">\[
+f(x) = w^\top \phi(x) + b.
+\]</span></p>
+<p>The dual depends only on inner products:</p>
+<p><span class="math display">\[
+\phi(x_i)^\top \phi(x_j)
+\]</span></p>
+<p>A kernel function computes this inner product directly:</p>
+<p>$$ K(x_i,x_j) = (x_i),(x_j).</p>
+<p>$$</p>
+<p>This is the <strong>kernel trick</strong>.</p>
+</section>
+<section id="kernelized-dual-problem" class="level3">
+<h3 class="anchored" data-anchor-id="kernelized-dual-problem">7.2. Kernelized Dual Problem</h3>
+<p>Replace <span class="math inline">\(x_i^\top x_j\)</span> with <span class="math inline">\(K(x_i, x_j)\)</span>, we obtain the kernelized soft-margin dual:</p>
+<p><span class="math display">\[
+\begin{aligned}
+\max_\lambda \sum_{i=1}^n\lambda_i - \frac{1}{2}\sum_{i=1}^n\sum_{j=1}^n \lambda_i\lambda_jy_i y_j K(x_i, x_j) \qquad \text{subject to }&amp; 0\leq \lambda_i\leq C,\\
+&amp; \sum_{i=1}^n\lambda_iy_i = 0.
+\end{aligned}
+\]</span></p>
+<p>The decision function is</p>
+<p><span class="math display">\[
+f(x) = \sum_{i=1}^n \lambda_i y_iK(x_i, x) + b
+\]</span></p>
+<p>Only support vectors with <span class="math inline">\(\lambda_i&gt;0\)</span> appear in</p>
 <p>Next chapter: <a href="../../teaching/cds-303/chapter-8.html">Data modeling - ANN</a></p>
 
 
 </section>
+</section>
 
-</main> <!-- /main -->
+
+<div id="quarto-appendix" class="default"><section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes"><h2 class="anchored quarto-appendix-heading">Footnotes</h2>
+
+<ol>
+<li id="fn1"><p>Since <span class="math inline">\(1-y_i(w^\top x_i+b)\leq 0\)</span>, <span class="math inline">\(\sum_{i=1}^n \lambda_i [1-y_i(w^\top x_i+b)]\leq 0\)</span>, so <span class="math inline">\(\mathcal L(w,b,\lambda) = \frac{1}{2}||w||_2 + \sum_{i=1}^n \lambda_i [1-y_i(w^\top x_i+b)]\leq \frac{1}{2}||w||_2\)</span>. That means the Lagrangian gives a lower bound on the primal objective.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+</ol>
+</section></div></main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
   window.document.addEventListener("DOMContentLoaded", function (event) {
     const icon = "";

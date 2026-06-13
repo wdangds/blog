@@ -23,6 +23,41 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
 </style>
 
 
@@ -42,7 +77,7 @@ ul.task-list li input[type="checkbox"] {
 <link href="../../site_libs/quarto-html/quarto-syntax-highlighting-15634bcf2e68342d4ad2dfa704d543f6.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../../site_libs/bootstrap/bootstrap-1f139d3010b4a58f5281e15ce172190a.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-29cebc34efabe65204eb70c28f5eb0b8.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -277,6 +312,52 @@ window.Quarto = {
   <li><a href="#distance-geometry-and-similarity" id="toc-distance-geometry-and-similarity" class="nav-link" data-scroll-target="#distance-geometry-and-similarity">2. Distance, Geometry, and Similarity</a>
   <ul class="collapse">
   <li><a href="#metric-spaces" id="toc-metric-spaces" class="nav-link" data-scroll-target="#metric-spaces">2.1. Metric Spaces</a></li>
+  <li><a href="#euclidean-distance" id="toc-euclidean-distance" class="nav-link" data-scroll-target="#euclidean-distance">2.2. Euclidean Distance</a></li>
+  <li><a href="#manhattan-distance" id="toc-manhattan-distance" class="nav-link" data-scroll-target="#manhattan-distance">2.3. Manhattan Distance</a></li>
+  <li><a href="#minkowski-distance" id="toc-minkowski-distance" class="nav-link" data-scroll-target="#minkowski-distance">2.4. Minkowski Distance</a></li>
+  <li><a href="#cosine-similarity" id="toc-cosine-similarity" class="nav-link" data-scroll-target="#cosine-similarity">2.5. Cosine Similarity</a></li>
+  <li><a href="#mahalanobis-distance" id="toc-mahalanobis-distance" class="nav-link" data-scroll-target="#mahalanobis-distance">2.6. Mahalanobis Distance</a></li>
+  </ul></li>
+  <li><a href="#knn-classification" id="toc-knn-classification" class="nav-link" data-scroll-target="#knn-classification">3. KNN Classification</a>
+  <ul class="collapse">
+  <li><a href="#knn-classification-rule" id="toc-knn-classification-rule" class="nav-link" data-scroll-target="#knn-classification-rule">3.1. KNN Classification Rule</a></li>
+  <li><a href="#special-case-1-nearest-neighbor" id="toc-special-case-1-nearest-neighbor" class="nav-link" data-scroll-target="#special-case-1-nearest-neighbor">3.2. Special Case: 1-Nearest Neighbor</a></li>
+  <li><a href="#weighted-knn-classification" id="toc-weighted-knn-classification" class="nav-link" data-scroll-target="#weighted-knn-classification">3.3. Weighted KNN Classification</a></li>
+  </ul></li>
+  <li><a href="#knn-regression" id="toc-knn-regression" class="nav-link" data-scroll-target="#knn-regression">4. KNN Regression</a></li>
+  <li><a href="#bias-variance-and-the-choice-of-k." id="toc-bias-variance-and-the-choice-of-k." class="nav-link" data-scroll-target="#bias-variance-and-the-choice-of-k.">5. Bias, Variance, and the Choice of <span class="math inline">\(k\)</span>.</a>
+  <ul class="collapse">
+  <li><a href="#model-complexity-in-knn" id="toc-model-complexity-in-knn" class="nav-link" data-scroll-target="#model-complexity-in-knn">5.1. Model Complexity in KNN</a></li>
+  <li><a href="#bias-variance-interpretation" id="toc-bias-variance-interpretation" class="nav-link" data-scroll-target="#bias-variance-interpretation">5.2. Bias-Variance Interpretation</a></li>
+  <li><a href="#choosing-k-by-cross-validation" id="toc-choosing-k-by-cross-validation" class="nav-link" data-scroll-target="#choosing-k-by-cross-validation">5.3. Choosing <span class="math inline">\(k\)</span> by Cross validation</a></li>
+  </ul></li>
+  <li><a href="#statistical-theory" id="toc-statistical-theory" class="nav-link" data-scroll-target="#statistical-theory">6. Statistical Theory</a>
+  <ul class="collapse">
+  <li><a href="#the-cover-hart-theorem" id="toc-the-cover-hart-theorem" class="nav-link" data-scroll-target="#the-cover-hart-theorem">6.1. The Cover-Hart Theorem</a></li>
+  <li><a href="#consistency-of-knn" id="toc-consistency-of-knn" class="nav-link" data-scroll-target="#consistency-of-knn">6.2. Consistency of KNN</a></li>
+  </ul></li>
+  <li><a href="#the-curse-of-dimensionality" id="toc-the-curse-of-dimensionality" class="nav-link" data-scroll-target="#the-curse-of-dimensionality">7. The Curse of Dimensionality</a>
+  <ul class="collapse">
+  <li><a href="#volume-argument" id="toc-volume-argument" class="nav-link" data-scroll-target="#volume-argument">7.1. Volume Argument</a></li>
+  <li><a href="#distance-concentration" id="toc-distance-concentration" class="nav-link" data-scroll-target="#distance-concentration">7.2. Distance Concentration</a></li>
+  </ul></li>
+  <li><a href="#computation-and-algoriths" id="toc-computation-and-algoriths" class="nav-link" data-scroll-target="#computation-and-algoriths">8. Computation and Algoriths</a>
+  <ul class="collapse">
+  <li><a href="#computational-cost-of-naive-knn" id="toc-computational-cost-of-naive-knn" class="nav-link" data-scroll-target="#computational-cost-of-naive-knn">8.1. Computational Cost of Naive KNN</a></li>
+  <li><a href="#accelerated-nearest-neighbor-search" id="toc-accelerated-nearest-neighbor-search" class="nav-link" data-scroll-target="#accelerated-nearest-neighbor-search">8.2. Accelerated Nearest Neighbor Search</a></li>
+  <li><a href="#approximate-nearest-neighbors" id="toc-approximate-nearest-neighbors" class="nav-link" data-scroll-target="#approximate-nearest-neighbors">8.3. Approximate Nearest Neighbors</a></li>
+  </ul></li>
+  <li><a href="#advanced-extensions" id="toc-advanced-extensions" class="nav-link" data-scroll-target="#advanced-extensions">9. Advanced Extensions</a>
+  <ul class="collapse">
+  <li><a href="#adaptive-nearest-neighbors" id="toc-adaptive-nearest-neighbors" class="nav-link" data-scroll-target="#adaptive-nearest-neighbors">9.1. Adaptive Nearest Neighbors</a></li>
+  <li><a href="#tangent-distance-knn" id="toc-tangent-distance-knn" class="nav-link" data-scroll-target="#tangent-distance-knn">9.2. Tangent Distance KNN</a></li>
+  <li><a href="#knn-graphs" id="toc-knn-graphs" class="nav-link" data-scroll-target="#knn-graphs">9.3. KNN Graphs</a></li>
+  </ul></li>
+  <li><a href="#examples" id="toc-examples" class="nav-link" data-scroll-target="#examples">10. Examples</a>
+  <ul class="collapse">
+  <li><a href="#handwritten-digit-recognition" id="toc-handwritten-digit-recognition" class="nav-link" data-scroll-target="#handwritten-digit-recognition">10.1. Handwritten Digit Recognition</a></li>
+  <li><a href="#recommender-systems" id="toc-recommender-systems" class="nav-link" data-scroll-target="#recommender-systems">10.2. Recommender Systems</a></li>
+  <li><a href="#anomaly-detection" id="toc-anomaly-detection" class="nav-link" data-scroll-target="#anomaly-detection">10.3. Anomaly Detection</a></li>
   </ul></li>
   </ul>
 </nav>
@@ -308,7 +389,7 @@ window.Quarto = {
 <blockquote class="blockquote">
 <p><strong>Point close to each other in feature space tend to have similar responses.</strong></p>
 </blockquote>
-<p>For classification, this means nearby points tend to share the same class label. For regression, nearby points tend to have similar numerical target values. KNN therefore is sometimes used in <a href="../../teaching/cds-303/chapter-1.html### 7.3. Unsupervised Learning">unsupervised learning</a> tasks.</p>
+<p>For classification, this means nearby points tend to share the same class label. For regression, nearby points tend to have similar numerical target values. KNN therefore is sometimes used in <a href="../../teaching/cds-303/chapter-1.html#unsupervised-learning">unsupervised learning</a> tasks.</p>
 <p>KNN is often called a <strong>lazy learner</strong> because it performs almost no explicit model fitting during training. The training phase stores the data. The main computational work happens during prediction, when the algorithm searches for the nearest training points to a query point.</p>
 <section id="formal-setup" class="level2">
 <h2 class="anchored" data-anchor-id="formal-setup">1. Formal Setup</h2>
@@ -350,8 +431,18 @@ d(x, x_{i_1}) \leq d(x, x_{i_2}) \leq \dots \leq d(x, x_{i_k})
 <h2 class="anchored" data-anchor-id="distance-geometry-and-similarity">2. Distance, Geometry, and Similarity</h2>
 <p>KNN does not learn coefficients, tree splits, or any weights. Instead, the distance function determines the geometry of the model.</p>
 <p>A distance function decides which points count as similar. Therefore, choosing a distance metric equivalent to choosing the model’s notion of relevance.</p>
-<div class="callout-example" title="Example">
+<div class="callout callout-style-default callout-tip callout-titled" title="Example">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>Example
+</div>
+</div>
+<div class="callout-body-container callout-body">
 <p>In a medical dataset, two patients may be close if they have similar age, blood pressure, cholesterol, and heart rate. In a text dataset, two documents may be close if they use similar vocabulary. In a recommender system, two users may be close if they rate the same movies similarly.</p>
+</div>
 </div>
 <p>Thus, KNN depends on the question:</p>
 <blockquote class="blockquote">
@@ -369,7 +460,7 @@ d(x, x_{i_1}) \leq d(x, x_{i_2}) \leq \dots \leq d(x, x_{i_k})
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>_A function <span class="math inline">\(d:\mathcal X \times \mathcal X \to [0, \infty)\)</span> is a <strong>metric</strong> if for all <span class="math inline">\(x, y, z \in \mathcal X\)</span>, it satisfies:</p>
+<p><em>A function <span class="math inline">\(d:\mathcal X \times \mathcal X \to [0, \infty)\)</span> is a <strong>metric</strong> if for all <span class="math inline">\(x, y, z \in \mathcal X\)</span>, it satisfies:</em></p>
 <ol type="1">
 <li><strong>Non-negativity</strong>: <span class="math inline">\(d(x, y) \geq 0\)</span>.</li>
 <li><strong>Identify of indiscernibles</strong>: <span class="math inline">\(d(x, y)=0 \Leftrightarrow x=y\)</span>.</li>
@@ -379,12 +470,1720 @@ d(x, x_{i_1}) \leq d(x, x_{i_2}) \leq \dots \leq d(x, x_{i_k})
 </div>
 </div>
 <p>Not every similarity score is a metric. Cosine similarity, for example, is usually a similarity measure rather than a metric, although related angular distances can be constructed.</p>
+</section>
+<section id="euclidean-distance" class="level3">
+<h3 class="anchored" data-anchor-id="euclidean-distance">2.2. Euclidean Distance</h3>
+<p>The most common distance for numerical data is <strong>Euclidean distance</strong>:</p>
+<p><span class="math display">\[
+d_2(x, z) = \sqrt{\sum_{j=1}^p (x_j-z_j)^2}.
+\]</span></p>
+<p>This is the ordinary straight-line distance in <span class="math inline">\(p\)</span>-dimensional space.</p>
+<p>Euclidean distance is appropriate when:</p>
+<ul>
+<li>feature are continuous,</li>
+<li>features are on comparable scales,</li>
+<li>straight-line geometric proximity is meaningful,</li>
+<li>correlations among features are not severe.</li>
+</ul>
+<p>The squared Euclidean distance is</p>
+<p><span class="math display">\[
+d^2_2(x, z) = \sum_{j=1}^p (x_j- z_j)^2
+\]</span></p>
+<p>Because the square root is monotone increasing, ranking neighbors by Euclidean distance is equivalent to ranking them by squared Euclidean distance.</p>
+<div class="callout callout-style-default callout-tip callout-titled" title="Example">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>Example
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>If <span class="math inline">\(x=(2,3)\)</span> and <span class="math inline">\(z=(5,7)\)</span>, then</p>
+<p><span class="math display">\[
+d_2(x, z) = \sqrt{(2-5)^2 + (3-7)^2} = \sqrt{9+16}= 5
+\]</span></p>
+</div>
+</div>
+</section>
+<section id="manhattan-distance" class="level3">
+<h3 class="anchored" data-anchor-id="manhattan-distance">2.3. Manhattan Distance</h3>
+<p>The <strong>Manhattan distance</strong>, or <span class="math inline">\(L_1\)</span> distance, is</p>
+<p><span class="math display">\[
+d_1(x, z) = \sum_{j=1}^p |x_j-z_j|.
+\]</span></p>
+<p>It measures the total axis-aligned movement required to travel from <span class="math inline">\(x\)</span> to <span class="math inline">\(z\)</span>.</p>
+<div class="callout callout-style-default callout-tip callout-titled" title="Example">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>Example
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>If <span class="math inline">\(x=(2,3)\)</span> and <span class="math inline">\(z=(5,7)\)</span>, then</p>
+<p><span class="math display">\[
+d_1(x, z) = |2-5| + |3-7| = 3 + 4 = 7
+\]</span></p>
+</div>
+</div>
+<p>Manhattan distance is often useful when movement or differences is naturally axis-aligned, such as city-block distance, sparse high-dimensional data, or feature spaces where additive deviations are more meaningful than squared deviations.</p>
+</section>
+<section id="minkowski-distance" class="level3">
+<h3 class="anchored" data-anchor-id="minkowski-distance">2.4. Minkowski Distance</h3>
+<p>Euclidean and Manhattan distances are special cases of the <strong>Minkowski distance</strong>:</p>
+<p><span class="math display">\[
+d_q(x, z) = \left(\sum_{j=1}^p|x_j-z_j|^q\right)^{1/q}
+\]</span></p>
+<p>where <span class="math inline">\(q\geq 1\)</span>.</p>
+<p>Special cases: <span class="math inline">\(q=1\implies d_q=d_1\)</span> is Manhattan distance, and <span class="math inline">\(q=2\implies d_q=d_2\)</span> is Euclidean distance. As <span class="math inline">\(q\)</span> changes, the geometry of neighborhoods changes.</p>
+</section>
+<section id="cosine-similarity" class="level3">
+<h3 class="anchored" data-anchor-id="cosine-similarity">2.5. Cosine Similarity</h3>
+<p>For text, social media, recommendation systems, and other sparse vector spaces, magnitude may be less important than direction. In such cases, <strong>cosine similarity</strong> is often used:</p>
+<p><span class="math display">\[
+\mathrm{cosine}(x, z) = \frac{x^\top z}{||x||_2 ||z||_2}
+\]</span></p>
+<p>The corresponding cosine distance is commonly written as</p>
+<p><span class="math display">\[
+d_{\cos}(x, z)= 1- \frac{x^\top z}{||x||_2 ||z||_2}
+\]</span></p>
+<p>Cosine similarity measures the angle between two vectors. If two documents use similar relative word patterns, they can have high cosine similarity even if one document is much longer than the other.</p>
+<div class="callout callout-style-default callout-tip callout-titled" title="Example">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>Example
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Suppose <span class="math inline">\(x=(1,1,0)\)</span> and <span class="math inline">\(z=(10,10,0)\)</span>. Then <span class="math inline">\(z=10x\)</span>, so they point in exactly the same direction. Their cosine similarity is</p>
+<p><span class="math display">\[
+\frac{x^\top z}{||x||_2||z||_2}=\frac{1\times 10 + 1\times 10}{\sqrt 2 \times 10\sqrt {2}}=1
+\]</span></p>
+<p>Thus, cosine similarity treats them as maximally similar in direction, even though their Euclidean distance is large.</p>
+</div>
+</div>
+</section>
+<section id="mahalanobis-distance" class="level3">
+<h3 class="anchored" data-anchor-id="mahalanobis-distance">2.6. Mahalanobis Distance</h3>
+<p>Euclidean distance treats all coordinates as independent and equally scaled. This can be inappropriate when features are correlated.</p>
+<p>The <strong>Mahalanobis distance</strong> is</p>
+<p><span class="math display">\[
+d_M (x,z) = \sqrt{(x-z)^\top \Sigma^{-1}(x-z)}
+\]</span></p>
+<p>where <span class="math inline">\(\sigma\)</span> is the covariance matrix of the features.</p>
+<p>If <span class="math inline">\(\sigma=I\)</span>, then <span class="math inline">\(d_M(x, z) = d_2(x,z)\)</span>. If features are correlated, Mahalanobis distance rescales and rotates the geometry according to the covariance structure.</p>
+<div class="callout callout-style-default callout-caution callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Caution
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Mahalanobis distance is a multivariate generalization of the <span class="math inline">\(z\)</span>-score. A point is far away if it is unusual relative to the covariance pattern of the data.</p>
+</div>
+</div>
+<p>This is useful when two features move together. For example, height and weight are correlated. A person who is both taller and heavier may not be unusual, but a person with an unusual combination of height and weight may be far in Mahalanobis distance.</p>
+<div class="cell" data-execution_count="1">
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>x <span class="op">=</span> np.linspace(<span class="op">-</span><span class="dv">2</span>, <span class="dv">2</span>, <span class="dv">400</span>)</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>y <span class="op">=</span> np.linspace(<span class="op">-</span><span class="dv">2</span>, <span class="dv">2</span>, <span class="dv">400</span>)</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>X, Y <span class="op">=</span> np.meshgrid(x, y)</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>euclidean <span class="op">=</span> np.sqrt(X<span class="op">**</span><span class="dv">2</span> <span class="op">+</span> Y<span class="op">**</span><span class="dv">2</span>)</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>manhattan <span class="op">=</span> np.<span class="bu">abs</span>(X) <span class="op">+</span> np.<span class="bu">abs</span>(Y)</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="co"># Mahalanobis with correlated covariance</span></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>Sigma <span class="op">=</span> np.array([[<span class="fl">1.0</span>, <span class="fl">0.8</span>],</span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>                  [<span class="fl">0.8</span>, <span class="fl">1.0</span>]])</span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>Sigma_inv <span class="op">=</span> np.linalg.inv(Sigma)</span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>points <span class="op">=</span> np.stack([X.ravel(), Y.ravel()], axis<span class="op">=</span><span class="dv">1</span>)</span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>mahal <span class="op">=</span> np.sqrt(np.<span class="bu">sum</span>(points <span class="op">@</span> Sigma_inv <span class="op">*</span> points, axis<span class="op">=</span><span class="dv">1</span>)).reshape(X.shape)</span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> Z, title <span class="kw">in</span> [</span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a>    (euclidean, <span class="st">"Euclidean Distance Contours"</span>),</span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a>    (manhattan, <span class="st">"Manhattan Distance Contours"</span>),</span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a>    (mahal, <span class="st">"Mahalanobis Distance Contours"</span>)</span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a>]:</span>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a>    plt.figure(figsize<span class="op">=</span>(<span class="dv">5</span>, <span class="dv">5</span>))</span>
+<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a>    plt.contour(X, Y, Z, levels<span class="op">=</span>[<span class="fl">0.5</span>, <span class="fl">1.0</span>, <span class="fl">1.5</span>, <span class="fl">2.0</span>])</span>
+<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a>    plt.scatter([<span class="dv">0</span>], [<span class="dv">0</span>], label<span class="op">=</span><span class="st">"Query point"</span>)</span>
+<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a>    plt.title(title)</span>
+<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a>    plt.xlabel(<span class="st">"Feature 1"</span>)</span>
+<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a>    plt.ylabel(<span class="st">"Feature 2"</span>)</span>
+<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a>    plt.axis(<span class="st">"equal"</span>)</span>
+<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a>    plt.legend()</span>
+<span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a>    plt.tight_layout()</span>
+<span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a>    plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div id="fig-comparing-distance-geometries" class="cell quarto-float quarto-figure quarto-figure-center anchored" data-execution_count="1">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-comparing-distance-geometries-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="cell-output cell-output-display">
+<div id="fig-comparing-distance-geometries-1" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-subfloat-fig figure">
+<div aria-describedby="fig-comparing-distance-geometries-1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="chapter-6_files/figure-html/fig-comparing-distance-geometries-output-1.png" data-ref-parent="fig-comparing-distance-geometries" width="470" height="470" class="figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-subfloat-caption quarto-subfloat-fig" id="fig-comparing-distance-geometries-1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+(a) Comparing Distance Geometries
+</figcaption>
+</figure>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div id="fig-comparing-distance-geometries-2" class="quarto-float quarto-figure quarto-figure-center anchored" height="470" width="470">
+<figure class="quarto-float quarto-subfloat-fig figure">
+<div aria-describedby="fig-comparing-distance-geometries-2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="chapter-6_files/figure-html/fig-comparing-distance-geometries-output-2.png" id="fig-comparing-distance-geometries-2" data-ref-parent="fig-comparing-distance-geometries" width="470" height="470" class="figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-subfloat-caption quarto-subfloat-fig" id="fig-comparing-distance-geometries-2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+(b)
+</figcaption>
+</figure>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div id="fig-comparing-distance-geometries-3" class="quarto-float quarto-figure quarto-figure-center anchored" height="470" width="470">
+<figure class="quarto-float quarto-subfloat-fig figure">
+<div aria-describedby="fig-comparing-distance-geometries-3-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="chapter-6_files/figure-html/fig-comparing-distance-geometries-output-3.png" id="fig-comparing-distance-geometries-3" data-ref-parent="fig-comparing-distance-geometries" width="470" height="470" class="figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-subfloat-caption quarto-subfloat-fig" id="fig-comparing-distance-geometries-3-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+(c)
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig quarto-uncaptioned" id="fig-comparing-distance-geometries-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;1
+</figcaption>
+</figure>
+</div>
+</div>
+</section>
+</section>
+<section id="knn-classification" class="level2">
+<h2 class="anchored" data-anchor-id="knn-classification">3. KNN Classification</h2>
+<section id="knn-classification-rule" class="level3">
+<h3 class="anchored" data-anchor-id="knn-classification-rule">3.1. KNN Classification Rule</h3>
+<p>For classification, the KNN classifier predicts the most common class among the <span class="math inline">\(k\)</span> nearest neighbors. Let <span class="math inline">\(Y\in \{1, \dots, K\}\)</span>.</p>
+<p>For a query point <span class="math inline">\(x\)</span>, we define the estimated class probability</p>
+<p><span class="math display">\[
+\hat p_k(c|x) =\frac{1}{k}\sum_{i\in N_k(x)}\mathbf{I}\{y_i=c\}
+\]</span></p>
+<p>where <span class="math inline">\(c\in \{1,\dots, K\}\)</span>. The KNN classification rule is</p>
+<p><span class="math display">\[
+\hat y(x) = \arg\max_{c\in \{1, \dots, K\}}\hat p_k(c|x)
+\]</span></p>
+<p>Equivalently,</p>
+<p><span class="math display">\[
+\hat y(x) = \arg\max_c \sum_{i\in N_k(x)}\mathbf{I}\{y_i=c\}.
+\]</span> This is majority voting.</p>
+</section>
+<section id="special-case-1-nearest-neighbor" class="level3">
+<h3 class="anchored" data-anchor-id="special-case-1-nearest-neighbor">3.2. Special Case: 1-Nearest Neighbor</h3>
+<p>When <span class="math inline">\(k=1\)</span>, the prediction is simply <span class="math inline">\(\hat y(x) = y_{i^*}\)</span>, where</p>
+<p><span class="math display">\[
+i^* = \arg\min_i d(x, x_i)/
+\]</span></p>
+<p>Thus, the query point receives the label of its single nearest training observation.</p>
+<p>The 1-NN classifier produces highly flexible decision boundaries. In two dimensions, the decision regions correspond to a <a href="https://en.wikipedia.org/wiki/Voronoi_diagram">Voronoi tessellation</a> of the training data. Each training point owns the region of the feature space closer to it than to any other training point.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/54/Euclidean_Voronoi_diagram.svg/960px-Euclidean_Voronoi_diagram.svg.png" class="img-fluid figure-img"></p>
+<figcaption>Voronoi diagram</figcaption>
+</figure>
+</div>
+</section>
+<section id="weighted-knn-classification" class="level3">
+<h3 class="anchored" data-anchor-id="weighted-knn-classification">3.3. Weighted KNN Classification</h3>
+<p>Ordinary KNN gives equal weight to all <span class="math inline">\(k\)</span> neighbors. But a neighbor very close to the query point may be more relevant than a neighbor near the edge of the neighborhood.</p>
+<p>Weighted KNN assigns weights</p>
+<p><span class="math display">\[
+w_i(x) = K(d(x, x_i))
+\]</span></p>
+<p>where <span class="math inline">\(K(\cdot)\)</span> is a decreasing function of distance.</p>
+<p>A common inverse-distance weight is</p>
+<p><span class="math display">\[
+w_i(x) = \frac{1}{d(x, x_i)+\epsilon},
+\]</span></p>
+<p>where <span class="math inline">\(\epsilon&gt;0\)</span> prevents division by zero.</p>
+<p>A Gaussian kernel weight is</p>
+<p><span class="math display">\[
+w_i(x) = \exp\left(-\frac{d(x, x_i)^2}{2h^2}\right),
+\]</span></p>
+<p>where <span class="math inline">\(h&gt;0\)</span> is a bandwidth parameter.</p>
+<p>The weighted class probability estimate is</p>
+<p><span class="math display">\[
+\hat {p}(c|x) = \frac{\sum_{i\in N_k(x)}w_i(x)\mathbf{I}\{y_i=c\}}{\sum_{i\in N_k(x)} w_i(x)}
+\]</span></p>
+<p>The weighted KNN prediction is</p>
+<p><span class="math display">\[
+\hat y(x) = \arg \max_c \hat p(c|x)
+\]</span></p>
+<div class="cell" data-execution_count="2">
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.datasets <span class="im">import</span> make_moons</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.neighbors <span class="im">import</span> KNeighborsClassifier</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>X, y <span class="op">=</span> make_moons(n_samples<span class="op">=</span><span class="dv">300</span>, noise<span class="op">=</span><span class="fl">0.25</span>, random_state<span class="op">=</span><span class="dv">42</span>)</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>x_min, x_max <span class="op">=</span> X[:, <span class="dv">0</span>].<span class="bu">min</span>() <span class="op">-</span> <span class="fl">0.5</span>, X[:, <span class="dv">0</span>].<span class="bu">max</span>() <span class="op">+</span> <span class="fl">0.5</span></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>y_min, y_max <span class="op">=</span> X[:, <span class="dv">1</span>].<span class="bu">min</span>() <span class="op">-</span> <span class="fl">0.5</span>, X[:, <span class="dv">1</span>].<span class="bu">max</span>() <span class="op">+</span> <span class="fl">0.5</span></span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>xx, yy <span class="op">=</span> np.meshgrid(</span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>    np.linspace(x_min, x_max, <span class="dv">400</span>),</span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>    np.linspace(y_min, y_max, <span class="dv">400</span>)</span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a>grid <span class="op">=</span> np.c_[xx.ravel(), yy.ravel()]</span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> k <span class="kw">in</span> [<span class="dv">1</span>, <span class="dv">5</span>, <span class="dv">25</span>, <span class="dv">75</span>]:</span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a>    clf <span class="op">=</span> KNeighborsClassifier(n_neighbors<span class="op">=</span>k)</span>
+<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a>    clf.fit(X, y)</span>
+<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a>    Z <span class="op">=</span> clf.predict(grid).reshape(xx.shape)</span>
+<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a>    plt.figure(figsize<span class="op">=</span>(<span class="dv">7</span>, <span class="dv">5</span>))</span>
+<span id="cb2-25"><a href="#cb2-25" aria-hidden="true" tabindex="-1"></a>    plt.contourf(xx, yy, Z, alpha<span class="op">=</span><span class="fl">0.25</span>)</span>
+<span id="cb2-26"><a href="#cb2-26" aria-hidden="true" tabindex="-1"></a>    plt.scatter(X[:, <span class="dv">0</span>], X[:, <span class="dv">1</span>], c<span class="op">=</span>y, edgecolor<span class="op">=</span><span class="st">"k"</span>, s<span class="op">=</span><span class="dv">30</span>)</span>
+<span id="cb2-27"><a href="#cb2-27" aria-hidden="true" tabindex="-1"></a>    plt.title(<span class="ss">f"KNN Classification Decision Boundary, k=</span><span class="sc">{</span>k<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb2-28"><a href="#cb2-28" aria-hidden="true" tabindex="-1"></a>    plt.xlabel(<span class="st">"Feature 1"</span>)</span>
+<span id="cb2-29"><a href="#cb2-29" aria-hidden="true" tabindex="-1"></a>    plt.ylabel(<span class="st">"Feature 2"</span>)</span>
+<span id="cb2-30"><a href="#cb2-30" aria-hidden="true" tabindex="-1"></a>    plt.tight_layout()</span>
+<span id="cb2-31"><a href="#cb2-31" aria-hidden="true" tabindex="-1"></a>    plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div id="fig-knn-classification-decision-boundaries" class="cell quarto-float quarto-figure quarto-figure-center anchored" data-execution_count="2">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-knn-classification-decision-boundaries-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="cell-output cell-output-display">
+<div id="fig-knn-classification-decision-boundaries-1" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-subfloat-fig figure">
+<div aria-describedby="fig-knn-classification-decision-boundaries-1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="chapter-6_files/figure-html/fig-knn-classification-decision-boundaries-output-1.png" data-ref-parent="fig-knn-classification-decision-boundaries" width="662" height="470" class="figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-subfloat-caption quarto-subfloat-fig" id="fig-knn-classification-decision-boundaries-1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+(a) KNN Classification Decision Boundaries
+</figcaption>
+</figure>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div id="fig-knn-classification-decision-boundaries-2" class="quarto-float quarto-figure quarto-figure-center anchored" height="470" width="662">
+<figure class="quarto-float quarto-subfloat-fig figure">
+<div aria-describedby="fig-knn-classification-decision-boundaries-2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="chapter-6_files/figure-html/fig-knn-classification-decision-boundaries-output-2.png" id="fig-knn-classification-decision-boundaries-2" data-ref-parent="fig-knn-classification-decision-boundaries" width="662" height="470" class="figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-subfloat-caption quarto-subfloat-fig" id="fig-knn-classification-decision-boundaries-2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+(b)
+</figcaption>
+</figure>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div id="fig-knn-classification-decision-boundaries-3" class="quarto-float quarto-figure quarto-figure-center anchored" height="470" width="662">
+<figure class="quarto-float quarto-subfloat-fig figure">
+<div aria-describedby="fig-knn-classification-decision-boundaries-3-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="chapter-6_files/figure-html/fig-knn-classification-decision-boundaries-output-3.png" id="fig-knn-classification-decision-boundaries-3" data-ref-parent="fig-knn-classification-decision-boundaries" width="662" height="470" class="figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-subfloat-caption quarto-subfloat-fig" id="fig-knn-classification-decision-boundaries-3-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+(c)
+</figcaption>
+</figure>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div id="fig-knn-classification-decision-boundaries-4" class="quarto-float quarto-figure quarto-figure-center anchored" height="470" width="662">
+<figure class="quarto-float quarto-subfloat-fig figure">
+<div aria-describedby="fig-knn-classification-decision-boundaries-4-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="chapter-6_files/figure-html/fig-knn-classification-decision-boundaries-output-4.png" id="fig-knn-classification-decision-boundaries-4" data-ref-parent="fig-knn-classification-decision-boundaries" width="662" height="470" class="figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-subfloat-caption quarto-subfloat-fig" id="fig-knn-classification-decision-boundaries-4-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+(d)
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig quarto-uncaptioned" id="fig-knn-classification-decision-boundaries-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;2
+</figcaption>
+</figure>
+</div>
+</div>
+</section>
+</section>
+<section id="knn-regression" class="level2">
+<h2 class="anchored" data-anchor-id="knn-regression">4. KNN Regression</h2>
+<p>For regression, <span class="math inline">\(Y\in \mathbb R\)</span>. The KNN regression estimate is the average response of the <span class="math inline">\(k\)</span> nearest neighbors:</p>
+<p><span class="math display">\[
+\hat f(x) = \frac{1}{k}\sum_{i\in N_k(x)}y_i
+\]</span></p>
+<p>This is a local average estimator.</p>
+<p>Weighted KNN regression is</p>
+<p><span class="math display">\[
+\hat f(x) = \frac{\sum_{i\in N_k(x)}w_i(x)y_i}{\sum_{i\in N_k(x)}w_i(x)}
+\]</span></p>
+<p>If the weights are Gaussian,</p>
+<p><span class="math display">\[
+w_i(x) = \exp\left(-\frac{d(x,x_i)^2}{2h^2}\right)
+\]</span></p>
+<p>then closer observations contribute more strongly to the prediction. This places KNN regression near the family of local smoothing methods.</p>
+<div class="callout callout-style-default callout-tip callout-titled" title="Theorem: KNN Regression as a Local Constant Estimator">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>Theorem: KNN Regression as a Local Constant Estimator
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>For a fixed neighborhood <span class="math inline">\(N_k(x)\)</span>, the KNN regression prediction</p>
+<p><span class="math display">\[
+\hat f_k(x) = \frac{1}{k}\sum_{i\in N_k(x)}y_i
+\]</span></p>
+<p>is the constant <span class="math inline">\(c\)</span> that minimizes the local squared-error objective</p>
+<p><span class="math display">\[
+J(c) = \sum_{i\in N_k(x)}(y_i-c)^2
+\]</span></p>
+</div>
+</div>
+<p>The proof is similar to the <a href="../../teaching/cds-303/chapter-5.html#regression-trees">proof</a>.</p>
+<div class="cell" data-execution_count="3">
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.neighbors <span class="im">import</span> KNeighborsRegressor</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>rng <span class="op">=</span> np.random.default_rng(<span class="dv">42</span>)</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>X <span class="op">=</span> np.linspace(<span class="dv">0</span>, <span class="dv">10</span>, <span class="dv">120</span>).reshape(<span class="op">-</span><span class="dv">1</span>, <span class="dv">1</span>)</span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>y <span class="op">=</span> np.sin(X).ravel() <span class="op">+</span> <span class="fl">0.35</span> <span class="op">*</span> rng.normal(size<span class="op">=</span>X.shape[<span class="dv">0</span>])</span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>X_grid <span class="op">=</span> np.linspace(<span class="dv">0</span>, <span class="dv">10</span>, <span class="dv">500</span>).reshape(<span class="op">-</span><span class="dv">1</span>, <span class="dv">1</span>)</span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> k <span class="kw">in</span> [<span class="dv">1</span>, <span class="dv">5</span>, <span class="dv">20</span>, <span class="dv">60</span>]:</span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>    model <span class="op">=</span> KNeighborsRegressor(n_neighbors<span class="op">=</span>k)</span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>    model.fit(X, y)</span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a>    y_pred <span class="op">=</span> model.predict(X_grid)</span>
+<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a>    plt.figure(figsize<span class="op">=</span>(<span class="dv">8</span>, <span class="dv">5</span>))</span>
+<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a>    plt.scatter(X, y, alpha<span class="op">=</span><span class="fl">0.5</span>, label<span class="op">=</span><span class="st">"Observed data"</span>)</span>
+<span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a>    plt.plot(X_grid, y_pred, label<span class="op">=</span><span class="ss">f"KNN regression, k=</span><span class="sc">{</span>k<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb3-21"><a href="#cb3-21" aria-hidden="true" tabindex="-1"></a>    plt.title(<span class="ss">f"KNN Regression Smoothing, k=</span><span class="sc">{</span>k<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb3-22"><a href="#cb3-22" aria-hidden="true" tabindex="-1"></a>    plt.xlabel(<span class="st">"x"</span>)</span>
+<span id="cb3-23"><a href="#cb3-23" aria-hidden="true" tabindex="-1"></a>    plt.ylabel(<span class="st">"y"</span>)</span>
+<span id="cb3-24"><a href="#cb3-24" aria-hidden="true" tabindex="-1"></a>    plt.legend()</span>
+<span id="cb3-25"><a href="#cb3-25" aria-hidden="true" tabindex="-1"></a>    plt.tight_layout()</span>
+<span id="cb3-26"><a href="#cb3-26" aria-hidden="true" tabindex="-1"></a>    plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div id="fig-knn-regression-smoothing" class="cell quarto-float quarto-figure quarto-figure-center anchored" data-execution_count="3">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-knn-regression-smoothing-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="cell-output cell-output-display">
+<div id="fig-knn-regression-smoothing-1" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-subfloat-fig figure">
+<div aria-describedby="fig-knn-regression-smoothing-1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="chapter-6_files/figure-html/fig-knn-regression-smoothing-output-1.png" data-ref-parent="fig-knn-regression-smoothing" width="758" height="470" class="figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-subfloat-caption quarto-subfloat-fig" id="fig-knn-regression-smoothing-1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+(a) KNN Regression Smoothing
+</figcaption>
+</figure>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div id="fig-knn-regression-smoothing-2" class="quarto-float quarto-figure quarto-figure-center anchored" height="470" width="758">
+<figure class="quarto-float quarto-subfloat-fig figure">
+<div aria-describedby="fig-knn-regression-smoothing-2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="chapter-6_files/figure-html/fig-knn-regression-smoothing-output-2.png" id="fig-knn-regression-smoothing-2" data-ref-parent="fig-knn-regression-smoothing" width="758" height="470" class="figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-subfloat-caption quarto-subfloat-fig" id="fig-knn-regression-smoothing-2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+(b)
+</figcaption>
+</figure>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div id="fig-knn-regression-smoothing-3" class="quarto-float quarto-figure quarto-figure-center anchored" height="470" width="758">
+<figure class="quarto-float quarto-subfloat-fig figure">
+<div aria-describedby="fig-knn-regression-smoothing-3-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="chapter-6_files/figure-html/fig-knn-regression-smoothing-output-3.png" id="fig-knn-regression-smoothing-3" data-ref-parent="fig-knn-regression-smoothing" width="758" height="470" class="figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-subfloat-caption quarto-subfloat-fig" id="fig-knn-regression-smoothing-3-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+(c)
+</figcaption>
+</figure>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div id="fig-knn-regression-smoothing-4" class="quarto-float quarto-figure quarto-figure-center anchored" height="470" width="758">
+<figure class="quarto-float quarto-subfloat-fig figure">
+<div aria-describedby="fig-knn-regression-smoothing-4-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="chapter-6_files/figure-html/fig-knn-regression-smoothing-output-4.png" id="fig-knn-regression-smoothing-4" data-ref-parent="fig-knn-regression-smoothing" width="758" height="470" class="figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-subfloat-caption quarto-subfloat-fig" id="fig-knn-regression-smoothing-4-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+(d)
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig quarto-uncaptioned" id="fig-knn-regression-smoothing-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;3
+</figcaption>
+</figure>
+</div>
+</div>
+</section>
+<section id="bias-variance-and-the-choice-of-k." class="level2">
+<h2 class="anchored" data-anchor-id="bias-variance-and-the-choice-of-k.">5. Bias, Variance, and the Choice of <span class="math inline">\(k\)</span>.</h2>
+<section id="model-complexity-in-knn" class="level3">
+<h3 class="anchored" data-anchor-id="model-complexity-in-knn">5.1. Model Complexity in KNN</h3>
+<p>In KNN, the main complexity parameter is <span class="math inline">\(k\)</span>. Unlike tree depth or polynomial degree, KNN complexity moves in the opposite direction:</p>
+<ul>
+<li>small <span class="math inline">\(k\)</span> means high complexity,</li>
+<li>large <span class="math inline">\(k\)</span> means low complexity.</li>
+</ul>
+<p>When <span class="math inline">\(k=1\)</span>, each prediction depends on a single point. This gives a very flexible model. When <span class="math inline">\(k=n\)</span>, every prediction uses the entire training set. For regression, <span class="math inline">\(\hat f_n(x) = \overline y\)</span>, which is just the global mean and ignores <span class="math inline">\(x\)</span>. For classification, <span class="math inline">\(k=n\)</span> predicts the majority class everywhere.</p>
+</section>
+<section id="bias-variance-interpretation" class="level3">
+<h3 class="anchored" data-anchor-id="bias-variance-interpretation">5.2. Bias-Variance Interpretation</h3>
+<p>Let the true regression function be</p>
+<p><span class="math display">\[
+f(x) = \mathbb E[Y|X=x]
+\]</span></p>
+<p>KNN regression estimates <span class="math inline">\(f(x)\)</span> by averaging nearby response. The behavior depends on the neighborhood radius.</p>
+<p>For small <span class="math inline">\(k\)</span>, the neighborhood is small. The estimate is local, so bias is low. But it uses few observations, so variance is high.</p>
+<p>For large <span class="math inline">\(k\)</span>, the neighborhood is large. The estimate uses many observations, so variance is lower. But the neighborhood may include points where <span class="math inline">\(f(x)\)</span> is different, so bias is higher.</p>
+</section>
+<section id="choosing-k-by-cross-validation" class="level3">
+<h3 class="anchored" data-anchor-id="choosing-k-by-cross-validation">5.3. Choosing <span class="math inline">\(k\)</span> by Cross validation</h3>
+<p>The usual practical method for choosing <span class="math inline">\(k\)</span> is cross-validation. For candidate values <span class="math inline">\(k\in \mathcal K\)</span>, fit KNN models and estimate validation error. Choose <span class="math inline">\(\hat k =\arg\min_{k\in\mathcal K}CV(k)\)</span>.</p>
+<p>For regression, a common cross-validation score is</p>
+<p><span class="math display">\[
+CV(k) = \frac{1}{V} \sum_{v=1}^V\frac{1}{|I_v|}\sum_{i\in I_v} (y_i-\hat f_k^{(-v)}(x_i))^2
+\]</span></p>
+<p>Here:</p>
+<ul>
+<li><span class="math inline">\(V\)</span> is the number of folds,</li>
+<li><span class="math inline">\(I_v\)</span> is the validation fold,</li>
+<li><span class="math inline">\(\hat f_k^{-(v)}\)</span> is the model trained without fold <span class="math inline">\(v\)</span>.</li>
+</ul>
+<p>For classification, one may use validation error:</p>
+<p><span class="math display">\[
+CV(k) = \frac{1}{V} \sum_{v=1}^V \frac{1}{|I_v|}\sum_{i\in I_v}\mathbf{I}\{y_i\neq \hat y_k^{(-v)}(x_i)\}.
+\]</span></p>
+<div id="cell-fig-cross-validation-curve-for-k" class="cell" data-execution_count="4">
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.datasets <span class="im">import</span> make_moons</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.neighbors <span class="im">import</span> KNeighborsClassifier</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.model_selection <span class="im">import</span> cross_val_score</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>X, y <span class="op">=</span> make_moons(n_samples<span class="op">=</span><span class="dv">400</span>, noise<span class="op">=</span><span class="fl">0.3</span>, random_state<span class="op">=</span><span class="dv">42</span>)</span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>k_values <span class="op">=</span> <span class="bu">list</span>(<span class="bu">range</span>(<span class="dv">1</span>, <span class="dv">61</span>))</span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>cv_errors <span class="op">=</span> []</span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> k <span class="kw">in</span> k_values:</span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>    clf <span class="op">=</span> KNeighborsClassifier(n_neighbors<span class="op">=</span>k)</span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>    scores <span class="op">=</span> cross_val_score(clf, X, y, cv<span class="op">=</span><span class="dv">5</span>, scoring<span class="op">=</span><span class="st">"accuracy"</span>)</span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>    cv_errors.append(<span class="dv">1</span> <span class="op">-</span> scores.mean())</span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a>best_k <span class="op">=</span> k_values[<span class="bu">int</span>(np.argmin(cv_errors))]</span>
+<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">8</span>, <span class="dv">5</span>))</span>
+<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a>plt.plot(k_values, cv_errors, marker<span class="op">=</span><span class="st">"o"</span>)</span>
+<span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a>plt.axvline(best_k, linestyle<span class="op">=</span><span class="st">"--"</span>, label<span class="op">=</span><span class="ss">f"Best k = </span><span class="sc">{</span>best_k<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb4-22"><a href="#cb4-22" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">"Choosing k by Cross-Validation"</span>)</span>
+<span id="cb4-23"><a href="#cb4-23" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">"Number of neighbors k"</span>)</span>
+<span id="cb4-24"><a href="#cb4-24" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">"Cross-validation error"</span>)</span>
+<span id="cb4-25"><a href="#cb4-25" aria-hidden="true" tabindex="-1"></a>plt.legend()</span>
+<span id="cb4-26"><a href="#cb4-26" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb4-27"><a href="#cb4-27" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-display">
+<div id="fig-cross-validation-curve-for-k" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-cross-validation-curve-for-k-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="chapter-6_files/figure-html/fig-cross-validation-curve-for-k-output-1.png" width="758" height="470" class="figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-cross-validation-curve-for-k-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;4: Cross Validation Curve for k
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="statistical-theory" class="level2">
+<h2 class="anchored" data-anchor-id="statistical-theory">6. Statistical Theory</h2>
+<section id="the-cover-hart-theorem" class="level3">
+<h3 class="anchored" data-anchor-id="the-cover-hart-theorem">6.1. The Cover-Hart Theorem</h3>
+<p>KNN has an important classical theoretical guarantee. Let <span class="math inline">\(R^*\)</span> be the Bayes error rate, meaning the lowest possible classification error achievable by any classifier under the true data-generating distribution. Let <span class="math inline">\(R_{1NN}\)</span> be the asymptotic error rate of the 1-nearest-neighbor classifier as the training sample size tends to infinity.</p>
+<div class="callout callout-style-default callout-tip callout-titled" title="Theorem: Cover-Hart Bound">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>Theorem: Cover-Hart Bound
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Under suitable regularity conditions,</p>
+<p><span class="math display">\[
+R^* \leq R_{1NN} \leq 2R^*(1-R^*)
+\]</span></p>
+<p>Since</p>
+<p><span class="math display">\[
+1-R^* \leq 1
+\]</span></p>
+<p>we have</p>
+<p><span class="math display">\[
+R_{1NN}\leq 2R^*
+\]</span></p>
+<p>Thus, asymptotically, the 1-nearest-neighbor classifier has error no more than twice the Bayes error<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>.</p>
+</div>
+</div>
+<p>This theorem is important because 1-NN is extremely simple. It does not estimate a parametric model. It does not assume linearity. It merely copies the label of the closest training point. Yet, under increasing sample size, its error is theoretically controlled by the Bayes error.</p>
+<p>However, the theorem does not say that 1-NN is always optimal. It says that its asymptotic error is bounded. In finite samples, especially high-dimensional or noisy data, 1-NN may perform poorly due to high variance.</p>
+</section>
+<section id="consistency-of-knn" class="level3">
+<h3 class="anchored" data-anchor-id="consistency-of-knn">6.2. Consistency of KNN</h3>
+<p>A classifier is <strong>consistent</strong> if its error rate approaches the Bayes error rate as</p>
+<p><span class="math display">\[
+n\to\infty
+\]</span></p>
+<p>The 1-NN classifier is not generally Bayes consistent because its asymptotic error may remain above <span class="math inline">\(R^*\)</span>. But <span class="math inline">\(k\)</span>-NN can be consistent if <span class="math inline">\(k\)</span> grows with <span class="math inline">\(n\)</span> at the right rate.</p>
+<p>A standard condition is</p>
+<p><span class="math display">\[
+k\to \infty, \quad \frac{k}{n}\to 0
+\]</span></p>
+<p>as <span class="math inline">\(n\to\infty\)</span>.</p>
+<p>The first condition ensures that the local estimate averages over enough points to reduce variance. The second condition ensures that the neighborhood remains local, so bias goes to zero.</p>
+</section>
+</section>
+<section id="the-curse-of-dimensionality" class="level2">
+<h2 class="anchored" data-anchor-id="the-curse-of-dimensionality">7. The Curse of Dimensionality</h2>
+<p>KNN relies on the idea that nearby points are informative. But in high-dimensional spaces, points become sparse. The nearest neighbor may no longer be close in a meaningful sense.</p>
+<p>This is an instance of the <a href="../../teaching/cds-303/chapter-1.html#the-curse-of-dimensionality">curse of dimensionality</a> discussed previously. Here, the problem is geometric: as <span class="math inline">\(p\)</span> increase, the volume of the feature space grows so quickly that the data become locally sparse.</p>
+<p>For KNN, this means <span class="math inline">\(N_k(x)\)</span> may contain points that are not truly similar to <span class="math inline">\(x\)</span>. The local constancy assumption fails.</p>
+<section id="volume-argument" class="level3">
+<h3 class="anchored" data-anchor-id="volume-argument">7.1. Volume Argument</h3>
+<p>Consider the unit hypercube <span class="math inline">\([0,1]^p\)</span>. Suppose data are uniformly distributed in this cube. A smaller hypercube with side length <span class="math inline">\(r\)</span> has volume <span class="math inline">\(r^p\)</span>. To capture a fraction <span class="math inline">\(a\)</span> of the data, we need <span class="math inline">\(r^p=a\)</span>. Thus,</p>
+<p><span class="math display">\[
+r=a^{1/p}
+\]</span></p>
+<p>For <span class="math inline">\(a=0.01\)</span>:</p>
+<ul>
+<li>If <span class="math inline">\(p=2\)</span>, then <span class="math inline">\(r=0.01^{1/2}=0.1\)</span>.</li>
+<li>If <span class="math inline">\(p=10\)</span>, then <span class="math inline">\(r=0.01^{1/10}\approx 0.63\)</span></li>
+<li>If <span class="math inline">\(p=100\)</span>, then <span class="math inline">\(r=0.01^{1/100}\approx 0.995\)</span>.</li>
+</ul>
+<p>So in 100 dimensions, a region must extend over almost the full range of each coordinate to capture only 1% of the data. This destroy locality.</p>
+<div id="cell-fig-curse-of-dimensionality" class="cell" data-execution_count="5">
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>alpha <span class="op">=</span> <span class="fl">0.01</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>dimensions <span class="op">=</span> np.arange(<span class="dv">1</span>, <span class="dv">101</span>)</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>side_length <span class="op">=</span> alpha <span class="op">**</span> (<span class="dv">1</span> <span class="op">/</span> dimensions)</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">8</span>, <span class="dv">5</span>))</span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>plt.plot(dimensions, side_length)</span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">"Side Length Needed to Capture 1</span><span class="sc">% o</span><span class="st">f Volume in [0,1]^p"</span>)</span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">"Dimension p"</span>)</span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="vs">r"Required side length </span><span class="dv">$</span><span class="vs">r = </span><span class="ch">\a</span><span class="vs">lpha</span><span class="dv">^</span><span class="vs">{1/p}</span><span class="dv">$</span><span class="vs">"</span>)</span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-display">
+<div id="fig-curse-of-dimensionality" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-curse-of-dimensionality-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="chapter-6_files/figure-html/fig-curse-of-dimensionality-output-1.png" width="756" height="470" class="figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-curse-of-dimensionality-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;5: Curse of Dimensionality
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="distance-concentration" class="level3">
+<h3 class="anchored" data-anchor-id="distance-concentration">7.2. Distance Concentration</h3>
+<p>Another high-dimensional problem is <strong>distance concentration</strong>. In many high-dimensional settings, the nearest and farthest distance become similar. If all points are almost equally far away, the word “nearest” loses meaning.</p>
+<p>One way to measure this is</p>
+<p><span class="math display">\[
+\frac{d_\max-d_\min}{d_\min}
+\]</span></p>
+<p>where <span class="math inline">\(d_\min\)</span> is the distance from a query point to its nearest neighbor and <span class="math inline">\(d_\max\)</span> is the distance to its farthest neighbor. In high dimensions, this ratio often shrinks.</p>
+<div id="cell-fig-distance-concentration" class="cell" data-execution_count="6">
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>rng <span class="op">=</span> np.random.default_rng(<span class="dv">42</span>)</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>dimensions <span class="op">=</span> [<span class="dv">2</span>, <span class="dv">5</span>, <span class="dv">10</span>, <span class="dv">50</span>, <span class="dv">100</span>, <span class="dv">500</span>]</span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>ratios <span class="op">=</span> []</span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> p <span class="kw">in</span> dimensions:</span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>    X <span class="op">=</span> rng.uniform(<span class="dv">0</span>, <span class="dv">1</span>, size<span class="op">=</span>(<span class="dv">2000</span>, p))</span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>    query <span class="op">=</span> rng.uniform(<span class="dv">0</span>, <span class="dv">1</span>, size<span class="op">=</span>(<span class="dv">1</span>, p))</span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>    distances <span class="op">=</span> np.sqrt(((X <span class="op">-</span> query) <span class="op">**</span> <span class="dv">2</span>).<span class="bu">sum</span>(axis<span class="op">=</span><span class="dv">1</span>))</span>
+<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a>    d_min <span class="op">=</span> distances.<span class="bu">min</span>()</span>
+<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a>    d_max <span class="op">=</span> distances.<span class="bu">max</span>()</span>
+<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a>    ratios.append((d_max <span class="op">-</span> d_min) <span class="op">/</span> d_min)</span>
+<span id="cb6-18"><a href="#cb6-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-19"><a href="#cb6-19" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">8</span>, <span class="dv">5</span>))</span>
+<span id="cb6-20"><a href="#cb6-20" aria-hidden="true" tabindex="-1"></a>plt.plot(dimensions, ratios, marker<span class="op">=</span><span class="st">"o"</span>)</span>
+<span id="cb6-21"><a href="#cb6-21" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">"Distance Concentration in High Dimensions"</span>)</span>
+<span id="cb6-22"><a href="#cb6-22" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">"Dimension p"</span>)</span>
+<span id="cb6-23"><a href="#cb6-23" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="vs">r"</span><span class="dv">$</span><span class="kw">(</span><span class="vs">d_{</span><span class="dv">\m</span><span class="vs">ax}-d_{</span><span class="dv">\m</span><span class="vs">in}</span><span class="kw">)</span><span class="vs">/d_{</span><span class="dv">\m</span><span class="vs">in}</span><span class="dv">$</span><span class="vs">"</span>)</span>
+<span id="cb6-24"><a href="#cb6-24" aria-hidden="true" tabindex="-1"></a>plt.xscale(<span class="st">"log"</span>)</span>
+<span id="cb6-25"><a href="#cb6-25" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb6-26"><a href="#cb6-26" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-display">
+<div id="fig-distance-concentration" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-distance-concentration-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="chapter-6_files/figure-html/fig-distance-concentration-output-1.png" width="756" height="468" class="figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-distance-concentration-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;6: Distance Concentration
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="computation-and-algoriths" class="level2">
+<h2 class="anchored" data-anchor-id="computation-and-algoriths">8. Computation and Algoriths</h2>
+<section id="computational-cost-of-naive-knn" class="level3">
+<h3 class="anchored" data-anchor-id="computational-cost-of-naive-knn">8.1. Computational Cost of Naive KNN</h3>
+<p>For a single query point <span class="math inline">\(x\)</span>, brute-force KNN computes <span class="math inline">\(d(x, x_i)\)</span> for all <span class="math inline">\(i=1,\dots, n\)</span>. If each distance computation costs</p>
+<p><span class="math display">\[
+O(p)
+\]</span></p>
+<p>then the total cost per query is</p>
+<p><span class="math display">\[
+O(np)
+\]</span></p>
+<p>For <span class="math inline">\(m\)</span> query points, the cost is</p>
+<p>$$</p>
+<p>O(mnp)</p>
+<p>$$</p>
+<p>This can be expensive for large datasets.</p>
+<p>Training cost is low because the algorithm mainly stores the data, so <span class="math inline">\(O(np)\)</span> memory is required.</p>
+<p>Thus, KNN has the opposite computational profile of many trained models:</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Phase</th>
+<th>KNN Cost</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Training</td>
+<td>Cheap</td>
+</tr>
+<tr class="even">
+<td>Prediction</td>
+<td>Expensive</td>
+</tr>
+<tr class="odd">
+<td>Memory</td>
+<td>High</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="accelerated-nearest-neighbor-search" class="level3">
+<h3 class="anchored" data-anchor-id="accelerated-nearest-neighbor-search">8.2. Accelerated Nearest Neighbor Search</h3>
+<p>To reduce prediction cost, implementations may use spatial indexing structures such as:</p>
+<ul>
+<li>k-d trees</li>
+<li>ball trees</li>
+<li>approximate nearest-neighbor indexes.</li>
+</ul>
+<p>A k-d tree recursively partitions the feature space along coordinate axes. A ball tree partitions data into nested hyperspheres. These structure can speed up nearest-neighbor search in low or moderate dimensions. However, in high dimensions, their advantage often decreases because many branches must be searched.</p>
+<p>Approximate nearest-neighbor methods trade exactness for speed. They are essential in large-scale applications such as image retrieval, recommender systems, vector databases, and semantic search.</p>
+</section>
+<section id="approximate-nearest-neighbors" class="level3">
+<h3 class="anchored" data-anchor-id="approximate-nearest-neighbors">8.3. Approximate Nearest Neighbors</h3>
+<p>Approximate nearest-neighbor methods seek a point <span class="math inline">\(\tilde x\)</span> such that</p>
+<p><span class="math display">\[
+d(x, \tilde x) \leq (1+ \epsilon )\,d(x, x^*)
+\]</span></p>
+<p>where <span class="math inline">\(x^*\)</span> is the exact nearest neighbor and <span class="math inline">\(\epsilon &gt;0\)</span> controls approximation tolerance.</p>
+</section>
+</section>
+<section id="advanced-extensions" class="level2">
+<h2 class="anchored" data-anchor-id="advanced-extensions">9. Advanced Extensions</h2>
+<section id="adaptive-nearest-neighbors" class="level3">
+<h3 class="anchored" data-anchor-id="adaptive-nearest-neighbors">9.1. Adaptive Nearest Neighbors</h3>
+<p>Ordinary KNN uses the same distance geometry throughout the feature space. But some regions may require elongated neighbors rather than spherical neighborhoods.</p>
+<p>Discriminant Adaptive Nearest Neighborhood classification, or DANN, modifies the local metric using local class information. Hastie and Tibshirani proposed adapting nearest-neighbor neighborhoods to local class structure so that neighborhoods stretch in directions where class probabilities change slowly and shrink in directions where class probabilities change quickly<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a>.</p>
+<p>The basic idea is to use a local metric</p>
+<p><span class="math display">\[
+d_A(x, z) = \sqrt{((x-z)^\top)A(x) (x-z)}
+\]</span></p>
+<p>where <span class="math inline">\(A(x)\)</span> is a <a href="https://en.wikipedia.org/wiki/Definite_matrix">positive semidefinite matrix</a> adapted to the local neighborhood around <span class="math inline">\(x\)</span>.</p>
+<p>If class boundaries vary sharply in one direction, <span class="math inline">\(A(x)\)</span> can make distances grow faster in that direction. If class probabilities are stable in another direction, the metric can stretch the neighborhood in that direction. This reduces bias without necessarily increasing variance.</p>
+<div id="d763ce74" class="cell" data-execution_count="7">
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> matplotlib.patches <span class="im">import</span> Circle</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>np.random.seed(<span class="dv">42</span>)</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>n <span class="op">=</span> <span class="dv">450</span></span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>x1 <span class="op">=</span> np.random.uniform(<span class="op">-</span><span class="dv">3</span>, <span class="dv">3</span>, n)</span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>x2 <span class="op">=</span> np.random.uniform(<span class="op">-</span><span class="fl">2.2</span>, <span class="fl">2.2</span>, n)</span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a><span class="co"># Curved class boundary</span></span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>boundary <span class="op">=</span> <span class="fl">0.75</span> <span class="op">*</span> np.sin(<span class="fl">1.2</span> <span class="op">*</span> x1)</span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a><span class="co"># Add noise so the local structure is not perfectly separable</span></span>
+<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a>noise <span class="op">=</span> np.random.normal(<span class="dv">0</span>, <span class="fl">0.35</span>, n)</span>
+<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a>y <span class="op">=</span> (x2 <span class="op">+</span> noise <span class="op">&gt;</span> boundary).astype(<span class="bu">int</span>)</span>
+<span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-20"><a href="#cb7-20" aria-hidden="true" tabindex="-1"></a>X <span class="op">=</span> np.column_stack([x1, x2])</span>
+<span id="cb7-21"><a href="#cb7-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-22"><a href="#cb7-22" aria-hidden="true" tabindex="-1"></a><span class="co"># Query point where we want to classify a new observation</span></span>
+<span id="cb7-23"><a href="#cb7-23" aria-hidden="true" tabindex="-1"></a>x_query <span class="op">=</span> np.array([<span class="fl">0.1</span>, <span class="fl">0.05</span>])</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+</div>
+<div id="355e3a1f" class="cell" data-execution_count="8">
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> euclidean_distances(X, x):</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> np.sqrt(np.<span class="bu">sum</span>((X <span class="op">-</span> x) <span class="op">**</span> <span class="dv">2</span>, axis<span class="op">=</span><span class="dv">1</span>))</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> knn_indices_euclidean(X, x, k):</span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>    d <span class="op">=</span> euclidean_distances(X, x)</span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> np.argsort(d)[:k], d</span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> inverse_square_root_matrix(M, eps<span class="op">=</span><span class="fl">1e-6</span>):</span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""</span></span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a><span class="co">    Compute M^{-1/2} for a symmetric positive semidefinite matrix.</span></span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a><span class="co">    """</span></span>
+<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a>    eigvals, eigvecs <span class="op">=</span> np.linalg.eigh(M)</span>
+<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a>    eigvals <span class="op">=</span> np.maximum(eigvals, eps)</span>
+<span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-18"><a href="#cb8-18" aria-hidden="true" tabindex="-1"></a>    D_inv_sqrt <span class="op">=</span> np.diag(<span class="fl">1.0</span> <span class="op">/</span> np.sqrt(eigvals))</span>
+<span id="cb8-19"><a href="#cb8-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-20"><a href="#cb8-20" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> eigvecs <span class="op">@</span> D_inv_sqrt <span class="op">@</span> eigvecs.T</span>
+<span id="cb8-21"><a href="#cb8-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-22"><a href="#cb8-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-23"><a href="#cb8-23" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> estimate_dann_metric(X_local, y_local, ridge<span class="op">=</span><span class="fl">1e-3</span>, epsilon<span class="op">=</span><span class="fl">0.05</span>):</span>
+<span id="cb8-24"><a href="#cb8-24" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""</span></span>
+<span id="cb8-25"><a href="#cb8-25" aria-hidden="true" tabindex="-1"></a><span class="co">    Estimate a simplified DANN local metric.</span></span>
+<span id="cb8-26"><a href="#cb8-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-27"><a href="#cb8-27" aria-hidden="true" tabindex="-1"></a><span class="co">    W = local within-class covariance</span></span>
+<span id="cb8-28"><a href="#cb8-28" aria-hidden="true" tabindex="-1"></a><span class="co">    B = local between-class covariance</span></span>
+<span id="cb8-29"><a href="#cb8-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-30"><a href="#cb8-30" aria-hidden="true" tabindex="-1"></a><span class="co">    A = W^{-1/2} (W^{-1/2} B W^{-1/2} + epsilon I) W^{-1/2}</span></span>
+<span id="cb8-31"><a href="#cb8-31" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-32"><a href="#cb8-32" aria-hidden="true" tabindex="-1"></a><span class="co">    Larger distance growth occurs in locally discriminative directions.</span></span>
+<span id="cb8-33"><a href="#cb8-33" aria-hidden="true" tabindex="-1"></a><span class="co">    """</span></span>
+<span id="cb8-34"><a href="#cb8-34" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-35"><a href="#cb8-35" aria-hidden="true" tabindex="-1"></a>    n_local, p <span class="op">=</span> X_local.shape</span>
+<span id="cb8-36"><a href="#cb8-36" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-37"><a href="#cb8-37" aria-hidden="true" tabindex="-1"></a>    overall_mean <span class="op">=</span> X_local.mean(axis<span class="op">=</span><span class="dv">0</span>)</span>
+<span id="cb8-38"><a href="#cb8-38" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-39"><a href="#cb8-39" aria-hidden="true" tabindex="-1"></a>    W <span class="op">=</span> np.zeros((p, p))</span>
+<span id="cb8-40"><a href="#cb8-40" aria-hidden="true" tabindex="-1"></a>    B <span class="op">=</span> np.zeros((p, p))</span>
+<span id="cb8-41"><a href="#cb8-41" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-42"><a href="#cb8-42" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> c <span class="kw">in</span> np.unique(y_local):</span>
+<span id="cb8-43"><a href="#cb8-43" aria-hidden="true" tabindex="-1"></a>        X_c <span class="op">=</span> X_local[y_local <span class="op">==</span> c]</span>
+<span id="cb8-44"><a href="#cb8-44" aria-hidden="true" tabindex="-1"></a>        n_c <span class="op">=</span> <span class="bu">len</span>(X_c)</span>
+<span id="cb8-45"><a href="#cb8-45" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-46"><a href="#cb8-46" aria-hidden="true" tabindex="-1"></a>        mean_c <span class="op">=</span> X_c.mean(axis<span class="op">=</span><span class="dv">0</span>)</span>
+<span id="cb8-47"><a href="#cb8-47" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-48"><a href="#cb8-48" aria-hidden="true" tabindex="-1"></a>        centered_c <span class="op">=</span> X_c <span class="op">-</span> mean_c</span>
+<span id="cb8-49"><a href="#cb8-49" aria-hidden="true" tabindex="-1"></a>        W <span class="op">+=</span> centered_c.T <span class="op">@</span> centered_c</span>
+<span id="cb8-50"><a href="#cb8-50" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-51"><a href="#cb8-51" aria-hidden="true" tabindex="-1"></a>        mean_diff <span class="op">=</span> (mean_c <span class="op">-</span> overall_mean).reshape(<span class="op">-</span><span class="dv">1</span>, <span class="dv">1</span>)</span>
+<span id="cb8-52"><a href="#cb8-52" aria-hidden="true" tabindex="-1"></a>        B <span class="op">+=</span> n_c <span class="op">*</span> (mean_diff <span class="op">@</span> mean_diff.T)</span>
+<span id="cb8-53"><a href="#cb8-53" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-54"><a href="#cb8-54" aria-hidden="true" tabindex="-1"></a>    W <span class="op">=</span> W <span class="op">/</span> n_local</span>
+<span id="cb8-55"><a href="#cb8-55" aria-hidden="true" tabindex="-1"></a>    B <span class="op">=</span> B <span class="op">/</span> n_local</span>
+<span id="cb8-56"><a href="#cb8-56" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-57"><a href="#cb8-57" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Regularization for numerical stability</span></span>
+<span id="cb8-58"><a href="#cb8-58" aria-hidden="true" tabindex="-1"></a>    W <span class="op">=</span> W <span class="op">+</span> ridge <span class="op">*</span> np.eye(p)</span>
+<span id="cb8-59"><a href="#cb8-59" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-60"><a href="#cb8-60" aria-hidden="true" tabindex="-1"></a>    W_inv_sqrt <span class="op">=</span> inverse_square_root_matrix(W)</span>
+<span id="cb8-61"><a href="#cb8-61" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-62"><a href="#cb8-62" aria-hidden="true" tabindex="-1"></a>    B_tilde <span class="op">=</span> W_inv_sqrt <span class="op">@</span> B <span class="op">@</span> W_inv_sqrt</span>
+<span id="cb8-63"><a href="#cb8-63" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-64"><a href="#cb8-64" aria-hidden="true" tabindex="-1"></a>    A <span class="op">=</span> W_inv_sqrt <span class="op">@</span> (B_tilde <span class="op">+</span> epsilon <span class="op">*</span> np.eye(p)) <span class="op">@</span> W_inv_sqrt</span>
+<span id="cb8-65"><a href="#cb8-65" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-66"><a href="#cb8-66" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> A, W, B</span>
+<span id="cb8-67"><a href="#cb8-67" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-68"><a href="#cb8-68" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-69"><a href="#cb8-69" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> metric_distances(X, x, A):</span>
+<span id="cb8-70"><a href="#cb8-70" aria-hidden="true" tabindex="-1"></a>    diffs <span class="op">=</span> X <span class="op">-</span> x</span>
+<span id="cb8-71"><a href="#cb8-71" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> np.sqrt(np.<span class="bu">sum</span>((diffs <span class="op">@</span> A) <span class="op">*</span> diffs, axis<span class="op">=</span><span class="dv">1</span>))</span>
+<span id="cb8-72"><a href="#cb8-72" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-73"><a href="#cb8-73" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-74"><a href="#cb8-74" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> ellipse_from_metric(x_center, A, radius, n_points<span class="op">=</span><span class="dv">250</span>):</span>
+<span id="cb8-75"><a href="#cb8-75" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""</span></span>
+<span id="cb8-76"><a href="#cb8-76" aria-hidden="true" tabindex="-1"></a><span class="co">    Plot the contour:</span></span>
+<span id="cb8-77"><a href="#cb8-77" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-78"><a href="#cb8-78" aria-hidden="true" tabindex="-1"></a><span class="co">        (z - x)^T A (z - x) = radius^2</span></span>
+<span id="cb8-79"><a href="#cb8-79" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-80"><a href="#cb8-80" aria-hidden="true" tabindex="-1"></a><span class="co">    This is an ellipse when A is positive definite.</span></span>
+<span id="cb8-81"><a href="#cb8-81" aria-hidden="true" tabindex="-1"></a><span class="co">    """</span></span>
+<span id="cb8-82"><a href="#cb8-82" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-83"><a href="#cb8-83" aria-hidden="true" tabindex="-1"></a>    eigvals, eigvecs <span class="op">=</span> np.linalg.eigh(A)</span>
+<span id="cb8-84"><a href="#cb8-84" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-85"><a href="#cb8-85" aria-hidden="true" tabindex="-1"></a>    eigvals <span class="op">=</span> np.maximum(eigvals, <span class="fl">1e-8</span>)</span>
+<span id="cb8-86"><a href="#cb8-86" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-87"><a href="#cb8-87" aria-hidden="true" tabindex="-1"></a>    theta <span class="op">=</span> np.linspace(<span class="dv">0</span>, <span class="dv">2</span> <span class="op">*</span> np.pi, n_points)</span>
+<span id="cb8-88"><a href="#cb8-88" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-89"><a href="#cb8-89" aria-hidden="true" tabindex="-1"></a>    unit_circle <span class="op">=</span> np.column_stack([np.cos(theta), np.sin(theta)])</span>
+<span id="cb8-90"><a href="#cb8-90" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-91"><a href="#cb8-91" aria-hidden="true" tabindex="-1"></a>    axes_lengths <span class="op">=</span> radius <span class="op">/</span> np.sqrt(eigvals)</span>
+<span id="cb8-92"><a href="#cb8-92" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-93"><a href="#cb8-93" aria-hidden="true" tabindex="-1"></a>    ellipse <span class="op">=</span> unit_circle <span class="op">@</span> np.diag(axes_lengths) <span class="op">@</span> eigvecs.T</span>
+<span id="cb8-94"><a href="#cb8-94" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-95"><a href="#cb8-95" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> ellipse <span class="op">+</span> x_center</span>
+<span id="cb8-96"><a href="#cb8-96" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-97"><a href="#cb8-97" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-98"><a href="#cb8-98" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> majority_vote(y_neighbors):</span>
+<span id="cb8-99"><a href="#cb8-99" aria-hidden="true" tabindex="-1"></a>    values, counts <span class="op">=</span> np.unique(y_neighbors, return_counts<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb8-100"><a href="#cb8-100" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> values[np.argmax(counts)]</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+</div>
+<div id="a31e7605" class="cell" data-execution_count="9">
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>k_final <span class="op">=</span> <span class="dv">30</span>       <span class="co"># final number of neighbors</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>m_local <span class="op">=</span> <span class="dv">100</span>      <span class="co"># larger local neighborhood used to estimate local metric</span></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a><span class="co"># ordinary Euclidean KNN</span></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>idx_knn, d_euclid <span class="op">=</span> knn_indices_euclidean(X, x_query, k_final)</span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a><span class="co"># larger Euclidean neighborhood for estimating local class structure</span></span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>idx_local, _ <span class="op">=</span> knn_indices_euclidean(X, x_query, m_local)</span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>X_local <span class="op">=</span> X[idx_local]</span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a>y_local <span class="op">=</span> y[idx_local]</span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a><span class="co"># estimate the DANN local metric</span></span>
+<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a>A, W, B <span class="op">=</span> estimate_dann_metric(X_local, y_local)</span>
+<span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-16"><a href="#cb9-16" aria-hidden="true" tabindex="-1"></a><span class="co"># use adaptive metric to search for nearest neighbors</span></span>
+<span id="cb9-17"><a href="#cb9-17" aria-hidden="true" tabindex="-1"></a>d_dann <span class="op">=</span> metric_distances(X, x_query, A)</span>
+<span id="cb9-18"><a href="#cb9-18" aria-hidden="true" tabindex="-1"></a>idx_dann <span class="op">=</span> np.argsort(d_dann)[:k_final]</span>
+<span id="cb9-19"><a href="#cb9-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-20"><a href="#cb9-20" aria-hidden="true" tabindex="-1"></a><span class="co"># Radius of ordinary KNN circle</span></span>
+<span id="cb9-21"><a href="#cb9-21" aria-hidden="true" tabindex="-1"></a>r_knn <span class="op">=</span> d_euclid[idx_knn[<span class="op">-</span><span class="dv">1</span>]]</span>
+<span id="cb9-22"><a href="#cb9-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-23"><a href="#cb9-23" aria-hidden="true" tabindex="-1"></a><span class="co"># Radius of DANN adaptive ellipse</span></span>
+<span id="cb9-24"><a href="#cb9-24" aria-hidden="true" tabindex="-1"></a>r_dann <span class="op">=</span> d_dann[idx_dann[<span class="op">-</span><span class="dv">1</span>]]</span>
+<span id="cb9-25"><a href="#cb9-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-26"><a href="#cb9-26" aria-hidden="true" tabindex="-1"></a>ellipse_dann <span class="op">=</span> ellipse_from_metric(x_query, A, r_dann)</span>
+<span id="cb9-27"><a href="#cb9-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-28"><a href="#cb9-28" aria-hidden="true" tabindex="-1"></a><span class="co"># Predictions</span></span>
+<span id="cb9-29"><a href="#cb9-29" aria-hidden="true" tabindex="-1"></a>pred_knn <span class="op">=</span> majority_vote(y[idx_knn])</span>
+<span id="cb9-30"><a href="#cb9-30" aria-hidden="true" tabindex="-1"></a>pred_dann <span class="op">=</span> majority_vote(y[idx_dann])</span>
+<span id="cb9-31"><a href="#cb9-31" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-32"><a href="#cb9-32" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Euclidean KNN prediction:"</span>, pred_knn)</span>
+<span id="cb9-33"><a href="#cb9-33" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"DANN prediction:"</span>, pred_dann)</span>
+<span id="cb9-34"><a href="#cb9-34" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>()</span>
+<span id="cb9-35"><a href="#cb9-35" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Local DANN metric A:"</span>)</span>
+<span id="cb9-36"><a href="#cb9-36" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(A)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>Euclidean KNN prediction: 0
+DANN prediction: 1
+
+Local DANN metric A:
+[[ 2.45785784 -4.17558994]
+ [-4.17558994  7.45534753]]</code></pre>
+</div>
+</div>
+<div id="3643fd48" class="cell" data-execution_count="10">
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>fig, axes <span class="op">=</span> plt.subplots(<span class="dv">2</span>, <span class="dv">3</span>, figsize<span class="op">=</span>(<span class="dv">18</span>, <span class="dv">10</span>))</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>axes <span class="op">=</span> axes.ravel()</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>titles <span class="op">=</span> [</span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>    <span class="st">"1. Data and query point"</span>,</span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>    <span class="st">"2. Ordinary Euclidean KNN search"</span>,</span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>    <span class="st">"3. Local region used to estimate DANN metric"</span>,</span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a>    <span class="st">"4. Adaptive DANN neighborhood"</span>,</span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a>    <span class="st">"5. Final DANN nearest neighbors"</span>,</span>
+<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a>    <span class="st">"6. Euclidean KNN vs DANN"</span></span>
+<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a>]</span>
+<span id="cb11-13"><a href="#cb11-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-14"><a href="#cb11-14" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> ax, title <span class="kw">in</span> <span class="bu">zip</span>(axes, titles):</span>
+<span id="cb11-15"><a href="#cb11-15" aria-hidden="true" tabindex="-1"></a>    ax.scatter(X[y <span class="op">==</span> <span class="dv">0</span>, <span class="dv">0</span>], X[y <span class="op">==</span> <span class="dv">0</span>, <span class="dv">1</span>], s<span class="op">=</span><span class="dv">20</span>, alpha<span class="op">=</span><span class="fl">0.55</span>, label<span class="op">=</span><span class="st">"Class 0"</span>)</span>
+<span id="cb11-16"><a href="#cb11-16" aria-hidden="true" tabindex="-1"></a>    ax.scatter(X[y <span class="op">==</span> <span class="dv">1</span>, <span class="dv">0</span>], X[y <span class="op">==</span> <span class="dv">1</span>, <span class="dv">1</span>], s<span class="op">=</span><span class="dv">20</span>, alpha<span class="op">=</span><span class="fl">0.55</span>, label<span class="op">=</span><span class="st">"Class 1"</span>)</span>
+<span id="cb11-17"><a href="#cb11-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-18"><a href="#cb11-18" aria-hidden="true" tabindex="-1"></a>    ax.scatter(</span>
+<span id="cb11-19"><a href="#cb11-19" aria-hidden="true" tabindex="-1"></a>        x_query[<span class="dv">0</span>],</span>
+<span id="cb11-20"><a href="#cb11-20" aria-hidden="true" tabindex="-1"></a>        x_query[<span class="dv">1</span>],</span>
+<span id="cb11-21"><a href="#cb11-21" aria-hidden="true" tabindex="-1"></a>        s<span class="op">=</span><span class="dv">180</span>,</span>
+<span id="cb11-22"><a href="#cb11-22" aria-hidden="true" tabindex="-1"></a>        marker<span class="op">=</span><span class="st">"*"</span>,</span>
+<span id="cb11-23"><a href="#cb11-23" aria-hidden="true" tabindex="-1"></a>        label<span class="op">=</span><span class="st">"Query point"</span>,</span>
+<span id="cb11-24"><a href="#cb11-24" aria-hidden="true" tabindex="-1"></a>        zorder<span class="op">=</span><span class="dv">5</span></span>
+<span id="cb11-25"><a href="#cb11-25" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb11-26"><a href="#cb11-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-27"><a href="#cb11-27" aria-hidden="true" tabindex="-1"></a>    ax.set_title(title)</span>
+<span id="cb11-28"><a href="#cb11-28" aria-hidden="true" tabindex="-1"></a>    ax.set_xlabel(<span class="st">"$x_1$"</span>)</span>
+<span id="cb11-29"><a href="#cb11-29" aria-hidden="true" tabindex="-1"></a>    ax.set_ylabel(<span class="st">"$x_2$"</span>)</span>
+<span id="cb11-30"><a href="#cb11-30" aria-hidden="true" tabindex="-1"></a>    ax.set_xlim(<span class="op">-</span><span class="fl">3.2</span>, <span class="fl">3.2</span>)</span>
+<span id="cb11-31"><a href="#cb11-31" aria-hidden="true" tabindex="-1"></a>    ax.set_ylim(<span class="op">-</span><span class="fl">2.4</span>, <span class="fl">2.4</span>)</span>
+<span id="cb11-32"><a href="#cb11-32" aria-hidden="true" tabindex="-1"></a>    ax.grid(alpha<span class="op">=</span><span class="fl">0.25</span>)</span>
+<span id="cb11-33"><a href="#cb11-33" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-34"><a href="#cb11-34" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].legend(loc<span class="op">=</span><span class="st">"upper left"</span>)</span>
+<span id="cb11-35"><a href="#cb11-35" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-36"><a href="#cb11-36" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">1</span>].scatter(</span>
+<span id="cb11-37"><a href="#cb11-37" aria-hidden="true" tabindex="-1"></a>    X[idx_knn, <span class="dv">0</span>],</span>
+<span id="cb11-38"><a href="#cb11-38" aria-hidden="true" tabindex="-1"></a>    X[idx_knn, <span class="dv">1</span>],</span>
+<span id="cb11-39"><a href="#cb11-39" aria-hidden="true" tabindex="-1"></a>    s<span class="op">=</span><span class="dv">90</span>,</span>
+<span id="cb11-40"><a href="#cb11-40" aria-hidden="true" tabindex="-1"></a>    facecolors<span class="op">=</span><span class="st">"none"</span>,</span>
+<span id="cb11-41"><a href="#cb11-41" aria-hidden="true" tabindex="-1"></a>    edgecolors<span class="op">=</span><span class="st">"black"</span>,</span>
+<span id="cb11-42"><a href="#cb11-42" aria-hidden="true" tabindex="-1"></a>    linewidths<span class="op">=</span><span class="fl">1.7</span>,</span>
+<span id="cb11-43"><a href="#cb11-43" aria-hidden="true" tabindex="-1"></a>    label<span class="op">=</span><span class="st">"Euclidean KNN neighbors"</span></span>
+<span id="cb11-44"><a href="#cb11-44" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb11-45"><a href="#cb11-45" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-46"><a href="#cb11-46" aria-hidden="true" tabindex="-1"></a>circle <span class="op">=</span> Circle(</span>
+<span id="cb11-47"><a href="#cb11-47" aria-hidden="true" tabindex="-1"></a>    x_query,</span>
+<span id="cb11-48"><a href="#cb11-48" aria-hidden="true" tabindex="-1"></a>    r_knn,</span>
+<span id="cb11-49"><a href="#cb11-49" aria-hidden="true" tabindex="-1"></a>    fill<span class="op">=</span><span class="va">False</span>,</span>
+<span id="cb11-50"><a href="#cb11-50" aria-hidden="true" tabindex="-1"></a>    linewidth<span class="op">=</span><span class="dv">2</span>,</span>
+<span id="cb11-51"><a href="#cb11-51" aria-hidden="true" tabindex="-1"></a>    linestyle<span class="op">=</span><span class="st">"--"</span>,</span>
+<span id="cb11-52"><a href="#cb11-52" aria-hidden="true" tabindex="-1"></a>    label<span class="op">=</span><span class="st">"Euclidean search circle"</span></span>
+<span id="cb11-53"><a href="#cb11-53" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb11-54"><a href="#cb11-54" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-55"><a href="#cb11-55" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">1</span>].add_patch(circle)</span>
+<span id="cb11-56"><a href="#cb11-56" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">1</span>].legend(loc<span class="op">=</span><span class="st">"upper left"</span>)</span>
+<span id="cb11-57"><a href="#cb11-57" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-58"><a href="#cb11-58" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">2</span>].scatter(</span>
+<span id="cb11-59"><a href="#cb11-59" aria-hidden="true" tabindex="-1"></a>    X_local[:, <span class="dv">0</span>],</span>
+<span id="cb11-60"><a href="#cb11-60" aria-hidden="true" tabindex="-1"></a>    X_local[:, <span class="dv">1</span>],</span>
+<span id="cb11-61"><a href="#cb11-61" aria-hidden="true" tabindex="-1"></a>    s<span class="op">=</span><span class="dv">100</span>,</span>
+<span id="cb11-62"><a href="#cb11-62" aria-hidden="true" tabindex="-1"></a>    facecolors<span class="op">=</span><span class="st">"none"</span>,</span>
+<span id="cb11-63"><a href="#cb11-63" aria-hidden="true" tabindex="-1"></a>    edgecolors<span class="op">=</span><span class="st">"black"</span>,</span>
+<span id="cb11-64"><a href="#cb11-64" aria-hidden="true" tabindex="-1"></a>    linewidths<span class="op">=</span><span class="fl">1.4</span>,</span>
+<span id="cb11-65"><a href="#cb11-65" aria-hidden="true" tabindex="-1"></a>    label<span class="op">=</span><span class="st">"Local metric-estimation region"</span></span>
+<span id="cb11-66"><a href="#cb11-66" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb11-67"><a href="#cb11-67" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-68"><a href="#cb11-68" aria-hidden="true" tabindex="-1"></a>circle_local <span class="op">=</span> Circle(</span>
+<span id="cb11-69"><a href="#cb11-69" aria-hidden="true" tabindex="-1"></a>    x_query,</span>
+<span id="cb11-70"><a href="#cb11-70" aria-hidden="true" tabindex="-1"></a>    euclidean_distances(X, x_query)[idx_local[<span class="op">-</span><span class="dv">1</span>]],</span>
+<span id="cb11-71"><a href="#cb11-71" aria-hidden="true" tabindex="-1"></a>    fill<span class="op">=</span><span class="va">False</span>,</span>
+<span id="cb11-72"><a href="#cb11-72" aria-hidden="true" tabindex="-1"></a>    linewidth<span class="op">=</span><span class="dv">2</span>,</span>
+<span id="cb11-73"><a href="#cb11-73" aria-hidden="true" tabindex="-1"></a>    linestyle<span class="op">=</span><span class="st">"--"</span>,</span>
+<span id="cb11-74"><a href="#cb11-74" aria-hidden="true" tabindex="-1"></a>    label<span class="op">=</span><span class="st">"Larger local window"</span></span>
+<span id="cb11-75"><a href="#cb11-75" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb11-76"><a href="#cb11-76" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-77"><a href="#cb11-77" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">2</span>].add_patch(circle_local)</span>
+<span id="cb11-78"><a href="#cb11-78" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">2</span>].legend(loc<span class="op">=</span><span class="st">"upper left"</span>)</span>
+<span id="cb11-79"><a href="#cb11-79" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-80"><a href="#cb11-80" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">3</span>].plot(</span>
+<span id="cb11-81"><a href="#cb11-81" aria-hidden="true" tabindex="-1"></a>    ellipse_dann[:, <span class="dv">0</span>],</span>
+<span id="cb11-82"><a href="#cb11-82" aria-hidden="true" tabindex="-1"></a>    ellipse_dann[:, <span class="dv">1</span>],</span>
+<span id="cb11-83"><a href="#cb11-83" aria-hidden="true" tabindex="-1"></a>    linewidth<span class="op">=</span><span class="fl">2.5</span>,</span>
+<span id="cb11-84"><a href="#cb11-84" aria-hidden="true" tabindex="-1"></a>    label<span class="op">=</span><span class="st">"DANN adaptive ellipse"</span></span>
+<span id="cb11-85"><a href="#cb11-85" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb11-86"><a href="#cb11-86" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-87"><a href="#cb11-87" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">3</span>].scatter(</span>
+<span id="cb11-88"><a href="#cb11-88" aria-hidden="true" tabindex="-1"></a>    X[idx_dann, <span class="dv">0</span>],</span>
+<span id="cb11-89"><a href="#cb11-89" aria-hidden="true" tabindex="-1"></a>    X[idx_dann, <span class="dv">1</span>],</span>
+<span id="cb11-90"><a href="#cb11-90" aria-hidden="true" tabindex="-1"></a>    s<span class="op">=</span><span class="dv">90</span>,</span>
+<span id="cb11-91"><a href="#cb11-91" aria-hidden="true" tabindex="-1"></a>    facecolors<span class="op">=</span><span class="st">"none"</span>,</span>
+<span id="cb11-92"><a href="#cb11-92" aria-hidden="true" tabindex="-1"></a>    edgecolors<span class="op">=</span><span class="st">"black"</span>,</span>
+<span id="cb11-93"><a href="#cb11-93" aria-hidden="true" tabindex="-1"></a>    linewidths<span class="op">=</span><span class="fl">1.7</span>,</span>
+<span id="cb11-94"><a href="#cb11-94" aria-hidden="true" tabindex="-1"></a>    label<span class="op">=</span><span class="st">"DANN neighbors"</span></span>
+<span id="cb11-95"><a href="#cb11-95" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb11-96"><a href="#cb11-96" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-97"><a href="#cb11-97" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">3</span>].legend(loc<span class="op">=</span><span class="st">"upper left"</span>)</span>
+<span id="cb11-98"><a href="#cb11-98" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-99"><a href="#cb11-99" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">4</span>].plot(</span>
+<span id="cb11-100"><a href="#cb11-100" aria-hidden="true" tabindex="-1"></a>    ellipse_dann[:, <span class="dv">0</span>],</span>
+<span id="cb11-101"><a href="#cb11-101" aria-hidden="true" tabindex="-1"></a>    ellipse_dann[:, <span class="dv">1</span>],</span>
+<span id="cb11-102"><a href="#cb11-102" aria-hidden="true" tabindex="-1"></a>    linewidth<span class="op">=</span><span class="fl">2.5</span>,</span>
+<span id="cb11-103"><a href="#cb11-103" aria-hidden="true" tabindex="-1"></a>    label<span class="op">=</span><span class="st">"Adaptive search boundary"</span></span>
+<span id="cb11-104"><a href="#cb11-104" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb11-105"><a href="#cb11-105" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-106"><a href="#cb11-106" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">4</span>].scatter(</span>
+<span id="cb11-107"><a href="#cb11-107" aria-hidden="true" tabindex="-1"></a>    X[idx_dann, <span class="dv">0</span>],</span>
+<span id="cb11-108"><a href="#cb11-108" aria-hidden="true" tabindex="-1"></a>    X[idx_dann, <span class="dv">1</span>],</span>
+<span id="cb11-109"><a href="#cb11-109" aria-hidden="true" tabindex="-1"></a>    s<span class="op">=</span><span class="dv">110</span>,</span>
+<span id="cb11-110"><a href="#cb11-110" aria-hidden="true" tabindex="-1"></a>    facecolors<span class="op">=</span><span class="st">"none"</span>,</span>
+<span id="cb11-111"><a href="#cb11-111" aria-hidden="true" tabindex="-1"></a>    edgecolors<span class="op">=</span><span class="st">"black"</span>,</span>
+<span id="cb11-112"><a href="#cb11-112" aria-hidden="true" tabindex="-1"></a>    linewidths<span class="op">=</span><span class="fl">1.9</span>,</span>
+<span id="cb11-113"><a href="#cb11-113" aria-hidden="true" tabindex="-1"></a>    label<span class="op">=</span><span class="ss">f"DANN selected k=</span><span class="sc">{</span>k_final<span class="sc">}</span><span class="ss">"</span></span>
+<span id="cb11-114"><a href="#cb11-114" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb11-115"><a href="#cb11-115" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-116"><a href="#cb11-116" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">4</span>].legend(loc<span class="op">=</span><span class="st">"upper left"</span>)</span>
+<span id="cb11-117"><a href="#cb11-117" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-118"><a href="#cb11-118" aria-hidden="true" tabindex="-1"></a>circle_compare <span class="op">=</span> Circle(</span>
+<span id="cb11-119"><a href="#cb11-119" aria-hidden="true" tabindex="-1"></a>    x_query,</span>
+<span id="cb11-120"><a href="#cb11-120" aria-hidden="true" tabindex="-1"></a>    r_knn,</span>
+<span id="cb11-121"><a href="#cb11-121" aria-hidden="true" tabindex="-1"></a>    fill<span class="op">=</span><span class="va">False</span>,</span>
+<span id="cb11-122"><a href="#cb11-122" aria-hidden="true" tabindex="-1"></a>    linewidth<span class="op">=</span><span class="dv">2</span>,</span>
+<span id="cb11-123"><a href="#cb11-123" aria-hidden="true" tabindex="-1"></a>    linestyle<span class="op">=</span><span class="st">"--"</span>,</span>
+<span id="cb11-124"><a href="#cb11-124" aria-hidden="true" tabindex="-1"></a>    label<span class="op">=</span><span class="st">"Euclidean KNN circle"</span></span>
+<span id="cb11-125"><a href="#cb11-125" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb11-126"><a href="#cb11-126" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-127"><a href="#cb11-127" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">5</span>].add_patch(circle_compare)</span>
+<span id="cb11-128"><a href="#cb11-128" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-129"><a href="#cb11-129" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">5</span>].plot(</span>
+<span id="cb11-130"><a href="#cb11-130" aria-hidden="true" tabindex="-1"></a>    ellipse_dann[:, <span class="dv">0</span>],</span>
+<span id="cb11-131"><a href="#cb11-131" aria-hidden="true" tabindex="-1"></a>    ellipse_dann[:, <span class="dv">1</span>],</span>
+<span id="cb11-132"><a href="#cb11-132" aria-hidden="true" tabindex="-1"></a>    linewidth<span class="op">=</span><span class="fl">2.5</span>,</span>
+<span id="cb11-133"><a href="#cb11-133" aria-hidden="true" tabindex="-1"></a>    label<span class="op">=</span><span class="st">"DANN ellipse"</span></span>
+<span id="cb11-134"><a href="#cb11-134" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb11-135"><a href="#cb11-135" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-136"><a href="#cb11-136" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">5</span>].scatter(</span>
+<span id="cb11-137"><a href="#cb11-137" aria-hidden="true" tabindex="-1"></a>    X[idx_knn, <span class="dv">0</span>],</span>
+<span id="cb11-138"><a href="#cb11-138" aria-hidden="true" tabindex="-1"></a>    X[idx_knn, <span class="dv">1</span>],</span>
+<span id="cb11-139"><a href="#cb11-139" aria-hidden="true" tabindex="-1"></a>    s<span class="op">=</span><span class="dv">80</span>,</span>
+<span id="cb11-140"><a href="#cb11-140" aria-hidden="true" tabindex="-1"></a>    facecolors<span class="op">=</span><span class="st">"none"</span>,</span>
+<span id="cb11-141"><a href="#cb11-141" aria-hidden="true" tabindex="-1"></a>    edgecolors<span class="op">=</span><span class="st">"gray"</span>,</span>
+<span id="cb11-142"><a href="#cb11-142" aria-hidden="true" tabindex="-1"></a>    linewidths<span class="op">=</span><span class="fl">1.4</span>,</span>
+<span id="cb11-143"><a href="#cb11-143" aria-hidden="true" tabindex="-1"></a>    label<span class="op">=</span><span class="st">"Euclidean KNN neighbors"</span></span>
+<span id="cb11-144"><a href="#cb11-144" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb11-145"><a href="#cb11-145" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-146"><a href="#cb11-146" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">5</span>].scatter(</span>
+<span id="cb11-147"><a href="#cb11-147" aria-hidden="true" tabindex="-1"></a>    X[idx_dann, <span class="dv">0</span>],</span>
+<span id="cb11-148"><a href="#cb11-148" aria-hidden="true" tabindex="-1"></a>    X[idx_dann, <span class="dv">1</span>],</span>
+<span id="cb11-149"><a href="#cb11-149" aria-hidden="true" tabindex="-1"></a>    s<span class="op">=</span><span class="dv">130</span>,</span>
+<span id="cb11-150"><a href="#cb11-150" aria-hidden="true" tabindex="-1"></a>    facecolors<span class="op">=</span><span class="st">"none"</span>,</span>
+<span id="cb11-151"><a href="#cb11-151" aria-hidden="true" tabindex="-1"></a>    edgecolors<span class="op">=</span><span class="st">"black"</span>,</span>
+<span id="cb11-152"><a href="#cb11-152" aria-hidden="true" tabindex="-1"></a>    linewidths<span class="op">=</span><span class="fl">1.9</span>,</span>
+<span id="cb11-153"><a href="#cb11-153" aria-hidden="true" tabindex="-1"></a>    label<span class="op">=</span><span class="st">"DANN neighbors"</span></span>
+<span id="cb11-154"><a href="#cb11-154" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb11-155"><a href="#cb11-155" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-156"><a href="#cb11-156" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">5</span>].legend(loc<span class="op">=</span><span class="st">"upper left"</span>)</span>
+<span id="cb11-157"><a href="#cb11-157" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-158"><a href="#cb11-158" aria-hidden="true" tabindex="-1"></a>fig.suptitle(</span>
+<span id="cb11-159"><a href="#cb11-159" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Discriminant Adaptive Nearest Neighbor Search: From Circular to Adaptive Neighborhoods"</span>,</span>
+<span id="cb11-160"><a href="#cb11-160" aria-hidden="true" tabindex="-1"></a>    fontsize<span class="op">=</span><span class="dv">16</span>,</span>
+<span id="cb11-161"><a href="#cb11-161" aria-hidden="true" tabindex="-1"></a>    y<span class="op">=</span><span class="fl">1.02</span></span>
+<span id="cb11-162"><a href="#cb11-162" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb11-163"><a href="#cb11-163" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-164"><a href="#cb11-164" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb11-165"><a href="#cb11-165" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="chapter-6_files/figure-html/cell-11-output-1.png" width="1718" height="984" class="figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Ordinary KNN searches using a circular neighborhood because all directions are treated equally.</p>
+<p>DANN first looks at a larger local region around the query point and estimates the directions in which the class labels change most strongly.</p>
+<p>The final neighborhood becomes elliptical: it shrinks in directions where class probabilities change quickly and stretches in directions where class probabilities are relatively stable.</p>
+<p>Therefore, DANN can choose neighbors that are more consistent with the local class boundary than ordinary Euclidean KNN.</p>
+</section>
+<section id="tangent-distance-knn" class="level3">
+<h3 class="anchored" data-anchor-id="tangent-distance-knn">9.2. Tangent Distance KNN</h3>
+<p>In image recognition, two images of the same object may differ by small transformations: translation, rotation, scaling, or deformation. Ordinary Euclidean distance between raw pixels may treat these as large differences even though the semantic object is unchanged.</p>
+<p>Tangent distance addresses this by measuring distance between transformation manifolds rather than raw images. Suppose an image is represented as a vector <span class="math inline">\(x\in \mathbb R^p\)</span>. Let <span class="math inline">\(\mathcal M_x\)</span> be the manifold of small transformations of <span class="math inline">\(x\)</span>, such as small rotations or translations. Tangent distance approximates this manifold locally by a tangent plane.</p>
+<p>Instead of comparing <span class="math inline">\(||x-z||_2\)</span>, one compares the distance between local tangent approximations of <span class="math inline">\(\mathcal M_x\)</span> and <span class="math inline">\(\mathcal M_z\)</span>.</p>
+<div id="37ae4d6d" class="cell" data-execution_count="11">
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.datasets <span class="im">import</span> load_digits</span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> scipy.ndimage <span class="im">import</span> rotate, shift, zoom</span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>digits <span class="op">=</span> load_digits()</span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a>idx <span class="op">=</span> np.where(digits.target <span class="op">==</span> <span class="dv">3</span>)[<span class="dv">0</span>][<span class="dv">5</span>]</span>
+<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a>x_small <span class="op">=</span> digits.images[idx]              <span class="co"># original 8x8 digit</span></span>
+<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a>x_small <span class="op">=</span> x_small <span class="op">/</span> x_small.<span class="bu">max</span>()         <span class="co"># normalize to [0,1]</span></span>
+<span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-14"><a href="#cb12-14" aria-hidden="true" tabindex="-1"></a>x <span class="op">=</span> zoom(x_small, <span class="dv">4</span>, order<span class="op">=</span><span class="dv">1</span>)             <span class="co"># now about 32x32</span></span>
+<span id="cb12-15"><a href="#cb12-15" aria-hidden="true" tabindex="-1"></a>x <span class="op">=</span> np.clip(x, <span class="dv">0</span>, <span class="dv">1</span>)</span>
+<span id="cb12-16"><a href="#cb12-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-17"><a href="#cb12-17" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Image shape:"</span>, x.shape)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>Image shape: (32, 32)</code></pre>
+</div>
+</div>
+<div id="879cf46b" class="cell" data-execution_count="12">
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> normalize_img(img):</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>    img <span class="op">=</span> img <span class="op">-</span> img.<span class="bu">min</span>()</span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> img.<span class="bu">max</span>() <span class="op">&gt;</span> <span class="dv">0</span>:</span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>        img <span class="op">=</span> img <span class="op">/</span> img.<span class="bu">max</span>()</span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> img</span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> transform_image(img, tx<span class="op">=</span><span class="fl">0.0</span>, ty<span class="op">=</span><span class="fl">0.0</span>, theta<span class="op">=</span><span class="fl">0.0</span>):</span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""</span></span>
+<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a><span class="co">    Apply a small rotation and translation.</span></span>
+<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a><span class="co">    tx = horizontal shift (pixels)</span></span>
+<span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a><span class="co">    ty = vertical shift (pixels)</span></span>
+<span id="cb14-12"><a href="#cb14-12" aria-hidden="true" tabindex="-1"></a><span class="co">    theta = rotation angle in degrees</span></span>
+<span id="cb14-13"><a href="#cb14-13" aria-hidden="true" tabindex="-1"></a><span class="co">    """</span></span>
+<span id="cb14-14"><a href="#cb14-14" aria-hidden="true" tabindex="-1"></a>    out <span class="op">=</span> rotate(img, angle<span class="op">=</span>theta, reshape<span class="op">=</span><span class="va">False</span>, order<span class="op">=</span><span class="dv">1</span>, mode<span class="op">=</span><span class="st">"constant"</span>, cval<span class="op">=</span><span class="fl">0.0</span>)</span>
+<span id="cb14-15"><a href="#cb14-15" aria-hidden="true" tabindex="-1"></a>    out <span class="op">=</span> shift(out, shift<span class="op">=</span>(ty, tx), order<span class="op">=</span><span class="dv">1</span>, mode<span class="op">=</span><span class="st">"constant"</span>, cval<span class="op">=</span><span class="fl">0.0</span>)</span>
+<span id="cb14-16"><a href="#cb14-16" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> np.clip(out, <span class="dv">0</span>, <span class="dv">1</span>)</span>
+<span id="cb14-17"><a href="#cb14-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-18"><a href="#cb14-18" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> tangent_vector(img, param<span class="op">=</span><span class="st">"tx"</span>, delta<span class="op">=</span><span class="fl">1.0</span>):</span>
+<span id="cb14-19"><a href="#cb14-19" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""</span></span>
+<span id="cb14-20"><a href="#cb14-20" aria-hidden="true" tabindex="-1"></a><span class="co">    Finite-difference approximation of tangent vectors:</span></span>
+<span id="cb14-21"><a href="#cb14-21" aria-hidden="true" tabindex="-1"></a><span class="co">        dT/dtx, dT/dty, dT/dtheta</span></span>
+<span id="cb14-22"><a href="#cb14-22" aria-hidden="true" tabindex="-1"></a><span class="co">    """</span></span>
+<span id="cb14-23"><a href="#cb14-23" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> param <span class="op">==</span> <span class="st">"tx"</span>:</span>
+<span id="cb14-24"><a href="#cb14-24" aria-hidden="true" tabindex="-1"></a>        plus  <span class="op">=</span> transform_image(img, tx<span class="op">=</span> delta, ty<span class="op">=</span><span class="fl">0.0</span>, theta<span class="op">=</span><span class="fl">0.0</span>)</span>
+<span id="cb14-25"><a href="#cb14-25" aria-hidden="true" tabindex="-1"></a>        minus <span class="op">=</span> transform_image(img, tx<span class="op">=-</span>delta, ty<span class="op">=</span><span class="fl">0.0</span>, theta<span class="op">=</span><span class="fl">0.0</span>)</span>
+<span id="cb14-26"><a href="#cb14-26" aria-hidden="true" tabindex="-1"></a>        vec <span class="op">=</span> (plus <span class="op">-</span> minus) <span class="op">/</span> (<span class="dv">2</span> <span class="op">*</span> delta)</span>
+<span id="cb14-27"><a href="#cb14-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-28"><a href="#cb14-28" aria-hidden="true" tabindex="-1"></a>    <span class="cf">elif</span> param <span class="op">==</span> <span class="st">"ty"</span>:</span>
+<span id="cb14-29"><a href="#cb14-29" aria-hidden="true" tabindex="-1"></a>        plus  <span class="op">=</span> transform_image(img, tx<span class="op">=</span><span class="fl">0.0</span>, ty<span class="op">=</span> delta, theta<span class="op">=</span><span class="fl">0.0</span>)</span>
+<span id="cb14-30"><a href="#cb14-30" aria-hidden="true" tabindex="-1"></a>        minus <span class="op">=</span> transform_image(img, tx<span class="op">=</span><span class="fl">0.0</span>, ty<span class="op">=-</span>delta, theta<span class="op">=</span><span class="fl">0.0</span>)</span>
+<span id="cb14-31"><a href="#cb14-31" aria-hidden="true" tabindex="-1"></a>        vec <span class="op">=</span> (plus <span class="op">-</span> minus) <span class="op">/</span> (<span class="dv">2</span> <span class="op">*</span> delta)</span>
+<span id="cb14-32"><a href="#cb14-32" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-33"><a href="#cb14-33" aria-hidden="true" tabindex="-1"></a>    <span class="cf">elif</span> param <span class="op">==</span> <span class="st">"theta"</span>:</span>
+<span id="cb14-34"><a href="#cb14-34" aria-hidden="true" tabindex="-1"></a>        plus  <span class="op">=</span> transform_image(img, tx<span class="op">=</span><span class="fl">0.0</span>, ty<span class="op">=</span><span class="fl">0.0</span>, theta<span class="op">=</span> delta)</span>
+<span id="cb14-35"><a href="#cb14-35" aria-hidden="true" tabindex="-1"></a>        minus <span class="op">=</span> transform_image(img, tx<span class="op">=</span><span class="fl">0.0</span>, ty<span class="op">=</span><span class="fl">0.0</span>, theta<span class="op">=-</span>delta)</span>
+<span id="cb14-36"><a href="#cb14-36" aria-hidden="true" tabindex="-1"></a>        vec <span class="op">=</span> (plus <span class="op">-</span> minus) <span class="op">/</span> (<span class="dv">2</span> <span class="op">*</span> delta)</span>
+<span id="cb14-37"><a href="#cb14-37" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-38"><a href="#cb14-38" aria-hidden="true" tabindex="-1"></a>    <span class="cf">else</span>:</span>
+<span id="cb14-39"><a href="#cb14-39" aria-hidden="true" tabindex="-1"></a>        <span class="cf">raise</span> <span class="pp">ValueError</span>(<span class="st">"param must be one of: 'tx', 'ty', 'theta'"</span>)</span>
+<span id="cb14-40"><a href="#cb14-40" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-41"><a href="#cb14-41" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> vec</span>
+<span id="cb14-42"><a href="#cb14-42" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-43"><a href="#cb14-43" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> make_montage(images, nrows, ncols, pad<span class="op">=</span><span class="dv">2</span>, pad_value<span class="op">=</span><span class="fl">0.0</span>):</span>
+<span id="cb14-44"><a href="#cb14-44" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""</span></span>
+<span id="cb14-45"><a href="#cb14-45" aria-hidden="true" tabindex="-1"></a><span class="co">    Arrange a list of images into a simple montage.</span></span>
+<span id="cb14-46"><a href="#cb14-46" aria-hidden="true" tabindex="-1"></a><span class="co">    """</span></span>
+<span id="cb14-47"><a href="#cb14-47" aria-hidden="true" tabindex="-1"></a>    h, w <span class="op">=</span> images[<span class="dv">0</span>].shape</span>
+<span id="cb14-48"><a href="#cb14-48" aria-hidden="true" tabindex="-1"></a>    canvas <span class="op">=</span> np.full(</span>
+<span id="cb14-49"><a href="#cb14-49" aria-hidden="true" tabindex="-1"></a>        (nrows <span class="op">*</span> h <span class="op">+</span> (nrows <span class="op">-</span> <span class="dv">1</span>) <span class="op">*</span> pad, ncols <span class="op">*</span> w <span class="op">+</span> (ncols <span class="op">-</span> <span class="dv">1</span>) <span class="op">*</span> pad),</span>
+<span id="cb14-50"><a href="#cb14-50" aria-hidden="true" tabindex="-1"></a>        pad_value</span>
+<span id="cb14-51"><a href="#cb14-51" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb14-52"><a href="#cb14-52" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-53"><a href="#cb14-53" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> k, img <span class="kw">in</span> <span class="bu">enumerate</span>(images):</span>
+<span id="cb14-54"><a href="#cb14-54" aria-hidden="true" tabindex="-1"></a>        r <span class="op">=</span> k <span class="op">//</span> ncols</span>
+<span id="cb14-55"><a href="#cb14-55" aria-hidden="true" tabindex="-1"></a>        c <span class="op">=</span> k <span class="op">%</span> ncols</span>
+<span id="cb14-56"><a href="#cb14-56" aria-hidden="true" tabindex="-1"></a>        y0 <span class="op">=</span> r <span class="op">*</span> (h <span class="op">+</span> pad)</span>
+<span id="cb14-57"><a href="#cb14-57" aria-hidden="true" tabindex="-1"></a>        x0 <span class="op">=</span> c <span class="op">*</span> (w <span class="op">+</span> pad)</span>
+<span id="cb14-58"><a href="#cb14-58" aria-hidden="true" tabindex="-1"></a>        canvas[y0:y0<span class="op">+</span>h, x0:x0<span class="op">+</span>w] <span class="op">=</span> img</span>
+<span id="cb14-59"><a href="#cb14-59" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-60"><a href="#cb14-60" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> canvas</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+</div>
+<div id="cd969a52" class="cell" data-execution_count="13">
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="co"># True small transformation used to create z</span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>tx_true <span class="op">=</span> <span class="fl">1.4</span></span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>ty_true <span class="op">=</span> <span class="op">-</span><span class="fl">1.1</span></span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>theta_true <span class="op">=</span> <span class="fl">8.0</span></span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a>z <span class="op">=</span> transform_image(x, tx<span class="op">=</span>tx_true, ty<span class="op">=</span>ty_true, theta<span class="op">=</span>theta_true)</span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Tangent vectors at x</span></span>
+<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a>t_tx <span class="op">=</span> tangent_vector(x, param<span class="op">=</span><span class="st">"tx"</span>, delta<span class="op">=</span><span class="fl">1.0</span>)</span>
+<span id="cb15-10"><a href="#cb15-10" aria-hidden="true" tabindex="-1"></a>t_ty <span class="op">=</span> tangent_vector(x, param<span class="op">=</span><span class="st">"ty"</span>, delta<span class="op">=</span><span class="fl">1.0</span>)</span>
+<span id="cb15-11"><a href="#cb15-11" aria-hidden="true" tabindex="-1"></a>t_th <span class="op">=</span> tangent_vector(x, param<span class="op">=</span><span class="st">"theta"</span>, delta<span class="op">=</span><span class="fl">1.0</span>)</span>
+<span id="cb15-12"><a href="#cb15-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-13"><a href="#cb15-13" aria-hidden="true" tabindex="-1"></a><span class="co"># Difference between the transformed image and the base image</span></span>
+<span id="cb15-14"><a href="#cb15-14" aria-hidden="true" tabindex="-1"></a>d <span class="op">=</span> (z <span class="op">-</span> x).ravel()</span>
+<span id="cb15-15"><a href="#cb15-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-16"><a href="#cb15-16" aria-hidden="true" tabindex="-1"></a><span class="co"># Build tangent basis matrix</span></span>
+<span id="cb15-17"><a href="#cb15-17" aria-hidden="true" tabindex="-1"></a>G <span class="op">=</span> np.column_stack([</span>
+<span id="cb15-18"><a href="#cb15-18" aria-hidden="true" tabindex="-1"></a>    t_tx.ravel(),</span>
+<span id="cb15-19"><a href="#cb15-19" aria-hidden="true" tabindex="-1"></a>    t_ty.ravel(),</span>
+<span id="cb15-20"><a href="#cb15-20" aria-hidden="true" tabindex="-1"></a>    t_th.ravel()</span>
+<span id="cb15-21"><a href="#cb15-21" aria-hidden="true" tabindex="-1"></a>])</span>
+<span id="cb15-22"><a href="#cb15-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-23"><a href="#cb15-23" aria-hidden="true" tabindex="-1"></a><span class="co"># Least-squares projection of (z - x) onto tangent space at x</span></span>
+<span id="cb15-24"><a href="#cb15-24" aria-hidden="true" tabindex="-1"></a>alpha, _, _, _ <span class="op">=</span> np.linalg.lstsq(G, d, rcond<span class="op">=</span><span class="va">None</span>)</span>
+<span id="cb15-25"><a href="#cb15-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-26"><a href="#cb15-26" aria-hidden="true" tabindex="-1"></a><span class="co"># Closest point on the tangent plane</span></span>
+<span id="cb15-27"><a href="#cb15-27" aria-hidden="true" tabindex="-1"></a>x_tangent_approx <span class="op">=</span> x <span class="op">+</span> (G <span class="op">@</span> alpha).reshape(x.shape)</span>
+<span id="cb15-28"><a href="#cb15-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-29"><a href="#cb15-29" aria-hidden="true" tabindex="-1"></a><span class="co"># Residual after tangent-plane approximation</span></span>
+<span id="cb15-30"><a href="#cb15-30" aria-hidden="true" tabindex="-1"></a>residual <span class="op">=</span> z <span class="op">-</span> x_tangent_approx</span>
+<span id="cb15-31"><a href="#cb15-31" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-32"><a href="#cb15-32" aria-hidden="true" tabindex="-1"></a><span class="co"># Distances</span></span>
+<span id="cb15-33"><a href="#cb15-33" aria-hidden="true" tabindex="-1"></a>euclidean_distance <span class="op">=</span> np.linalg.norm((z <span class="op">-</span> x).ravel())</span>
+<span id="cb15-34"><a href="#cb15-34" aria-hidden="true" tabindex="-1"></a>tangent_distance <span class="op">=</span> np.linalg.norm(residual.ravel())</span>
+<span id="cb15-35"><a href="#cb15-35" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-36"><a href="#cb15-36" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Estimated tangent coefficients [tx, ty, theta]:"</span>)</span>
+<span id="cb15-37"><a href="#cb15-37" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(alpha)</span>
+<span id="cb15-38"><a href="#cb15-38" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>()</span>
+<span id="cb15-39"><a href="#cb15-39" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Euclidean distance between x and z: </span><span class="sc">{</span>euclidean_distance<span class="sc">:.4f}</span><span class="ss">"</span>)</span>
+<span id="cb15-40"><a href="#cb15-40" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Tangent distance between x and z:  </span><span class="sc">{</span>tangent_distance<span class="sc">:.4f}</span><span class="ss">"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>Estimated tangent coefficients [tx, ty, theta]:
+[ 1.02679049 -0.86907804  0.28039056]
+
+Euclidean distance between x and z: 6.5915
+Tangent distance between x and z:  5.4914</code></pre>
+</div>
+</div>
+<div id="de143d72" class="cell" data-execution_count="14">
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>samples <span class="op">=</span> [</span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>    transform_image(x, tx<span class="op">=-</span><span class="fl">1.0</span>, ty<span class="op">=</span><span class="fl">0.0</span>, theta<span class="op">=</span><span class="fl">0.0</span>),</span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>    transform_image(x, tx<span class="op">=</span> <span class="fl">1.0</span>, ty<span class="op">=</span><span class="fl">0.0</span>, theta<span class="op">=</span><span class="fl">0.0</span>),</span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>    transform_image(x, tx<span class="op">=</span><span class="fl">0.0</span>, ty<span class="op">=-</span><span class="fl">1.0</span>, theta<span class="op">=</span><span class="fl">0.0</span>),</span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>    transform_image(x, tx<span class="op">=</span><span class="fl">0.0</span>, ty<span class="op">=</span> <span class="fl">1.0</span>, theta<span class="op">=</span><span class="fl">0.0</span>),</span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a>    transform_image(x, tx<span class="op">=</span><span class="fl">0.0</span>, ty<span class="op">=</span><span class="fl">0.0</span>, theta<span class="op">=-</span><span class="fl">8.0</span>),</span>
+<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a>    transform_image(x, tx<span class="op">=</span><span class="fl">0.0</span>, ty<span class="op">=</span><span class="fl">0.0</span>, theta<span class="op">=</span> <span class="fl">8.0</span>),</span>
+<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a>]</span>
+<span id="cb17-9"><a href="#cb17-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-10"><a href="#cb17-10" aria-hidden="true" tabindex="-1"></a>sample_titles <span class="op">=</span> [</span>
+<span id="cb17-11"><a href="#cb17-11" aria-hidden="true" tabindex="-1"></a>    <span class="st">"tx=-1"</span>, <span class="st">"tx=+1"</span>,</span>
+<span id="cb17-12"><a href="#cb17-12" aria-hidden="true" tabindex="-1"></a>    <span class="st">"ty=-1"</span>, <span class="st">"ty=+1"</span>,</span>
+<span id="cb17-13"><a href="#cb17-13" aria-hidden="true" tabindex="-1"></a>    <span class="st">"rot=-8°"</span>, <span class="st">"rot=+8°"</span></span>
+<span id="cb17-14"><a href="#cb17-14" aria-hidden="true" tabindex="-1"></a>]</span>
+<span id="cb17-15"><a href="#cb17-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-16"><a href="#cb17-16" aria-hidden="true" tabindex="-1"></a>montage <span class="op">=</span> make_montage(samples, nrows<span class="op">=</span><span class="dv">2</span>, ncols<span class="op">=</span><span class="dv">3</span>, pad<span class="op">=</span><span class="dv">2</span>, pad_value<span class="op">=</span><span class="fl">0.0</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+</div>
+<div id="d37bf826" class="cell" data-execution_count="15">
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>fig, axes <span class="op">=</span> plt.subplots(<span class="dv">3</span>, <span class="dv">3</span>, figsize<span class="op">=</span>(<span class="dv">14</span>, <span class="dv">14</span>))</span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>axes <span class="op">=</span> axes.ravel()</span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].imshow(x, cmap<span class="op">=</span><span class="st">"gray"</span>)</span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].set_title(<span class="st">"1. Reference image $x$"</span>)</span>
+<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].axis(<span class="st">"off"</span>)</span>
+<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">1</span>].imshow(z, cmap<span class="op">=</span><span class="st">"gray"</span>)</span>
+<span id="cb18-9"><a href="#cb18-9" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">1</span>].set_title(<span class="st">"2. Transformed image $z$"</span>)</span>
+<span id="cb18-10"><a href="#cb18-10" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">1</span>].axis(<span class="st">"off"</span>)</span>
+<span id="cb18-11"><a href="#cb18-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-12"><a href="#cb18-12" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">2</span>].imshow(montage, cmap<span class="op">=</span><span class="st">"gray"</span>)</span>
+<span id="cb18-13"><a href="#cb18-13" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">2</span>].set_title(<span class="st">"3. Small transformations around $x$"</span>)</span>
+<span id="cb18-14"><a href="#cb18-14" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">2</span>].axis(<span class="st">"off"</span>)</span>
+<span id="cb18-15"><a href="#cb18-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-16"><a href="#cb18-16" aria-hidden="true" tabindex="-1"></a>vmax_diff <span class="op">=</span> np.<span class="bu">max</span>(np.<span class="bu">abs</span>(z <span class="op">-</span> x))</span>
+<span id="cb18-17"><a href="#cb18-17" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">3</span>].imshow(z <span class="op">-</span> x, cmap<span class="op">=</span><span class="st">"RdBu_r"</span>, vmin<span class="op">=-</span>vmax_diff, vmax<span class="op">=</span>vmax_diff)</span>
+<span id="cb18-18"><a href="#cb18-18" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">3</span>].set_title(<span class="st">"4. Difference image $z - x$"</span>)</span>
+<span id="cb18-19"><a href="#cb18-19" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">3</span>].axis(<span class="st">"off"</span>)</span>
+<span id="cb18-20"><a href="#cb18-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-21"><a href="#cb18-21" aria-hidden="true" tabindex="-1"></a>vmax_tx <span class="op">=</span> np.<span class="bu">max</span>(np.<span class="bu">abs</span>(t_tx))</span>
+<span id="cb18-22"><a href="#cb18-22" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">4</span>].imshow(t_tx, cmap<span class="op">=</span><span class="st">"RdBu_r"</span>, vmin<span class="op">=-</span>vmax_tx, vmax<span class="op">=</span>vmax_tx)</span>
+<span id="cb18-23"><a href="#cb18-23" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">4</span>].set_title(<span class="st">"5. Tangent vector: translation in $x$"</span>)</span>
+<span id="cb18-24"><a href="#cb18-24" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">4</span>].axis(<span class="st">"off"</span>)</span>
+<span id="cb18-25"><a href="#cb18-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-26"><a href="#cb18-26" aria-hidden="true" tabindex="-1"></a>vmax_ty <span class="op">=</span> np.<span class="bu">max</span>(np.<span class="bu">abs</span>(t_ty))</span>
+<span id="cb18-27"><a href="#cb18-27" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">5</span>].imshow(t_ty, cmap<span class="op">=</span><span class="st">"RdBu_r"</span>, vmin<span class="op">=-</span>vmax_ty, vmax<span class="op">=</span>vmax_ty)</span>
+<span id="cb18-28"><a href="#cb18-28" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">5</span>].set_title(<span class="st">"6. Tangent vector: translation in $y$"</span>)</span>
+<span id="cb18-29"><a href="#cb18-29" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">5</span>].axis(<span class="st">"off"</span>)</span>
+<span id="cb18-30"><a href="#cb18-30" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-31"><a href="#cb18-31" aria-hidden="true" tabindex="-1"></a>vmax_th <span class="op">=</span> np.<span class="bu">max</span>(np.<span class="bu">abs</span>(t_th))</span>
+<span id="cb18-32"><a href="#cb18-32" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">6</span>].imshow(t_th, cmap<span class="op">=</span><span class="st">"RdBu_r"</span>, vmin<span class="op">=-</span>vmax_th, vmax<span class="op">=</span>vmax_th)</span>
+<span id="cb18-33"><a href="#cb18-33" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">6</span>].set_title(<span class="st">"7. Tangent vector: rotation"</span>)</span>
+<span id="cb18-34"><a href="#cb18-34" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">6</span>].axis(<span class="st">"off"</span>)</span>
+<span id="cb18-35"><a href="#cb18-35" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-36"><a href="#cb18-36" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">7</span>].imshow(x_tangent_approx, cmap<span class="op">=</span><span class="st">"gray"</span>)</span>
+<span id="cb18-37"><a href="#cb18-37" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">7</span>].set_title(<span class="st">"8. Closest tangent-plane approximation"</span>)</span>
+<span id="cb18-38"><a href="#cb18-38" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">7</span>].axis(<span class="st">"off"</span>)</span>
+<span id="cb18-39"><a href="#cb18-39" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-40"><a href="#cb18-40" aria-hidden="true" tabindex="-1"></a>text8 <span class="op">=</span> (</span>
+<span id="cb18-41"><a href="#cb18-41" aria-hidden="true" tabindex="-1"></a>    <span class="ss">f"Estimated coefficients:</span><span class="ch">\n</span><span class="ss">"</span></span>
+<span id="cb18-42"><a href="#cb18-42" aria-hidden="true" tabindex="-1"></a>    <span class="ss">f"$</span><span class="ch">\\</span><span class="ss">alpha_</span><span class="ch">{{</span><span class="ss">tx</span><span class="ch">}}</span><span class="ss">$ = </span><span class="sc">{</span>alpha[<span class="dv">0</span>]<span class="sc">:.2f}</span><span class="ch">\n</span><span class="ss">"</span></span>
+<span id="cb18-43"><a href="#cb18-43" aria-hidden="true" tabindex="-1"></a>    <span class="ss">f"$</span><span class="ch">\\</span><span class="ss">alpha_</span><span class="ch">{{</span><span class="ss">ty</span><span class="ch">}}</span><span class="ss">$ = </span><span class="sc">{</span>alpha[<span class="dv">1</span>]<span class="sc">:.2f}</span><span class="ch">\n</span><span class="ss">"</span></span>
+<span id="cb18-44"><a href="#cb18-44" aria-hidden="true" tabindex="-1"></a>    <span class="ss">f"$</span><span class="ch">\\</span><span class="ss">alpha_</span><span class="ch">{{\\</span><span class="ss">theta</span><span class="ch">}}</span><span class="ss">$ = </span><span class="sc">{</span>alpha[<span class="dv">2</span>]<span class="sc">:.2f}</span><span class="ss">"</span></span>
+<span id="cb18-45"><a href="#cb18-45" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb18-46"><a href="#cb18-46" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">7</span>].text(</span>
+<span id="cb18-47"><a href="#cb18-47" aria-hidden="true" tabindex="-1"></a>    <span class="fl">1.02</span>, <span class="fl">0.05</span>, text8,</span>
+<span id="cb18-48"><a href="#cb18-48" aria-hidden="true" tabindex="-1"></a>    transform<span class="op">=</span>axes[<span class="dv">7</span>].transAxes,</span>
+<span id="cb18-49"><a href="#cb18-49" aria-hidden="true" tabindex="-1"></a>    fontsize<span class="op">=</span><span class="dv">10</span>,</span>
+<span id="cb18-50"><a href="#cb18-50" aria-hidden="true" tabindex="-1"></a>    va<span class="op">=</span><span class="st">"bottom"</span>,</span>
+<span id="cb18-51"><a href="#cb18-51" aria-hidden="true" tabindex="-1"></a>    bbox<span class="op">=</span><span class="bu">dict</span>(boxstyle<span class="op">=</span><span class="st">"round"</span>, facecolor<span class="op">=</span><span class="st">"white"</span>, alpha<span class="op">=</span><span class="fl">0.85</span>)</span>
+<span id="cb18-52"><a href="#cb18-52" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb18-53"><a href="#cb18-53" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-54"><a href="#cb18-54" aria-hidden="true" tabindex="-1"></a>vmax_res <span class="op">=</span> np.<span class="bu">max</span>(np.<span class="bu">abs</span>(residual))</span>
+<span id="cb18-55"><a href="#cb18-55" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">8</span>].imshow(residual, cmap<span class="op">=</span><span class="st">"RdBu_r"</span>, vmin<span class="op">=-</span>vmax_res, vmax<span class="op">=</span>vmax_res)</span>
+<span id="cb18-56"><a href="#cb18-56" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">8</span>].set_title(<span class="st">"9. Residual = $z - (x + G</span><span class="ch">\\</span><span class="st">alpha)$"</span>)</span>
+<span id="cb18-57"><a href="#cb18-57" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">8</span>].axis(<span class="st">"off"</span>)</span>
+<span id="cb18-58"><a href="#cb18-58" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-59"><a href="#cb18-59" aria-hidden="true" tabindex="-1"></a>text9 <span class="op">=</span> (</span>
+<span id="cb18-60"><a href="#cb18-60" aria-hidden="true" tabindex="-1"></a>    <span class="ss">f"Euclidean distance = </span><span class="sc">{</span>euclidean_distance<span class="sc">:.3f}</span><span class="ch">\n</span><span class="ss">"</span></span>
+<span id="cb18-61"><a href="#cb18-61" aria-hidden="true" tabindex="-1"></a>    <span class="ss">f"Tangent distance = </span><span class="sc">{</span>tangent_distance<span class="sc">:.3f}</span><span class="ss">"</span></span>
+<span id="cb18-62"><a href="#cb18-62" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb18-63"><a href="#cb18-63" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">8</span>].text(</span>
+<span id="cb18-64"><a href="#cb18-64" aria-hidden="true" tabindex="-1"></a>    <span class="fl">1.02</span>, <span class="fl">0.05</span>, text9,</span>
+<span id="cb18-65"><a href="#cb18-65" aria-hidden="true" tabindex="-1"></a>    transform<span class="op">=</span>axes[<span class="dv">8</span>].transAxes,</span>
+<span id="cb18-66"><a href="#cb18-66" aria-hidden="true" tabindex="-1"></a>    fontsize<span class="op">=</span><span class="dv">10</span>,</span>
+<span id="cb18-67"><a href="#cb18-67" aria-hidden="true" tabindex="-1"></a>    va<span class="op">=</span><span class="st">"bottom"</span>,</span>
+<span id="cb18-68"><a href="#cb18-68" aria-hidden="true" tabindex="-1"></a>    bbox<span class="op">=</span><span class="bu">dict</span>(boxstyle<span class="op">=</span><span class="st">"round"</span>, facecolor<span class="op">=</span><span class="st">"white"</span>, alpha<span class="op">=</span><span class="fl">0.85</span>)</span>
+<span id="cb18-69"><a href="#cb18-69" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb18-70"><a href="#cb18-70" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-71"><a href="#cb18-71" aria-hidden="true" tabindex="-1"></a>fig.suptitle(</span>
+<span id="cb18-72"><a href="#cb18-72" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Tangent Distance Visualization: Local Transformation Invariance"</span>,</span>
+<span id="cb18-73"><a href="#cb18-73" aria-hidden="true" tabindex="-1"></a>    fontsize<span class="op">=</span><span class="dv">16</span>,</span>
+<span id="cb18-74"><a href="#cb18-74" aria-hidden="true" tabindex="-1"></a>    y<span class="op">=</span><span class="fl">0.98</span></span>
+<span id="cb18-75"><a href="#cb18-75" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb18-76"><a href="#cb18-76" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-77"><a href="#cb18-77" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb18-78"><a href="#cb18-78" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="chapter-6_files/figure-html/cell-16-output-1.png" width="1333" height="1254" class="figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="knn-graphs" class="level3">
+<h3 class="anchored" data-anchor-id="knn-graphs">9.3. KNN Graphs</h3>
+<p>KNN also defines graphs. Given data points <span class="math inline">\(x_1, \dots, x_n,\)</span> construct a graph <span class="math inline">\(G=(V,E),\)</span> where <span class="math inline">\(V=\{1,\dots, n\}\)</span>. A directed edge exists from <span class="math inline">\(i\)</span> to <span class="math inline">\(k\)</span> if <span class="math inline">\(j\in N_k(x_i)\)</span>. This is called <strong>KNN Graph</strong>.</p>
+<p>The adjacency matrix is</p>
+<p><span class="math display">\[
+A_{ij} =\begin{cases}
+1, &amp; j\in N_k(x_i)\\
+0, &amp; \text{otherwise}
+\end{cases}
+\]</span></p>
+<p>A weighted version is</p>
+<p><span class="math display">\[
+A_{ij} =\exp\left(-\frac{d(x_i,x_j)^2}{2h^2}\right)\mathbf{I}\{j\in N_k(x_i)\}
+\]</span></p>
+<p>KNN graphs are used in:</p>
+<ul>
+<li>manifold learning.</li>
+<li>spectral clustering,</li>
+<li>semi-supervised learning,</li>
+<li>community detection,</li>
+<li>graph-based anomaly detection.</li>
+</ul>
+<div id="cell-fig-KNN-graph" class="cell" data-execution_count="16">
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.datasets <span class="im">import</span> make_blobs</span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.neighbors <span class="im">import</span> kneighbors_graph</span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a>X, y <span class="op">=</span> make_blobs(n_samples<span class="op">=</span><span class="dv">80</span>, centers<span class="op">=</span><span class="dv">3</span>, random_state<span class="op">=</span><span class="dv">42</span>, cluster_std<span class="op">=</span><span class="fl">1.2</span>)</span>
+<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a>A <span class="op">=</span> kneighbors_graph(X, n_neighbors<span class="op">=</span><span class="dv">5</span>, mode<span class="op">=</span><span class="st">"connectivity"</span>, include_self<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb19-9"><a href="#cb19-9" aria-hidden="true" tabindex="-1"></a>A <span class="op">=</span> A.toarray()</span>
+<span id="cb19-10"><a href="#cb19-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-11"><a href="#cb19-11" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">7</span>, <span class="dv">6</span>))</span>
+<span id="cb19-12"><a href="#cb19-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-13"><a href="#cb19-13" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(X.shape[<span class="dv">0</span>]):</span>
+<span id="cb19-14"><a href="#cb19-14" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> j <span class="kw">in</span> <span class="bu">range</span>(X.shape[<span class="dv">0</span>]):</span>
+<span id="cb19-15"><a href="#cb19-15" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> A[i, j] <span class="op">==</span> <span class="dv">1</span>:</span>
+<span id="cb19-16"><a href="#cb19-16" aria-hidden="true" tabindex="-1"></a>            plt.plot(</span>
+<span id="cb19-17"><a href="#cb19-17" aria-hidden="true" tabindex="-1"></a>                [X[i, <span class="dv">0</span>], X[j, <span class="dv">0</span>]],</span>
+<span id="cb19-18"><a href="#cb19-18" aria-hidden="true" tabindex="-1"></a>                [X[i, <span class="dv">1</span>], X[j, <span class="dv">1</span>]],</span>
+<span id="cb19-19"><a href="#cb19-19" aria-hidden="true" tabindex="-1"></a>                linewidth<span class="op">=</span><span class="fl">0.5</span>,</span>
+<span id="cb19-20"><a href="#cb19-20" aria-hidden="true" tabindex="-1"></a>                alpha<span class="op">=</span><span class="fl">0.3</span></span>
+<span id="cb19-21"><a href="#cb19-21" aria-hidden="true" tabindex="-1"></a>            )</span>
+<span id="cb19-22"><a href="#cb19-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-23"><a href="#cb19-23" aria-hidden="true" tabindex="-1"></a>plt.scatter(X[:, <span class="dv">0</span>], X[:, <span class="dv">1</span>], c<span class="op">=</span>y, edgecolor<span class="op">=</span><span class="st">"k"</span>)</span>
+<span id="cb19-24"><a href="#cb19-24" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">"KNN Graph with k=5"</span>)</span>
+<span id="cb19-25"><a href="#cb19-25" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">"Feature 1"</span>)</span>
+<span id="cb19-26"><a href="#cb19-26" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">"Feature 2"</span>)</span>
+<span id="cb19-27"><a href="#cb19-27" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb19-28"><a href="#cb19-28" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-display">
+<div id="fig-knn-graph" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-knn-graph-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="chapter-6_files/figure-html/fig-knn-graph-output-1.png" width="662" height="566" class="figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-knn-graph-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;7: KNN Graph
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="examples" class="level2">
+<h2 class="anchored" data-anchor-id="examples">10. Examples</h2>
+<section id="handwritten-digit-recognition" class="level3">
+<h3 class="anchored" data-anchor-id="handwritten-digit-recognition">10.1. Handwritten Digit Recognition</h3>
+<p>Handwritten digit recognition is a classical KNN application. Each image is represented as a vector of pixel intensities. A KNN classifier the digit by finding training images whose pixel patterns are closest to the query image.</p>
+<p>Mathematically, each image is flattened into <span class="math inline">\(x_i\in \mathbb R^{64}\)</span>, and the label is <span class="math inline">\(y_i\in \{0, \dots, 9\}\)</span>. A KNN classifier predicts</p>
+<p><span class="math display">\[
+\hat y(x) = \arg \max_{c\in \{0,\dots, 9\}}\sum_{i\in N_k(x)}\mathbf{I}\{y_i=c\}
+\]</span></p>
+<div id="f1ce9553" class="cell" data-execution_count="17">
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb20"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.datasets <span class="im">import</span> load_digits</span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.neighbors <span class="im">import</span> KNeighborsClassifier</span>
+<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.model_selection <span class="im">import</span> train_test_split</span>
+<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.metrics <span class="im">import</span> ConfusionMatrixDisplay, accuracy_score</span>
+<span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-8"><a href="#cb20-8" aria-hidden="true" tabindex="-1"></a>digits <span class="op">=</span> load_digits()</span>
+<span id="cb20-9"><a href="#cb20-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-10"><a href="#cb20-10" aria-hidden="true" tabindex="-1"></a>X <span class="op">=</span> digits.data</span>
+<span id="cb20-11"><a href="#cb20-11" aria-hidden="true" tabindex="-1"></a>y <span class="op">=</span> digits.target</span>
+<span id="cb20-12"><a href="#cb20-12" aria-hidden="true" tabindex="-1"></a>images <span class="op">=</span> digits.images</span>
+<span id="cb20-13"><a href="#cb20-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-14"><a href="#cb20-14" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">8</span>, <span class="dv">4</span>))</span>
+<span id="cb20-15"><a href="#cb20-15" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">10</span>):</span>
+<span id="cb20-16"><a href="#cb20-16" aria-hidden="true" tabindex="-1"></a>    plt.subplot(<span class="dv">2</span>, <span class="dv">5</span>, i <span class="op">+</span> <span class="dv">1</span>)</span>
+<span id="cb20-17"><a href="#cb20-17" aria-hidden="true" tabindex="-1"></a>    plt.imshow(images[i], cmap<span class="op">=</span><span class="st">"gray"</span>)</span>
+<span id="cb20-18"><a href="#cb20-18" aria-hidden="true" tabindex="-1"></a>    plt.title(<span class="ss">f"Label: </span><span class="sc">{</span>y[i]<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb20-19"><a href="#cb20-19" aria-hidden="true" tabindex="-1"></a>    plt.axis(<span class="st">"off"</span>)</span>
+<span id="cb20-20"><a href="#cb20-20" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb20-21"><a href="#cb20-21" aria-hidden="true" tabindex="-1"></a>plt.show()</span>
+<span id="cb20-22"><a href="#cb20-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-23"><a href="#cb20-23" aria-hidden="true" tabindex="-1"></a><span class="co"># Train-test split</span></span>
+<span id="cb20-24"><a href="#cb20-24" aria-hidden="true" tabindex="-1"></a>X_train, X_test, y_train, y_test, images_train, images_test <span class="op">=</span> train_test_split(</span>
+<span id="cb20-25"><a href="#cb20-25" aria-hidden="true" tabindex="-1"></a>    X, y, images, test_size<span class="op">=</span><span class="fl">0.25</span>, random_state<span class="op">=</span><span class="dv">42</span>, stratify<span class="op">=</span>y</span>
+<span id="cb20-26"><a href="#cb20-26" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb20-27"><a href="#cb20-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-28"><a href="#cb20-28" aria-hidden="true" tabindex="-1"></a>knn <span class="op">=</span> KNeighborsClassifier(n_neighbors<span class="op">=</span><span class="dv">5</span>)</span>
+<span id="cb20-29"><a href="#cb20-29" aria-hidden="true" tabindex="-1"></a>knn.fit(X_train, y_train)</span>
+<span id="cb20-30"><a href="#cb20-30" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-31"><a href="#cb20-31" aria-hidden="true" tabindex="-1"></a>y_pred <span class="op">=</span> knn.predict(X_test)</span>
+<span id="cb20-32"><a href="#cb20-32" aria-hidden="true" tabindex="-1"></a>acc <span class="op">=</span> accuracy_score(y_test, y_pred)</span>
+<span id="cb20-33"><a href="#cb20-33" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-34"><a href="#cb20-34" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Test accuracy:"</span>, acc)</span>
+<span id="cb20-35"><a href="#cb20-35" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-36"><a href="#cb20-36" aria-hidden="true" tabindex="-1"></a><span class="co"># Confusion matrix</span></span>
+<span id="cb20-37"><a href="#cb20-37" aria-hidden="true" tabindex="-1"></a>ConfusionMatrixDisplay.from_predictions(y_test, y_pred)</span>
+<span id="cb20-38"><a href="#cb20-38" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">"KNN Confusion Matrix on Digits Dataset"</span>)</span>
+<span id="cb20-39"><a href="#cb20-39" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb20-40"><a href="#cb20-40" aria-hidden="true" tabindex="-1"></a>plt.show()</span>
+<span id="cb20-41"><a href="#cb20-41" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-42"><a href="#cb20-42" aria-hidden="true" tabindex="-1"></a><span class="co"># Show one query image and its nearest neighbors</span></span>
+<span id="cb20-43"><a href="#cb20-43" aria-hidden="true" tabindex="-1"></a>query_index <span class="op">=</span> <span class="dv">0</span></span>
+<span id="cb20-44"><a href="#cb20-44" aria-hidden="true" tabindex="-1"></a>query <span class="op">=</span> X_test[query_index].reshape(<span class="dv">1</span>, <span class="op">-</span><span class="dv">1</span>)</span>
+<span id="cb20-45"><a href="#cb20-45" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-46"><a href="#cb20-46" aria-hidden="true" tabindex="-1"></a>distances, indices <span class="op">=</span> knn.kneighbors(query, n_neighbors<span class="op">=</span><span class="dv">5</span>)</span>
+<span id="cb20-47"><a href="#cb20-47" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-48"><a href="#cb20-48" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">10</span>, <span class="dv">3</span>))</span>
+<span id="cb20-49"><a href="#cb20-49" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-50"><a href="#cb20-50" aria-hidden="true" tabindex="-1"></a>plt.subplot(<span class="dv">1</span>, <span class="dv">6</span>, <span class="dv">1</span>)</span>
+<span id="cb20-51"><a href="#cb20-51" aria-hidden="true" tabindex="-1"></a>plt.imshow(images_test[query_index], cmap<span class="op">=</span><span class="st">"gray"</span>)</span>
+<span id="cb20-52"><a href="#cb20-52" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="ss">f"Query</span><span class="ch">\n</span><span class="ss">True: </span><span class="sc">{</span>y_test[query_index]<span class="sc">}</span><span class="ch">\n</span><span class="ss">Pred: </span><span class="sc">{</span>knn<span class="sc">.</span>predict(query)[<span class="dv">0</span>]<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb20-53"><a href="#cb20-53" aria-hidden="true" tabindex="-1"></a>plt.axis(<span class="st">"off"</span>)</span>
+<span id="cb20-54"><a href="#cb20-54" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-55"><a href="#cb20-55" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> rank, idx <span class="kw">in</span> <span class="bu">enumerate</span>(indices[<span class="dv">0</span>]):</span>
+<span id="cb20-56"><a href="#cb20-56" aria-hidden="true" tabindex="-1"></a>    plt.subplot(<span class="dv">1</span>, <span class="dv">6</span>, rank <span class="op">+</span> <span class="dv">2</span>)</span>
+<span id="cb20-57"><a href="#cb20-57" aria-hidden="true" tabindex="-1"></a>    plt.imshow(images_train[idx], cmap<span class="op">=</span><span class="st">"gray"</span>)</span>
+<span id="cb20-58"><a href="#cb20-58" aria-hidden="true" tabindex="-1"></a>    plt.title(<span class="ss">f"Neighbor </span><span class="sc">{</span>rank<span class="op">+</span><span class="dv">1</span><span class="sc">}</span><span class="ch">\n</span><span class="ss">Label: </span><span class="sc">{</span>y_train[idx]<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb20-59"><a href="#cb20-59" aria-hidden="true" tabindex="-1"></a>    plt.axis(<span class="st">"off"</span>)</span>
+<span id="cb20-60"><a href="#cb20-60" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-61"><a href="#cb20-61" aria-hidden="true" tabindex="-1"></a>plt.suptitle(<span class="st">"KNN Prediction by Comparing to Nearest Training Images"</span>)</span>
+<span id="cb20-62"><a href="#cb20-62" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb20-63"><a href="#cb20-63" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="chapter-6_files/figure-html/cell-18-output-1.png" width="758" height="352" class="figure-img"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Test accuracy: 0.9844444444444445</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="chapter-6_files/figure-html/cell-18-output-3.png" width="524" height="470" class="figure-img"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="chapter-6_files/figure-html/cell-18-output-4.png" width="950" height="244" class="figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="recommender-systems" class="level3">
+<h3 class="anchored" data-anchor-id="recommender-systems">10.2. Recommender Systems</h3>
+<p>In collaborative filtering, KNN can recommend items by finding similar users or similar items. Let <span class="math inline">\(R\in \mathbb R^{m\times q}\)</span> be a user-item rating matrix, where <span class="math inline">\(R_{ui}\)</span> is the rating given by user <span class="math inline">\(u\)</span> to item <span class="math inline">\(i\)</span>.</p>
+<p>In <strong>user-based collaborative filtering</strong>, the similarity between users <span class="math inline">\(u\)</span> and <span class="math inline">\(v\)</span> may be computed using cosine similarity</p>
+<p><span class="math display">\[
+s(u,v) = \frac{R_u^\top R_v}{||R_u||_2 ||R_v||_2}
+\]</span></p>
+<p>The predicted rating of user <span class="math inline">\(u\)</span> for item <span class="math inline">\(i\)</span> is</p>
+<p><span class="math display">\[
+\hat R_{ui} = \frac{\sum_{v\in N_k(u)}s(u,v)R_{vi}}{\sum_{v\in N_k(u)}|s(u,v)|}
+\]</span></p>
+<p>In words, a user’s rating is predicted by averaging ratings from similar users, weighted by similarity.</p>
+<div id="cell-fig-user-similarity-heatmap" class="cell" data-execution_count="18">
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb22"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.metrics.pairwise <span class="im">import</span> cosine_similarity</span>
+<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-6"><a href="#cb22-6" aria-hidden="true" tabindex="-1"></a>ratings <span class="op">=</span> pd.DataFrame({</span>
+<span id="cb22-7"><a href="#cb22-7" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Action Movie"</span>: [<span class="dv">5</span>, <span class="dv">4</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">1</span>],</span>
+<span id="cb22-8"><a href="#cb22-8" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Comedy Movie"</span>: [<span class="dv">4</span>, <span class="dv">5</span>, <span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">0</span>],</span>
+<span id="cb22-9"><a href="#cb22-9" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Horror Movie"</span>: [<span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">5</span>, <span class="dv">4</span>, <span class="dv">0</span>],</span>
+<span id="cb22-10"><a href="#cb22-10" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Sci-Fi Movie"</span>: [<span class="dv">1</span>, <span class="dv">0</span>, <span class="dv">4</span>, <span class="dv">5</span>, <span class="dv">0</span>],</span>
+<span id="cb22-11"><a href="#cb22-11" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Romance Movie"</span>: [<span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">5</span>],</span>
+<span id="cb22-12"><a href="#cb22-12" aria-hidden="true" tabindex="-1"></a>}, index<span class="op">=</span>[<span class="st">"User A"</span>, <span class="st">"User B"</span>, <span class="st">"User C"</span>, <span class="st">"User D"</span>, <span class="st">"User E"</span>])</span>
+<span id="cb22-13"><a href="#cb22-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-14"><a href="#cb22-14" aria-hidden="true" tabindex="-1"></a>similarity <span class="op">=</span> cosine_similarity(ratings)</span>
+<span id="cb22-15"><a href="#cb22-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-16"><a href="#cb22-16" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">7</span>, <span class="dv">6</span>))</span>
+<span id="cb22-17"><a href="#cb22-17" aria-hidden="true" tabindex="-1"></a>plt.imshow(similarity)</span>
+<span id="cb22-18"><a href="#cb22-18" aria-hidden="true" tabindex="-1"></a>plt.colorbar(label<span class="op">=</span><span class="st">"Cosine similarity"</span>)</span>
+<span id="cb22-19"><a href="#cb22-19" aria-hidden="true" tabindex="-1"></a>plt.xticks(<span class="bu">range</span>(<span class="bu">len</span>(ratings.index)), ratings.index, rotation<span class="op">=</span><span class="dv">45</span>)</span>
+<span id="cb22-20"><a href="#cb22-20" aria-hidden="true" tabindex="-1"></a>plt.yticks(<span class="bu">range</span>(<span class="bu">len</span>(ratings.index)), ratings.index)</span>
+<span id="cb22-21"><a href="#cb22-21" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">"User-Based Collaborative Filtering: Similarity Matrix"</span>)</span>
+<span id="cb22-22"><a href="#cb22-22" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb22-23"><a href="#cb22-23" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-display">
+<div id="fig-user-similarity-heatmap" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-user-similarity-heatmap-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="chapter-6_files/figure-html/fig-user-similarity-heatmap-output-1.png" width="648" height="562" class="figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-user-similarity-heatmap-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;8: User Similarity Heatmap
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="anomaly-detection" class="level3">
+<h3 class="anchored" data-anchor-id="anomaly-detection">10.3. Anomaly Detection</h3>
+<p>KNN can also be used for anomaly detection. The idea is that normal points lie close to many other points, while anomalies are far from their neighbors.</p>
+<p>Define the KNN anomaly score as the average distance to the <span class="math inline">\(k\)</span> nearest neighbors:</p>
+<p><span class="math display">\[
+A_k(x) = \frac{1}{k}\sum_{i\in N_k(x)}d(x, x_i)
+\]</span></p>
+<p>Large values of <span class="math inline">\(A_k(x)\)</span> indicate that <span class="math inline">\(x\)</span> is isolated.</p>
+<div id="cell-fig-anomaly-detection" class="cell" data-execution_count="19">
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb23"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.neighbors <span class="im">import</span> NearestNeighbors</span>
+<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a>rng <span class="op">=</span> np.random.default_rng(<span class="dv">42</span>)</span>
+<span id="cb23-6"><a href="#cb23-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-7"><a href="#cb23-7" aria-hidden="true" tabindex="-1"></a>normal <span class="op">=</span> rng.normal(<span class="dv">0</span>, <span class="dv">1</span>, size<span class="op">=</span>(<span class="dv">200</span>, <span class="dv">2</span>))</span>
+<span id="cb23-8"><a href="#cb23-8" aria-hidden="true" tabindex="-1"></a>anomalies <span class="op">=</span> rng.uniform(<span class="dv">5</span>, <span class="dv">7</span>, size<span class="op">=</span>(<span class="dv">10</span>, <span class="dv">2</span>))</span>
+<span id="cb23-9"><a href="#cb23-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-10"><a href="#cb23-10" aria-hidden="true" tabindex="-1"></a>X <span class="op">=</span> np.vstack([normal, anomalies])</span>
+<span id="cb23-11"><a href="#cb23-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-12"><a href="#cb23-12" aria-hidden="true" tabindex="-1"></a>nn <span class="op">=</span> NearestNeighbors(n_neighbors<span class="op">=</span><span class="dv">5</span>)</span>
+<span id="cb23-13"><a href="#cb23-13" aria-hidden="true" tabindex="-1"></a>nn.fit(X)</span>
+<span id="cb23-14"><a href="#cb23-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-15"><a href="#cb23-15" aria-hidden="true" tabindex="-1"></a>distances, indices <span class="op">=</span> nn.kneighbors(X)</span>
+<span id="cb23-16"><a href="#cb23-16" aria-hidden="true" tabindex="-1"></a>scores <span class="op">=</span> distances.mean(axis<span class="op">=</span><span class="dv">1</span>)</span>
+<span id="cb23-17"><a href="#cb23-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-18"><a href="#cb23-18" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">7</span>, <span class="dv">6</span>))</span>
+<span id="cb23-19"><a href="#cb23-19" aria-hidden="true" tabindex="-1"></a>plt.scatter(X[:, <span class="dv">0</span>], X[:, <span class="dv">1</span>], c<span class="op">=</span>scores, edgecolor<span class="op">=</span><span class="st">"k"</span>)</span>
+<span id="cb23-20"><a href="#cb23-20" aria-hidden="true" tabindex="-1"></a>plt.colorbar(label<span class="op">=</span><span class="st">"Average distance to 5 nearest neighbors"</span>)</span>
+<span id="cb23-21"><a href="#cb23-21" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">"KNN Anomaly Detection Score"</span>)</span>
+<span id="cb23-22"><a href="#cb23-22" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">"Feature 1"</span>)</span>
+<span id="cb23-23"><a href="#cb23-23" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">"Feature 2"</span>)</span>
+<span id="cb23-24"><a href="#cb23-24" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb23-25"><a href="#cb23-25" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-display">
+<div id="fig-anomaly-detection" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-anomaly-detection-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="chapter-6_files/figure-html/fig-anomaly-detection-output-1.png" width="646" height="566" class="figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-anomaly-detection-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;9: Anomaly Detection
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<hr>
+<p>K-Nearest Neighbors is one of the simplest and most important models in supervised learning. Its central principle is local similarity: to predict the response for a new point, inspect the most similar points already observed.</p>
+<p>Mathematically, KNN replaces global model fitting with local neighborhood estimation. For classification, it estimates local class probabilities through neighbor voting. For regression, it estimates the conditional mean through local averaging. Its behavior is controlled primarily by the distance metric and the number of neighbors <span class="math inline">\(k\)</span>.</p>
+<p>KNN is powerful because it is flexible, intuitive, and non-parametric. It can model nonlinear boundaries without explicitly fitting a nonlinear equation. It can be extended to weighted voting, adaptive metrics, tangent distances, approximate search, anomaly detection, recommender systems, and graph-based learning.</p>
+<p>At the same time, KNN has serious limitations. Its dependence on distance makes it sensitive to scaling, irrelevant variables, and high dimensionality. Its memory-based nature makes prediction expensive for large datasets. Its local averaging structure means it usually cannot extrapolate.</p>
+<p>Next chapter: <a href="../../teaching/cds-303/chapter-7.html">Data Modeling - SVM</a></p>
+<hr>
 
 
 </section>
 </section>
 
-</main> <!-- /main -->
+
+<div id="quarto-appendix" class="default"><section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes"><h2 class="anchored quarto-appendix-heading">Footnotes</h2>
+
+<ol>
+<li id="fn1"><p>Cover, T., and P. Hart. “Nearest Neighbor Pattern Classification.” <em>IEEE Transactions on Information Theory</em> 13, no. 1 (1967): 21–27. <a href="https://doi.org/10.1109/TIT.1967.1053964">https://doi.org/10.1109/TIT.1967.1053964</a>.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn2"><p>Hastie, T., and R. Tibshirani. “Discriminant Adaptive Nearest Neighbor Classification.” <em>IEEE Transactions on Pattern Analysis and Machine Intelligence</em> 18, no. 6 (1996): 607–16. <a href="https://doi.org/10.1109/34.506411">https://doi.org/10.1109/34.506411</a>.<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+</ol>
+</section></div></main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
   window.document.addEventListener("DOMContentLoaded", function (event) {
     const icon = "";
