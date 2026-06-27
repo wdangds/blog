@@ -2125,7 +2125,7 @@ Epoch 2500, Loss: 0.2129</code></pre>
     }
       var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
       var mailtoRegex = new RegExp(/^mailto:/);
-        var filterRegex = new RegExp("https:\/\/wdangds\.github\.io\/blog\/");
+        var filterRegex = new RegExp("https:\/\/wdangds\.github\.io\/");
       var isInternal = (href) => {
           return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
       }
