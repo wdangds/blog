@@ -11,8 +11,8 @@ project:
 
 website:
   title: "Wan Dang"
-  site-url: https://wdangds.github.io/blog/
-  repo-url: https://github.com/wdangds/blog
+  site-url: https://wdangds.github.io/
+  repo-url: https://github.com/wdangds/wdangds.github.io
   navbar:
     left:
       - href: index.qmd
