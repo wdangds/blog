@@ -2,6 +2,7 @@
 .quarto/
 _site/
 **/*.quarto_ipynb
+teaching/cds-303/data/
 node_modules/
 public/
 .quartz-cache/
