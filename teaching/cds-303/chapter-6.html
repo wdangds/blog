@@ -384,12 +384,12 @@ window.Quarto = {
 </header>
 
 
-<p>While <a href="../../teaching/cds-303/chapter-4.html">regression models</a> approximate an unknown relationship through an mathematical function and <a href="../../teaching/cds-303/chapter-5.html">tree-based models</a> approximate the response by recursively partitioning the feature space into regions, <strong>K-Nearest Neighbors</strong>, usually abbreviated as <strong>KNN</strong> or <span class="math inline">\(\mathbf k\)</span>-<strong>NN</strong>, predicts by comparing a new observation to the most similar observations already seen. KNN is a <em>non-parametric</em>, <em>instance-based</em>, and <em>memory-based</em> learning method.</p>
+<p>While <a href="../../teaching/cds-303/chapter-4.html">regression models</a> approximate an unknown relationship through a mathematical function and <a href="../../teaching/cds-303/chapter-5.html">tree-based models</a> approximate the response by recursively partitioning the feature space into regions, <strong>K-Nearest Neighbors</strong>, usually abbreviated as <strong>KNN</strong> or <span class="math inline">\(\mathbf k\)</span>-<strong>NN</strong>, predicts by comparing a new observation to the most similar observations already seen. KNN is a <em>non-parametric</em>, <em>instance-based</em>, and <em>memory-based</em> learning method.</p>
 <p>This chapter studies KNN as a mathematical model of <strong>local constancy</strong>. The basic assumption is:</p>
 <blockquote class="blockquote">
-<p><strong>Point close to each other in feature space tend to have similar responses.</strong></p>
+<p><strong>Points close to each other in feature space tend to have similar responses.</strong></p>
 </blockquote>
-<p>For classification, this means nearby points tend to share the same class label. For regression, nearby points tend to have similar numerical target values. KNN therefore is sometimes used in <a href="../../teaching/cds-303/chapter-1.html#unsupervised-learning">unsupervised learning</a> tasks.</p>
+<p>For classification, this means nearby points tend to share the same class label. For regression, nearby points tend to have similar numerical target values. KNN is therefore sometimes used in <a href="../../teaching/cds-303/chapter-1.html#unsupervised-learning">unsupervised learning</a> tasks.</p>
 <p>KNN is often called a <strong>lazy learner</strong> because it performs almost no explicit model fitting during training. The training phase stores the data. The main computational work happens during prediction, when the algorithm searches for the nearest training points to a query point.</p>
 <section id="formal-setup" class="level2">
 <h2 class="anchored" data-anchor-id="formal-setup">1. Formal Setup</h2>
@@ -1267,7 +1267,7 @@ d_A(x, z) = \sqrt{((x-z)^\top)A(x) (x-z)}
 \]</span></p>
 <p>where <span class="math inline">\(A(x)\)</span> is a <a href="https://en.wikipedia.org/wiki/Definite_matrix">positive semidefinite matrix</a> adapted to the local neighborhood around <span class="math inline">\(x\)</span>.</p>
 <p>If class boundaries vary sharply in one direction, <span class="math inline">\(A(x)\)</span> can make distances grow faster in that direction. If class probabilities are stable in another direction, the metric can stretch the neighborhood in that direction. This reduces bias without necessarily increasing variance.</p>
-<div id="d763ce74" class="cell" data-execution_count="7">
+<div id="ffd78c7e" class="cell" data-execution_count="7">
 <details class="code-fold">
 <summary>Show code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
@@ -1295,7 +1295,7 @@ d_A(x, z) = \sqrt{((x-z)^\top)A(x) (x-z)}
 <span id="cb7-23"><a href="#cb7-23" aria-hidden="true" tabindex="-1"></a>x_query <span class="op">=</span> np.array([<span class="fl">0.1</span>, <span class="fl">0.05</span>])</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
-<div id="355e3a1f" class="cell" data-execution_count="8">
+<div id="533f4cec" class="cell" data-execution_count="8">
 <details class="code-fold">
 <summary>Show code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> euclidean_distances(X, x):</span>
@@ -1400,7 +1400,7 @@ d_A(x, z) = \sqrt{((x-z)^\top)A(x) (x-z)}
 <span id="cb8-100"><a href="#cb8-100" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> values[np.argmax(counts)]</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
-<div id="a31e7605" class="cell" data-execution_count="9">
+<div id="67662ec0" class="cell" data-execution_count="9">
 <details class="code-fold">
 <summary>Show code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>k_final <span class="op">=</span> <span class="dv">30</span>       <span class="co"># final number of neighbors</span></span>
@@ -1449,7 +1449,7 @@ Local DANN metric A:
  [-4.17558994  7.45534753]]</code></pre>
 </div>
 </div>
-<div id="3643fd48" class="cell" data-execution_count="10">
+<div id="29ae66ee" class="cell" data-execution_count="10">
 <details class="code-fold">
 <summary>Show code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>fig, axes <span class="op">=</span> plt.subplots(<span class="dv">2</span>, <span class="dv">3</span>, figsize<span class="op">=</span>(<span class="dv">18</span>, <span class="dv">10</span>))</span>
@@ -1636,7 +1636,7 @@ Local DANN metric A:
 <p>In image recognition, two images of the same object may differ by small transformations: translation, rotation, scaling, or deformation. Ordinary Euclidean distance between raw pixels may treat these as large differences even though the semantic object is unchanged.</p>
 <p>Tangent distance addresses this by measuring distance between transformation manifolds rather than raw images. Suppose an image is represented as a vector <span class="math inline">\(x\in \mathbb R^p\)</span>. Let <span class="math inline">\(\mathcal M_x\)</span> be the manifold of small transformations of <span class="math inline">\(x\)</span>, such as small rotations or translations. Tangent distance approximates this manifold locally by a tangent plane.</p>
 <p>Instead of comparing <span class="math inline">\(||x-z||_2\)</span>, one compares the distance between local tangent approximations of <span class="math inline">\(\mathcal M_x\)</span> and <span class="math inline">\(\mathcal M_z\)</span>.</p>
-<div id="37ae4d6d" class="cell" data-execution_count="11">
+<div id="d9abcb84" class="cell" data-execution_count="11">
 <details class="code-fold">
 <summary>Show code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
@@ -1661,7 +1661,7 @@ Local DANN metric A:
 <pre><code>Image shape: (32, 32)</code></pre>
 </div>
 </div>
-<div id="879cf46b" class="cell" data-execution_count="12">
+<div id="f3f95140" class="cell" data-execution_count="12">
 <details class="code-fold">
 <summary>Show code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> normalize_img(img):</span>
@@ -1726,7 +1726,7 @@ Local DANN metric A:
 <span id="cb14-60"><a href="#cb14-60" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> canvas</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
-<div id="cd969a52" class="cell" data-execution_count="13">
+<div id="6ec3e26a" class="cell" data-execution_count="13">
 <details class="code-fold">
 <summary>Show code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="co"># True small transformation used to create z</span></span>
@@ -1778,7 +1778,7 @@ Euclidean distance between x and z: 6.5915
 Tangent distance between x and z:  5.4914</code></pre>
 </div>
 </div>
-<div id="de143d72" class="cell" data-execution_count="14">
+<div id="5f9c7931" class="cell" data-execution_count="14">
 <details class="code-fold">
 <summary>Show code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>samples <span class="op">=</span> [</span>
@@ -1799,7 +1799,7 @@ Tangent distance between x and z:  5.4914</code></pre>
 <span id="cb17-16"><a href="#cb17-16" aria-hidden="true" tabindex="-1"></a>montage <span class="op">=</span> make_montage(samples, nrows<span class="op">=</span><span class="dv">2</span>, ncols<span class="op">=</span><span class="dv">3</span>, pad<span class="op">=</span><span class="dv">2</span>, pad_value<span class="op">=</span><span class="fl">0.0</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
-<div id="d37bf826" class="cell" data-execution_count="15">
+<div id="fea10406" class="cell" data-execution_count="15">
 <details class="code-fold">
 <summary>Show code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>fig, axes <span class="op">=</span> plt.subplots(<span class="dv">3</span>, <span class="dv">3</span>, figsize<span class="op">=</span>(<span class="dv">14</span>, <span class="dv">14</span>))</span>
@@ -1968,7 +1968,7 @@ Figure&nbsp;7: KNN Graph
 <p><span class="math display">\[
 \hat y(x) = \arg \max_{c\in \{0,\dots, 9\}}\sum_{i\in N_k(x)}\mathbf{I}\{y_i=c\}
 \]</span></p>
-<div id="f1ce9553" class="cell" data-execution_count="17">
+<div id="396e52ec" class="cell" data-execution_count="17">
 <details class="code-fold">
 <summary>Show code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb20"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
