@@ -1,0 +1,46 @@
+---
+title: "Blog"
+subtitle: "Technical notes, experiments, and whatever I am curious about next."
+toc: false
+page-layout: full
+---
+
+::::: {.blog-archive}
+
+## July 2026
+
+:::: {.blog-entry}
+::: {.blog-entry-copy}
+### [Multivariate Normal Distribution](multivariate-normal-distribution.qmd)
+
+::: {.blog-entry-tags}
+[Probability]{.blog-tag}
+[Statistics]{.blog-tag}
+[Multivariate analysis]{.blog-tag}
+:::
+:::
+
+::: {.blog-entry-date}
+July 1
+:::
+::::
+
+## October 2025
+
+:::: {.blog-entry}
+::: {.blog-entry-copy}
+### [Replicating a Simple GNN on Cora](replicating-a-simple-gnn-on-cora.qmd)
+
+::: {.blog-entry-tags}
+[GNN]{.blog-tag}
+[Cora]{.blog-tag}
+[Machine learning]{.blog-tag}
+:::
+:::
+
+::: {.blog-entry-date}
+October 27
+:::
+::::
+
+:::::

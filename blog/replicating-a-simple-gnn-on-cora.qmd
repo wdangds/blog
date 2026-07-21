@@ -6,11 +6,11 @@ tags:
   - machine-learning
   - neural-network
 date: 2025-10-27
-sidebar: projects
+description: A hands-on replication of a graph convolutional network for node classification on the Cora citation network.
 ---
 We're solving **node classification** on a graph: each node (paper) has features (bag-of-words) and a label (topic). We want a model that predicts a node's label using both its features and graph's connections.
 
-[Logistic regression](../../teaching/cds-303/chapter-4.qmd#logistic-regression) or a [decision tree](../../teaching/cds-303/chapter-5.qmd) uses **only the row's features**. But on graphs, who we're connected to matters (homophilly: connected nodes often share labels). A GNN layer explicitly *aggregates neighbor information* before classifying - so it's like "logistic regression on denoised/neighbor-aware features".
+[Logistic regression](../teaching/cds-303/chapter-4.qmd#logistic-regression) or a [decision tree](../teaching/cds-303/chapter-5.qmd) uses **only the row's features**. But on graphs, who we're connected to matters (homophily: connected nodes often share labels). A GNN layer explicitly *aggregates neighbor information* before classifying - so it's like "logistic regression on denoised/neighbor-aware features".
 
 ```python
 import os, random, time, math, pathlib
@@ -402,7 +402,7 @@ epoch 100 | loss 0.0137 | train 1.000 | val 0.774
 0.7919999957084656
 ```
 
-![base-train-val-loss.png](../../assets/images/projects/graph-neural-network/base-train-val-loss.png)
+![Training and validation loss for the baseline GCN](../assets/images/blog/base-train-val-loss.png)
 **What we see**:
 
 - **Loss**: plunges in the first 10-15 epochs, then approximately 0.0 $\Rightarrow$ the model fits the training nodes almost perfectly.
@@ -515,7 +515,7 @@ ablation_df = pd.DataFrame(rows).sort_values("test_acc", ascending = False).rese
 
 ## 7. Compare to non-graph baselines
 
-We will train [logistic regression](../../teaching/cds-303/chapter-4.qmd#logistic-regression) and a small **MLP** on `X` alone (ignore edges). Compare their test accuracy/macro-f1 to the GCN.
+We will train [logistic regression](../teaching/cds-303/chapter-4.qmd#logistic-regression) and a small **MLP** on `X` alone (ignore edges). Compare their test accuracy/macro-f1 to the GCN.
 
 | Model               | Formula                                                                     |
 | ------------------- | --------------------------------------------------------------------------- |
