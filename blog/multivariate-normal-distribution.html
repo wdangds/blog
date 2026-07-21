@@ -1,0 +1,1568 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.9.38">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="dcterms.date" content="2026-07-01">
+<meta name="description" content="Working notes on the geometry, covariance structure, and useful identities of the multivariate normal distribution.">
+
+<title>The Multivariate Normal Distribution – Wan Dang</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<script src="../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-15634bcf2e68342d4ad2dfa704d543f6.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap-b56d3e91de174e27d4060aa74ef9d337.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+<style>html{ scroll-behavior: smooth; }</style>
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+<link rel="stylesheet" href="../styles.css">
+</head>
+
+<body class="nav-fixed quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="../index.html">
+    <span class="navbar-title">Wan Dang</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../index.html"> 
+<span class="menu-text">Home</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../teaching/index.html"> 
+<span class="menu-text">Teaching</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../research/index.html"> 
+<span class="menu-text">Research</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../blog/index.html"> 
+<span class="menu-text">Blog</span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#what-the-distribution-actually-says" id="toc-what-the-distribution-actually-says" class="nav-link active" data-scroll-target="#what-the-distribution-actually-says">1. What the distribution actually says</a></li>
+  <li><a href="#where-the-formula-comes-from" id="toc-where-the-formula-comes-from" class="nav-link" data-scroll-target="#where-the-formula-comes-from">2. Where the formula comes from</a>
+  <ul class="collapse">
+  <li><a href="#step-1-build-a-vector" id="toc-step-1-build-a-vector" class="nav-link" data-scroll-target="#step-1-build-a-vector">Step 1 — build a vector</a></li>
+  <li><a href="#step-2-mean-and-covariance" id="toc-step-2-mean-and-covariance" class="nav-link" data-scroll-target="#step-2-mean-and-covariance">Step 2 — mean and covariance</a></li>
+  <li><a href="#step-3-change-variables-to-get-the-density" id="toc-step-3-change-variables-to-get-the-density" class="nav-link" data-scroll-target="#step-3-change-variables-to-get-the-density">Step 3 — change variables to get the density</a></li>
+  </ul></li>
+  <li><a href="#the-three-properties-doing-all-the-work" id="toc-the-three-properties-doing-all-the-work" class="nav-link" data-scroll-target="#the-three-properties-doing-all-the-work">3. The three properties doing all the work</a>
+  <ul class="collapse">
+  <li><a href="#closed-under-linear-transformation" id="toc-closed-under-linear-transformation" class="nav-link" data-scroll-target="#closed-under-linear-transformation">3.1. Closed under linear transformation</a></li>
+  <li><a href="#marginals-and-conditionals-are-gaussian" id="toc-marginals-and-conditionals-are-gaussian" class="nav-link" data-scroll-target="#marginals-and-conditionals-are-gaussian">3.2. Marginals and Conditionals are Gaussian</a></li>
+  <li><a href="#mahalanobis-distance-has-a-known-distribution" id="toc-mahalanobis-distance-has-a-known-distribution" class="nav-link" data-scroll-target="#mahalanobis-distance-has-a-known-distribution">3.3. Mahalanobis distance has a known distribution</a></li>
+  </ul></li>
+  <li><a href="#meeting-reality-when-the-assumption-is-earned" id="toc-meeting-reality-when-the-assumption-is-earned" class="nav-link" data-scroll-target="#meeting-reality-when-the-assumption-is-earned">4. Meeting reality: when the assumption is earned</a></li>
+  <li><a href="#a-practitioners-guideline" id="toc-a-practitioners-guideline" class="nav-link" data-scroll-target="#a-practitioners-guideline">5. A practitioner’s guideline</a>
+  <ul class="collapse">
+  <li><a href="#step-1-frame-the-question-as-a-joint-distribution" id="toc-step-1-frame-the-question-as-a-joint-distribution" class="nav-link" data-scroll-target="#step-1-frame-the-question-as-a-joint-distribution">Step 1 — Frame the question as a joint distribution</a></li>
+  <li><a href="#step-2-check-whether-the-assumption-is-earned" id="toc-step-2-check-whether-the-assumption-is-earned" class="nav-link" data-scroll-target="#step-2-check-whether-the-assumption-is-earned">Step 2 — Check whether the assumption is earned</a></li>
+  <li><a href="#step-3-estimate-m-and-sigma-and-regularize-if-needed." id="toc-step-3-estimate-m-and-sigma-and-regularize-if-needed." class="nav-link" data-scroll-target="#step-3-estimate-m-and-sigma-and-regularize-if-needed.">Step 3 — Estimate <span class="math inline">\(M\)</span> and <span class="math inline">\(\Sigma\)</span>, and regularize if needed.</a></li>
+  <li><a href="#step-4-answer-the-actual-question-with-closed-form-formulas" id="toc-step-4-answer-the-actual-question-with-closed-form-formulas" class="nav-link" data-scroll-target="#step-4-answer-the-actual-question-with-closed-form-formulas">Step 4 — Answer the actual question with closed-form formulas</a></li>
+  <li><a href="#step-5-validate-on-held-out-data" id="toc-step-5-validate-on-held-out-data" class="nav-link" data-scroll-target="#step-5-validate-on-held-out-data">Step 5 — Validate on held-out data</a></li>
+  </ul></li>
+  <li><a href="#from-math-to-implementation" id="toc-from-math-to-implementation" class="nav-link" data-scroll-target="#from-math-to-implementation">6. From math to implementation</a></li>
+  <li><a href="#pitfalls-worth-knowing-before-we-ship-this" id="toc-pitfalls-worth-knowing-before-we-ship-this" class="nav-link" data-scroll-target="#pitfalls-worth-knowing-before-we-ship-this">7. Pitfalls worth knowing before we ship this</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">The Multivariate Normal Distribution</h1>
+</div>
+
+<div>
+  <div class="description">
+    Working notes on the geometry, covariance structure, and useful identities of the multivariate normal distribution.
+  </div>
+</div>
+
+
+<div class="quarto-title-meta">
+
+    
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">July 1, 2026</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<p>The multivariate normal shows up everywhere — sensor fusion, finance, Gaussian processes, anomaly detection — not because nature is Gaussian (!?), but because it is the distribution we get almost for <em>free</em> once we accept a few modeling shortcuts, and it happens to be the one multivariate distribution we can compute with in <em>closed form</em>. At the moment, I am writing another post about&nbsp;<a href="../teaching/cds-303/chapter-9.html">Bayesian inference</a>, and I think we really need an understanding of one of (or, not gonna lie, the true) most popular distributions that will later be discussed everywhere in the context of probability (or Bayesian) concepts. This post builds it up from scratch, derives the properties that make it useful, and then walk we through <em>how</em> to actually use it on a real problem.</p>
+<div id="cell-fig-multivariate-normal-distribution" class="cell" data-execution_count="1">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> scipy.stats <span class="im">import</span> multivariate_normal</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Mean vector</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>mean <span class="op">=</span> [<span class="dv">0</span>, <span class="dv">0</span>]</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Covariance matrix</span></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>cov <span class="op">=</span> [</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>    [<span class="dv">1</span>, <span class="fl">0.6</span>],</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>    [<span class="fl">0.6</span>, <span class="dv">1</span>]</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>]</span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a><span class="co"># Create x-y grid</span></span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>x <span class="op">=</span> np.linspace(<span class="op">-</span><span class="dv">4</span>, <span class="dv">4</span>, <span class="dv">100</span>)</span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>y <span class="op">=</span> np.linspace(<span class="op">-</span><span class="dv">4</span>, <span class="dv">4</span>, <span class="dv">100</span>)</span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>X, Y <span class="op">=</span> np.meshgrid(x, y)</span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a><span class="co"># Combine X and Y into coordinate pairs</span></span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a>pos <span class="op">=</span> np.dstack((X, Y))</span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a><span class="co"># Multivariate normal density</span></span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a>rv <span class="op">=</span> multivariate_normal(mean, cov)</span>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a>Z <span class="op">=</span> rv.pdf(pos)</span>
+<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a><span class="co"># 3D plot</span></span>
+<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a>fig <span class="op">=</span> plt.figure(figsize<span class="op">=</span>(<span class="dv">8</span>, <span class="dv">6</span>))</span>
+<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a>ax <span class="op">=</span> fig.add_subplot(<span class="dv">111</span>, projection<span class="op">=</span><span class="st">"3d"</span>)</span>
+<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a>ax.plot_surface(X, Y, Z, cmap<span class="op">=</span><span class="st">"viridis"</span>)</span>
+<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a>ax.set_title(<span class="st">"Multivariate Normal Distribution"</span>)</span>
+<span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a>ax.set_xlabel(<span class="st">"X"</span>)</span>
+<span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a>ax.set_ylabel(<span class="st">"Y"</span>)</span>
+<span id="cb1-35"><a href="#cb1-35" aria-hidden="true" tabindex="-1"></a>ax.set_zlabel(<span class="st">"Density"</span>)</span>
+<span id="cb1-36"><a href="#cb1-36" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-37"><a href="#cb1-37" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-display">
+<div id="fig-multivariate-normal-distribution" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-multivariate-normal-distribution-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="multivariate-normal-distribution_files/figure-html/fig-multivariate-normal-distribution-output-1.png" width="487" height="484" class="figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-multivariate-normal-distribution-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;1: Multivariate Normal Distribution
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<section id="what-the-distribution-actually-says" class="level2">
+<h2 class="anchored" data-anchor-id="what-the-distribution-actually-says">1. What the distribution actually says</h2>
+<p>Start from the one-dimensional normal we already know: a bell curve controlled by a mean <span class="math inline">\(\mu\)</span> and a variance <span class="math inline">\(\sigma^2\)</span>. The multivariate normal is the natural generalization to a random <em>vector</em> <span class="math inline">\(\mathbf{x}=(x_1, \dots, x_k)\)</span> instead of a single number. Instead of a mean and a variance, it’s controlled by a mean <em>vector</em> and a covariance <em>matrix</em>; and instead of a symmetric bump on a line, its density is a symmetric bump over a <span class="math inline">\(k\)</span>-dimensional space, whose cross-sections are ellipses rather than points.</p>
+<div class="callout callout-style-default callout-note callout-titled" title="Definition">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Definition
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>A random vector <span class="math inline">\(\mathbf{x}\in \mathbb R^{k}\)</span> has a (non-degenerate) multivariate normal distribution with a mean vector <span class="math inline">\(\boldsymbol\mu\)</span> and covariance matrix <span class="math inline">\(\Sigma\)</span> (symmetric, positive definite) if its density is</p>
+<p><span class="math display">\[
+f(x) = \frac{1}{\sqrt{(2\pi)^k\det(\Sigma)}} \exp \left(-\frac{1}{2}(\mathbf{x}-\boldsymbol\mu)^\top \Sigma^{-1}(\mathbf{x}-\boldsymbol\mu)\right)
+\]</span></p>
+<p>written <span class="math inline">\(\mathbf x \sim \mathcal N(\boldsymbol\mu, \Sigma)\)</span>. When <span class="math inline">\(\boldsymbol\mu=\mathbf{0}\)</span> and <span class="math inline">\(\Sigma=I\)</span> (the identity), this is the <em>standard</em> multivariate normal — just <span class="math inline">\(k\)</span> independent standard normals stacked into a vector.</p>
+</div>
+</div>
+<p>Two structural facts are worth noticing immediately, because everything later depends on them. First, the exponent is a quadratic form, <span class="math inline">\((\mathbf{x}-\boldsymbol\mu)^\top \Sigma^{-1}(\mathbf{x}-\boldsymbol\mu)\)</span> , and quadratic forms with a positive-definite matrix have ellipsoidal level sets. So every “slice” of constant density is an ellipse (in 2D) or ellipsoid (in higher dimensions), centered at <span class="math inline">\(\boldsymbol \mu\)</span>, whose shape and orientation come entirely from <span class="math inline">\(\Sigma\)</span>. Second, <span class="math inline">\(\Sigma\)</span> is doing two jobs at once: its diagonal entries are the ordinary per-coordinate variances, and its off-diagonal entries are the covariances that tell us how the coordinates move together<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>.</p>
+<div id="cell-fig-contour-plot-bivariate-normal-density" class="cell" data-execution_count="2">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> scipy.stats <span class="im">import</span> multivariate_normal, chi2</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> matplotlib.patches <span class="im">import</span> Ellipse</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>mu <span class="op">=</span> np.array([<span class="dv">0</span>, <span class="dv">0</span>])</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>Sigma <span class="op">=</span> np.array([</span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>    [<span class="fl">4.0</span>, <span class="fl">2.4</span>],</span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>    [<span class="fl">2.4</span>, <span class="fl">2.0</span>]</span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>])</span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>x <span class="op">=</span> np.linspace(<span class="op">-</span><span class="dv">6</span>, <span class="dv">6</span>, <span class="dv">300</span>)</span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>y <span class="op">=</span> np.linspace(<span class="op">-</span><span class="dv">5</span>, <span class="dv">5</span>, <span class="dv">300</span>)</span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>X, Y <span class="op">=</span> np.meshgrid(x, y)</span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>pos <span class="op">=</span> np.dstack((X, Y))</span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a>Z <span class="op">=</span> multivariate_normal(mu, Sigma).pdf(pos)</span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a>eigvals, eigvecs <span class="op">=</span> np.linalg.eigh(Sigma)</span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a>order <span class="op">=</span> eigvals.argsort()[::<span class="op">-</span><span class="dv">1</span>]</span>
+<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a>eigvals <span class="op">=</span> eigvals[order]</span>
+<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a>eigvecs <span class="op">=</span> eigvecs[:, order]</span>
+<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a>angle <span class="op">=</span> np.degrees(np.arctan2(eigvecs[<span class="dv">1</span>, <span class="dv">0</span>], eigvecs[<span class="dv">0</span>, <span class="dv">0</span>]))</span>
+<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">8</span>, <span class="dv">6</span>))</span>
+<span id="cb2-25"><a href="#cb2-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-26"><a href="#cb2-26" aria-hidden="true" tabindex="-1"></a>ax.contourf(X, Y, Z, levels<span class="op">=</span><span class="dv">20</span>, alpha<span class="op">=</span><span class="fl">0.7</span>)</span>
+<span id="cb2-27"><a href="#cb2-27" aria-hidden="true" tabindex="-1"></a>ax.contour(X, Y, Z, levels<span class="op">=</span><span class="dv">10</span>, linewidths<span class="op">=</span><span class="dv">1</span>)</span>
+<span id="cb2-28"><a href="#cb2-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-29"><a href="#cb2-29" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> c <span class="kw">in</span> [<span class="fl">0.50</span>, <span class="fl">0.80</span>, <span class="fl">0.95</span>]:</span>
+<span id="cb2-30"><a href="#cb2-30" aria-hidden="true" tabindex="-1"></a>    s <span class="op">=</span> chi2.ppf(c, df<span class="op">=</span><span class="dv">2</span>)</span>
+<span id="cb2-31"><a href="#cb2-31" aria-hidden="true" tabindex="-1"></a>    a <span class="op">=</span> np.sqrt(s <span class="op">*</span> eigvals[<span class="dv">0</span>])</span>
+<span id="cb2-32"><a href="#cb2-32" aria-hidden="true" tabindex="-1"></a>    b <span class="op">=</span> np.sqrt(s <span class="op">*</span> eigvals[<span class="dv">1</span>])</span>
+<span id="cb2-33"><a href="#cb2-33" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-34"><a href="#cb2-34" aria-hidden="true" tabindex="-1"></a>    e <span class="op">=</span> Ellipse(mu, <span class="dv">2</span><span class="op">*</span>a, <span class="dv">2</span><span class="op">*</span>b, angle<span class="op">=</span>angle, fill<span class="op">=</span><span class="va">False</span>, lw<span class="op">=</span><span class="dv">2</span>)</span>
+<span id="cb2-35"><a href="#cb2-35" aria-hidden="true" tabindex="-1"></a>    ax.add_patch(e)</span>
+<span id="cb2-36"><a href="#cb2-36" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-37"><a href="#cb2-37" aria-hidden="true" tabindex="-1"></a><span class="co"># principal axes</span></span>
+<span id="cb2-38"><a href="#cb2-38" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">2</span>):</span>
+<span id="cb2-39"><a href="#cb2-39" aria-hidden="true" tabindex="-1"></a>    v <span class="op">=</span> eigvecs[:, i]</span>
+<span id="cb2-40"><a href="#cb2-40" aria-hidden="true" tabindex="-1"></a>    length <span class="op">=</span> <span class="fl">2.8</span> <span class="op">*</span> np.sqrt(eigvals[i])</span>
+<span id="cb2-41"><a href="#cb2-41" aria-hidden="true" tabindex="-1"></a>    ax.plot(</span>
+<span id="cb2-42"><a href="#cb2-42" aria-hidden="true" tabindex="-1"></a>        [mu[<span class="dv">0</span>] <span class="op">-</span> length<span class="op">*</span>v[<span class="dv">0</span>], mu[<span class="dv">0</span>] <span class="op">+</span> length<span class="op">*</span>v[<span class="dv">0</span>]],</span>
+<span id="cb2-43"><a href="#cb2-43" aria-hidden="true" tabindex="-1"></a>        [mu[<span class="dv">1</span>] <span class="op">-</span> length<span class="op">*</span>v[<span class="dv">1</span>], mu[<span class="dv">1</span>] <span class="op">+</span> length<span class="op">*</span>v[<span class="dv">1</span>]],</span>
+<span id="cb2-44"><a href="#cb2-44" aria-hidden="true" tabindex="-1"></a>        <span class="st">'--'</span>, lw<span class="op">=</span><span class="dv">2</span></span>
+<span id="cb2-45"><a href="#cb2-45" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb2-46"><a href="#cb2-46" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-47"><a href="#cb2-47" aria-hidden="true" tabindex="-1"></a>ax.scatter(<span class="op">*</span>mu, s<span class="op">=</span><span class="dv">30</span>)</span>
+<span id="cb2-48"><a href="#cb2-48" aria-hidden="true" tabindex="-1"></a>ax.set_title(<span class="st">"Bivariate Normal"</span>)</span>
+<span id="cb2-49"><a href="#cb2-49" aria-hidden="true" tabindex="-1"></a>ax.set_xlabel(<span class="st">"X"</span>)</span>
+<span id="cb2-50"><a href="#cb2-50" aria-hidden="true" tabindex="-1"></a>ax.set_ylabel(<span class="st">"Y"</span>)</span>
+<span id="cb2-51"><a href="#cb2-51" aria-hidden="true" tabindex="-1"></a>ax.set_aspect(<span class="st">"equal"</span>)</span>
+<span id="cb2-52"><a href="#cb2-52" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-display">
+<div id="fig-contour-plot-bivariate-normal-density" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-contour-plot-bivariate-normal-density-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="multivariate-normal-distribution_files/figure-html/fig-contour-plot-bivariate-normal-density-output-1.png" width="603" height="523" class="figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-contour-plot-bivariate-normal-density-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;2: A bivariate normal with positive correlation. The density’s level sets are ellipses; their axes point along the eigenvectors of the covariance matrix, and their radii along each axis scale with the square root of the corresponding eigenvalue. This is exactly why correlated data looks like a tilted cloud rather than a circular one.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>That geometric picture demonstrates two things: <span class="math inline">\(\boldsymbol \mu\)</span> tells us where the cloud is centered, and <span class="math inline">\(\Sigma\)</span> tells us its shape (how stretched it is, and in which direction). Everything else later in this post you will see is really about exploiting that geometry.</p>
+</section>
+<section id="where-the-formula-comes-from" class="level2">
+<h2 class="anchored" data-anchor-id="where-the-formula-comes-from">2. Where the formula comes from</h2>
+<p>It’s tempting to treat the density formula above as something to memorize. It’s more useful — and much easier to remember — to see it built from a single idea: <em>a multivariate normal is just a linear transformation of independent standard normals.<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a></em></p>
+<section id="step-1-build-a-vector" class="level3">
+<h3 class="anchored" data-anchor-id="step-1-build-a-vector">Step 1 — build a vector</h3>
+<p>Let <span class="math inline">\(\mathbf{z} = (z_1, \dots, z_k)\)</span> be <span class="math inline">\(k\)</span> independent standard normal variables, so <span class="math inline">\(\mathbf{z} \sim \mathcal N(0,I)\)</span>, Pick any mean vector <span class="math inline">\(\boldsymbol \mu\)</span> and any <em>invertible</em> matrix <span class="math inline">\(A\)</span>, and define</p>
+<p><span class="math display">\[
+\mathbf{x} = \boldsymbol \mu + A\mathbf{z}
+\]</span></p>
+<p>This <span class="math inline">\(\mathbf{x}\)</span> is, by construction a linear combination of independent normals, shifted by a constant — and a fact about the normal family is that any linear combination of independent normal variables is itself normal! We come up with a friendly property:</p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Tip
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>A vector is multivariate normal precisely when every linear combination of its entries is a (univariate) normal random variable.</p>
+</div>
+</div>
+<p>Constructing <span class="math inline">\(\mathbf{x}\)</span> this way just gives us a concrete object satisfying that property.</p>
+</section>
+<section id="step-2-mean-and-covariance" class="level3">
+<h3 class="anchored" data-anchor-id="step-2-mean-and-covariance">Step 2 — mean and covariance</h3>
+<p>Because expectation is linear, <span class="math inline">\(\mathbb E[\mathbf{x}]=\boldsymbol \mu + A\mathbb E[\mathbf{z}]=\boldsymbol \mu\)</span>. For the covariance, using <span class="math inline">\(\text{Cov}(\mathbf{z})=I\)</span>:</p>
+<p><span class="math display">\[
+\Sigma = \text{Cov}(\mathbf{x}) = A\cdot \text{Cov}(\mathbf{z}) \cdot A^\top= AA^\top
+\]</span></p>
+<p>So the covariance matrix of <span class="math inline">\(\mathbf{x}\)</span> is entirely determined by <span class="math inline">\(A\)</span>. Conversely, any symmetric positive-definite <span class="math inline">\(\Sigma\)</span> can be <em>factored</em> this way — for instance via a <a href="https://en.wikipedia.org/wiki/Cholesky_decomposition">Cholesky decomposition</a> — which is why every valid <span class="math inline">\((\boldsymbol \mu, \Sigma)\)</span> pair corresponds to some such construction<a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a>.</p>
+</section>
+<section id="step-3-change-variables-to-get-the-density" class="level3">
+<h3 class="anchored" data-anchor-id="step-3-change-variables-to-get-the-density">Step 3 — change variables to get the density</h3>
+<p>The density of <span class="math inline">\(\mathbf z\)</span> is the product of <span class="math inline">\(k\)</span> standard normal density</p>
+<p><span class="math display">\[
+g(\mathbf z) = \frac{1}{\sqrt{(2\pi)^k}}\exp \left(-\frac{1}{2}\mathbf z^\top \mathbf z\right)
+\]</span></p>
+<p>Since <span class="math inline">\(\mathbf x = \boldsymbol \mu +A\mathbf z\)</span> is an invertible linear map, the multivariate change-of-variables formula says</p>
+<p><span class="math display">\[
+f(\mathbf x)= g(A^{-1} (\mathbf x-\boldsymbol \mu))\cdot |\det(A^{-1})|
+\]</span></p>
+<p>Substituting <span class="math inline">\(\mathbf{z} = A^{-1}(\mathbf{x}-\boldsymbol\mu)\)</span> into the exponent and using <span class="math inline">\({A^{-1}}^\top A^{-1} = (AA^\top)^{-1}=\Sigma^{-1}\)</span>, and <span class="math inline">\(|\det(A^{-1})|=|\Sigma|^{-1/2}\)</span>, everything collapses back into the formula from Part 1:</p>
+<p><span class="math display">\[
+f(x) = \frac{1}{\sqrt{(2\pi)^k\det(\Sigma)}} \exp \left(-\frac{1}{2}(\mathbf{x}-\boldsymbol\mu)^\top \Sigma^{-1}(\mathbf{x}-\boldsymbol\mu)\right)
+\]</span></p>
+<p>This derivation is exactly how us sample from a multivariate normal on a computer: draw independent standard normals, then apply a Cholesky factor of <span class="math inline">\(\Sigma\)</span> and shift by <span class="math inline">\(\boldsymbol \mu\)</span>. It is the cleanest way (IMO) to see why the formula has the shape it does instead of treating it as an arbitrary object to plug numbers into.</p>
+<blockquote class="blockquote">
+<p>A second, equivalent route worth knowing exists via the <a href="https://statproofbook.github.io/P/mvn-mgf.html">moment generating function</a>: for <span class="math inline">\(\mathbf t\in \mathbb R^{k}\)</span>, <span class="math inline">\(M_\mathbf{x}(\mathbf{t})=\exp(\mathbf{t}^\top \boldsymbol \mu + \frac{1}{2} \mathbf t^\top \Sigma \mathbf t)\)</span>, obtained directly from the univariate MGF of the scalar projection <span class="math inline">\(\mathbf t ^\top \mathbf x\)</span>. This route is favored in more measure-theoretic treatments because it extends cleanly to the degenerate case where <span class="math inline">\(\Sigma\)</span> is only positive <em>semi</em>-definite and no density exists at all.</p>
+</blockquote>
+</section>
+</section>
+<section id="the-three-properties-doing-all-the-work" class="level2">
+<h2 class="anchored" data-anchor-id="the-three-properties-doing-all-the-work">3. The three properties doing all the work</h2>
+<p>Almost every practical use of the multivariate normal — <a href="https://en.wikipedia.org/wiki/Kalman_filter">Kalman filters</a>, <a href="https://en.wikipedia.org/wiki/Gaussian_process">Gaussian process</a> regression, <a href="https://en.wikipedia.org/wiki/Linear_discriminant_analysis">discriminant analysis</a>, portfolio risk — leans on one of three closure properties. They’re the reason this distribution is tractable where almost every other multivariate distribution isn’t.</p>
+<section id="closed-under-linear-transformation" class="level3">
+<h3 class="anchored" data-anchor-id="closed-under-linear-transformation">3.1. Closed under linear transformation</h3>
+<p>If <span class="math inline">\(\mathbf x\sim\mathcal N (\boldsymbol \mu,\Sigma)\)</span> and <span class="math inline">\(\mathbf y = B\mathbf x + \mathbf c\)</span> for a constant matrix <span class="math inline">\(B\)</span> and vector <span class="math inline">\(\mathbf c\)</span>, then <span class="math inline">\(\mathbf y \sim \mathcal N(B\boldsymbol \mu + \mathbf c, B\Sigma B^\top)\)</span>, which still exactly Gaussian. This is why summed portfolios, rotated coordinate systems, and linear sensor readings of a Gaussian state all stay Gaussian.</p>
+</section>
+<section id="marginals-and-conditionals-are-gaussian" class="level3">
+<h3 class="anchored" data-anchor-id="marginals-and-conditionals-are-gaussian">3.2. Marginals and Conditionals are Gaussian</h3>
+<p>Partition <span class="math inline">\(\mathbf x\)</span> into two blocks <span class="math inline">\(\mathbf x_1\)</span> and <span class="math inline">\(\mathbf x_2\)</span>, with the mean and covariance partitioned to match</p>
+<p><span class="math display">\[
+\boldsymbol \mu =[\boldsymbol \mu_1, \boldsymbol \mu_2], \qquad \Sigma = \begin{bmatrix}\Sigma_{11}&amp; \Sigma_{12}\\ \Sigma_{21}&amp;\Sigma_{22}\end{bmatrix}
+\]</span></p>
+<p>Then the marginal of <span class="math inline">\(\mathbf x_1\)</span> alone is simply <span class="math inline">\(\mathbf x_1\sim\mathcal N(\boldsymbol \mu_1, \Sigma_{11})\)</span> — drop the rows/columns we don’t need, no re-normalization required. More strikingly, the <em>conditional</em> distribution of <span class="math inline">\(\mathbf x_1\)</span> given <span class="math inline">\(\mathbf x_2= \mathbf a\)</span> is <em>also</em> exactly Gaussian:</p>
+<div class="callout callout-style-default callout-tip callout-titled" title="Property — Gaussian Conditioning">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>Property — Gaussian Conditioning
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><span class="math display">\[
+\mathbf x_1 \,|\,\mathbf x_2 = \mathbf a \sim \mathcal N(\boldsymbol \mu_1 + \Sigma_{12}\Sigma_{22}^{-1}(\mathbf a-\boldsymbol \mu_2),  \Sigma_{11}-\Sigma_{12}\Sigma_{22}^{-1}\Sigma_{21})
+\]</span></p>
+<p>The covariance term, <span class="math inline">\(\Sigma_{11}-\Sigma_{12}\Sigma_{22}^{-1}\Sigma_{21}\)</span>, is called the <em>Schur complement</em> of <span class="math inline">\(\Sigma_{22}\)</span> in <span class="math inline">\(\Sigma\)</span>. Notice it doesn’t depend on the observed value <span class="math inline">\(\mathbf a\)</span> at all — only the mean shifts with the observation, the uncertainty shrinkage is fixed in advance.</p>
+</div>
+</div>
+<div id="cell-fig-joint-gaussian-density-with-a-conditioning-slice" class="cell" data-execution_count="3">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> scipy.stats <span class="im">import</span> multivariate_normal, norm</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Define a positively correlated joint Gaussian</span></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>mu <span class="op">=</span> np.array([<span class="fl">0.0</span>, <span class="fl">0.0</span>])</span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>sigma1 <span class="op">=</span> <span class="fl">1.5</span></span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>sigma2 <span class="op">=</span> <span class="fl">1.0</span></span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>rho <span class="op">=</span> <span class="fl">0.8</span></span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>Sigma <span class="op">=</span> np.array([</span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>    [sigma1<span class="op">**</span><span class="dv">2</span>, rho <span class="op">*</span> sigma1 <span class="op">*</span> sigma2],</span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a>    [rho <span class="op">*</span> sigma1 <span class="op">*</span> sigma2, sigma2<span class="op">**</span><span class="dv">2</span>]</span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a>])</span>
+<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a><span class="co"># Fixed conditioning value</span></span>
+<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a>x2_fixed <span class="op">=</span> <span class="fl">1.0</span></span>
+<span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-21"><a href="#cb3-21" aria-hidden="true" tabindex="-1"></a><span class="co"># Joint density p(x1, x2)</span></span>
+<span id="cb3-22"><a href="#cb3-22" aria-hidden="true" tabindex="-1"></a>x1 <span class="op">=</span> np.linspace(<span class="op">-</span><span class="dv">5</span>, <span class="dv">5</span>, <span class="dv">250</span>)</span>
+<span id="cb3-23"><a href="#cb3-23" aria-hidden="true" tabindex="-1"></a>x2 <span class="op">=</span> np.linspace(<span class="op">-</span><span class="dv">4</span>, <span class="dv">4</span>, <span class="dv">250</span>)</span>
+<span id="cb3-24"><a href="#cb3-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-25"><a href="#cb3-25" aria-hidden="true" tabindex="-1"></a>X1, X2 <span class="op">=</span> np.meshgrid(x1, x2)</span>
+<span id="cb3-26"><a href="#cb3-26" aria-hidden="true" tabindex="-1"></a>positions <span class="op">=</span> np.dstack((X1, X2))</span>
+<span id="cb3-27"><a href="#cb3-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-28"><a href="#cb3-28" aria-hidden="true" tabindex="-1"></a>joint <span class="op">=</span> multivariate_normal(mean<span class="op">=</span>mu, cov<span class="op">=</span>Sigma)</span>
+<span id="cb3-29"><a href="#cb3-29" aria-hidden="true" tabindex="-1"></a>Z <span class="op">=</span> joint.pdf(positions)</span>
+<span id="cb3-30"><a href="#cb3-30" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-31"><a href="#cb3-31" aria-hidden="true" tabindex="-1"></a><span class="co"># Joint density evaluated along x2 = x2_fixed</span></span>
+<span id="cb3-32"><a href="#cb3-32" aria-hidden="true" tabindex="-1"></a>slice_points <span class="op">=</span> np.column_stack([</span>
+<span id="cb3-33"><a href="#cb3-33" aria-hidden="true" tabindex="-1"></a>    x1,</span>
+<span id="cb3-34"><a href="#cb3-34" aria-hidden="true" tabindex="-1"></a>    np.full_like(x1, x2_fixed)</span>
+<span id="cb3-35"><a href="#cb3-35" aria-hidden="true" tabindex="-1"></a>])</span>
+<span id="cb3-36"><a href="#cb3-36" aria-hidden="true" tabindex="-1"></a>joint_slice <span class="op">=</span> joint.pdf(slice_points)</span>
+<span id="cb3-37"><a href="#cb3-37" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-38"><a href="#cb3-38" aria-hidden="true" tabindex="-1"></a><span class="co"># Conditional Gaussian p(x1 | x2 = x2_fixed)</span></span>
+<span id="cb3-39"><a href="#cb3-39" aria-hidden="true" tabindex="-1"></a>mu1, mu2 <span class="op">=</span> mu</span>
+<span id="cb3-40"><a href="#cb3-40" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-41"><a href="#cb3-41" aria-hidden="true" tabindex="-1"></a>conditional_mean <span class="op">=</span> (</span>
+<span id="cb3-42"><a href="#cb3-42" aria-hidden="true" tabindex="-1"></a>    mu1</span>
+<span id="cb3-43"><a href="#cb3-43" aria-hidden="true" tabindex="-1"></a>    <span class="op">+</span> rho <span class="op">*</span> sigma1 <span class="op">/</span> sigma2 <span class="op">*</span> (x2_fixed <span class="op">-</span> mu2)</span>
+<span id="cb3-44"><a href="#cb3-44" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb3-45"><a href="#cb3-45" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-46"><a href="#cb3-46" aria-hidden="true" tabindex="-1"></a>conditional_variance <span class="op">=</span> sigma1<span class="op">**</span><span class="dv">2</span> <span class="op">*</span> (<span class="dv">1</span> <span class="op">-</span> rho<span class="op">**</span><span class="dv">2</span>)</span>
+<span id="cb3-47"><a href="#cb3-47" aria-hidden="true" tabindex="-1"></a>conditional_std <span class="op">=</span> np.sqrt(conditional_variance)</span>
+<span id="cb3-48"><a href="#cb3-48" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-49"><a href="#cb3-49" aria-hidden="true" tabindex="-1"></a>conditional_pdf <span class="op">=</span> norm.pdf(</span>
+<span id="cb3-50"><a href="#cb3-50" aria-hidden="true" tabindex="-1"></a>    x1,</span>
+<span id="cb3-51"><a href="#cb3-51" aria-hidden="true" tabindex="-1"></a>    loc<span class="op">=</span>conditional_mean,</span>
+<span id="cb3-52"><a href="#cb3-52" aria-hidden="true" tabindex="-1"></a>    scale<span class="op">=</span>conditional_std</span>
+<span id="cb3-53"><a href="#cb3-53" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb3-54"><a href="#cb3-54" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-55"><a href="#cb3-55" aria-hidden="true" tabindex="-1"></a><span class="co"># Marginal Gaussian p(x1)</span></span>
+<span id="cb3-56"><a href="#cb3-56" aria-hidden="true" tabindex="-1"></a>marginal_pdf <span class="op">=</span> norm.pdf(</span>
+<span id="cb3-57"><a href="#cb3-57" aria-hidden="true" tabindex="-1"></a>    x1,</span>
+<span id="cb3-58"><a href="#cb3-58" aria-hidden="true" tabindex="-1"></a>    loc<span class="op">=</span>mu1,</span>
+<span id="cb3-59"><a href="#cb3-59" aria-hidden="true" tabindex="-1"></a>    scale<span class="op">=</span>sigma1</span>
+<span id="cb3-60"><a href="#cb3-60" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb3-61"><a href="#cb3-61" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-62"><a href="#cb3-62" aria-hidden="true" tabindex="-1"></a><span class="co"># Plot</span></span>
+<span id="cb3-63"><a href="#cb3-63" aria-hidden="true" tabindex="-1"></a>fig <span class="op">=</span> plt.figure(figsize<span class="op">=</span>(<span class="dv">13</span>, <span class="dv">5</span>))</span>
+<span id="cb3-64"><a href="#cb3-64" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-65"><a href="#cb3-65" aria-hidden="true" tabindex="-1"></a><span class="co"># Left: joint density and conditioning slice</span></span>
+<span id="cb3-66"><a href="#cb3-66" aria-hidden="true" tabindex="-1"></a>ax1 <span class="op">=</span> fig.add_subplot(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">1</span>, projection<span class="op">=</span><span class="st">"3d"</span>)</span>
+<span id="cb3-67"><a href="#cb3-67" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-68"><a href="#cb3-68" aria-hidden="true" tabindex="-1"></a>ax1.plot_surface(</span>
+<span id="cb3-69"><a href="#cb3-69" aria-hidden="true" tabindex="-1"></a>    X1, X2, Z,</span>
+<span id="cb3-70"><a href="#cb3-70" aria-hidden="true" tabindex="-1"></a>    cmap<span class="op">=</span><span class="st">"viridis"</span>,</span>
+<span id="cb3-71"><a href="#cb3-71" aria-hidden="true" tabindex="-1"></a>    alpha<span class="op">=</span><span class="fl">0.75</span>,</span>
+<span id="cb3-72"><a href="#cb3-72" aria-hidden="true" tabindex="-1"></a>    edgecolor<span class="op">=</span><span class="st">"none"</span></span>
+<span id="cb3-73"><a href="#cb3-73" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb3-74"><a href="#cb3-74" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-75"><a href="#cb3-75" aria-hidden="true" tabindex="-1"></a><span class="co"># Plot the slice directly on the joint density</span></span>
+<span id="cb3-76"><a href="#cb3-76" aria-hidden="true" tabindex="-1"></a>ax1.plot(</span>
+<span id="cb3-77"><a href="#cb3-77" aria-hidden="true" tabindex="-1"></a>    x1,</span>
+<span id="cb3-78"><a href="#cb3-78" aria-hidden="true" tabindex="-1"></a>    np.full_like(x1, x2_fixed),</span>
+<span id="cb3-79"><a href="#cb3-79" aria-hidden="true" tabindex="-1"></a>    joint_slice,</span>
+<span id="cb3-80"><a href="#cb3-80" aria-hidden="true" tabindex="-1"></a>    linewidth<span class="op">=</span><span class="dv">3</span>,</span>
+<span id="cb3-81"><a href="#cb3-81" aria-hidden="true" tabindex="-1"></a>    label<span class="op">=</span><span class="vs">rf"Slice at </span><span class="dv">$</span><span class="vs">x_2=</span><span class="sc">{</span>x2_fixed<span class="sc">}</span><span class="dv">$</span><span class="vs">"</span></span>
+<span id="cb3-82"><a href="#cb3-82" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb3-83"><a href="#cb3-83" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-84"><a href="#cb3-84" aria-hidden="true" tabindex="-1"></a><span class="co"># Draw the conditioning line on the bottom plane</span></span>
+<span id="cb3-85"><a href="#cb3-85" aria-hidden="true" tabindex="-1"></a>ax1.plot(</span>
+<span id="cb3-86"><a href="#cb3-86" aria-hidden="true" tabindex="-1"></a>    x1,</span>
+<span id="cb3-87"><a href="#cb3-87" aria-hidden="true" tabindex="-1"></a>    np.full_like(x1, x2_fixed),</span>
+<span id="cb3-88"><a href="#cb3-88" aria-hidden="true" tabindex="-1"></a>    np.zeros_like(x1),</span>
+<span id="cb3-89"><a href="#cb3-89" aria-hidden="true" tabindex="-1"></a>    <span class="st">"--"</span>,</span>
+<span id="cb3-90"><a href="#cb3-90" aria-hidden="true" tabindex="-1"></a>    linewidth<span class="op">=</span><span class="dv">2</span></span>
+<span id="cb3-91"><a href="#cb3-91" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb3-92"><a href="#cb3-92" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-93"><a href="#cb3-93" aria-hidden="true" tabindex="-1"></a>ax1.set_xlabel(<span class="vs">r"</span><span class="dv">$</span><span class="vs">x_1</span><span class="dv">$</span><span class="vs">"</span>)</span>
+<span id="cb3-94"><a href="#cb3-94" aria-hidden="true" tabindex="-1"></a>ax1.set_ylabel(<span class="vs">r"</span><span class="dv">$</span><span class="vs">x_2</span><span class="dv">$</span><span class="vs">"</span>)</span>
+<span id="cb3-95"><a href="#cb3-95" aria-hidden="true" tabindex="-1"></a>ax1.set_zlabel(<span class="vs">r"</span><span class="dv">$</span><span class="vs">p</span><span class="kw">(</span><span class="vs">x_1,x_2</span><span class="kw">)</span><span class="dv">$</span><span class="vs">"</span>)</span>
+<span id="cb3-96"><a href="#cb3-96" aria-hidden="true" tabindex="-1"></a>ax1.set_title(<span class="st">"Joint Gaussian Density with Conditioning Slice"</span>)</span>
+<span id="cb3-97"><a href="#cb3-97" aria-hidden="true" tabindex="-1"></a>ax1.legend()</span>
+<span id="cb3-98"><a href="#cb3-98" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-99"><a href="#cb3-99" aria-hidden="true" tabindex="-1"></a><span class="co"># Right: conditional versus marginal</span></span>
+<span id="cb3-100"><a href="#cb3-100" aria-hidden="true" tabindex="-1"></a>ax2 <span class="op">=</span> fig.add_subplot(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">2</span>)</span>
+<span id="cb3-101"><a href="#cb3-101" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-102"><a href="#cb3-102" aria-hidden="true" tabindex="-1"></a>ax2.plot(</span>
+<span id="cb3-103"><a href="#cb3-103" aria-hidden="true" tabindex="-1"></a>    x1,</span>
+<span id="cb3-104"><a href="#cb3-104" aria-hidden="true" tabindex="-1"></a>    marginal_pdf,</span>
+<span id="cb3-105"><a href="#cb3-105" aria-hidden="true" tabindex="-1"></a>    linewidth<span class="op">=</span><span class="dv">3</span>,</span>
+<span id="cb3-106"><a href="#cb3-106" aria-hidden="true" tabindex="-1"></a>    label<span class="op">=</span><span class="vs">r"Marginal </span><span class="dv">$</span><span class="vs">p</span><span class="kw">(</span><span class="vs">x_1</span><span class="kw">)</span><span class="dv">$</span><span class="vs">"</span></span>
+<span id="cb3-107"><a href="#cb3-107" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb3-108"><a href="#cb3-108" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-109"><a href="#cb3-109" aria-hidden="true" tabindex="-1"></a>ax2.plot(</span>
+<span id="cb3-110"><a href="#cb3-110" aria-hidden="true" tabindex="-1"></a>    x1,</span>
+<span id="cb3-111"><a href="#cb3-111" aria-hidden="true" tabindex="-1"></a>    conditional_pdf,</span>
+<span id="cb3-112"><a href="#cb3-112" aria-hidden="true" tabindex="-1"></a>    linewidth<span class="op">=</span><span class="dv">3</span>,</span>
+<span id="cb3-113"><a href="#cb3-113" aria-hidden="true" tabindex="-1"></a>    label<span class="op">=</span><span class="vs">rf"Conditional </span><span class="dv">$</span><span class="vs">p</span><span class="kw">(</span><span class="vs">x_1</span><span class="dv">\m</span><span class="vs">id x_2=</span><span class="sc">{</span>x2_fixed<span class="sc">}</span><span class="kw">)</span><span class="dv">$</span><span class="vs">"</span></span>
+<span id="cb3-114"><a href="#cb3-114" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb3-115"><a href="#cb3-115" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-116"><a href="#cb3-116" aria-hidden="true" tabindex="-1"></a>ax2.axvline(</span>
+<span id="cb3-117"><a href="#cb3-117" aria-hidden="true" tabindex="-1"></a>    mu1,</span>
+<span id="cb3-118"><a href="#cb3-118" aria-hidden="true" tabindex="-1"></a>    linestyle<span class="op">=</span><span class="st">"--"</span>,</span>
+<span id="cb3-119"><a href="#cb3-119" aria-hidden="true" tabindex="-1"></a>    alpha<span class="op">=</span><span class="fl">0.7</span>,</span>
+<span id="cb3-120"><a href="#cb3-120" aria-hidden="true" tabindex="-1"></a>    label<span class="op">=</span><span class="vs">rf"Marginal mean = </span><span class="sc">{</span>mu1<span class="sc">:.2f}</span><span class="vs">"</span></span>
+<span id="cb3-121"><a href="#cb3-121" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb3-122"><a href="#cb3-122" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-123"><a href="#cb3-123" aria-hidden="true" tabindex="-1"></a>ax2.axvline(</span>
+<span id="cb3-124"><a href="#cb3-124" aria-hidden="true" tabindex="-1"></a>    conditional_mean,</span>
+<span id="cb3-125"><a href="#cb3-125" aria-hidden="true" tabindex="-1"></a>    linestyle<span class="op">=</span><span class="st">"--"</span>,</span>
+<span id="cb3-126"><a href="#cb3-126" aria-hidden="true" tabindex="-1"></a>    alpha<span class="op">=</span><span class="fl">0.7</span>,</span>
+<span id="cb3-127"><a href="#cb3-127" aria-hidden="true" tabindex="-1"></a>    label<span class="op">=</span><span class="vs">rf"Conditional mean = </span><span class="sc">{</span>conditional_mean<span class="sc">:.2f}</span><span class="vs">"</span></span>
+<span id="cb3-128"><a href="#cb3-128" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb3-129"><a href="#cb3-129" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-130"><a href="#cb3-130" aria-hidden="true" tabindex="-1"></a>ax2.set_xlabel(<span class="vs">r"</span><span class="dv">$</span><span class="vs">x_1</span><span class="dv">$</span><span class="vs">"</span>)</span>
+<span id="cb3-131"><a href="#cb3-131" aria-hidden="true" tabindex="-1"></a>ax2.set_ylabel(<span class="st">"Density"</span>)</span>
+<span id="cb3-132"><a href="#cb3-132" aria-hidden="true" tabindex="-1"></a>ax2.set_title(<span class="st">"Conditional Distribution Compared with Marginal"</span>)</span>
+<span id="cb3-133"><a href="#cb3-133" aria-hidden="true" tabindex="-1"></a>ax2.legend()</span>
+<span id="cb3-134"><a href="#cb3-134" aria-hidden="true" tabindex="-1"></a>ax2.grid(alpha<span class="op">=</span><span class="fl">0.3</span>)</span>
+<span id="cb3-135"><a href="#cb3-135" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-136"><a href="#cb3-136" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb3-137"><a href="#cb3-137" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-display">
+<div id="fig-joint-gaussian-density-with-a-conditioning-slice" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-joint-gaussian-density-with-a-conditioning-slice-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="multivariate-normal-distribution_files/figure-html/fig-joint-gaussian-density-with-a-conditioning-slice-output-1.png" width="1136" height="470" class="figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-joint-gaussian-density-with-a-conditioning-slice-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;3: Slicing the joint density at a fixed value of x2 and renormalizing gives back a Gaussian in x1 — shifted toward the correlation, and narrower than the unconditional marginal. This one identity is the computational core of Kalman filtering, Gaussian process regression, and Gibbs sampling on Gaussian graphical models.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="mahalanobis-distance-has-a-known-distribution" class="level3">
+<h3 class="anchored" data-anchor-id="mahalanobis-distance-has-a-known-distribution">3.3. Mahalanobis distance has a known distribution</h3>
+<p>Define the squared <em>Mahalanobis distance</em> of a point <span class="math inline">\(\mathbf x\)</span> from the distribution as <span class="math inline">\(D^2(\mathbf x)=(\mathbf x-\boldsymbol \mu)^\top \Sigma^{-1}(\mathbf x-\boldsymbol \mu)\)</span> — literally the exponent inside the density, i.e.&nbsp;distance measured in units that account for correlation and scale. If <span class="math inline">\(\mathbf x\)</span> is genuinely <span class="math inline">\(\mathcal N(\boldsymbol \mu, \Sigma)\)</span>, then <span class="math inline">\(D^2(\mathbf x)\)</span> follows a chi-squared distribution with <span class="math inline">\(k\)</span> degree of freedom. That turns the question “how unusual is this point?” into a calibrated statistical test rather than a heuristic, and it’s the basis of the outlier-detection workflow used later<a href="#fn4" class="footnote-ref" id="fnref4" role="doc-noteref"><sup>4</sup></a>.</p>
+<div class="callout callout-style-default callout-warning callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Warning
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Gaussian vectors have the unusual property that zero covariance implies independence. This is <em>not</em> true for general random variables — it’s special to the Gaussian family.</p>
+</div>
+</div>
+</section>
+</section>
+<section id="meeting-reality-when-the-assumption-is-earned" class="level2">
+<h2 class="anchored" data-anchor-id="meeting-reality-when-the-assumption-is-earned">4. Meeting reality: when the assumption is earned</h2>
+<p>None of the elegance above matters if the assumption doesn’t hold for our data. The honest question isn’t “is my data normal?” (instead, almost nothing real is exactly normal), but “is the multivariate normal a good enough working model for what I need to do with it?”</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://media.geeksforgeeks.org/wp-content/uploads/20250704152400927981/central_limit_theorem.webp" class="img-fluid figure-img"></p>
+<figcaption>Central Limit Theorem</figcaption>
+</figure>
+</div>
+<p>The classical justification is the <a href="https://en.wikipedia.org/wiki/Central_limit_theorem">central limit theorem</a>: quantities that arise as the sum of many small, roughly independent effects tend toward to a Gaussian shape regardless of the shape of the individual effects, and this generalizes cleanly to vectors<a href="#fn5" class="footnote-ref" id="fnref5" role="doc-noteref"><sup>5</sup></a>. This is why measurement noise in physical sensors, aggregated demographic measurements, and many forms of instrument error are reasonably well modeled as multivariate normal — the noise really is the sum of many small independent contributions (thermal fluctuations, quantization, tiny mechanical perturbations). It’s also the working assumption behind Gaussian process regression, where the “many small effects” argument is used more as a convenient prior over functions than a literal physical derivation, precisely because Gaussians are closed under the conditioning and marginalization operations regression requires<a href="#fn6" class="footnote-ref" id="fnref6" role="doc-noteref"><sup>6</sup></a>.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://cdn.prod.website-files.com/6318ee7f8cd2577347722ef7/67360afeaef346c7d24073cf_6736092b176246857f50e78b_image%2520(3).png" class="img-fluid figure-img"></p>
+<figcaption>Portfolio theory</figcaption>
+</figure>
+</div>
+<p>A large share of the multivariate normal’s popularity stems from another reason: it is the distribution that makes an otherwise intractable problem solvable in closed form, and the error from assuming it is judged acceptable for the task at hand. Examples are:</p>
+<ul>
+<li><strong>Portfolio theory.</strong> Harry Markowitz’s mean-variance framework and the Capital Asset Pricing Model built on top of it both reduce to a covariance-matrix optimization problem when returns are assumed jointly normal (or investors are assumed to have quadratic utility)<a href="#fn7" class="footnote-ref" id="fnref7" role="doc-noteref"><sup>7</sup></a><a href="#fn8" class="footnote-ref" id="fnref8" role="doc-noteref"><sup>8</sup></a>. This idea traces back to Bachelier’s 1900 model of price fluctuations and remains the default starting point<a href="#fn9" class="footnote-ref" id="fnref9" role="doc-noteref"><sup>9</sup></a>.</li>
+<li><strong>State estimation.</strong> The Kalman filter assumes a linear-Gaussian state-space model specifically because that assumption is what keeps the filtering recursion in closed form — each update step is literally an application of the Gaussian conditioning formula<a href="#fn10" class="footnote-ref" id="fnref10" role="doc-noteref"><sup>10</sup></a>.</li>
+<li><strong>Classification.</strong> Linear and quadratic discriminant analysis model each class’s features as multivariate normal so that the decision boundary between classes reduces to a simple (linear or quadratic) function of the data.</li>
+</ul>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://i.ytimg.com/vi/LioOvUZ1MiM/maxresdefault.jpg" class="img-fluid figure-img"></p>
+<figcaption>Kalman Filter</figcaption>
+</figure>
+</div>
+<div class="callout callout-style-default callout-warning callout-titled" title="Reality check — A failure case">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Warning</span>Reality check — A failure case
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Financial asset returns are the textbook example of this assumption being convenient rather than correct. Decades of empirical work following Mandelbrot and Fama in the 1960s show that real return series are <em>leptokurtic</em>: they have heavier tails and a sharper peak than a normal distribution predicts, so extreme moves happen far more often than the Gaussian model implies. Classical tools built on the normal assumption — mean-variance optimization, Black-Scholes option pricing, and RiskMetrics-style Value-at-Risk — therefore tend to <em>underestimate</em> the probability of large losses. The elliptical symmetry of the normal distribution is usually a minor issue; the thin tails are the real problem, which is why so much of quantitative finance is really a search for tractable heavy-tailed replacements (Student-t, tempered stable, mixture models) that keep some of the Gaussian machinery while fixing the tails.</p>
+</div>
+</div>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 42%">
+<col style="width: 57%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Signal in the data</th>
+<th>What it suggests</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Scatterplot matrix looks elliptical, roughly symmetric</td>
+<td>Reasonable candidate for MVN</td>
+</tr>
+<tr class="even">
+<td>Heavy tails / frequent large outliers (high kurtosis)</td>
+<td>Consider Student-t or a mixture; Mahalanobis cutoffs will be too aggresive</td>
+</tr>
+<tr class="odd">
+<td>Visible skew in marginal histograms</td>
+<td>Try a transform (log, Box-Cox) before assuming normality</td>
+</tr>
+<tr class="even">
+<td>Multiple visible clusters / modes</td>
+<td>A single MVN is wrong; consider a Gaussian mixture</td>
+</tr>
+<tr class="odd">
+<td>QQ-plot bends away from the diagonal in the tails</td>
+<td>Departure from normality concentrated exactly where it’s costliest</td>
+</tr>
+</tbody>
+</table>
+<blockquote class="blockquote">
+<p>For a formal test rather than eyeballing, Mardia’s test checks multivariate skewness and kurtosis jointly, and is the standard first check before trusting an MVN-based method in a paper or a production model.</p>
+</blockquote>
+</section>
+<section id="a-practitioners-guideline" class="level2">
+<h2 class="anchored" data-anchor-id="a-practitioners-guideline">5. A practitioner’s guideline</h2>
+<p>Here is the sequence I’d actually follow on a new problem, before writing any modeling code.</p>
+<section id="step-1-frame-the-question-as-a-joint-distribution" class="level3">
+<h3 class="anchored" data-anchor-id="step-1-frame-the-question-as-a-joint-distribution">Step 1 — Frame the question as a joint distribution</h3>
+<p>Write down explicitly what we observe and what we want to infer, as one joint random vector. “I observe noisy GPS readings and want the true position” is a conditioning problem. “I have last year’s returns for 20 assets and want a risk-minimizing portfolio” is a covariance-estimation problem. Naming the joint vector up front tells us which of the properties we’ll actually need.</p>
+</section>
+<section id="step-2-check-whether-the-assumption-is-earned" class="level3">
+<h3 class="anchored" data-anchor-id="step-2-check-whether-the-assumption-is-earned">Step 2 — Check whether the assumption is earned</h3>
+<p>Run the diagnostic checklist above. If the answer is “roughly, for the purpose at hand,” proceed. If it’s clearly wrong (multi-modal, heavy-tailed, hard constraints like non-negativity), either transform the data, swap in a heavier-tailed or mixture model, or explicitly decide we’re trading some accuracy for tractability — and say so.</p>
+</section>
+<section id="step-3-estimate-m-and-sigma-and-regularize-if-needed." class="level3">
+<h3 class="anchored" data-anchor-id="step-3-estimate-m-and-sigma-and-regularize-if-needed.">Step 3 — Estimate <span class="math inline">\(M\)</span> and <span class="math inline">\(\Sigma\)</span>, and regularize if needed.</h3>
+<p>The maximum-likelihood estimators are just the sample mean and the sample covariance matrix. That’s fine when we have many more observations than dimensions (<span class="math inline">\(n\gg p\)</span>). When <span class="math inline">\(p\)</span> approaches or exceeds <span class="math inline">\(n\)</span> (common in genomics, image features, or many-asset portfolios), the raw sample covariance becomes noisy or singular, and needs a shrinkage estimator (e.g.&nbsp;Ledoit-Wolf) or a robust estimator (e.g.&nbsp;the Minimum Covariance Determinant) before we trust it<a href="#fn11" class="footnote-ref" id="fnref11" role="doc-noteref"><sup>11</sup></a><a href="#fn12" class="footnote-ref" id="fnref12" role="doc-noteref"><sup>12</sup></a>.</p>
+</section>
+<section id="step-4-answer-the-actual-question-with-closed-form-formulas" class="level3">
+<h3 class="anchored" data-anchor-id="step-4-answer-the-actual-question-with-closed-form-formulas">Step 4 — Answer the actual question with closed-form formulas</h3>
+<p>This is where the properties machinery pays off directly: marginalize away nuisance variables, condition on what we’ve observed, or compute a Mahalanobis distance, instead of running a generic optimizer or sampler on a problem that has an exact answer.</p>
+</section>
+<section id="step-5-validate-on-held-out-data" class="level3">
+<h3 class="anchored" data-anchor-id="step-5-validate-on-held-out-data">Step 5 — Validate on held-out data</h3>
+<p>Check calibration on data the model didn’t see: do 95% confidence ellipses actually contain about 95% of new points? Are flagged anomalies actually anomalous on inspection? A model that looked reasonable in step 2 can still be miscalibrated once real regularization and estimation error are in the loop.</p>
+</section>
+</section>
+<section id="from-math-to-implementation" class="level2">
+<h2 class="anchored" data-anchor-id="from-math-to-implementation">6. From math to implementation</h2>
+<p>Previously, we demonstrated the shape (or visualization) of the multivariate normal distribution, but that example did not cover the problem end to end. In the rest of this section, we will address every property from Part III, allowing us to apply the guidelines practically rather than just describing them.</p>
+<p><big>Setting up: fit, sample, evaluate</big></p>
+<p><code>scipy.stats.multivariate_normal</code> and plain <code>numpy</code> cover the basics (density evaluation and sampling):</p>
+<div id="36fb79dd" class="cell" data-execution_count="5">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> scipy.stats <span class="im">import</span> multivariate_normal</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="co"># estimate mu and sigma from data (MLE = sample mean/sample covariance)</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>mu_hat <span class="op">=</span> X.mean(axis<span class="op">=</span><span class="dv">0</span>)</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>Sigma_hat <span class="op">=</span> np.cov(X, rowvar<span class="op">=</span><span class="va">False</span>)     <span class="co"># shape (p, p)</span></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>dist <span class="op">=</span> multivariate_normal(mean<span class="op">=</span>mu_hat, cov<span class="op">=</span>Sigma_hat)</span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a><span class="co"># evaluate log-density at new points (numerically stable, use this over)</span></span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a><span class="co"># computing det/inv by hand</span></span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>log_p <span class="op">=</span> dist.logpdf(X_new)</span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a><span class="co"># sample synthetic data from the fitted model </span></span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>X_synthetic <span class="op">=</span> dist.rvs(size<span class="op">=</span><span class="dv">1000</span>, random_state<span class="op">=</span><span class="dv">0</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p><big>Applying the conditioning formula</big></p>
+<p><code>scipy</code> doesn’t expose conditioning directly, so this is worth writing once by hand.</p>
+<div id="e7421234" class="cell" data-execution_count="6">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> condition_gaussian(mu, Sigma, idx1, idx2, x2):</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Return the conditional N(x1 | x2) parameters.</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="co">    idx1, idx2 : index arrays partitioning the vector</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="co">    x2         : observed value of the conditioning block</span></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a><span class="co">    """</span></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>    mu1, mu2 <span class="op">=</span> mu[idx1], mu[idx2]</span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>    S11 <span class="op">=</span> Sigma[np.ix_(idx1, idx1)]</span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>    S12 <span class="op">=</span> Sigma[np.ix_(idx1, idx2)]</span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>    S21 <span class="op">=</span> Sigma[np.ix_(idx2, idx1)]</span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>    S22 <span class="op">=</span> Sigma[np.ix_(idx2, idx2)]</span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>    S22_inv <span class="op">=</span> np.linalg.inv(S22)</span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>    mu_cond    <span class="op">=</span> mu1 <span class="op">+</span> S12 <span class="op">@</span> S22_inv <span class="op">@</span> (x2 <span class="op">-</span> mu2)</span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a>    Sigma_cond <span class="op">=</span> S11 <span class="op">-</span> S12 <span class="op">@</span> S22_inv <span class="op">@</span> S21     <span class="co"># Schur complement</span></span>
+<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> mu_cond, Sigma_cond</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>This function is the measurement-update step of a Kalman filter, once we set it up with the right blocks. If <span class="math inline">\(\mathbf x\)</span> is our unknown state and <span class="math inline">\(\mathbf y\)</span> is a noisy linear observation of it, <span class="math inline">\(y=Hx + \epsilon\)</span>, the joint <span class="math inline">\((x,y)\)</span> is Gaussian whenever the prior on <span class="math inline">\(x\)</span> and the observation noise are, and the posterior over <span class="math inline">\(x\)</span> given the observed is exactly <code>condition_gaussian</code> applied to that joint<a href="#fn13" class="footnote-ref" id="fnref13" role="doc-noteref"><sup>13</sup></a><a href="#fn14" class="footnote-ref" id="fnref14" role="doc-noteref"><sup>14</sup></a>. This means we can prototype a Kalman-style sensor fusion update with the four lines above before ever writing a filtering library call.</p>
+<p><big>Mahalanobis-distance anomaly detection</big></p>
+<p>Putting the whole guideline together on a concrete task: flag anomalous points in correlated multivariate data, using a shrinkage-regularized covariance estimate (Step 3) and the chi-squared calibration of the Mahalanobis distance (Step 4):</p>
+<div id="936ff183" class="cell" data-execution_count="7">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.covariance <span class="im">import</span> LedoitWolf</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> scipy.stats <span class="im">import</span> chi2</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Step 3: regularized covariance instead of the raw sample covariance --</span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="co"># important once p is not tiny relative to n</span></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>cov_est <span class="op">=</span> LedoitWolf().fit(X)</span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>mu_hat, Sigma_hat <span class="op">=</span> cov_est.location_, cov_est.covariance_</span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>Sigma_inv <span class="op">=</span> np.linalg.inv(Sigma_hat)</span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Step 4: Mahalanobis distance for every point</span></span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>diff <span class="op">=</span> X_new <span class="op">-</span> mu_hat</span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>d2 <span class="op">=</span> np.einsum(<span class="st">'ij,jk,ik-&gt;i'</span>, diff, Sigma_inv, diff)   <span class="co"># squared distance</span></span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a><span class="co"># calibrated cutoff: under the MVN null, d2 ~ chi-squared(p)</span></span>
+<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a>alpha <span class="op">=</span> <span class="fl">0.01</span></span>
+<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a>cutoff <span class="op">=</span> chi2.ppf(<span class="dv">1</span> <span class="op">-</span> alpha, df<span class="op">=</span>X.shape[<span class="dv">1</span>])</span>
+<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a>is_outlier <span class="op">=</span> d2 <span class="op">&gt;</span> cutoff</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>This is deliberately the same recipe scikit-learn’s&nbsp;<code>EllipticEnvelope</code>&nbsp;implements under the hood — it fits a robust location and covariance (by default via the Minimum Covariance Determinant estimator) and then thresholds the Mahalanobis distance. Writing it out by hand once is worth doing so the chi-squared cutoff isn’t a black box; after that, reach for the library version.</p>
+<div id="cell-fig-scatter-plot-of-correlated-bivariate-normal-data" class="cell" data-execution_count="8">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> covariance_ellipse(mean, cov, cutoff, <span class="op">**</span>kwargs):</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="co">    Return a matplotlib Ellipse corresponding to</span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="co">    (x-mean)^T cov^{-1} (x-mean) = cutoff</span></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="co">    for a 2D Gaussian.</span></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a><span class="co">    """</span></span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Eigen-decomposition of covariance</span></span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>    eigvals, eigvecs <span class="op">=</span> np.linalg.eigh(cov)</span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Sort eigenvalues/eigenvectors from largest to smallest</span></span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>    order <span class="op">=</span> eigvals.argsort()[::<span class="op">-</span><span class="dv">1</span>]</span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>    eigvals <span class="op">=</span> eigvals[order]</span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>    eigvecs <span class="op">=</span> eigvecs[:, order]</span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Axis lengths: sqrt(cutoff * eigenvalue)</span></span>
+<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Matplotlib Ellipse takes full width/height, so multiply by 2</span></span>
+<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a>    width <span class="op">=</span> <span class="dv">2</span> <span class="op">*</span> np.sqrt(cutoff <span class="op">*</span> eigvals[<span class="dv">0</span>])</span>
+<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a>    height <span class="op">=</span> <span class="dv">2</span> <span class="op">*</span> np.sqrt(cutoff <span class="op">*</span> eigvals[<span class="dv">1</span>])</span>
+<span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-20"><a href="#cb7-20" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Rotation angle in degrees from first eigenvector</span></span>
+<span id="cb7-21"><a href="#cb7-21" aria-hidden="true" tabindex="-1"></a>    angle <span class="op">=</span> np.degrees(np.arctan2(eigvecs[<span class="dv">1</span>, <span class="dv">0</span>], eigvecs[<span class="dv">0</span>, <span class="dv">0</span>]))</span>
+<span id="cb7-22"><a href="#cb7-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-23"><a href="#cb7-23" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> Ellipse(xy<span class="op">=</span>mean, width<span class="op">=</span>width, height<span class="op">=</span>height, angle<span class="op">=</span>angle, <span class="op">**</span>kwargs)</span>
+<span id="cb7-24"><a href="#cb7-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-25"><a href="#cb7-25" aria-hidden="true" tabindex="-1"></a><span class="co"># Create ellipse patch</span></span>
+<span id="cb7-26"><a href="#cb7-26" aria-hidden="true" tabindex="-1"></a>ellipse <span class="op">=</span> covariance_ellipse(</span>
+<span id="cb7-27"><a href="#cb7-27" aria-hidden="true" tabindex="-1"></a>    mu_hat,</span>
+<span id="cb7-28"><a href="#cb7-28" aria-hidden="true" tabindex="-1"></a>    Sigma_hat,</span>
+<span id="cb7-29"><a href="#cb7-29" aria-hidden="true" tabindex="-1"></a>    cutoff,</span>
+<span id="cb7-30"><a href="#cb7-30" aria-hidden="true" tabindex="-1"></a>    facecolor<span class="op">=</span><span class="st">'none'</span>,</span>
+<span id="cb7-31"><a href="#cb7-31" aria-hidden="true" tabindex="-1"></a>    edgecolor<span class="op">=</span><span class="st">'red'</span>,</span>
+<span id="cb7-32"><a href="#cb7-32" aria-hidden="true" tabindex="-1"></a>    linewidth<span class="op">=</span><span class="dv">2</span>,</span>
+<span id="cb7-33"><a href="#cb7-33" aria-hidden="true" tabindex="-1"></a>    linestyle<span class="op">=</span><span class="st">'--'</span>,</span>
+<span id="cb7-34"><a href="#cb7-34" aria-hidden="true" tabindex="-1"></a>    label<span class="op">=</span><span class="st">'99</span><span class="sc">% c</span><span class="st">utoff ellipse'</span></span>
+<span id="cb7-35"><a href="#cb7-35" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb7-36"><a href="#cb7-36" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-37"><a href="#cb7-37" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">8</span>, <span class="dv">6</span>))</span>
+<span id="cb7-38"><a href="#cb7-38" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-39"><a href="#cb7-39" aria-hidden="true" tabindex="-1"></a><span class="co"># Normal points</span></span>
+<span id="cb7-40"><a href="#cb7-40" aria-hidden="true" tabindex="-1"></a>ax.scatter(</span>
+<span id="cb7-41"><a href="#cb7-41" aria-hidden="true" tabindex="-1"></a>    X_new[<span class="op">~</span>is_outlier, <span class="dv">0</span>],</span>
+<span id="cb7-42"><a href="#cb7-42" aria-hidden="true" tabindex="-1"></a>    X_new[<span class="op">~</span>is_outlier, <span class="dv">1</span>],</span>
+<span id="cb7-43"><a href="#cb7-43" aria-hidden="true" tabindex="-1"></a>    s<span class="op">=</span><span class="dv">28</span>,</span>
+<span id="cb7-44"><a href="#cb7-44" aria-hidden="true" tabindex="-1"></a>    alpha<span class="op">=</span><span class="fl">0.7</span>,</span>
+<span id="cb7-45"><a href="#cb7-45" aria-hidden="true" tabindex="-1"></a>    label<span class="op">=</span><span class="st">'Inlier'</span></span>
+<span id="cb7-46"><a href="#cb7-46" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb7-47"><a href="#cb7-47" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-48"><a href="#cb7-48" aria-hidden="true" tabindex="-1"></a><span class="co"># Outliers</span></span>
+<span id="cb7-49"><a href="#cb7-49" aria-hidden="true" tabindex="-1"></a>ax.scatter(</span>
+<span id="cb7-50"><a href="#cb7-50" aria-hidden="true" tabindex="-1"></a>    X_new[is_outlier, <span class="dv">0</span>],</span>
+<span id="cb7-51"><a href="#cb7-51" aria-hidden="true" tabindex="-1"></a>    X_new[is_outlier, <span class="dv">1</span>],</span>
+<span id="cb7-52"><a href="#cb7-52" aria-hidden="true" tabindex="-1"></a>    s<span class="op">=</span><span class="dv">40</span>,</span>
+<span id="cb7-53"><a href="#cb7-53" aria-hidden="true" tabindex="-1"></a>    marker<span class="op">=</span><span class="st">'x'</span>,</span>
+<span id="cb7-54"><a href="#cb7-54" aria-hidden="true" tabindex="-1"></a>    linewidths<span class="op">=</span><span class="fl">1.8</span>,</span>
+<span id="cb7-55"><a href="#cb7-55" aria-hidden="true" tabindex="-1"></a>    label<span class="op">=</span><span class="st">'Outlier'</span></span>
+<span id="cb7-56"><a href="#cb7-56" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb7-57"><a href="#cb7-57" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-58"><a href="#cb7-58" aria-hidden="true" tabindex="-1"></a><span class="co"># Mean</span></span>
+<span id="cb7-59"><a href="#cb7-59" aria-hidden="true" tabindex="-1"></a>ax.scatter(</span>
+<span id="cb7-60"><a href="#cb7-60" aria-hidden="true" tabindex="-1"></a>    mu_hat[<span class="dv">0</span>],</span>
+<span id="cb7-61"><a href="#cb7-61" aria-hidden="true" tabindex="-1"></a>    mu_hat[<span class="dv">1</span>],</span>
+<span id="cb7-62"><a href="#cb7-62" aria-hidden="true" tabindex="-1"></a>    s<span class="op">=</span><span class="dv">120</span>,</span>
+<span id="cb7-63"><a href="#cb7-63" aria-hidden="true" tabindex="-1"></a>    marker<span class="op">=</span><span class="st">'*'</span>,</span>
+<span id="cb7-64"><a href="#cb7-64" aria-hidden="true" tabindex="-1"></a>    label<span class="op">=</span><span class="st">'Fitted mean'</span></span>
+<span id="cb7-65"><a href="#cb7-65" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb7-66"><a href="#cb7-66" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-67"><a href="#cb7-67" aria-hidden="true" tabindex="-1"></a><span class="co"># Add ellipse</span></span>
+<span id="cb7-68"><a href="#cb7-68" aria-hidden="true" tabindex="-1"></a>ax.add_patch(ellipse)</span>
+<span id="cb7-69"><a href="#cb7-69" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-70"><a href="#cb7-70" aria-hidden="true" tabindex="-1"></a><span class="co"># Labels / title</span></span>
+<span id="cb7-71"><a href="#cb7-71" aria-hidden="true" tabindex="-1"></a>ax.set_title(<span class="st">'Correlated Bivariate Normal with Mahalanobis Outlier Detection'</span>)</span>
+<span id="cb7-72"><a href="#cb7-72" aria-hidden="true" tabindex="-1"></a>ax.set_xlabel(<span class="st">'$x_1$'</span>)</span>
+<span id="cb7-73"><a href="#cb7-73" aria-hidden="true" tabindex="-1"></a>ax.set_ylabel(<span class="st">'$x_2$'</span>)</span>
+<span id="cb7-74"><a href="#cb7-74" aria-hidden="true" tabindex="-1"></a>ax.legend()</span>
+<span id="cb7-75"><a href="#cb7-75" aria-hidden="true" tabindex="-1"></a>ax.grid(<span class="va">True</span>, alpha<span class="op">=</span><span class="fl">0.3</span>)</span>
+<span id="cb7-76"><a href="#cb7-76" aria-hidden="true" tabindex="-1"></a>ax.set_aspect(<span class="st">'equal'</span>, adjustable<span class="op">=</span><span class="st">'datalim'</span>)</span>
+<span id="cb7-77"><a href="#cb7-77" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-78"><a href="#cb7-78" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb7-79"><a href="#cb7-79" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-display">
+<div id="fig-scatter-plot-of-correlated-bivariate-normal-data" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-scatter-plot-of-correlated-bivariate-normal-data-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="multivariate-normal-distribution_files/figure-html/fig-scatter-plot-of-correlated-bivariate-normal-data-output-1.png" width="758" height="566" class="figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-scatter-plot-of-correlated-bivariate-normal-data-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;4: The 99% cutoff is an ellipse, not a circle, because it respects the correlation structure of the fitted covariance — a point can be moderately far from the mean in raw Euclidean terms and still be perfectly normal if it moves&nbsp;with&nbsp;the correlation, or flagged despite being close if it moves against it.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p><big>A worked portfolio-risk snippet</big></p>
+<p>The same <span class="math inline">\(\mu\)</span>, <span class="math inline">\(\Sigma\)</span> also drive the mean-variance side of things directly. For portfolio weights <span class="math inline">\(\mathbf w\)</span> (summing to 1), the portfolio variance is a direct quadratic form in the covariance matrix — the same object as the Mahalanobis exponent, just without reverse:</p>
+<div id="26242e94" class="cell" data-execution_count="9">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>w <span class="op">=</span> np.array([<span class="fl">0.60</span>, <span class="fl">0.40</span>])</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>portfolio_var  <span class="op">=</span> w <span class="op">@</span> Sigma_hat <span class="op">@</span> w</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>portfolio_mean <span class="op">=</span> w <span class="op">@</span> mu_hat</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a><span class="co"># 1-day 99% Value-at-Risk under the (imperfect, see Part IV) Gaussian assumption</span></span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> scipy.stats <span class="im">import</span> norm</span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>VaR_99 <span class="op">=</span> <span class="op">-</span>(portfolio_mean <span class="op">+</span> norm.ppf(<span class="fl">0.01</span>) <span class="op">*</span> np.sqrt(portfolio_var))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div id="601d88a1" class="cell" data-execution_count="10">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># w1 ranges from 0 to 1, and w2 = 1 - w1</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>w1_values <span class="op">=</span> np.linspace(<span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">300</span>)</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>portfolio_means <span class="op">=</span> []</span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>portfolio_stds <span class="op">=</span> []</span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> w1 <span class="kw">in</span> w1_values:</span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>    w <span class="op">=</span> np.array([w1, <span class="dv">1</span> <span class="op">-</span> w1])</span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>    portfolio_mean <span class="op">=</span> w <span class="op">@</span> mu_hat</span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a>    portfolio_var <span class="op">=</span> w <span class="op">@</span> Sigma_hat <span class="op">@</span> w</span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a>    portfolio_std <span class="op">=</span> np.sqrt(portfolio_var)</span>
+<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a>    portfolio_means.append(portfolio_mean)</span>
+<span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a>    portfolio_stds.append(portfolio_std)</span>
+<span id="cb9-16"><a href="#cb9-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-17"><a href="#cb9-17" aria-hidden="true" tabindex="-1"></a>portfolio_means <span class="op">=</span> np.array(portfolio_means)</span>
+<span id="cb9-18"><a href="#cb9-18" aria-hidden="true" tabindex="-1"></a>portfolio_stds <span class="op">=</span> np.array(portfolio_stds)</span>
+<span id="cb9-19"><a href="#cb9-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-20"><a href="#cb9-20" aria-hidden="true" tabindex="-1"></a>min_var_idx <span class="op">=</span> np.argmin(portfolio_stds)</span>
+<span id="cb9-21"><a href="#cb9-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-22"><a href="#cb9-22" aria-hidden="true" tabindex="-1"></a>w_min_var <span class="op">=</span> np.array([</span>
+<span id="cb9-23"><a href="#cb9-23" aria-hidden="true" tabindex="-1"></a>    w1_values[min_var_idx],</span>
+<span id="cb9-24"><a href="#cb9-24" aria-hidden="true" tabindex="-1"></a>    <span class="dv">1</span> <span class="op">-</span> w1_values[min_var_idx]</span>
+<span id="cb9-25"><a href="#cb9-25" aria-hidden="true" tabindex="-1"></a>])</span>
+<span id="cb9-26"><a href="#cb9-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-27"><a href="#cb9-27" aria-hidden="true" tabindex="-1"></a>min_var_mean <span class="op">=</span> portfolio_means[min_var_idx]</span>
+<span id="cb9-28"><a href="#cb9-28" aria-hidden="true" tabindex="-1"></a>min_var_std <span class="op">=</span> portfolio_stds[min_var_idx]</span>
+<span id="cb9-29"><a href="#cb9-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-30"><a href="#cb9-30" aria-hidden="true" tabindex="-1"></a><span class="co"># Example: 60% in asset 1 and 40% in asset 2</span></span>
+<span id="cb9-31"><a href="#cb9-31" aria-hidden="true" tabindex="-1"></a>w_selected <span class="op">=</span> np.array([<span class="fl">0.60</span>, <span class="fl">0.40</span>])</span>
+<span id="cb9-32"><a href="#cb9-32" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-33"><a href="#cb9-33" aria-hidden="true" tabindex="-1"></a>portfolio_mean <span class="op">=</span> w_selected <span class="op">@</span> mu_hat</span>
+<span id="cb9-34"><a href="#cb9-34" aria-hidden="true" tabindex="-1"></a>portfolio_var <span class="op">=</span> w_selected <span class="op">@</span> Sigma_hat <span class="op">@</span> w_selected</span>
+<span id="cb9-35"><a href="#cb9-35" aria-hidden="true" tabindex="-1"></a>portfolio_std <span class="op">=</span> np.sqrt(portfolio_var)</span>
+<span id="cb9-36"><a href="#cb9-36" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-37"><a href="#cb9-37" aria-hidden="true" tabindex="-1"></a><span class="co"># The 1% return quantile</span></span>
+<span id="cb9-38"><a href="#cb9-38" aria-hidden="true" tabindex="-1"></a>return_cutoff_01 <span class="op">=</span> (</span>
+<span id="cb9-39"><a href="#cb9-39" aria-hidden="true" tabindex="-1"></a>    portfolio_mean</span>
+<span id="cb9-40"><a href="#cb9-40" aria-hidden="true" tabindex="-1"></a>    <span class="op">+</span> norm.ppf(<span class="fl">0.01</span>) <span class="op">*</span> portfolio_std</span>
+<span id="cb9-41"><a href="#cb9-41" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb9-42"><a href="#cb9-42" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-43"><a href="#cb9-43" aria-hidden="true" tabindex="-1"></a><span class="co"># VaR is reported as a positive loss</span></span>
+<span id="cb9-44"><a href="#cb9-44" aria-hidden="true" tabindex="-1"></a>VaR_99 <span class="op">=</span> <span class="op">-</span>return_cutoff_01</span>
+<span id="cb9-45"><a href="#cb9-45" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-46"><a href="#cb9-46" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Selected weights:"</span>, w_selected)</span>
+<span id="cb9-47"><a href="#cb9-47" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Expected daily return: </span><span class="sc">{</span>portfolio_mean<span class="sc">:.6f}</span><span class="ss">"</span>)</span>
+<span id="cb9-48"><a href="#cb9-48" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Daily volatility:      </span><span class="sc">{</span>portfolio_std<span class="sc">:.6f}</span><span class="ss">"</span>)</span>
+<span id="cb9-49"><a href="#cb9-49" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"1-day 99% VaR:         </span><span class="sc">{</span>VaR_99<span class="sc">:.6f}</span><span class="ss">"</span>)</span>
+<span id="cb9-50"><a href="#cb9-50" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-51"><a href="#cb9-51" aria-hidden="true" tabindex="-1"></a>fig, axes <span class="op">=</span> plt.subplots(<span class="dv">1</span>, <span class="dv">2</span>, figsize<span class="op">=</span>(<span class="dv">14</span>, <span class="fl">5.5</span>))</span>
+<span id="cb9-52"><a href="#cb9-52" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-53"><a href="#cb9-53" aria-hidden="true" tabindex="-1"></a>ax <span class="op">=</span> axes[<span class="dv">0</span>]</span>
+<span id="cb9-54"><a href="#cb9-54" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-55"><a href="#cb9-55" aria-hidden="true" tabindex="-1"></a>scatter <span class="op">=</span> ax.scatter(</span>
+<span id="cb9-56"><a href="#cb9-56" aria-hidden="true" tabindex="-1"></a>    portfolio_stds,</span>
+<span id="cb9-57"><a href="#cb9-57" aria-hidden="true" tabindex="-1"></a>    portfolio_means,</span>
+<span id="cb9-58"><a href="#cb9-58" aria-hidden="true" tabindex="-1"></a>    c<span class="op">=</span>w1_values,</span>
+<span id="cb9-59"><a href="#cb9-59" aria-hidden="true" tabindex="-1"></a>    cmap<span class="op">=</span><span class="st">"viridis"</span>,</span>
+<span id="cb9-60"><a href="#cb9-60" aria-hidden="true" tabindex="-1"></a>    s<span class="op">=</span><span class="dv">28</span></span>
+<span id="cb9-61"><a href="#cb9-61" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb9-62"><a href="#cb9-62" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-63"><a href="#cb9-63" aria-hidden="true" tabindex="-1"></a><span class="co"># Minimum-variance portfolio</span></span>
+<span id="cb9-64"><a href="#cb9-64" aria-hidden="true" tabindex="-1"></a>ax.scatter(</span>
+<span id="cb9-65"><a href="#cb9-65" aria-hidden="true" tabindex="-1"></a>    min_var_std,</span>
+<span id="cb9-66"><a href="#cb9-66" aria-hidden="true" tabindex="-1"></a>    min_var_mean,</span>
+<span id="cb9-67"><a href="#cb9-67" aria-hidden="true" tabindex="-1"></a>    marker<span class="op">=</span><span class="st">"*"</span>,</span>
+<span id="cb9-68"><a href="#cb9-68" aria-hidden="true" tabindex="-1"></a>    s<span class="op">=</span><span class="dv">220</span>,</span>
+<span id="cb9-69"><a href="#cb9-69" aria-hidden="true" tabindex="-1"></a>    edgecolor<span class="op">=</span><span class="st">"black"</span>,</span>
+<span id="cb9-70"><a href="#cb9-70" aria-hidden="true" tabindex="-1"></a>    label<span class="op">=</span><span class="st">"Minimum-variance portfolio"</span>,</span>
+<span id="cb9-71"><a href="#cb9-71" aria-hidden="true" tabindex="-1"></a>    zorder<span class="op">=</span><span class="dv">4</span></span>
+<span id="cb9-72"><a href="#cb9-72" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb9-73"><a href="#cb9-73" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-74"><a href="#cb9-74" aria-hidden="true" tabindex="-1"></a><span class="co"># Selected portfolio</span></span>
+<span id="cb9-75"><a href="#cb9-75" aria-hidden="true" tabindex="-1"></a>ax.scatter(</span>
+<span id="cb9-76"><a href="#cb9-76" aria-hidden="true" tabindex="-1"></a>    portfolio_std,</span>
+<span id="cb9-77"><a href="#cb9-77" aria-hidden="true" tabindex="-1"></a>    portfolio_mean,</span>
+<span id="cb9-78"><a href="#cb9-78" aria-hidden="true" tabindex="-1"></a>    marker<span class="op">=</span><span class="st">"X"</span>,</span>
+<span id="cb9-79"><a href="#cb9-79" aria-hidden="true" tabindex="-1"></a>    s<span class="op">=</span><span class="dv">130</span>,</span>
+<span id="cb9-80"><a href="#cb9-80" aria-hidden="true" tabindex="-1"></a>    edgecolor<span class="op">=</span><span class="st">"black"</span>,</span>
+<span id="cb9-81"><a href="#cb9-81" aria-hidden="true" tabindex="-1"></a>    label<span class="op">=</span><span class="st">"Selected portfolio: $w=(0.6,0.4)$"</span>,</span>
+<span id="cb9-82"><a href="#cb9-82" aria-hidden="true" tabindex="-1"></a>    zorder<span class="op">=</span><span class="dv">4</span></span>
+<span id="cb9-83"><a href="#cb9-83" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb9-84"><a href="#cb9-84" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-85"><a href="#cb9-85" aria-hidden="true" tabindex="-1"></a><span class="co"># Individual assets</span></span>
+<span id="cb9-86"><a href="#cb9-86" aria-hidden="true" tabindex="-1"></a>asset_stds <span class="op">=</span> np.sqrt(np.diag(Sigma_hat))</span>
+<span id="cb9-87"><a href="#cb9-87" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-88"><a href="#cb9-88" aria-hidden="true" tabindex="-1"></a>ax.scatter(</span>
+<span id="cb9-89"><a href="#cb9-89" aria-hidden="true" tabindex="-1"></a>    asset_stds,</span>
+<span id="cb9-90"><a href="#cb9-90" aria-hidden="true" tabindex="-1"></a>    mu_hat,</span>
+<span id="cb9-91"><a href="#cb9-91" aria-hidden="true" tabindex="-1"></a>    marker<span class="op">=</span><span class="st">"D"</span>,</span>
+<span id="cb9-92"><a href="#cb9-92" aria-hidden="true" tabindex="-1"></a>    s<span class="op">=</span><span class="dv">80</span>,</span>
+<span id="cb9-93"><a href="#cb9-93" aria-hidden="true" tabindex="-1"></a>    edgecolor<span class="op">=</span><span class="st">"black"</span>,</span>
+<span id="cb9-94"><a href="#cb9-94" aria-hidden="true" tabindex="-1"></a>    label<span class="op">=</span><span class="st">"Individual assets"</span>,</span>
+<span id="cb9-95"><a href="#cb9-95" aria-hidden="true" tabindex="-1"></a>    zorder<span class="op">=</span><span class="dv">4</span></span>
+<span id="cb9-96"><a href="#cb9-96" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb9-97"><a href="#cb9-97" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-98"><a href="#cb9-98" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">2</span>):</span>
+<span id="cb9-99"><a href="#cb9-99" aria-hidden="true" tabindex="-1"></a>    ax.annotate(</span>
+<span id="cb9-100"><a href="#cb9-100" aria-hidden="true" tabindex="-1"></a>        <span class="ss">f"Asset </span><span class="sc">{</span>i <span class="op">+</span> <span class="dv">1</span><span class="sc">}</span><span class="ss">"</span>,</span>
+<span id="cb9-101"><a href="#cb9-101" aria-hidden="true" tabindex="-1"></a>        xy<span class="op">=</span>(asset_stds[i], mu_hat[i]),</span>
+<span id="cb9-102"><a href="#cb9-102" aria-hidden="true" tabindex="-1"></a>        xytext<span class="op">=</span>(<span class="dv">6</span>, <span class="dv">7</span>),</span>
+<span id="cb9-103"><a href="#cb9-103" aria-hidden="true" tabindex="-1"></a>        textcoords<span class="op">=</span><span class="st">"offset points"</span></span>
+<span id="cb9-104"><a href="#cb9-104" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb9-105"><a href="#cb9-105" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-106"><a href="#cb9-106" aria-hidden="true" tabindex="-1"></a>colorbar <span class="op">=</span> fig.colorbar(scatter, ax<span class="op">=</span>ax)</span>
+<span id="cb9-107"><a href="#cb9-107" aria-hidden="true" tabindex="-1"></a>colorbar.set_label(<span class="st">"Weight in Asset 1, $w_1$"</span>)</span>
+<span id="cb9-108"><a href="#cb9-108" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-109"><a href="#cb9-109" aria-hidden="true" tabindex="-1"></a>ax.set_title(<span class="st">"Mean–Variance Geometry of Two-Asset Portfolios"</span>)</span>
+<span id="cb9-110"><a href="#cb9-110" aria-hidden="true" tabindex="-1"></a>ax.set_xlabel(<span class="st">"Portfolio volatility  $</span><span class="ch">\\</span><span class="st">sqrt{w^</span><span class="ch">\\</span><span class="st">top</span><span class="ch">\\</span><span class="st">hat</span><span class="ch">\\</span><span class="st">Sigma w}$"</span>)</span>
+<span id="cb9-111"><a href="#cb9-111" aria-hidden="true" tabindex="-1"></a>ax.set_ylabel(<span class="st">"Expected portfolio return  $w^</span><span class="ch">\\</span><span class="st">top</span><span class="ch">\\</span><span class="st">hat</span><span class="ch">\\</span><span class="st">mu$"</span>)</span>
+<span id="cb9-112"><a href="#cb9-112" aria-hidden="true" tabindex="-1"></a>ax.grid(alpha<span class="op">=</span><span class="fl">0.3</span>)</span>
+<span id="cb9-113"><a href="#cb9-113" aria-hidden="true" tabindex="-1"></a>ax.legend()</span>
+<span id="cb9-114"><a href="#cb9-114" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-115"><a href="#cb9-115" aria-hidden="true" tabindex="-1"></a>ax <span class="op">=</span> axes[<span class="dv">1</span>]</span>
+<span id="cb9-116"><a href="#cb9-116" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-117"><a href="#cb9-117" aria-hidden="true" tabindex="-1"></a>x_min <span class="op">=</span> portfolio_mean <span class="op">-</span> <span class="fl">4.5</span> <span class="op">*</span> portfolio_std</span>
+<span id="cb9-118"><a href="#cb9-118" aria-hidden="true" tabindex="-1"></a>x_max <span class="op">=</span> portfolio_mean <span class="op">+</span> <span class="fl">4.5</span> <span class="op">*</span> portfolio_std</span>
+<span id="cb9-119"><a href="#cb9-119" aria-hidden="true" tabindex="-1"></a>x_grid <span class="op">=</span> np.linspace(x_min, x_max, <span class="dv">600</span>)</span>
+<span id="cb9-120"><a href="#cb9-120" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-121"><a href="#cb9-121" aria-hidden="true" tabindex="-1"></a>density <span class="op">=</span> norm.pdf(</span>
+<span id="cb9-122"><a href="#cb9-122" aria-hidden="true" tabindex="-1"></a>    x_grid,</span>
+<span id="cb9-123"><a href="#cb9-123" aria-hidden="true" tabindex="-1"></a>    loc<span class="op">=</span>portfolio_mean,</span>
+<span id="cb9-124"><a href="#cb9-124" aria-hidden="true" tabindex="-1"></a>    scale<span class="op">=</span>portfolio_std</span>
+<span id="cb9-125"><a href="#cb9-125" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb9-126"><a href="#cb9-126" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-127"><a href="#cb9-127" aria-hidden="true" tabindex="-1"></a>ax.plot(</span>
+<span id="cb9-128"><a href="#cb9-128" aria-hidden="true" tabindex="-1"></a>    x_grid,</span>
+<span id="cb9-129"><a href="#cb9-129" aria-hidden="true" tabindex="-1"></a>    density,</span>
+<span id="cb9-130"><a href="#cb9-130" aria-hidden="true" tabindex="-1"></a>    linewidth<span class="op">=</span><span class="dv">2</span>,</span>
+<span id="cb9-131"><a href="#cb9-131" aria-hidden="true" tabindex="-1"></a>    label<span class="op">=</span><span class="st">"Gaussian portfolio-return density"</span></span>
+<span id="cb9-132"><a href="#cb9-132" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb9-133"><a href="#cb9-133" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-134"><a href="#cb9-134" aria-hidden="true" tabindex="-1"></a><span class="co"># Shade the worst 1% of outcomes</span></span>
+<span id="cb9-135"><a href="#cb9-135" aria-hidden="true" tabindex="-1"></a>tail_mask <span class="op">=</span> x_grid <span class="op">&lt;=</span> return_cutoff_01</span>
+<span id="cb9-136"><a href="#cb9-136" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-137"><a href="#cb9-137" aria-hidden="true" tabindex="-1"></a>ax.fill_between(</span>
+<span id="cb9-138"><a href="#cb9-138" aria-hidden="true" tabindex="-1"></a>    x_grid[tail_mask],</span>
+<span id="cb9-139"><a href="#cb9-139" aria-hidden="true" tabindex="-1"></a>    density[tail_mask],</span>
+<span id="cb9-140"><a href="#cb9-140" aria-hidden="true" tabindex="-1"></a>    alpha<span class="op">=</span><span class="fl">0.35</span>,</span>
+<span id="cb9-141"><a href="#cb9-141" aria-hidden="true" tabindex="-1"></a>    label<span class="op">=</span><span class="st">"Worst 1</span><span class="sc">% o</span><span class="st">f returns"</span></span>
+<span id="cb9-142"><a href="#cb9-142" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb9-143"><a href="#cb9-143" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-144"><a href="#cb9-144" aria-hidden="true" tabindex="-1"></a><span class="co"># VaR cutoff</span></span>
+<span id="cb9-145"><a href="#cb9-145" aria-hidden="true" tabindex="-1"></a>ax.axvline(</span>
+<span id="cb9-146"><a href="#cb9-146" aria-hidden="true" tabindex="-1"></a>    return_cutoff_01,</span>
+<span id="cb9-147"><a href="#cb9-147" aria-hidden="true" tabindex="-1"></a>    linestyle<span class="op">=</span><span class="st">"--"</span>,</span>
+<span id="cb9-148"><a href="#cb9-148" aria-hidden="true" tabindex="-1"></a>    linewidth<span class="op">=</span><span class="dv">2</span>,</span>
+<span id="cb9-149"><a href="#cb9-149" aria-hidden="true" tabindex="-1"></a>    label<span class="op">=</span>(</span>
+<span id="cb9-150"><a href="#cb9-150" aria-hidden="true" tabindex="-1"></a>        <span class="ss">f"1% return quantile = </span><span class="sc">{</span>return_cutoff_01<span class="sc">:.4f}</span><span class="ch">\n</span><span class="ss">"</span></span>
+<span id="cb9-151"><a href="#cb9-151" aria-hidden="true" tabindex="-1"></a>        <span class="ss">f"99% VaR = </span><span class="sc">{</span>VaR_99<span class="sc">:.4f}</span><span class="ss">"</span></span>
+<span id="cb9-152"><a href="#cb9-152" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb9-153"><a href="#cb9-153" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb9-154"><a href="#cb9-154" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-155"><a href="#cb9-155" aria-hidden="true" tabindex="-1"></a><span class="co"># Expected return</span></span>
+<span id="cb9-156"><a href="#cb9-156" aria-hidden="true" tabindex="-1"></a>ax.axvline(</span>
+<span id="cb9-157"><a href="#cb9-157" aria-hidden="true" tabindex="-1"></a>    portfolio_mean,</span>
+<span id="cb9-158"><a href="#cb9-158" aria-hidden="true" tabindex="-1"></a>    linestyle<span class="op">=</span><span class="st">":"</span>,</span>
+<span id="cb9-159"><a href="#cb9-159" aria-hidden="true" tabindex="-1"></a>    linewidth<span class="op">=</span><span class="dv">2</span>,</span>
+<span id="cb9-160"><a href="#cb9-160" aria-hidden="true" tabindex="-1"></a>    label<span class="op">=</span><span class="ss">f"Expected return = </span><span class="sc">{</span>portfolio_mean<span class="sc">:.4f}</span><span class="ss">"</span></span>
+<span id="cb9-161"><a href="#cb9-161" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb9-162"><a href="#cb9-162" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-163"><a href="#cb9-163" aria-hidden="true" tabindex="-1"></a>ax.set_title(<span class="st">"Gaussian 1-Day Portfolio Risk and 99% VaR"</span>)</span>
+<span id="cb9-164"><a href="#cb9-164" aria-hidden="true" tabindex="-1"></a>ax.set_xlabel(<span class="st">"One-day portfolio return"</span>)</span>
+<span id="cb9-165"><a href="#cb9-165" aria-hidden="true" tabindex="-1"></a>ax.set_ylabel(<span class="st">"Probability density"</span>)</span>
+<span id="cb9-166"><a href="#cb9-166" aria-hidden="true" tabindex="-1"></a>ax.grid(alpha<span class="op">=</span><span class="fl">0.3</span>)</span>
+<span id="cb9-167"><a href="#cb9-167" aria-hidden="true" tabindex="-1"></a>ax.legend()</span>
+<span id="cb9-168"><a href="#cb9-168" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-169"><a href="#cb9-169" aria-hidden="true" tabindex="-1"></a>fig.suptitle(</span>
+<span id="cb9-170"><a href="#cb9-170" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Portfolio Risk from the Fitted Mean Vector and Covariance Matrix"</span>,</span>
+<span id="cb9-171"><a href="#cb9-171" aria-hidden="true" tabindex="-1"></a>    fontsize<span class="op">=</span><span class="dv">14</span></span>
+<span id="cb9-172"><a href="#cb9-172" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb9-173"><a href="#cb9-173" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-174"><a href="#cb9-174" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb9-175"><a href="#cb9-175" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>Selected weights: [0.6 0.4]
+Expected daily return: 0.159846
+Daily volatility:      0.901915
+1-day 99% VaR:         1.938323</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="multivariate-normal-distribution_files/figure-html/cell-11-output-2.png" width="1333" height="521" class="figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="pitfalls-worth-knowing-before-we-ship-this" class="level2">
+<h2 class="anchored" data-anchor-id="pitfalls-worth-knowing-before-we-ship-this">7. Pitfalls worth knowing before we ship this</h2>
+<ul>
+<li><strong>Singular or ill-conditioned <span class="math inline">\(\boldsymbol\Sigma\)</span>.</strong>&nbsp;If features are collinear or <span class="math inline">\(p\)</span> is close to <span class="math inline">\(n\)</span>, the sample covariance may not be invertible, or inverting it amplifies noise. Regularize (shrinkage), drop redundant features, or run PCA first.</li>
+<li><strong>Masking in outlier detection.</strong>&nbsp;A cluster of outliers can drag the sample mean and covariance toward itself, making the outliers look normal by comparison. Robust estimators like the Minimum Covariance Determinant exist specifically to resist this.</li>
+<li><strong>Chi-squared cutoffs stop being reliable in high dimensions.</strong>&nbsp;As dimensionality grows, Mahalanobis distances concentrate, and the classical chi-squared calibration degrades; recalibrate empirically or reduce dimensionality first.</li>
+<li><strong>Zero correlation is not independence — except here.</strong>&nbsp;It’s easy to over-generalize the Gaussian-specific fact that zero covariance implies independence to other distributions, where it’s false.</li>
+<li><strong>Silently assuming ellipticity is fine, but thin tails aren’t.</strong>&nbsp;If we only fix one thing about a poorly-fitting Gaussian model, fix the tails (Student-t, mixtures) before worrying about skew or correlation structure — the tails are usually where the real damage happens.</li>
+</ul>
+
+
+</section>
+
+
+<div id="quarto-appendix" class="default"><section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes"><h2 class="anchored quarto-appendix-heading">Footnotes</h2>
+
+<ol>
+<li id="fn1"><p>Wikipedia contributors. “Multivariate normal distribution.”&nbsp;<a href="https://en.wikipedia.org/wiki/Multivariate_normal_distribution">en.wikipedia.org/wiki/Multivariate_normal_distribution</a><a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn2"><p>Duke University, Dept. of Statistical Science. “Basic Multivariate Normal Theory,” lecture notes STA 732.&nbsp;<a href="https://www2.stat.duke.edu/~st118/sta732/mvnormal.pdf">www2.stat.duke.edu/~st118/sta732/mvnormal.pdf</a><a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn3"><p>Duke University, Dept. of Statistical Science. “Basic Multivariate Normal Theory,” lecture notes STA 732.&nbsp;<a href="https://www2.stat.duke.edu/~st118/sta732/mvnormal.pdf">www2.stat.duke.edu/~st118/sta732/mvnormal.pdf</a><a href="#fnref3" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn4"><p>Mahalanobis, P. C. “On the generalized distance in statistics.”&nbsp;<em>Proceedings of the National Institute of Sciences of India</em>, 2, 49–55, 1936. <a href="https://insa.nic.in/writereaddata/UpLoadedFiles/PINSA/Vol02_1936_1_Art05.pdf">https://insa.nic.in/writereaddata/UpLoadedFiles/PINSA/Vol02_1936_1_Art05.pdf</a><a href="#fnref4" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn5"><p>Görtler, J., Kehlbeck, R., Deussen, O. “A Visual Exploration of Gaussian Processes.” Distill, 2019. <a href="[distill.pub/2019/visual-exploration-gaussian-processes](https://distill.pub/2019/visual-exploration-gaussian-processes/)">https://distill.pub/2019/visual-exploration-gaussian-processes/</a><a href="#fnref5" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn6"><p>Rasmussen, C. E., Williams, C. K. I.&nbsp;<em>Gaussian Processes for Machine Learning.</em>&nbsp;MIT Press, 2006. ISBN 026218253X. <a href="https://gaussianprocess.org/gpml/chapters/RW.pdf">https://gaussianprocess.org/gpml/chapters/RW.pdf</a><a href="#fnref6" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn7"><p>Markowitz, Harry. “Portfolio Selection.” <em>The Journal of Finance</em> 7, no. 1 (1952): 77. <a href="https://doi.org/10.2307/2975974">https://doi.org/10.2307/2975974</a>.<a href="#fnref7" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn8"><p>Kato, Masahiro, Kei Nakagawa, Kenshi Abe, Tetsuro Morimura, and Kentaro Baba. “Mean-Variance Efficient Reinforcement Learning with Applications to Dynamic Financial Investment.” arXiv:2010.01404. Preprint, arXiv, November 12, 2024. <a href="https://doi.org/10.48550/arXiv.2010.01404">https://doi.org/10.48550/arXiv.2010.01404</a>.<a href="#fnref8" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn9"><p>Kondor, Imre, Szilard Pafka, and Gabor Nagy. “Noise Sensitivity of Portfolio Selection under Various Risk Measures.” arXiv:physics/0611027. Preprint, arXiv, November 2, 2006. <a href="https://doi.org/10.48550/arXiv.physics/0611027">https://doi.org/10.48550/arXiv.physics/0611027</a>.<a href="#fnref9" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn10"><p>Welch, Greg, and Gary Bishop. <em>An Introduction to the Kalman Filter</em>. 2002.<a href="#fnref10" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn11"><p>Ledoit, Olivier, and Michael Wolf. “A Well-Conditioned Estimator for Large-Dimensional Covariance Matrices.” <em>Journal of Multivariate Analysis</em> 88, no. 2 (2004): 365–411. <a href="https://doi.org/10.1016/S0047-259X(03)00096-4">https://doi.org/10.1016/S0047-259X(03)00096-4</a>.<a href="#fnref11" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn12"><p>Rousseeuw, Peter J., and Katrien Van Driessen. “A Fast Algorithm for the Minimum Covariance Determinant Estimator.” <em>Technometrics</em> 41, no. 3 (1999): 212–23. <a href="https://doi.org/10.1080/00401706.1999.10485670">https://doi.org/10.1080/00401706.1999.10485670</a>.<a href="#fnref12" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn13"><p>Welch, Greg, and Gary Bishop. <em>An Introduction to the Kalman Filter</em>. 2002.<a href="#fnref13" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn14"><p>Lind, Artjom, Shan Wu, and Amnir Hadachi. “Application of Gaussian Mixtures in a Multimodal Kalman Filter to Estimate the State of a Nonlinearly Moving System Using Sparse Inaccurate Measurements in a Cellular Radio Network.” <em>Sensors</em> 23, no. 7 (2023): 3603. <a href="https://doi.org/10.3390/s23073603">https://doi.org/10.3390/s23073603</a>.<a href="#fnref14" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+</ol>
+</section></div></main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp("https:\/\/wdangds\.github\.io\/");
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+            // default icon
+            link.classList.add("external");
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+
+
+
+
+<script src="../site_libs/quarto-html/zenscroll-min.js"></script>
+</body></html>
