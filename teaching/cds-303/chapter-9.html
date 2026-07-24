@@ -23,6 +23,41 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
 </style>
 
 
@@ -42,7 +77,7 @@ ul.task-list li input[type="checkbox"] {
 <link href="../../site_libs/quarto-html/quarto-syntax-highlighting-15634bcf2e68342d4ad2dfa704d543f6.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../../site_libs/bootstrap/bootstrap-b56d3e91de174e27d4060aa74ef9d337.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-1b7da60b26a47d4c32e12cd6c71bb08b.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -71,7 +106,38 @@ ul.task-list li input[type="checkbox"] {
   }
 }</script>
 <style>html{ scroll-behavior: smooth; }</style>
+<script type="module" src="../../site_libs/quarto-ojs/quarto-ojs-runtime.js"></script>
+<link href="../../site_libs/quarto-ojs/quarto-ojs.css" rel="stylesheet">
 
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
 
 <link rel="stylesheet" href="../../styles.css">
 </head>
@@ -244,7 +310,69 @@ ul.task-list li input[type="checkbox"] {
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#overview" id="toc-overview" class="nav-link active" data-scroll-target="#overview">Overview</a></li>
+  <li><a href="#overview" id="toc-overview" class="nav-link active" data-scroll-target="#overview">1. Overview</a>
+  <ul class="collapse">
+  <li><a href="#bayes-theorem" id="toc-bayes-theorem" class="nav-link" data-scroll-target="#bayes-theorem">1.1. Bayes’ Theorem</a></li>
+  <li><a href="#sequential-updating" id="toc-sequential-updating" class="nav-link" data-scroll-target="#sequential-updating">1.2. Sequential Updating</a></li>
+  <li><a href="#likelihood-versus-posterior" id="toc-likelihood-versus-posterior" class="nav-link" data-scroll-target="#likelihood-versus-posterior">1.3. Likelihood Versus Posterior</a></li>
+  </ul></li>
+  <li><a href="#conjugate-bayesian-models" id="toc-conjugate-bayesian-models" class="nav-link" data-scroll-target="#conjugate-bayesian-models">2. Conjugate Bayesian Models</a>
+  <ul class="collapse">
+  <li><a href="#conjugacy" id="toc-conjugacy" class="nav-link" data-scroll-target="#conjugacy">2.1. Conjugacy</a></li>
+  <li><a href="#beta-bernoulli-model" id="toc-beta-bernoulli-model" class="nav-link" data-scroll-target="#beta-bernoulli-model">2.2. Beta-Bernoulli Model</a></li>
+  <li><a href="#diagnostic-rate-from-the-breast-cancer-dataset" id="toc-diagnostic-rate-from-the-breast-cancer-dataset" class="nav-link" data-scroll-target="#diagnostic-rate-from-the-breast-cancer-dataset">2.3. Diagnostic Rate from the Breast Cancer Dataset</a></li>
+  </ul></li>
+  <li><a href="#posterior-prediction" id="toc-posterior-prediction" class="nav-link" data-scroll-target="#posterior-prediction">3. Posterior Prediction</a>
+  <ul class="collapse">
+  <li><a href="#posterior-predictive-distribution" id="toc-posterior-predictive-distribution" class="nav-link" data-scroll-target="#posterior-predictive-distribution">3.1. Posterior Predictive Distribution</a></li>
+  <li><a href="#posterior-predictive-distribution-in-the-beta-bernoulli-model" id="toc-posterior-predictive-distribution-in-the-beta-bernoulli-model" class="nav-link" data-scroll-target="#posterior-predictive-distribution-in-the-beta-bernoulli-model">3.2. Posterior Predictive Distribution in the Beta-Bernoulli Model</a></li>
+  <li><a href="#credible-intervals" id="toc-credible-intervals" class="nav-link" data-scroll-target="#credible-intervals">3.3. Credible Intervals</a></li>
+  </ul></li>
+  <li><a href="#bayesian-linear-regression" id="toc-bayesian-linear-regression" class="nav-link" data-scroll-target="#bayesian-linear-regression">4. Bayesian Linear Regression</a>
+  <ul class="collapse">
+  <li><a href="#linear-regression-revisited" id="toc-linear-regression-revisited" class="nav-link" data-scroll-target="#linear-regression-revisited">4.1. Linear Regression Revisited</a></li>
+  <li><a href="#bayesian-linear-regression-posterior" id="toc-bayesian-linear-regression-posterior" class="nav-link" data-scroll-target="#bayesian-linear-regression-posterior">4.2. Bayesian Linear Regression Posterior</a></li>
+  <li><a href="#bayesian-predictive-distribution-for-linear-regression" id="toc-bayesian-predictive-distribution-for-linear-regression" class="nav-link" data-scroll-target="#bayesian-predictive-distribution-for-linear-regression">4.3. Bayesian Predictive Distribution for Linear Regression</a></li>
+  <li><a href="#bayesian-linear-regression-on-diabetes-data" id="toc-bayesian-linear-regression-on-diabetes-data" class="nav-link" data-scroll-target="#bayesian-linear-regression-on-diabetes-data">4.4. Bayesian Linear Regression on Diabetes Data</a></li>
+  </ul></li>
+  <li><a href="#gaussian-processes" id="toc-gaussian-processes" class="nav-link" data-scroll-target="#gaussian-processes">5. Gaussian Processes</a>
+  <ul class="collapse">
+  <li><a href="#gaussian-process-prior" id="toc-gaussian-process-prior" class="nav-link" data-scroll-target="#gaussian-process-prior">5.1. Gaussian Process Prior</a></li>
+  <li><a href="#gp-regression-with-gaussian-noise" id="toc-gp-regression-with-gaussian-noise" class="nav-link" data-scroll-target="#gp-regression-with-gaussian-noise">5.2. GP Regression with Gaussian Noise</a></li>
+  <li><a href="#interpretation-of-gp-prediction" id="toc-interpretation-of-gp-prediction" class="nav-link" data-scroll-target="#interpretation-of-gp-prediction">5.3. Interpretation of GP Prediction</a></li>
+  <li><a href="#gaussian-process-posterior-regression" id="toc-gaussian-process-posterior-regression" class="nav-link" data-scroll-target="#gaussian-process-posterior-regression">5.4. Gaussian Process Posterior Regression</a></li>
+  </ul></li>
+  <li><a href="#bayesian-neural-networks" id="toc-bayesian-neural-networks" class="nav-link" data-scroll-target="#bayesian-neural-networks">6. Bayesian Neural Networks</a>
+  <ul class="collapse">
+  <li><a href="#bayesian-neural-networks-1" id="toc-bayesian-neural-networks-1" class="nav-link" data-scroll-target="#bayesian-neural-networks-1">6.1. Bayesian Neural Networks</a></li>
+  <li><a href="#epistemic-and-aleatoric-uncertainty" id="toc-epistemic-and-aleatoric-uncertainty" class="nav-link" data-scroll-target="#epistemic-and-aleatoric-uncertainty">6.2. Epistemic and Aleatoric Uncertainty</a></li>
+  </ul></li>
+  <li><a href="#approximate-bayesian-inference" id="toc-approximate-bayesian-inference" class="nav-link" data-scroll-target="#approximate-bayesian-inference">7. Approximate Bayesian Inference</a>
+  <ul class="collapse">
+  <li><a href="#laplace-approximation" id="toc-laplace-approximation" class="nav-link" data-scroll-target="#laplace-approximation">7.1. Laplace Approximation</a></li>
+  <li><a href="#variational-inference" id="toc-variational-inference" class="nav-link" data-scroll-target="#variational-inference">7.2. Variational Inference</a></li>
+  <li><a href="#expectation-propagation" id="toc-expectation-propagation" class="nav-link" data-scroll-target="#expectation-propagation">7.3. Expectation Propagation</a></li>
+  <li><a href="#markov-chain-monte-carlo" id="toc-markov-chain-monte-carlo" class="nav-link" data-scroll-target="#markov-chain-monte-carlo">7.4. Markov Chain Monte Carlo</a></li>
+  <li><a href="#metropolis-hastings" id="toc-metropolis-hastings" class="nav-link" data-scroll-target="#metropolis-hastings">7.5. Metropolis-Hastings</a></li>
+  <li><a href="#gibbs-sampling" id="toc-gibbs-sampling" class="nav-link" data-scroll-target="#gibbs-sampling">7.6. Gibbs Sampling</a></li>
+  <li><a href="#hamiltonian-monte-carlo" id="toc-hamiltonian-monte-carlo" class="nav-link" data-scroll-target="#hamiltonian-monte-carlo">7.7. Hamiltonian Monte Carlo</a></li>
+  </ul></li>
+  <li><a href="#bayesian-model-comparison" id="toc-bayesian-model-comparison" class="nav-link" data-scroll-target="#bayesian-model-comparison">8. Bayesian Model Comparison</a>
+  <ul class="collapse">
+  <li><a href="#marginal-likelihood" id="toc-marginal-likelihood" class="nav-link" data-scroll-target="#marginal-likelihood">8.1. Marginal Likelihood</a></li>
+  <li><a href="#bayes-factors" id="toc-bayes-factors" class="nav-link" data-scroll-target="#bayes-factors">8.2. Bayes Factors</a></li>
+  <li><a href="#bayesian-model-averaging" id="toc-bayesian-model-averaging" class="nav-link" data-scroll-target="#bayesian-model-averaging">8.3. Bayesian Model Averaging</a></li>
+  <li><a href="#bayesian-information-criterion" id="toc-bayesian-information-criterion" class="nav-link" data-scroll-target="#bayesian-information-criterion">8.4. Bayesian Information Criterion</a></li>
+  </ul></li>
+  <li><a href="#bayesian-optimization" id="toc-bayesian-optimization" class="nav-link" data-scroll-target="#bayesian-optimization">9. Bayesian Optimization</a></li>
+  <li><a href="#statistical-relational-learning" id="toc-statistical-relational-learning" class="nav-link" data-scroll-target="#statistical-relational-learning">10. Statistical Relational Learning</a></li>
+  <li><a href="#practical-applications" id="toc-practical-applications" class="nav-link" data-scroll-target="#practical-applications">11. Practical Applications</a>
+  <ul class="collapse">
+  <li><a href="#medical-diagnostics" id="toc-medical-diagnostics" class="nav-link" data-scroll-target="#medical-diagnostics">11.1. Medical Diagnostics</a></li>
+  <li><a href="#bioinformatics-and-genetics" id="toc-bioinformatics-and-genetics" class="nav-link" data-scroll-target="#bioinformatics-and-genetics">11.2. Bioinformatics and Genetics</a></li>
+  <li><a href="#engineering-design-and-control" id="toc-engineering-design-and-control" class="nav-link" data-scroll-target="#engineering-design-and-control">11.3. Engineering Design and Control</a></li>
+  <li><a href="#chemistry-and-drug-discovery" id="toc-chemistry-and-drug-discovery" class="nav-link" data-scroll-target="#chemistry-and-drug-discovery">11.4. Chemistry and Drug Discovery</a></li>
+  </ul></li>
   </ul>
 </nav>
     </div>
@@ -270,16 +398,1528 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
+<p>Bayesian inference is a mathematical framework for learning under uncertainty. Unlike modeling approaches that treat unknown parameters as fixed quantities to be estimated once, Bayesian inference treats unknown quantities as uncertain and represents that uncertainty using probability distributions.</p>
+<p>In frequentist modeling, probability is usually interpreted through long-run frequencies of repeatable events. In Bayesian modeling, probability is broader: it measures uncertainty about unknown quantities. These unknown quantities may include model parameters, missing data, future observations, latent variables, model structures, or even competing scientific explanations.</p>
+<p>Let <span class="math inline">\(\theta\)</span> denote an unknown parameter or collection of parameters, and let <span class="math inline">\(D\)</span> denote observed data. Bayesian inference begins with a <em>prior</em> distribution <span class="math inline">\(p(\theta)\)</span> which represents uncertainty before observing the data. The data are connected to the parameters through a <em>likelihood</em> <span class="math inline">\(p(D\,|\,\theta)\)</span> , which describes how probable the observed data would be if the parameter value were <span class="math inline">\(\theta\)</span>. After observing the data, uncertainty is updated into the posterior distribution <span class="math inline">\(p(\theta \,|\, D)\)</span>.</p>
+<p>Bayesian inference is therefore a process of <strong>belief revision</strong>. It formalizes how prior assumptions and observed evidence combine to produce updated uncertainty.</p>
 <section id="overview" class="level2">
-<h2 class="anchored" data-anchor-id="overview">Overview</h2>
-<p>Add your Chapter 9 content here.</p>
-<p>Previous chapter: <a href="../../teaching/cds-303/chapter-8.html">Data modeling - ANN</a></p>
+<h2 class="anchored" data-anchor-id="overview">1. Overview</h2>
+<section id="bayes-theorem" class="level3">
+<h3 class="anchored" data-anchor-id="bayes-theorem">1.1. Bayes’ Theorem</h3>
+<div class="callout callout-style-default callout-note callout-titled" title="Theorem: Bayes' Theorem">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Theorem: Bayes’ Theorem
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><em>Let <span class="math inline">\(A\)</span> and <span class="math inline">\(B\)</span> be events with <span class="math inline">\(P(B)&gt;0\)</span>. Bayes’ theorem states that:</em></p>
+<p><span class="math display">\[
+P(A\,|\, B) = \frac{P(B\,|\, A)P(A)}{P(B)}
+\]</span></p>
+</div>
+</div>
+<p>For continuous parameters and observed data, the same idea is written as</p>
+<p><span class="math display">\[
+p(\theta\,|\, D)=\frac{p(D\,|\, \theta)p(\theta)}{p(D)}
+\]</span></p>
+<p>where</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 20%">
+<col style="width: 32%">
+<col style="width: 46%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Term</th>
+<th>Name</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><span class="math inline">\(p(\theta)\)</span></td>
+<td>Prior</td>
+<td>Belief about <span class="math inline">\(\theta\)</span> before seeing data</td>
+</tr>
+<tr class="even">
+<td><span class="math inline">\(p(D\,\vert\, \theta)\)</span></td>
+<td>Likelihood</td>
+<td>Data model as a function of <span class="math inline">\(\theta\)</span></td>
+</tr>
+<tr class="odd">
+<td><span class="math inline">\(p(\theta\,\vert\,D)\)</span></td>
+<td>Posterior</td>
+<td>Updated belief after seeing data</td>
+</tr>
+<tr class="even">
+<td><span class="math inline">\(p(D)\)</span></td>
+<td>Evidence / marginal likelihood</td>
+<td>Normalizing constant and model fit measure</td>
+</tr>
+</tbody>
+</table>
+<p>The denominator is</p>
+<p><span class="math display">\[
+p(D) = \int p(D\,|\, \theta)p(\theta)d\theta
+\]</span></p>
+<p>for continuous parameters, or</p>
+<p><span class="math display">\[
+p(D) = \sum_\theta p(D\,|\,\theta)p(\theta)
+\]</span></p>
+<p>for discrete parameter spaces.</p>
+<p>Thus,</p>
+<p><span class="math display">\[
+p(\theta \,|\, D) \propto p(D\,|\,\theta)p(\theta)
+\]</span></p>
+<p>This proportional form is often interpreted as <span class="math inline">\(\text{posterior } \propto \text{ likelihood } \times \text{ prior}\)</span>.</p>
+</section>
+<section id="sequential-updating" class="level3">
+<h3 class="anchored" data-anchor-id="sequential-updating">1.2. Sequential Updating</h3>
+<p>A key property of Bayesian inference is that it can be performed sequentially. Suppose data arrive in two batches <span class="math inline">\(D_1\)</span> and <span class="math inline">\(D_2\)</span>. After observing <span class="math inline">\(D_1\)</span>, the posterior is</p>
+<p><span class="math display">\[
+p(\theta\,|\, D_1) = \frac{p(D_1\,|\, \theta)p(\theta)}{p(D_1)}
+\]</span></p>
+<p>When <span class="math inline">\(D_2\)</span> arrives, the previous posterior becomes the new prior:</p>
+<p><span class="math display">\[
+p(\theta\,|\, D_1, D_2) \propto p(D_2\,|\,\theta,D_1) p(\theta\,|\,D_1)
+\]</span></p>
+<p>If <span class="math inline">\(D_1\)</span> and <span class="math inline">\(D_2\)</span> are conditionally independent given <span class="math inline">\(\theta\)</span>, then <span class="math inline">\(p(D_2\,|\,\theta, D_1)= p(D_2\,|\, \theta)\)</span>.</p>
+<p>Substituting the first posterior, we obtain</p>
+<p><span class="math display">\[
+p(\theta\,|\, D_1, D_2) \propto p(D_2\,|\,\theta)p(D_1\,|\, \theta)p(\theta).
+\]</span></p>
+<p>In general, given <span class="math inline">\(D_1, \dots, D_n\)</span> i.i.d., we have</p>
+<p><span class="math display">\[
+\boxed{
+p(\theta\,|\, D_1, \dots, D_n) \propto p(D_n\,|\,\theta)\dots p(D_1\,|\, \theta) p(\theta)
+}
+\]</span></p>
+</section>
+<section id="likelihood-versus-posterior" class="level3">
+<h3 class="anchored" data-anchor-id="likelihood-versus-posterior">1.3. Likelihood Versus Posterior</h3>
+<p>A common mistake is to treat the likelihood as a probability distribution over parameters. The likelihood <span class="math inline">\(p(D\,|\,\theta)\)</span> is a function of <span class="math inline">\(\theta\)</span>, but it is not necessarily normalized as a distribution over <span class="math inline">\(\theta\)</span>. The posterior <span class="math inline">\(p(\theta\,|\,D)\)</span> is the probability distribution over parameters after observing the data.</p>
+<p>The likelihood answers:</p>
+<blockquote class="blockquote">
+<p><em>How compatible is the observed data with each parameter value?</em></p>
+</blockquote>
+<p>The posterior answers:</p>
+<blockquote class="blockquote">
+<p><em>After combining prior information and data evidence, how plausible is each parameter value?</em></p>
+</blockquote>
+<p>Two Bayesian analysts may use the same likelihood but different priors, producing different posteriors. With enough informative data, the likelihood often dominates.</p>
+</section>
+</section>
+<section id="conjugate-bayesian-models" class="level2">
+<h2 class="anchored" data-anchor-id="conjugate-bayesian-models">2. Conjugate Bayesian Models</h2>
+<section id="conjugacy" class="level3">
+<h3 class="anchored" data-anchor-id="conjugacy">2.1. Conjugacy</h3>
+<div class="callout callout-style-default callout-note callout-titled" title="Definition: Conjugate Prior">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Definition: Conjugate Prior
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><em>A prior distribution <span class="math inline">\(p(\theta)\)</span> is <strong>conjugate</strong> to a likelihood <span class="math inline">\(p(D\,|\,\theta)\)</span> if the posterior distribution <span class="math inline">\(p(\theta\,|\, D)\)</span> belongs to the same family as the prior.</em></p>
+</div>
+</div>
+<p>Conjugacy is useful because it gives closed-form posterior updates.</p>
+<p>For example:</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Likelihood</th>
+<th>Conjugate Prior</th>
+<th>Posterior</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Bernoulli</td>
+<td>Beta</td>
+<td>Beta</td>
+</tr>
+<tr class="even">
+<td>Binomial</td>
+<td>Beta</td>
+<td>Beta</td>
+</tr>
+<tr class="odd">
+<td>Poisson</td>
+<td>Gamma</td>
+<td>Gamma</td>
+</tr>
+<tr class="even">
+<td>Normal mean with known variance</td>
+<td>Normal</td>
+<td>Normal</td>
+</tr>
+<tr class="odd">
+<td>Multinomial</td>
+<td>Dirichlet</td>
+<td>Dirichlet</td>
+</tr>
+</tbody>
+</table>
+<div class="callout callout-style-default callout-warning callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Warning
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><em>Conjugate models are not always realistic.</em></p>
+</div>
+</div>
+</section>
+<section id="beta-bernoulli-model" class="level3">
+<h3 class="anchored" data-anchor-id="beta-bernoulli-model">2.2. Beta-Bernoulli Model</h3>
+<p>Suppose we observe binary outcomes <span class="math inline">\(y_i \in \{0,1\}\)</span>. Let <span class="math inline">\(\theta = P(Y=1)\)</span>. The Bernoulli likelihood for one observation is</p>
+<p><span class="math display">\[
+p(y_i\,|\, \theta) =\theta^{y_i}(1-\theta)^{1-y_i}.
+\]</span></p>
+<p>For <span class="math inline">\(n\)</span> independent observations, let <span class="math inline">\(s= \sum_{i=1}^n y_i\)</span> be the number of successes, and <span class="math inline">\(f=n-s\)</span> be the number of failures. The likelihood is</p>
+<p><span class="math display">\[
+p(D\,|\, \theta) = \theta ^s(1-\theta)^f
+\]</span></p>
+<p>Assume a Beta prior <span class="math inline">\(\theta\sim \text{Beta}(\alpha, \beta)\)</span>.</p>
+<div class="callout callout-style-default callout-note callout-titled" title="Definition: Beta distribution">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Definition: Beta distribution
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><em>The <strong>Beta distribution</strong> is a family of continuous probability distributions defined on the interval <span class="math inline">\([0,1]\)</span> in terms of two positive parameters, denoted by <span class="math inline">\(\alpha\)</span> and <span class="math inline">\(\beta\)</span>. The <strong>probability density function (PDF)</strong> of the beta distribution for <span class="math inline">\(0\leq \theta\leq 1\)</span> and shape parameters <span class="math inline">\(\alpha, \beta &gt;0\)</span> is a power function of the variable <span class="math inline">\(\theta\)</span> and of its reflection <span class="math inline">\((1-\theta)\)</span> as follows:</em></p>
+<p><span class="math display">\[
+\begin{aligned}
+f(\theta;\alpha, \beta) &amp;= \text{constant}\times \theta^{\alpha-1}(1-\theta)^{\beta-1}=\frac{\theta^{\alpha-1}(1-\theta)^{\beta-1}}{\int_0^1 u^{\alpha-1}(1-u)^{\beta-1}du}\\
+&amp;=\frac{\Gamma(\alpha+\beta)}{\Gamma(\alpha)\Gamma(\beta)}\theta^{\alpha-1}(1-\theta)^{\beta-1}
+\end{aligned}
+\]</span></p>
+<p><em>where <span class="math inline">\(\Gamma(z)\)</span> is the <a href="https://en.wikipedia.org/wiki/Gamma_function">Gamma function</a>.</em></p>
+</div>
+</div>
+<div class="cell">
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1" data-startfrom="169" data-source-offset="-0"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 168;"><span id="cb1-169"><a href="#cb1-169" aria-hidden="true" tabindex="-1"></a>viewof parameters <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">form</span>({</span>
+<span id="cb1-170"><a href="#cb1-170" aria-hidden="true" tabindex="-1"></a>  <span class="dt">alpha</span><span class="op">:</span> Inputs<span class="op">.</span><span class="fu">range</span>(</span>
+<span id="cb1-171"><a href="#cb1-171" aria-hidden="true" tabindex="-1"></a>    [<span class="fl">0.2</span><span class="op">,</span> <span class="dv">10</span>]<span class="op">,</span></span>
+<span id="cb1-172"><a href="#cb1-172" aria-hidden="true" tabindex="-1"></a>    { <span class="dt">value</span><span class="op">:</span> <span class="dv">2</span><span class="op">,</span> <span class="dt">step</span><span class="op">:</span> <span class="fl">0.1</span><span class="op">,</span> <span class="dt">label</span><span class="op">:</span> <span class="st">"alpha (α)"</span> }</span>
+<span id="cb1-173"><a href="#cb1-173" aria-hidden="true" tabindex="-1"></a>  )<span class="op">,</span></span>
+<span id="cb1-174"><a href="#cb1-174" aria-hidden="true" tabindex="-1"></a>  <span class="dt">beta</span><span class="op">:</span> Inputs<span class="op">.</span><span class="fu">range</span>(</span>
+<span id="cb1-175"><a href="#cb1-175" aria-hidden="true" tabindex="-1"></a>    [<span class="fl">0.2</span><span class="op">,</span> <span class="dv">10</span>]<span class="op">,</span></span>
+<span id="cb1-176"><a href="#cb1-176" aria-hidden="true" tabindex="-1"></a>    { <span class="dt">value</span><span class="op">:</span> <span class="dv">5</span><span class="op">,</span> <span class="dt">step</span><span class="op">:</span> <span class="fl">0.1</span><span class="op">,</span> <span class="dt">label</span><span class="op">:</span> <span class="st">"beta (β)"</span> }</span>
+<span id="cb1-177"><a href="#cb1-177" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb1-178"><a href="#cb1-178" aria-hidden="true" tabindex="-1"></a>})</span>
+<span id="cb1-179"><a href="#cb1-179" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-180"><a href="#cb1-180" aria-hidden="true" tabindex="-1"></a>{</span>
+<span id="cb1-181"><a href="#cb1-181" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> { alpha<span class="op">,</span> beta } <span class="op">=</span> parameters<span class="op">;</span></span>
+<span id="cb1-182"><a href="#cb1-182" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> coefficients <span class="op">=</span> [</span>
+<span id="cb1-183"><a href="#cb1-183" aria-hidden="true" tabindex="-1"></a>    <span class="fl">676.5203681218851</span><span class="op">,</span></span>
+<span id="cb1-184"><a href="#cb1-184" aria-hidden="true" tabindex="-1"></a>    <span class="op">-</span><span class="fl">1259.1392167224028</span><span class="op">,</span></span>
+<span id="cb1-185"><a href="#cb1-185" aria-hidden="true" tabindex="-1"></a>    <span class="fl">771.32342877765313</span><span class="op">,</span></span>
+<span id="cb1-186"><a href="#cb1-186" aria-hidden="true" tabindex="-1"></a>    <span class="op">-</span><span class="fl">176.61502916214059</span><span class="op">,</span></span>
+<span id="cb1-187"><a href="#cb1-187" aria-hidden="true" tabindex="-1"></a>    <span class="fl">12.507343278686905</span><span class="op">,</span></span>
+<span id="cb1-188"><a href="#cb1-188" aria-hidden="true" tabindex="-1"></a>    <span class="op">-</span><span class="fl">0.13857109526572012</span><span class="op">,</span></span>
+<span id="cb1-189"><a href="#cb1-189" aria-hidden="true" tabindex="-1"></a>    <span class="fl">9.9843695780195716e-6</span><span class="op">,</span></span>
+<span id="cb1-190"><a href="#cb1-190" aria-hidden="true" tabindex="-1"></a>    <span class="fl">1.5056327351493116e-7</span></span>
+<span id="cb1-191"><a href="#cb1-191" aria-hidden="true" tabindex="-1"></a>  ]<span class="op">;</span></span>
+<span id="cb1-192"><a href="#cb1-192" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-193"><a href="#cb1-193" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> logGamma <span class="op">=</span> (value) <span class="kw">=&gt;</span> {</span>
+<span id="cb1-194"><a href="#cb1-194" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> (value <span class="op">&lt;</span> <span class="fl">0.5</span>) {</span>
+<span id="cb1-195"><a href="#cb1-195" aria-hidden="true" tabindex="-1"></a>      <span class="cf">return</span> <span class="bu">Math</span><span class="op">.</span><span class="fu">log</span>(<span class="bu">Math</span><span class="op">.</span><span class="cn">PI</span>)</span>
+<span id="cb1-196"><a href="#cb1-196" aria-hidden="true" tabindex="-1"></a>        <span class="op">-</span> <span class="bu">Math</span><span class="op">.</span><span class="fu">log</span>(<span class="bu">Math</span><span class="op">.</span><span class="fu">sin</span>(<span class="bu">Math</span><span class="op">.</span><span class="cn">PI</span> <span class="op">*</span> value))</span>
+<span id="cb1-197"><a href="#cb1-197" aria-hidden="true" tabindex="-1"></a>        <span class="op">-</span> <span class="fu">logGamma</span>(<span class="dv">1</span> <span class="op">-</span> value)<span class="op">;</span></span>
+<span id="cb1-198"><a href="#cb1-198" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb1-199"><a href="#cb1-199" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-200"><a href="#cb1-200" aria-hidden="true" tabindex="-1"></a>    <span class="kw">const</span> shifted <span class="op">=</span> value <span class="op">-</span> <span class="dv">1</span><span class="op">;</span></span>
+<span id="cb1-201"><a href="#cb1-201" aria-hidden="true" tabindex="-1"></a>    <span class="kw">let</span> series <span class="op">=</span> <span class="fl">0.99999999999980993</span><span class="op">;</span></span>
+<span id="cb1-202"><a href="#cb1-202" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-203"><a href="#cb1-203" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> (<span class="kw">let</span> i <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> i <span class="op">&lt;</span> coefficients<span class="op">.</span><span class="at">length</span><span class="op">;</span> i<span class="op">++</span>) {</span>
+<span id="cb1-204"><a href="#cb1-204" aria-hidden="true" tabindex="-1"></a>      series <span class="op">+=</span> coefficients[i] <span class="op">/</span> (shifted <span class="op">+</span> i <span class="op">+</span> <span class="dv">1</span>)<span class="op">;</span></span>
+<span id="cb1-205"><a href="#cb1-205" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb1-206"><a href="#cb1-206" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-207"><a href="#cb1-207" aria-hidden="true" tabindex="-1"></a>    <span class="kw">const</span> t <span class="op">=</span> shifted <span class="op">+</span> coefficients<span class="op">.</span><span class="at">length</span> <span class="op">-</span> <span class="fl">0.5</span><span class="op">;</span></span>
+<span id="cb1-208"><a href="#cb1-208" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-209"><a href="#cb1-209" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="fl">0.5</span> <span class="op">*</span> <span class="bu">Math</span><span class="op">.</span><span class="fu">log</span>(<span class="dv">2</span> <span class="op">*</span> <span class="bu">Math</span><span class="op">.</span><span class="cn">PI</span>)</span>
+<span id="cb1-210"><a href="#cb1-210" aria-hidden="true" tabindex="-1"></a>      <span class="op">+</span> (shifted <span class="op">+</span> <span class="fl">0.5</span>) <span class="op">*</span> <span class="bu">Math</span><span class="op">.</span><span class="fu">log</span>(t)</span>
+<span id="cb1-211"><a href="#cb1-211" aria-hidden="true" tabindex="-1"></a>      <span class="op">-</span> t</span>
+<span id="cb1-212"><a href="#cb1-212" aria-hidden="true" tabindex="-1"></a>      <span class="op">+</span> <span class="bu">Math</span><span class="op">.</span><span class="fu">log</span>(series)<span class="op">;</span></span>
+<span id="cb1-213"><a href="#cb1-213" aria-hidden="true" tabindex="-1"></a>  }<span class="op">;</span></span>
+<span id="cb1-214"><a href="#cb1-214" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-215"><a href="#cb1-215" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> logBeta <span class="op">=</span> <span class="fu">logGamma</span>(alpha) <span class="op">+</span> <span class="fu">logGamma</span>(beta)</span>
+<span id="cb1-216"><a href="#cb1-216" aria-hidden="true" tabindex="-1"></a>    <span class="op">-</span> <span class="fu">logGamma</span>(alpha <span class="op">+</span> beta)<span class="op">;</span></span>
+<span id="cb1-217"><a href="#cb1-217" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-218"><a href="#cb1-218" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> betaPDF <span class="op">=</span> (x) <span class="kw">=&gt;</span> <span class="bu">Math</span><span class="op">.</span><span class="fu">exp</span>(</span>
+<span id="cb1-219"><a href="#cb1-219" aria-hidden="true" tabindex="-1"></a>    (alpha <span class="op">-</span> <span class="dv">1</span>) <span class="op">*</span> <span class="bu">Math</span><span class="op">.</span><span class="fu">log</span>(x)</span>
+<span id="cb1-220"><a href="#cb1-220" aria-hidden="true" tabindex="-1"></a>      <span class="op">+</span> (beta <span class="op">-</span> <span class="dv">1</span>) <span class="op">*</span> <span class="bu">Math</span><span class="op">.</span><span class="fu">log1p</span>(<span class="op">-</span>x)</span>
+<span id="cb1-221"><a href="#cb1-221" aria-hidden="true" tabindex="-1"></a>      <span class="op">-</span> logBeta</span>
+<span id="cb1-222"><a href="#cb1-222" aria-hidden="true" tabindex="-1"></a>  )<span class="op">;</span></span>
+<span id="cb1-223"><a href="#cb1-223" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-224"><a href="#cb1-224" aria-hidden="true" tabindex="-1"></a>  <span class="co">// A cosine grid clusters points near 0 and 1, where Beta densities with</span></span>
+<span id="cb1-225"><a href="#cb1-225" aria-hidden="true" tabindex="-1"></a>  <span class="co">// alpha &lt; 1 or beta &lt; 1 have integrable singularities.</span></span>
+<span id="cb1-226"><a href="#cb1-226" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> pointCount <span class="op">=</span> <span class="dv">600</span><span class="op">;</span></span>
+<span id="cb1-227"><a href="#cb1-227" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> betaCurve <span class="op">=</span> <span class="bu">Array</span><span class="op">.</span><span class="fu">from</span>({ <span class="dt">length</span><span class="op">:</span> pointCount }<span class="op">,</span> (_<span class="op">,</span> i) <span class="kw">=&gt;</span> {</span>
+<span id="cb1-228"><a href="#cb1-228" aria-hidden="true" tabindex="-1"></a>    <span class="kw">const</span> angle <span class="op">=</span> <span class="bu">Math</span><span class="op">.</span><span class="cn">PI</span> <span class="op">*</span> (i <span class="op">+</span> <span class="fl">0.5</span>) <span class="op">/</span> pointCount<span class="op">;</span></span>
+<span id="cb1-229"><a href="#cb1-229" aria-hidden="true" tabindex="-1"></a>    <span class="kw">const</span> x <span class="op">=</span> (<span class="dv">1</span> <span class="op">-</span> <span class="bu">Math</span><span class="op">.</span><span class="fu">cos</span>(angle)) <span class="op">/</span> <span class="dv">2</span><span class="op">;</span></span>
+<span id="cb1-230"><a href="#cb1-230" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> { x<span class="op">,</span> <span class="dt">density</span><span class="op">:</span> <span class="fu">betaPDF</span>(x) }<span class="op">;</span></span>
+<span id="cb1-231"><a href="#cb1-231" aria-hidden="true" tabindex="-1"></a>  })<span class="op">;</span></span>
+<span id="cb1-232"><a href="#cb1-232" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-233"><a href="#cb1-233" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> plot <span class="op">=</span> Plot<span class="op">.</span><span class="fu">plot</span>({</span>
+<span id="cb1-234"><a href="#cb1-234" aria-hidden="true" tabindex="-1"></a>    <span class="dt">title</span><span class="op">:</span> <span class="vs">`Beta Distribution: α = </span><span class="sc">${</span>alpha<span class="op">.</span><span class="fu">toFixed</span>(<span class="dv">1</span>)<span class="sc">}</span><span class="vs">, β = </span><span class="sc">${</span>beta<span class="op">.</span><span class="fu">toFixed</span>(<span class="dv">1</span>)<span class="sc">}</span><span class="vs">`</span><span class="op">,</span></span>
+<span id="cb1-235"><a href="#cb1-235" aria-hidden="true" tabindex="-1"></a>    <span class="dt">width</span><span class="op">:</span> <span class="dv">700</span><span class="op">,</span></span>
+<span id="cb1-236"><a href="#cb1-236" aria-hidden="true" tabindex="-1"></a>    <span class="dt">height</span><span class="op">:</span> <span class="dv">400</span><span class="op">,</span></span>
+<span id="cb1-237"><a href="#cb1-237" aria-hidden="true" tabindex="-1"></a>    <span class="dt">x</span><span class="op">:</span> { <span class="dt">label</span><span class="op">:</span> <span class="st">"x"</span><span class="op">,</span> <span class="dt">domain</span><span class="op">:</span> [<span class="dv">0</span><span class="op">,</span> <span class="dv">1</span>] }<span class="op">,</span></span>
+<span id="cb1-238"><a href="#cb1-238" aria-hidden="true" tabindex="-1"></a>    <span class="dt">y</span><span class="op">:</span> {</span>
+<span id="cb1-239"><a href="#cb1-239" aria-hidden="true" tabindex="-1"></a>      <span class="dt">label</span><span class="op">:</span> <span class="st">"Probability density f(x) — total area = 1"</span><span class="op">,</span></span>
+<span id="cb1-240"><a href="#cb1-240" aria-hidden="true" tabindex="-1"></a>      <span class="dt">grid</span><span class="op">:</span> <span class="kw">true</span><span class="op">,</span></span>
+<span id="cb1-241"><a href="#cb1-241" aria-hidden="true" tabindex="-1"></a>      <span class="dt">nice</span><span class="op">:</span> <span class="kw">true</span></span>
+<span id="cb1-242"><a href="#cb1-242" aria-hidden="true" tabindex="-1"></a>    }<span class="op">,</span></span>
+<span id="cb1-243"><a href="#cb1-243" aria-hidden="true" tabindex="-1"></a>    <span class="dt">marks</span><span class="op">:</span> [</span>
+<span id="cb1-244"><a href="#cb1-244" aria-hidden="true" tabindex="-1"></a>      Plot<span class="op">.</span><span class="fu">areaY</span>(betaCurve<span class="op">,</span> {</span>
+<span id="cb1-245"><a href="#cb1-245" aria-hidden="true" tabindex="-1"></a>        <span class="dt">x</span><span class="op">:</span> <span class="st">"x"</span><span class="op">,</span></span>
+<span id="cb1-246"><a href="#cb1-246" aria-hidden="true" tabindex="-1"></a>        <span class="dt">y</span><span class="op">:</span> <span class="st">"density"</span><span class="op">,</span></span>
+<span id="cb1-247"><a href="#cb1-247" aria-hidden="true" tabindex="-1"></a>        <span class="dt">fill</span><span class="op">:</span> <span class="st">"steelblue"</span><span class="op">,</span></span>
+<span id="cb1-248"><a href="#cb1-248" aria-hidden="true" tabindex="-1"></a>        <span class="dt">fillOpacity</span><span class="op">:</span> <span class="fl">0.2</span></span>
+<span id="cb1-249"><a href="#cb1-249" aria-hidden="true" tabindex="-1"></a>      })<span class="op">,</span></span>
+<span id="cb1-250"><a href="#cb1-250" aria-hidden="true" tabindex="-1"></a>      Plot<span class="op">.</span><span class="fu">line</span>(betaCurve<span class="op">,</span> {</span>
+<span id="cb1-251"><a href="#cb1-251" aria-hidden="true" tabindex="-1"></a>        <span class="dt">x</span><span class="op">:</span> <span class="st">"x"</span><span class="op">,</span></span>
+<span id="cb1-252"><a href="#cb1-252" aria-hidden="true" tabindex="-1"></a>        <span class="dt">y</span><span class="op">:</span> <span class="st">"density"</span><span class="op">,</span></span>
+<span id="cb1-253"><a href="#cb1-253" aria-hidden="true" tabindex="-1"></a>        <span class="dt">stroke</span><span class="op">:</span> <span class="st">"steelblue"</span><span class="op">,</span></span>
+<span id="cb1-254"><a href="#cb1-254" aria-hidden="true" tabindex="-1"></a>        <span class="dt">strokeWidth</span><span class="op">:</span> <span class="dv">3</span></span>
+<span id="cb1-255"><a href="#cb1-255" aria-hidden="true" tabindex="-1"></a>      })<span class="op">,</span></span>
+<span id="cb1-256"><a href="#cb1-256" aria-hidden="true" tabindex="-1"></a>      Plot<span class="op">.</span><span class="fu">ruleY</span>([<span class="dv">0</span>])</span>
+<span id="cb1-257"><a href="#cb1-257" aria-hidden="true" tabindex="-1"></a>    ]</span>
+<span id="cb1-258"><a href="#cb1-258" aria-hidden="true" tabindex="-1"></a>  })<span class="op">;</span></span>
+<span id="cb1-259"><a href="#cb1-259" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-260"><a href="#cb1-260" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> boundaryNote <span class="op">=</span> alpha <span class="op">&lt;</span> <span class="dv">1</span> <span class="op">||</span> beta <span class="op">&lt;</span> <span class="dv">1</span></span>
+<span id="cb1-261"><a href="#cb1-261" aria-hidden="true" tabindex="-1"></a>    <span class="op">?</span> <span class="st">"For shape parameters below 1, the true density is unbounded at one or both endpoints; the spike is expected."</span></span>
+<span id="cb1-262"><a href="#cb1-262" aria-hidden="true" tabindex="-1"></a>    <span class="op">:</span> <span class="st">"The shaded area under the probability-density curve is 1."</span><span class="op">;</span></span>
+<span id="cb1-263"><a href="#cb1-263" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-264"><a href="#cb1-264" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> <span class="fu">html</span><span class="vs">`&lt;figure style="margin: 0;"&gt;</span></span>
+<span id="cb1-265"><a href="#cb1-265" aria-hidden="true" tabindex="-1"></a><span class="vs">    </span><span class="sc">${</span>plot<span class="sc">}</span></span>
+<span id="cb1-266"><a href="#cb1-266" aria-hidden="true" tabindex="-1"></a><span class="vs">    &lt;figcaption style="margin-top: 0.5rem; color: #555;"&gt;</span></span>
+<span id="cb1-267"><a href="#cb1-267" aria-hidden="true" tabindex="-1"></a><span class="vs">      &lt;strong&gt;Normalized Beta PDF.&lt;/strong&gt; Density height may exceed 1;</span></span>
+<span id="cb1-268"><a href="#cb1-268" aria-hidden="true" tabindex="-1"></a><span class="vs">      probability is measured by area. </span><span class="sc">${</span>boundaryNote<span class="sc">}</span></span>
+<span id="cb1-269"><a href="#cb1-269" aria-hidden="true" tabindex="-1"></a><span class="vs">    &lt;/figcaption&gt;</span></span>
+<span id="cb1-270"><a href="#cb1-270" aria-hidden="true" tabindex="-1"></a><span class="vs">  &lt;/figure&gt;`</span><span class="op">;</span></span>
+<span id="cb1-271"><a href="#cb1-271" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-1-1" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-1-2" data-nodetype="expression">
+
+</div>
+</div>
+</div>
+</div>
+<p>The posterior is proportional to likelihood times prior:</p>
+<p><span class="math display">\[
+p(\theta\,|\, D) \propto \theta^{s}(1-\theta)^f \theta^{\alpha-1}(1-\theta)^{\beta-1} \propto \theta^{\alpha+s-1}(1-\theta)^{\beta+f-1}
+\]</span></p>
+<p>Therefore,</p>
+<p><span class="math display">\[
+\theta\,|\,D\sim \text{Beta}(\alpha+s,\beta+f)
+\]</span></p>
+<div class="callout callout-style-default callout-note callout-titled" title="Theorem: Beta-Bernoulli Posterior">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Theorem: Beta-Bernoulli Posterior
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><em>If <span class="math inline">\(Y_i\,|\,\theta \sim \text{Bernoulli}(\theta)\)</span> independently and <span class="math inline">\(\theta\sim \text{Beta}(\alpha,\beta)\)</span>, then</em></p>
+<p><span class="math display">\[
+\theta \, | \, D \sim \text{Beta}\left(\alpha+\sum_{i=1}^n y_i, \beta+n-\sum_{i=1}^n y_i\right).
+\]</span></p>
+</div>
+</div>
+<p>The prior parameters <span class="math inline">\(\alpha\)</span> and <span class="math inline">\(\beta\)</span> act like pseudo-counts <span class="math inline">\(\alpha-1\)</span> prior successes and <span class="math inline">\(\beta-1\)</span> prior failures, depending on interpretation. After observing data, Bayesian updating adds observed successes and failures to prior information.</p>
+<div id="1f7faaa7" class="cell" data-execution_count="1">
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> scipy.stats <span class="im">import</span> beta</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>theta <span class="op">=</span> np.linspace(<span class="fl">0.001</span>, <span class="fl">0.999</span>, <span class="dv">1000</span>)</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Prior belief</span></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>alpha_prior, beta_prior <span class="op">=</span> <span class="dv">2</span>, <span class="dv">2</span></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Sequential observations: 1 = success, 0 = failure</span></span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>data_stream <span class="op">=</span> [<span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">0</span>, <span class="dv">1</span>]</span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>checkpoints <span class="op">=</span> [<span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">3</span>, <span class="dv">5</span>, <span class="dv">10</span>]</span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">8</span>, <span class="dv">5</span>))</span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> n_obs <span class="kw">in</span> checkpoints:</span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a>    observed <span class="op">=</span> data_stream[:n_obs]</span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a>    successes <span class="op">=</span> <span class="bu">sum</span>(observed)</span>
+<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a>    failures <span class="op">=</span> <span class="bu">len</span>(observed) <span class="op">-</span> successes</span>
+<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a>    alpha_post <span class="op">=</span> alpha_prior <span class="op">+</span> successes</span>
+<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a>    beta_post <span class="op">=</span> beta_prior <span class="op">+</span> failures</span>
+<span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-25"><a href="#cb2-25" aria-hidden="true" tabindex="-1"></a>    density <span class="op">=</span> beta.pdf(theta, alpha_post, beta_post)</span>
+<span id="cb2-26"><a href="#cb2-26" aria-hidden="true" tabindex="-1"></a>    label <span class="op">=</span> <span class="ss">f"n=</span><span class="sc">{</span>n_obs<span class="sc">}</span><span class="ss">, Beta(</span><span class="sc">{</span>alpha_post<span class="sc">}</span><span class="ss">,</span><span class="sc">{</span>beta_post<span class="sc">}</span><span class="ss">)"</span></span>
+<span id="cb2-27"><a href="#cb2-27" aria-hidden="true" tabindex="-1"></a>    plt.plot(theta, density, label<span class="op">=</span>label)</span>
+<span id="cb2-28"><a href="#cb2-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-29"><a href="#cb2-29" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">"Sequential Bayesian Updating in a Beta-Bernoulli Model"</span>)</span>
+<span id="cb2-30"><a href="#cb2-30" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="vs">r"</span><span class="dv">$</span><span class="ch">\t</span><span class="vs">heta = P</span><span class="kw">(</span><span class="vs">Y=1</span><span class="kw">)</span><span class="dv">$</span><span class="vs">"</span>)</span>
+<span id="cb2-31"><a href="#cb2-31" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">"Density"</span>)</span>
+<span id="cb2-32"><a href="#cb2-32" aria-hidden="true" tabindex="-1"></a>plt.legend()</span>
+<span id="cb2-33"><a href="#cb2-33" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb2-34"><a href="#cb2-34" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="chapter-9_files/figure-html/cell-2-output-1.png" width="758" height="469" class="figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="diagnostic-rate-from-the-breast-cancer-dataset" class="level3">
+<h3 class="anchored" data-anchor-id="diagnostic-rate-from-the-breast-cancer-dataset">2.3. Diagnostic Rate from the Breast Cancer Dataset</h3>
+<p>The Wisconsin breast cancer dataset contains real diagnostic labels: malignant and benign. We can use a Beta-Bernoulli model to estimate the uncertainty about the proportion of malignant cases in the sample.</p>
+<div id="1b8aa756" class="cell" data-execution_count="2">
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> scipy.stats <span class="im">import</span> beta</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.datasets <span class="im">import</span> load_breast_cancer</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>data <span class="op">=</span> load_breast_cancer()</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>y <span class="op">=</span> data.target</span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a><span class="co"># In sklearn breast cancer dataset:</span></span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a><span class="co"># target_names are ['malignant', 'benign']</span></span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a><span class="co"># y=0 malignant, y=1 benign</span></span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>malignant <span class="op">=</span> (y <span class="op">==</span> <span class="dv">0</span>).astype(<span class="bu">int</span>)</span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>s <span class="op">=</span> malignant.<span class="bu">sum</span>()</span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a>n <span class="op">=</span> <span class="bu">len</span>(malignant)</span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a>f <span class="op">=</span> n <span class="op">-</span> s</span>
+<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a>alpha_prior, beta_prior <span class="op">=</span> <span class="dv">1</span>, <span class="dv">1</span></span>
+<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a>alpha_post <span class="op">=</span> alpha_prior <span class="op">+</span> s</span>
+<span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a>beta_post <span class="op">=</span> beta_prior <span class="op">+</span> f</span>
+<span id="cb3-21"><a href="#cb3-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-22"><a href="#cb3-22" aria-hidden="true" tabindex="-1"></a>theta <span class="op">=</span> np.linspace(<span class="fl">0.001</span>, <span class="fl">0.999</span>, <span class="dv">1000</span>)</span>
+<span id="cb3-23"><a href="#cb3-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-24"><a href="#cb3-24" aria-hidden="true" tabindex="-1"></a>prior_density <span class="op">=</span> beta.pdf(theta, alpha_prior, beta_prior)</span>
+<span id="cb3-25"><a href="#cb3-25" aria-hidden="true" tabindex="-1"></a>posterior_density <span class="op">=</span> beta.pdf(theta, alpha_post, beta_post)</span>
+<span id="cb3-26"><a href="#cb3-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-27"><a href="#cb3-27" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">8</span>, <span class="dv">5</span>))</span>
+<span id="cb3-28"><a href="#cb3-28" aria-hidden="true" tabindex="-1"></a>plt.plot(theta, prior_density, label<span class="op">=</span><span class="st">"Prior: Beta(1,1)"</span>)</span>
+<span id="cb3-29"><a href="#cb3-29" aria-hidden="true" tabindex="-1"></a>plt.plot(theta, posterior_density, label<span class="op">=</span><span class="ss">f"Posterior: Beta(</span><span class="sc">{</span>alpha_post<span class="sc">}</span><span class="ss">,</span><span class="sc">{</span>beta_post<span class="sc">}</span><span class="ss">)"</span>)</span>
+<span id="cb3-30"><a href="#cb3-30" aria-hidden="true" tabindex="-1"></a>plt.axvline(s <span class="op">/</span> n, linestyle<span class="op">=</span><span class="st">"--"</span>, label<span class="op">=</span><span class="st">"Observed malignant fraction"</span>)</span>
+<span id="cb3-31"><a href="#cb3-31" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">"Bayesian Estimate of Malignant Case Proportion"</span>)</span>
+<span id="cb3-32"><a href="#cb3-32" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="vs">r"</span><span class="dv">$</span><span class="ch">\t</span><span class="vs">heta = P</span><span class="kw">(</span><span class="dv">\m</span><span class="vs">athrm{malignant}</span><span class="kw">)</span><span class="dv">$</span><span class="vs">"</span>)</span>
+<span id="cb3-33"><a href="#cb3-33" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">"Density"</span>)</span>
+<span id="cb3-34"><a href="#cb3-34" aria-hidden="true" tabindex="-1"></a>plt.legend()</span>
+<span id="cb3-35"><a href="#cb3-35" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb3-36"><a href="#cb3-36" aria-hidden="true" tabindex="-1"></a>plt.show()</span>
+<span id="cb3-37"><a href="#cb3-37" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-38"><a href="#cb3-38" aria-hidden="true" tabindex="-1"></a>credible_interval <span class="op">=</span> beta.ppf([<span class="fl">0.025</span>, <span class="fl">0.975</span>], alpha_post, beta_post)</span>
+<span id="cb3-39"><a href="#cb3-39" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-40"><a href="#cb3-40" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Number of cases:"</span>, n)</span>
+<span id="cb3-41"><a href="#cb3-41" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Observed malignant cases:"</span>, s)</span>
+<span id="cb3-42"><a href="#cb3-42" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Posterior mean:"</span>, alpha_post <span class="op">/</span> (alpha_post <span class="op">+</span> beta_post))</span>
+<span id="cb3-43"><a href="#cb3-43" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"95</span><span class="sc">% c</span><span class="st">redible interval:"</span>, credible_interval)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="chapter-9_files/figure-html/cell-3-output-1.png" width="758" height="468" class="figure-img"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Number of cases: 569
+Observed malignant cases: 212
+Posterior mean: 0.37302977232924694
+95% credible interval: [0.33383542 0.41306663]</code></pre>
+</div>
+</div>
+</section>
+</section>
+<section id="posterior-prediction" class="level2">
+<h2 class="anchored" data-anchor-id="posterior-prediction">3. Posterior Prediction</h2>
+<section id="posterior-predictive-distribution" class="level3">
+<h3 class="anchored" data-anchor-id="posterior-predictive-distribution">3.1. Posterior Predictive Distribution</h3>
+<p>Let <span class="math inline">\(z_{new}\)</span> be a future observation. Bayesian prediction averages over posterior uncertainty:</p>
+<p><span class="math display">\[
+p(z_{\text{new}}\,|\, D) = \int p(z_{\text{new}} \, |\, \theta)p(\theta\,|\, D)d\theta.
+\]</span></p>
+<p>This is called the <strong>posterior predictive distribution</strong>.</p>
+<p>The key idea is that predictions should not pretend the parameter is known exactly; instead, prediction should account for all plausible parameter values, weighted by their posterior probability.</p>
+</section>
+<section id="posterior-predictive-distribution-in-the-beta-bernoulli-model" class="level3">
+<h3 class="anchored" data-anchor-id="posterior-predictive-distribution-in-the-beta-bernoulli-model">3.2. Posterior Predictive Distribution in the Beta-Bernoulli Model</h3>
+<p>In the Beta-Bernoulli model, <span class="math inline">\(Y_\text{new} \,|\, \theta \sim \text{Bernoulli}(\theta)\)</span> and <span class="math inline">\(\theta\,|\, D\sim \text{Beta}(\alpha+s,\beta+f).\)</span> The posterior predictive probability of success is</p>
+<p><span class="math display">\[
+P(Y_\text{new}=1\,|\, D)=\int_0^1 P(Y_\text{new}=1\,|\,\theta)p(\theta\,|\, D)d\theta.
+\]</span> Since <span class="math inline">\(P(Y_\text{new}=1\,|\, \theta)=\theta\)</span>, we get</p>
+<p><span class="math display">\[
+P(Y_\text{new}=1\,|\, D) =\int_0^1\theta p(\theta\,|\, D)d\theta = \mathbb E[\theta\,|\, D].
+\]</span></p>
+<p>For a Beta distribution,</p>
+<p><span class="math display">\[
+\mathbb E[\theta \,|\, D]=\frac{\alpha+s}{\alpha +\beta+n}
+\]</span></p>
+<p>Therefore,</p>
+<p><span class="math display">\[
+P(Y_\text{new}=1 \,|\, D) = \frac{\alpha+s}{\alpha +\beta +n}
+\]</span></p>
+</section>
+<section id="credible-intervals" class="level3">
+<h3 class="anchored" data-anchor-id="credible-intervals">3.3. Credible Intervals</h3>
+<p>A Bayesian credible interval gives an interval that contains the unknown parameter with a specified posterior probability. A 95% credible interval <span class="math inline">\([a,b]\)</span> satisfies</p>
+<p><span class="math display">\[
+P(a\leq \theta\leq b \,|\, D) = 0.95
+\]</span></p>
+<p>This differs from a frequentist confidence interval, which has a repeated-sampling interpretation. In Bayesian inference, after observing the data and assuming the model, the probability statement is directly about the parameter.</p>
+</section>
+</section>
+<section id="bayesian-linear-regression" class="level2">
+<h2 class="anchored" data-anchor-id="bayesian-linear-regression">4. Bayesian Linear Regression</h2>
+<section id="linear-regression-revisited" class="level3">
+<h3 class="anchored" data-anchor-id="linear-regression-revisited">4.1. Linear Regression Revisited</h3>
+<p>In the <a href="../../teaching/cds-303/chapter-4.html">regression chapter</a>, a linear model was written as</p>
+<p><span class="math display">\[
+y=\Phi w + \epsilon,
+\]</span></p>
+<p>where</p>
+<ul>
+<li><span class="math inline">\(\Phi\in \mathbb R^{n\times M}\)</span> is the design matrix,</li>
+<li><span class="math inline">\(w\in \mathbb R^M\)</span> is the coefficient vector,</li>
+<li><span class="math inline">\(\epsilon\)</span> is noise.</li>
+</ul>
+<p>In ordinary least squares, <span class="math inline">\(w\)</span> is estimated as a fixed unknown quantity. In Bayesian linear regression, <span class="math inline">\(w\)</span> is treated as a random vector.</p>
+<p>Assume <span class="math inline">\(t= \Phi w+\epsilon\)</span>, where <span class="math inline">\(\epsilon\sim \mathcal N(0, \beta^{-1}I)\)</span>. Here <span class="math inline">\(\beta\)</span> is the noise precision, meaning <span class="math inline">\(\beta= \frac{1}{\sigma^2}\)</span>. The likelihood is</p>
+<p><span class="math display">\[
+p(t\,|\, w, \beta) = \mathcal N(t\,|\, \Phi w, \beta^{-1}I)
+\]</span></p>
+<p>Assume a Gaussian prior on weights:</p>
+<p><span class="math display">\[
+p(w) = \mathcal N(w\,|\, m_0, S_0)
+\]</span></p>
+<p>Because the likelihood is Gaussian and the prior is Gaussian, the posterior is also Gaussian:</p>
+<p><span class="math display">\[
+p(w\,|\, t) = \mathcal N(w\,|\, m_N, S_N)
+\]</span></p>
+<p>The posterior covariance and mean are</p>
+<p><span class="math display">\[
+S_N^{-1}=\underbrace{S_0^{-1}}_{\text{prior precision}} + \underbrace{\beta\Phi^\top \Phi}_{\text{data precision}}
+\]</span></p>
+<p>and</p>
+<p><span class="math display">\[
+m_N = S_N(S_0^{-1}m_0 + \beta\Phi^\top t)
+\]</span></p>
+</section>
+<section id="bayesian-linear-regression-posterior" class="level3">
+<h3 class="anchored" data-anchor-id="bayesian-linear-regression-posterior">4.2. Bayesian Linear Regression Posterior</h3>
+<p>Start with</p>
+<p><span class="math display">\[
+p(w\,|\, t) \propto p(t\,|\, w)p(w)
+\]</span></p>
+<p>The likelihood is</p>
+<p><span class="math display">\[
+p(t\,|\, w) \propto \exp\left[-\frac{\beta}{2}(t-\Phi w)^\top(t-\Phi w)\right]
+\]</span></p>
+<p>The prior is</p>
+<p><span class="math display">\[
+p(w) \propto \exp\left[-\frac{1}{2}(w-m_0)^\top S_0^{-1}(w-m_0)\right]
+\]</span></p>
+<p>Therefore,</p>
+<p><span class="math display">\[
+p(w\,|\,t) \propto \exp\left[-\frac{\beta}{2}(t-\Phi w)^\top(t-\Phi w)-\frac{1}{2}(w-m_0)^\top S_0^{-1}(w-m_0)\right]
+\]</span></p>
+<p>Expand the terms involving <span class="math inline">\(w\)</span>. First,</p>
+<p><span class="math display">\[
+(t-\Phi w)^\top (t-\Phi w) = t^\top t- 2w^\top \Phi^\top t + w^\top \Phi ^\top \Phi w.
+\]</span></p>
+<p>Second,</p>
+<p><span class="math display">\[
+(w-m_0)^\top S_0^{-1}(w-m_0)= w^\top S_0^{-1}w-2w^\top S_0^{-1}m_0+ m_0^\top S_0^{-1}m_0
+\]</span></p>
+<p>Keeping only terms involving <span class="math inline">\(w\)</span>, the negative exponent becomes</p>
+<p><span class="math display">\[
+-\frac{1}{2}\left[w^\top (S_0^{-1}+\beta\Phi^\top \Phi)w-2w^\top (S_0^{-1}m_0+\beta\Phi^\top t)\right]+\text{constant}
+\]</span></p>
+<p>This is the kernel of a multivariate Gaussian. Therefore,</p>
+<p><span class="math display">\[
+S_{N}^{-1}=S_0^{-1}+\beta\Phi^\top \Phi,\qquad S_N^{-1}m_N=S_0^{-1}m_0+\beta\Phi^\top t.
+\]</span></p>
+<p>Multiplying both sides by <span class="math inline">\(S_N\)</span>,</p>
+<p><span class="math display">\[
+m_N=S_N(S_0^{-1}m_0+\beta\Phi^\top t).
+\]</span></p>
+<p>Thus,</p>
+<p><span class="math display">\[
+p(w\,|\, t)=\mathcal N(w\,|\, m_N, S_N).
+\]</span></p>
+</section>
+<section id="bayesian-predictive-distribution-for-linear-regression" class="level3">
+<h3 class="anchored" data-anchor-id="bayesian-predictive-distribution-for-linear-regression">4.3. Bayesian Predictive Distribution for Linear Regression</h3>
+<p>For a new input <span class="math inline">\(x^*\)</span>, define the feature vector</p>
+<p><span class="math display">\[
+\phi^*=\phi(x^*).
+\]</span></p>
+<p>The predictive distribution is</p>
+<p><span class="math display">\[
+p(t^*\,|\, x^*, D) = \int p(t^*\,|\, x^*, w)p(w\,|\, D)dw.
+\]</span></p>
+<p>Because</p>
+<p><span class="math display">\[
+\begin{aligned}
+p(t^*\,|\, x^*, w) &amp;= \mathcal N(t^*\,|\, w^\top \phi^*, \beta^{-1}),\\
+p(w\,|\,D)&amp;= \mathcal N(w\,|\, m_N, S_N),
+\end{aligned}
+\]</span></p>
+<p>the predictive distribution is Gaussian:</p>
+<p><span class="math display">\[
+p(t^*\,|\, x^*, D)= \mathcal N (t^*\,|\, m_N^\top \phi^*, \beta^{-1}+\phi^{*\top}S_N\phi^*).
+\]</span></p>
+<p>The predictive <strong>mean</strong> is</p>
+<p><span class="math display">\[
+\mathbb E[t^*\,|\, x^*, D] = m_N^{\top}\phi^*.
+\]</span></p>
+<p>The predictive <strong>variance</strong> is</p>
+<p><span class="math display">\[
+Var(t^*\,|\, x^*, D) = \underbrace{\beta^{-1}}_{\text{observation noise}}+\underbrace{\phi^{*\top}S_N\phi^*}_{\text{parameter uncertainty}}
+\]</span></p>
+</section>
+<section id="bayesian-linear-regression-on-diabetes-data" class="level3">
+<h3 class="anchored" data-anchor-id="bayesian-linear-regression-on-diabetes-data">4.4. Bayesian Linear Regression on Diabetes Data</h3>
+<p>The diabetes dataset contains real medical measurements and a quantitative disease progression target. We can fit a Bayesian linear regression model to estimate uncertainty in the relationship between body mass index and disease progression.</p>
+<div id="fd8d2549" class="cell" data-execution_count="3">
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.datasets <span class="im">import</span> load_diabetes</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>data <span class="op">=</span> load_diabetes()</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Use BMI feature only for visualization</span></span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>feature_index <span class="op">=</span> <span class="bu">list</span>(data.feature_names).index(<span class="st">"bmi"</span>)</span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>x <span class="op">=</span> data.data[:, feature_index]</span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>t <span class="op">=</span> data.target</span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a><span class="co"># Design matrix: intercept + BMI</span></span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>Phi <span class="op">=</span> np.column_stack([np.ones_like(x), x])</span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a><span class="co"># Prior</span></span>
+<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a>m0 <span class="op">=</span> np.zeros(<span class="dv">2</span>)</span>
+<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a>S0 <span class="op">=</span> np.eye(<span class="dv">2</span>) <span class="op">*</span> <span class="fl">10.0</span></span>
+<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a><span class="co"># Noise precision beta</span></span>
+<span id="cb5-20"><a href="#cb5-20" aria-hidden="true" tabindex="-1"></a>sigma_noise <span class="op">=</span> <span class="fl">55.0</span></span>
+<span id="cb5-21"><a href="#cb5-21" aria-hidden="true" tabindex="-1"></a>beta <span class="op">=</span> <span class="dv">1</span> <span class="op">/</span> sigma_noise<span class="op">**</span><span class="dv">2</span></span>
+<span id="cb5-22"><a href="#cb5-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-23"><a href="#cb5-23" aria-hidden="true" tabindex="-1"></a><span class="co"># Posterior</span></span>
+<span id="cb5-24"><a href="#cb5-24" aria-hidden="true" tabindex="-1"></a>SN_inv <span class="op">=</span> np.linalg.inv(S0) <span class="op">+</span> beta <span class="op">*</span> Phi.T <span class="op">@</span> Phi</span>
+<span id="cb5-25"><a href="#cb5-25" aria-hidden="true" tabindex="-1"></a>SN <span class="op">=</span> np.linalg.inv(SN_inv)</span>
+<span id="cb5-26"><a href="#cb5-26" aria-hidden="true" tabindex="-1"></a>mN <span class="op">=</span> SN <span class="op">@</span> (np.linalg.inv(S0) <span class="op">@</span> m0 <span class="op">+</span> beta <span class="op">*</span> Phi.T <span class="op">@</span> t)</span>
+<span id="cb5-27"><a href="#cb5-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-28"><a href="#cb5-28" aria-hidden="true" tabindex="-1"></a><span class="co"># Prediction grid</span></span>
+<span id="cb5-29"><a href="#cb5-29" aria-hidden="true" tabindex="-1"></a>x_grid <span class="op">=</span> np.linspace(x.<span class="bu">min</span>(), x.<span class="bu">max</span>(), <span class="dv">200</span>)</span>
+<span id="cb5-30"><a href="#cb5-30" aria-hidden="true" tabindex="-1"></a>Phi_grid <span class="op">=</span> np.column_stack([np.ones_like(x_grid), x_grid])</span>
+<span id="cb5-31"><a href="#cb5-31" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-32"><a href="#cb5-32" aria-hidden="true" tabindex="-1"></a>pred_mean <span class="op">=</span> Phi_grid <span class="op">@</span> mN</span>
+<span id="cb5-33"><a href="#cb5-33" aria-hidden="true" tabindex="-1"></a>pred_var <span class="op">=</span> <span class="dv">1</span> <span class="op">/</span> beta <span class="op">+</span> np.<span class="bu">sum</span>(Phi_grid <span class="op">@</span> SN <span class="op">*</span> Phi_grid, axis<span class="op">=</span><span class="dv">1</span>)</span>
+<span id="cb5-34"><a href="#cb5-34" aria-hidden="true" tabindex="-1"></a>pred_std <span class="op">=</span> np.sqrt(pred_var)</span>
+<span id="cb5-35"><a href="#cb5-35" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-36"><a href="#cb5-36" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">8</span>, <span class="dv">5</span>))</span>
+<span id="cb5-37"><a href="#cb5-37" aria-hidden="true" tabindex="-1"></a>plt.scatter(x, t, alpha<span class="op">=</span><span class="fl">0.5</span>, label<span class="op">=</span><span class="st">"Observed diabetes data"</span>)</span>
+<span id="cb5-38"><a href="#cb5-38" aria-hidden="true" tabindex="-1"></a>plt.plot(x_grid, pred_mean, label<span class="op">=</span><span class="st">"Posterior predictive mean"</span>)</span>
+<span id="cb5-39"><a href="#cb5-39" aria-hidden="true" tabindex="-1"></a>plt.fill_between(</span>
+<span id="cb5-40"><a href="#cb5-40" aria-hidden="true" tabindex="-1"></a>    x_grid,</span>
+<span id="cb5-41"><a href="#cb5-41" aria-hidden="true" tabindex="-1"></a>    pred_mean <span class="op">-</span> <span class="dv">2</span> <span class="op">*</span> pred_std,</span>
+<span id="cb5-42"><a href="#cb5-42" aria-hidden="true" tabindex="-1"></a>    pred_mean <span class="op">+</span> <span class="dv">2</span> <span class="op">*</span> pred_std,</span>
+<span id="cb5-43"><a href="#cb5-43" aria-hidden="true" tabindex="-1"></a>    alpha<span class="op">=</span><span class="fl">0.2</span>,</span>
+<span id="cb5-44"><a href="#cb5-44" aria-hidden="true" tabindex="-1"></a>    label<span class="op">=</span><span class="st">"Approx. 95% predictive interval"</span></span>
+<span id="cb5-45"><a href="#cb5-45" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb5-46"><a href="#cb5-46" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">"Bayesian Linear Regression on Diabetes Data"</span>)</span>
+<span id="cb5-47"><a href="#cb5-47" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">"Standardized BMI"</span>)</span>
+<span id="cb5-48"><a href="#cb5-48" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">"Disease progression"</span>)</span>
+<span id="cb5-49"><a href="#cb5-49" aria-hidden="true" tabindex="-1"></a>plt.legend()</span>
+<span id="cb5-50"><a href="#cb5-50" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb5-51"><a href="#cb5-51" aria-hidden="true" tabindex="-1"></a>plt.show()</span>
+<span id="cb5-52"><a href="#cb5-52" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-53"><a href="#cb5-53" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Posterior mean of weights:"</span>, mN)</span>
+<span id="cb5-54"><a href="#cb5-54" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Posterior covariance:"</span>, SN)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="chapter-9_files/figure-html/cell-4-output-1.png" width="758" height="470" class="figure-img"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Posterior mean of weights: [90.31967764  3.12828751]
+Posterior covariance: [[4.06312962e+00 1.32244776e-15]
+ [1.32120084e-15 9.96705107e+00]]</code></pre>
+</div>
+</div>
+<div id="7ff9c743" class="cell" data-execution_count="4">
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> scipy.stats <span class="im">import</span> multivariate_normal</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Grid over intercept and slope</span></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>w0 <span class="op">=</span> np.linspace(mN[<span class="dv">0</span>] <span class="op">-</span> <span class="dv">4</span><span class="op">*</span>np.sqrt(SN[<span class="dv">0</span>, <span class="dv">0</span>]), mN[<span class="dv">0</span>] <span class="op">+</span> <span class="dv">4</span><span class="op">*</span>np.sqrt(SN[<span class="dv">0</span>, <span class="dv">0</span>]), <span class="dv">200</span>)</span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>w1 <span class="op">=</span> np.linspace(mN[<span class="dv">1</span>] <span class="op">-</span> <span class="dv">4</span><span class="op">*</span>np.sqrt(SN[<span class="dv">1</span>, <span class="dv">1</span>]), mN[<span class="dv">1</span>] <span class="op">+</span> <span class="dv">4</span><span class="op">*</span>np.sqrt(SN[<span class="dv">1</span>, <span class="dv">1</span>]), <span class="dv">200</span>)</span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>W0, W1 <span class="op">=</span> np.meshgrid(w0, w1)</span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>grid <span class="op">=</span> np.column_stack([W0.ravel(), W1.ravel()])</span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>density <span class="op">=</span> multivariate_normal(mean<span class="op">=</span>mN, cov<span class="op">=</span>SN).pdf(grid).reshape(W0.shape)</span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">7</span>, <span class="dv">6</span>))</span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a>plt.contour(W0, W1, density, levels<span class="op">=</span><span class="dv">20</span>)</span>
+<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a>plt.scatter([mN[<span class="dv">0</span>]], [mN[<span class="dv">1</span>]], label<span class="op">=</span><span class="st">"Posterior mean"</span>)</span>
+<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">"Posterior Distribution Over Regression Coefficients"</span>)</span>
+<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">"Intercept"</span>)</span>
+<span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">"BMI coefficient"</span>)</span>
+<span id="cb7-20"><a href="#cb7-20" aria-hidden="true" tabindex="-1"></a>plt.legend()</span>
+<span id="cb7-21"><a href="#cb7-21" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb7-22"><a href="#cb7-22" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="chapter-9_files/figure-html/cell-5-output-1.png" width="662" height="566" class="figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="gaussian-processes" class="level2">
+<h2 class="anchored" data-anchor-id="gaussian-processes">5. Gaussian Processes</h2>
+<p>Bayesian linear regression places a distribution over weights <span class="math inline">\(w\)</span>. A Gaussian Process, or GP, places a distribution directly over functions.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://scikit-learn.org/0.17/_images/plot_gp_regression_001.png" class="img-fluid figure-img"></p>
+<figcaption>Gaussian Process</figcaption>
+</figure>
+</div>
+<p>A GP is useful when we want flexible nonlinear regression with uncertainty quantification.</p>
+<div class="callout callout-style-default callout-note callout-titled" title="Definition: Gaussian Process">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Definition: Gaussian Process
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><em>A Gaussian Process is a collection of random variables <span class="math inline">\(\{f(x):x\in \mathcal X\}\)</span> such that every finite subset <span class="math inline">\((f(x_1),\dots,f(x_n))\)</span> has a multivariate normal distribution.</em></p>
+<p><em>A GP is written as</em></p>
+<p><span class="math display">\[
+f(x) \sim \mathcal{GP} (m(x), k(x, x')),
+\]</span> <em>where <span class="math inline">\(m(x) = \mathbb E[f(x)]\)</span> is the mean function, and <span class="math inline">\(k(x, x')=Cov(f(x),f(x'))\)</span> is the covariance or kernel function.</em></p>
+</div>
+</div>
+<section id="gaussian-process-prior" class="level3">
+<h3 class="anchored" data-anchor-id="gaussian-process-prior">5.1. Gaussian Process Prior</h3>
+<p>For inputs <span class="math inline">\(X=(x_1, \dots, x_n),\)</span> define <span class="math inline">\(f_X=(f(x_1), \dots, f(x_n))^\top\)</span>. Under a GP prior,</p>
+<p><span class="math display">\[
+f_X \sim \mathcal N(m_X, K_{XX}),
+\]</span></p>
+<p>where <span class="math inline">\(m_X=(m(x_1),\dots, m(x_n))^\top\)</span>, <span class="math inline">\((K_{XX})_{ij}=k(x_i, x_j).\)</span> A common kernel is the squared exponential, or RBF kernel:</p>
+<p><span class="math display">\[
+k(x, x') =\sigma_f^2\exp\left(-\frac{\|x-x'\|^2}{2\ell^2}\right),
+\]</span></p>
+<p>where: - <span class="math inline">\(\sigma^2_f\)</span> controls vertical variation, - <span class="math inline">\(\ell\)</span> is the length-scale.</p>
+<p>A small <span class="math inline">\(\ell\)</span> allows rapidly varying functions. A large <span class="math inline">\(\ell\)</span> implies smoother functions.</p>
+</section>
+<section id="gp-regression-with-gaussian-noise" class="level3">
+<h3 class="anchored" data-anchor-id="gp-regression-with-gaussian-noise">5.2. GP Regression with Gaussian Noise</h3>
+<p>Assume observations <span class="math inline">\(y_i=f(x_i)+\epsilon_i\)</span> where <span class="math inline">\(e_i\sim \mathcal N(0, \sigma_n^2)\)</span>. Then</p>
+<p><span class="math display">\[
+y\sim \mathcal N(m_X, K_{XX}+\sigma^2_nI).
+\]</span></p>
+<p>For test inputs <span class="math inline">\(X^*\)</span>, the joint distribution of training outputs <span class="math inline">\(y\)</span> and test function values <span class="math inline">\(f^*\)</span> is</p>
+<p><span class="math display">\[
+\begin{bmatrix}y\\f^* \end{bmatrix}\sim \mathcal N\left(\begin{bmatrix}m_X\\m^*\end{bmatrix},\begin{bmatrix}K_{XX}+\sigma^2_nI&amp; K_{X^*}\\K_{*X} &amp; K_{**}\end{bmatrix}\right).
+\]</span></p>
+<p>Conditioning a joint Gaussian gives the GP posterior predictive distribution:</p>
+<p><span class="math display">\[
+f_* \,|\, X, y\sim \mathcal N(\mu_*, \Sigma_*),
+\]</span></p>
+<p>where</p>
+<p><span class="math display">\[
+\begin{aligned}
+\mu_* &amp;= m_* + K_{*X}(K_{XX}+\sigma_n^2I)^{-1}(y-m_X),\\
+\Sigma_* &amp;= K_{**} -K_{*X}(K_{XX}+\sigma_n^2I)^{-1}K_{X^*}.
+\end{aligned}
+\]</span></p>
+</section>
+<section id="interpretation-of-gp-prediction" class="level3">
+<h3 class="anchored" data-anchor-id="interpretation-of-gp-prediction">5.3. Interpretation of GP Prediction</h3>
+<p>The GP posterior mean is a weighted combination of observed data:</p>
+<p><span class="math display">\[
+\mu_* = m_* + K_{*X}(K_{XX}+\sigma_n^2I)^{-1}(y-m_X).
+\]</span></p>
+<p>The weights depend on covariance. A test point is strongly influenced by training points that are similar under the kernel.</p>
+<p>The posterior covariance is</p>
+<p><span class="math display">\[
+\Sigma_*=K_{**}-K_{*X}(K_{XX}+\sigma^2_nI)^{-1}K_{X^*}.
+\]</span></p>
+<p>Uncertainty decreases near observed data and increases away from observed data.</p>
+<div id="a466e074" class="cell" data-execution_count="5">
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> rbf_kernel(x1, x2, length_scale<span class="op">=</span><span class="fl">1.0</span>, sigma_f<span class="op">=</span><span class="fl">1.0</span>):</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>    x1 <span class="op">=</span> x1.reshape(<span class="op">-</span><span class="dv">1</span>, <span class="dv">1</span>)</span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>    x2 <span class="op">=</span> x2.reshape(<span class="op">-</span><span class="dv">1</span>, <span class="dv">1</span>)</span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>    sqdist <span class="op">=</span> (x1 <span class="op">-</span> x2.T) <span class="op">**</span> <span class="dv">2</span></span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> sigma_f<span class="op">**</span><span class="dv">2</span> <span class="op">*</span> np.exp(<span class="op">-</span><span class="fl">0.5</span> <span class="op">*</span> sqdist <span class="op">/</span> length_scale<span class="op">**</span><span class="dv">2</span>)</span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>rng <span class="op">=</span> np.random.default_rng(<span class="dv">42</span>)</span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a>x_grid <span class="op">=</span> np.linspace(<span class="op">-</span><span class="dv">5</span>, <span class="dv">5</span>, <span class="dv">200</span>)</span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a>K <span class="op">=</span> rbf_kernel(x_grid, x_grid, length_scale<span class="op">=</span><span class="fl">1.0</span>, sigma_f<span class="op">=</span><span class="fl">1.0</span>)</span>
+<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a>K <span class="op">+=</span> <span class="fl">1e-6</span> <span class="op">*</span> np.eye(<span class="bu">len</span>(x_grid))</span>
+<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a>samples <span class="op">=</span> rng.multivariate_normal(mean<span class="op">=</span>np.zeros(<span class="bu">len</span>(x_grid)), cov<span class="op">=</span>K, size<span class="op">=</span><span class="dv">5</span>)</span>
+<span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-18"><a href="#cb8-18" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">8</span>, <span class="dv">5</span>))</span>
+<span id="cb8-19"><a href="#cb8-19" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> s <span class="kw">in</span> samples:</span>
+<span id="cb8-20"><a href="#cb8-20" aria-hidden="true" tabindex="-1"></a>    plt.plot(x_grid, s)</span>
+<span id="cb8-21"><a href="#cb8-21" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">"Samples from a Gaussian Process Prior"</span>)</span>
+<span id="cb8-22"><a href="#cb8-22" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">"x"</span>)</span>
+<span id="cb8-23"><a href="#cb8-23" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">"f(x)"</span>)</span>
+<span id="cb8-24"><a href="#cb8-24" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb8-25"><a href="#cb8-25" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="chapter-9_files/figure-html/cell-6-output-1.png" width="758" height="470" class="figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="gaussian-process-posterior-regression" class="level3">
+<h3 class="anchored" data-anchor-id="gaussian-process-posterior-regression">5.4. Gaussian Process Posterior Regression</h3>
+<div id="7d64c454" class="cell" data-execution_count="6">
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>rng <span class="op">=</span> np.random.default_rng(<span class="dv">1</span>)</span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Training data</span></span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>X_train <span class="op">=</span> np.array([<span class="op">-</span><span class="dv">4</span>, <span class="op">-</span><span class="dv">3</span>, <span class="op">-</span><span class="dv">1</span>, <span class="dv">0</span>, <span class="dv">2</span>, <span class="fl">3.5</span>])</span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>y_train <span class="op">=</span> np.sin(X_train) <span class="op">+</span> rng.normal(<span class="dv">0</span>, <span class="fl">0.15</span>, size<span class="op">=</span><span class="bu">len</span>(X_train))</span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>X_test <span class="op">=</span> np.linspace(<span class="op">-</span><span class="dv">5</span>, <span class="dv">5</span>, <span class="dv">300</span>)</span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a>sigma_n <span class="op">=</span> <span class="fl">0.15</span></span>
+<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a>length_scale <span class="op">=</span> <span class="fl">1.0</span></span>
+<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a>sigma_f <span class="op">=</span> <span class="fl">1.0</span></span>
+<span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-16"><a href="#cb9-16" aria-hidden="true" tabindex="-1"></a>K <span class="op">=</span> rbf_kernel(X_train, X_train, length_scale, sigma_f) <span class="op">+</span> sigma_n<span class="op">**</span><span class="dv">2</span> <span class="op">*</span> np.eye(<span class="bu">len</span>(X_train))</span>
+<span id="cb9-17"><a href="#cb9-17" aria-hidden="true" tabindex="-1"></a>K_s <span class="op">=</span> rbf_kernel(X_test, X_train, length_scale, sigma_f)</span>
+<span id="cb9-18"><a href="#cb9-18" aria-hidden="true" tabindex="-1"></a>K_ss <span class="op">=</span> rbf_kernel(X_test, X_test, length_scale, sigma_f) <span class="op">+</span> <span class="fl">1e-8</span> <span class="op">*</span> np.eye(<span class="bu">len</span>(X_test))</span>
+<span id="cb9-19"><a href="#cb9-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-20"><a href="#cb9-20" aria-hidden="true" tabindex="-1"></a>K_inv <span class="op">=</span> np.linalg.inv(K)</span>
+<span id="cb9-21"><a href="#cb9-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-22"><a href="#cb9-22" aria-hidden="true" tabindex="-1"></a>mu_s <span class="op">=</span> K_s <span class="op">@</span> K_inv <span class="op">@</span> y_train</span>
+<span id="cb9-23"><a href="#cb9-23" aria-hidden="true" tabindex="-1"></a>cov_s <span class="op">=</span> K_ss <span class="op">-</span> K_s <span class="op">@</span> K_inv <span class="op">@</span> K_s.T</span>
+<span id="cb9-24"><a href="#cb9-24" aria-hidden="true" tabindex="-1"></a>std_s <span class="op">=</span> np.sqrt(np.maximum(np.diag(cov_s), <span class="dv">0</span>))</span>
+<span id="cb9-25"><a href="#cb9-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-26"><a href="#cb9-26" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">8</span>, <span class="dv">5</span>))</span>
+<span id="cb9-27"><a href="#cb9-27" aria-hidden="true" tabindex="-1"></a>plt.scatter(X_train, y_train, color<span class="op">=</span><span class="st">"black"</span>, label<span class="op">=</span><span class="st">"Observed data"</span>)</span>
+<span id="cb9-28"><a href="#cb9-28" aria-hidden="true" tabindex="-1"></a>plt.plot(X_test, mu_s, label<span class="op">=</span><span class="st">"Posterior mean"</span>)</span>
+<span id="cb9-29"><a href="#cb9-29" aria-hidden="true" tabindex="-1"></a>plt.fill_between(</span>
+<span id="cb9-30"><a href="#cb9-30" aria-hidden="true" tabindex="-1"></a>    X_test,</span>
+<span id="cb9-31"><a href="#cb9-31" aria-hidden="true" tabindex="-1"></a>    mu_s <span class="op">-</span> <span class="dv">2</span> <span class="op">*</span> std_s,</span>
+<span id="cb9-32"><a href="#cb9-32" aria-hidden="true" tabindex="-1"></a>    mu_s <span class="op">+</span> <span class="dv">2</span> <span class="op">*</span> std_s,</span>
+<span id="cb9-33"><a href="#cb9-33" aria-hidden="true" tabindex="-1"></a>    alpha<span class="op">=</span><span class="fl">0.2</span>,</span>
+<span id="cb9-34"><a href="#cb9-34" aria-hidden="true" tabindex="-1"></a>    label<span class="op">=</span><span class="st">"Approx. 95</span><span class="sc">% c</span><span class="st">redible band"</span></span>
+<span id="cb9-35"><a href="#cb9-35" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb9-36"><a href="#cb9-36" aria-hidden="true" tabindex="-1"></a>plt.plot(X_test, np.sin(X_test), linestyle<span class="op">=</span><span class="st">"--"</span>, label<span class="op">=</span><span class="st">"True function"</span>)</span>
+<span id="cb9-37"><a href="#cb9-37" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">"Gaussian Process Posterior"</span>)</span>
+<span id="cb9-38"><a href="#cb9-38" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">"x"</span>)</span>
+<span id="cb9-39"><a href="#cb9-39" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">"f(x)"</span>)</span>
+<span id="cb9-40"><a href="#cb9-40" aria-hidden="true" tabindex="-1"></a>plt.legend()</span>
+<span id="cb9-41"><a href="#cb9-41" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb9-42"><a href="#cb9-42" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="chapter-9_files/figure-html/cell-7-output-1.png" width="758" height="470" class="figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="bayesian-neural-networks" class="level2">
+<h2 class="anchored" data-anchor-id="bayesian-neural-networks">6. Bayesian Neural Networks</h2>
+<section id="bayesian-neural-networks-1" class="level3">
+<h3 class="anchored" data-anchor-id="bayesian-neural-networks-1">6.1. Bayesian Neural Networks</h3>
+<p>In previous <a href="../../teaching/cds-303/chapter-8.html">chapter</a>, a deterministic neural network uses fixed weights <span class="math inline">\(\hat y=f_\theta(x)\)</span>. A Bayesian Neural Network, or BNN, places a prior over the weights <span class="math inline">\(p(\theta)\)</span>. After observing data, <span class="math inline">\(D=\{(x_i, y_i)\}_{i=1}^n\)</span>, the posterior is</p>
+<p><span class="math display">\[
+p(\theta\,|\, D)=\frac{p(D\,|\, \theta)p(\theta)}{p(D)}
+\]</span></p>
+<p>Predictions integrate over parameter uncertainty:</p>
+<p><span class="math display">\[
+p(y^*\,|\, x^*, D)=\int p(y^*\,|\, x^*, \theta)p(\theta\,|\, D)d\theta
+\]</span></p>
+<p>The difficulty is that neural networks are nonlinear in <span class="math inline">\(\theta\)</span>. Therefore, the posterior is usually non-Gaussian and analytically intractable.</p>
+<p>BNNs are valuable when uncertainty matters. For example, in medical diagnosis or autonomous control, a model should not only predict a class but also indicate whether it is uncertain due to limited or unfamiliar data.</p>
+</section>
+<section id="epistemic-and-aleatoric-uncertainty" class="level3">
+<h3 class="anchored" data-anchor-id="epistemic-and-aleatoric-uncertainty">6.2. Epistemic and Aleatoric Uncertainty</h3>
+<p>Bayesian models often distinguish two kinds of uncertainty.</p>
+<div class="callout callout-style-default callout-note callout-titled" title="Definition: Aleatoric Uncertainty">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Definition: Aleatoric Uncertainty
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><em><strong>Aleatoric uncertainty</strong> is <strong>irreducible</strong> randomness in the data-generating process. It remains even with infinite data. Example:</em></p>
+<p><span class="math display">\[
+Y=f(X)+ \epsilon,
+\]</span></p>
+<p><em>where <span class="math inline">\(\epsilon\)</span> represents observation noise.</em></p>
+</div>
+</div>
+<div class="callout callout-style-default callout-note callout-titled" title="Definition: Epistemic Uncertainty">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Definition: Epistemic Uncertainty
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><em><strong>Epistemic uncertainty</strong> is uncertainty due to limited knowledge or limited data. It can decrease as more data are observed. In Bayesian modeling, posterior uncertainty about parameters is epistemic uncertainty.</em></p>
+</div>
+</div>
+<p>For BNNs, prediction uncertainty includes both:</p>
+<p><span class="math display">\[
+Var(Y^*\,|\, x^*, D) = \underbrace{\mathbb E_{\theta\,|\, D}[Var(Y^*\,|\, x^*, \theta)]}_{\text{aleatoric uncertainty}}+\underbrace{Var_{\theta\,|\,D}(\mathbb E[Y^*\, |\, x^*, \theta])}_{\text{epistemic uncertainty}}
+\]</span></p>
+</section>
+</section>
+<section id="approximate-bayesian-inference" class="level2">
+<h2 class="anchored" data-anchor-id="approximate-bayesian-inference">7. Approximate Bayesian Inference</h2>
+<p>Exact Bayesian inference requires computing</p>
+<p><span class="math display">\[
+p(\theta\,|\, D)= \frac{p(D\,|\, \theta)p(\theta)}{\int p(D\,|\, \theta)p(\theta)d\theta}
+\]</span></p>
+<p>The denominator is often intractable because the parameter space is high-dimensional or the likelihood is non-conjugate. Approximate inference methods replace exact integration with deterministic approximation, optimization, or sampling.</p>
+<section id="laplace-approximation" class="level3">
+<h3 class="anchored" data-anchor-id="laplace-approximation">7.1. Laplace Approximation</h3>
+<p>The Laplace approximation approximates the posterior with a Gaussian centered at the maximum a posteriori estimate.</p>
+<div class="callout callout-style-default callout-note callout-titled" title="Definition: MAP Estimate">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Definition: MAP Estimate
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><em>The maximum a posteriori estimate is</em></p>
+<p><span class="math display">\[
+\theta_{\text{MAP}}=\arg\max_\theta p(\theta\,|\, D).
+\]</span></p>
+<p><em>Equivalently,</em></p>
+<p><span class="math display">\[
+\theta_\text{MAP}= \arg\max [\log p(D\,|\,\theta)+\log p(\theta)]
+\]</span></p>
+</div>
+</div>
+<p>Let</p>
+<p><span class="math display">\[
+\ell(\theta)= \log p(D, \theta)= \log p(D\,|\, \theta)+\log p(\theta)
+\]</span></p>
+<p>Perform a second-order Taylor expansion around <span class="math inline">\(\theta_\text{MAP}\)</span>:</p>
+<p><span class="math display">\[
+\ell(\theta) \approx \ell(\theta_{\text{MAP}}) -\frac{1}{2}(\theta-\theta_{\text{MAP}})^\top H(\theta-\theta_{\text{MAP}})
+\]</span></p>
+<p>where <span class="math inline">\(H=-\nabla^2\ell(\theta_{\text{MAP}})\)</span> is the negative Hessian at the MAP point.</p>
+<p>Exponentiating gives</p>
+<p><span class="math display">\[
+p(\theta\,|\, D)\approx \mathcal N(\theta_{\text{MAP}}, H^{-1}).
+\]</span></p>
+<p>Thus, Laplace approximation converts a posterior into a local Gaussian approximation.</p>
+<div id="8ea3a0c1" class="cell" data-execution_count="7">
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> scipy.stats <span class="im">import</span> beta, norm</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> scipy.optimize <span class="im">import</span> minimize_scalar</span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Posterior from a Beta-Bernoulli model</span></span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>alpha_post, beta_post <span class="op">=</span> <span class="dv">12</span>, <span class="dv">5</span></span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>theta <span class="op">=</span> np.linspace(<span class="fl">0.001</span>, <span class="fl">0.999</span>, <span class="dv">1000</span>)</span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>posterior <span class="op">=</span> beta.pdf(theta, alpha_post, beta_post)</span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a><span class="co"># Find MAP</span></span>
+<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a>result <span class="op">=</span> minimize_scalar(</span>
+<span id="cb10-14"><a href="#cb10-14" aria-hidden="true" tabindex="-1"></a>    <span class="kw">lambda</span> x: <span class="op">-</span>beta.logpdf(x, alpha_post, beta_post),</span>
+<span id="cb10-15"><a href="#cb10-15" aria-hidden="true" tabindex="-1"></a>    bounds<span class="op">=</span>(<span class="fl">0.001</span>, <span class="fl">0.999</span>),</span>
+<span id="cb10-16"><a href="#cb10-16" aria-hidden="true" tabindex="-1"></a>    method<span class="op">=</span><span class="st">"bounded"</span></span>
+<span id="cb10-17"><a href="#cb10-17" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb10-18"><a href="#cb10-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-19"><a href="#cb10-19" aria-hidden="true" tabindex="-1"></a>theta_map <span class="op">=</span> result.x</span>
+<span id="cb10-20"><a href="#cb10-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-21"><a href="#cb10-21" aria-hidden="true" tabindex="-1"></a><span class="co"># Approximate second derivative numerically</span></span>
+<span id="cb10-22"><a href="#cb10-22" aria-hidden="true" tabindex="-1"></a>h <span class="op">=</span> <span class="fl">1e-4</span></span>
+<span id="cb10-23"><a href="#cb10-23" aria-hidden="true" tabindex="-1"></a>logp <span class="op">=</span> <span class="kw">lambda</span> x: beta.logpdf(x, alpha_post, beta_post)</span>
+<span id="cb10-24"><a href="#cb10-24" aria-hidden="true" tabindex="-1"></a>second_deriv <span class="op">=</span> (logp(theta_map <span class="op">+</span> h) <span class="op">-</span> <span class="dv">2</span><span class="op">*</span>logp(theta_map) <span class="op">+</span> logp(theta_map <span class="op">-</span> h)) <span class="op">/</span> h<span class="op">**</span><span class="dv">2</span></span>
+<span id="cb10-25"><a href="#cb10-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-26"><a href="#cb10-26" aria-hidden="true" tabindex="-1"></a>variance_laplace <span class="op">=</span> <span class="op">-</span><span class="dv">1</span> <span class="op">/</span> second_deriv</span>
+<span id="cb10-27"><a href="#cb10-27" aria-hidden="true" tabindex="-1"></a>laplace <span class="op">=</span> norm.pdf(theta, theta_map, np.sqrt(variance_laplace))</span>
+<span id="cb10-28"><a href="#cb10-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-29"><a href="#cb10-29" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">8</span>, <span class="dv">5</span>))</span>
+<span id="cb10-30"><a href="#cb10-30" aria-hidden="true" tabindex="-1"></a>plt.plot(theta, posterior, label<span class="op">=</span><span class="st">"Exact Beta posterior"</span>)</span>
+<span id="cb10-31"><a href="#cb10-31" aria-hidden="true" tabindex="-1"></a>plt.plot(theta, laplace, linestyle<span class="op">=</span><span class="st">"--"</span>, label<span class="op">=</span><span class="st">"Laplace Gaussian approximation"</span>)</span>
+<span id="cb10-32"><a href="#cb10-32" aria-hidden="true" tabindex="-1"></a>plt.axvline(theta_map, linestyle<span class="op">=</span><span class="st">":"</span>, label<span class="op">=</span><span class="st">"MAP"</span>)</span>
+<span id="cb10-33"><a href="#cb10-33" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">"Laplace Approximation to a Posterior"</span>)</span>
+<span id="cb10-34"><a href="#cb10-34" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="vs">r"</span><span class="dv">$</span><span class="ch">\t</span><span class="vs">heta</span><span class="dv">$</span><span class="vs">"</span>)</span>
+<span id="cb10-35"><a href="#cb10-35" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">"Density"</span>)</span>
+<span id="cb10-36"><a href="#cb10-36" aria-hidden="true" tabindex="-1"></a>plt.legend()</span>
+<span id="cb10-37"><a href="#cb10-37" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb10-38"><a href="#cb10-38" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="chapter-9_files/figure-html/cell-8-output-1.png" width="758" height="469" class="figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="variational-inference" class="level3">
+<h3 class="anchored" data-anchor-id="variational-inference">7.2. Variational Inference</h3>
+<p>Variational inference, or VI, turns inference into optimization.</p>
+<p>Let <span class="math inline">\(p(z\,|\, x)\)</span> be an intractable posterior. Choose a tractable family <span class="math inline">\(\mathcal Q\)</span> of approximate distributions <span class="math inline">\(q(z) \in \mathcal Q\)</span>. The goal is to find</p>
+<p><span class="math display">\[
+q^* (z) =\arg\min_{q\in \mathcal Q} KL(q(z)\| p(z\,|\,x))
+\]</span></p>
+<p>The <a href="https://en.wikipedia.org/wiki/Kullback–Leibler_divergence">Kullback-Leibler divergence</a> is</p>
+<p><span class="math display">\[
+KL(q\|p) = \int q(z)\log \frac{q(z)}{p(z\,|\, x)}dz.
+\]</span></p>
+<p>Because <span class="math inline">\(p(z\,|\, x)\)</span> involves the unknown evidence <span class="math inline">\(p(x)\)</span>, VI typically maximizes the Evidence Lower Bound, or ELBO.</p>
+<div class="callout callout-style-default callout-caution callout-titled" title="ELBO Derivation">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Caution</span>ELBO Derivation
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Start from the marginal likelihood</p>
+<p><span class="math display">\[
+\log p(x) = \log \int p(x, z)dz
+\]</span></p>
+<p>Introduce any distribution <span class="math inline">\(q(z)\)</span>:</p>
+<p><span class="math display">\[
+\log p(x) =\log \int q(z) \frac{p(x, z)}{q(z)}dz
+\]</span></p>
+<p>Using <a href="https://en.wikipedia.org/wiki/Jensen%27s_inequality">Jensen’s inequality</a>,</p>
+<p><span class="math display">\[
+\log p(x) \geq \int q(z) \log \frac{p(x, z)}{q(z)}dz
+\]</span></p>
+<p>Define the ELBO:</p>
+<p><span class="math display">\[
+\mathcal L(q) = \mathbb E_{q(z)}[\log p(x, z)] - \mathbb E_{q(z)}[\log q(z)]
+\]</span></p>
+<p>Equivalently,</p>
+<p><span class="math display">\[
+\mathcal L(q)=\mathbb E_{q(z)}[\log p(x, z)]+ H(q),
+\]</span></p>
+<p>where <span class="math inline">\(H(q)\)</span> is the entropy of <span class="math inline">\(q\)</span>.</p>
+<p>The relationship between evidence, ELBO, and KL divergence is</p>
+<p><span class="math display">\[
+\log p(x) = \mathcal L (q) +KL(q(z)\| p(z\,|\, x)).
+\]</span></p>
+<p>Since <span class="math inline">\(KL(q\|p)\geq 0\)</span>, we have <span class="math inline">\(\mathcal L(q) \leq \log p(x)\)</span>. Thus, maximizing the ELBO is equivalent to minimizing the KL divergence from <span class="math inline">\(q\)</span> to the posterior.</p>
+</div>
+</div>
+</section>
+<section id="expectation-propagation" class="level3">
+<h3 class="anchored" data-anchor-id="expectation-propagation">7.3. Expectation Propagation</h3>
+<p>Expectation Propagation, or EP, is a deterministic approximation method that approximates complicated posterior factors with simpler factors.</p>
+<p>Suppose the posterior factors as</p>
+<p><span class="math display">\[
+p(\theta\,|\, D)\propto p(\theta)\prod_{i=1}^nf_i(\theta).
+\]</span></p>
+<p>EP approximates each factor <span class="math inline">\(f_i\)</span> by a simpler factor <span class="math inline">\(\tilde f_i\)</span>, producing</p>
+<p><span class="math display">\[
+q(\theta)\propto p(\theta)\prod_{i=1}^n \tilde f_i(\theta).
+\]</span></p>
+<p>Each factor is updated by temporarily removing it, incorporating the exact factor, and then projecting the result back into the chosen approximate family by moment matching.</p>
+<p>EP is especially useful when local factors are non-Gaussian but can be approximated well by distributions with matched moments.</p>
+</section>
+<section id="markov-chain-monte-carlo" class="level3">
+<h3 class="anchored" data-anchor-id="markov-chain-monte-carlo">7.4. Markov Chain Monte Carlo</h3>
+<p>Markov Chain Monte Carlo, or MCMC, approximates posterior expectations using samples.</p>
+<p>Suppose we want</p>
+<p><span class="math display">\[
+\mathbb E_{p(\theta\,|\, D)}[h(\theta)].
+\]</span></p>
+<p>If we can generate samples</p>
+<p><span class="math display">\[
+\theta^{(1)}, \dots, \theta^{(S)} \sim p(\theta\,|\,D),
+\]</span></p>
+<p>then</p>
+<p><span class="math display">\[
+\mathbb E[h(\theta)\,|\, D]\approx \frac{1}{S}\sum_{s=1}^S h(\theta^{(s)}).
+\]</span></p>
+<p>MCMC constructs a Markov chain whose stationary distribution is the posterior.</p>
+</section>
+<section id="metropolis-hastings" class="level3">
+<h3 class="anchored" data-anchor-id="metropolis-hastings">7.5. Metropolis-Hastings</h3>
+<p>Given current state <span class="math inline">\(\theta\)</span>, propose a new state <span class="math inline">\(\theta'\sim q(\theta'\,|\,\theta)\)</span>. We then accept <span class="math inline">\(\theta'\)</span> with probability</p>
+<p><span class="math display">\[
+\alpha(\theta, \theta')=\min\left[1, \frac{p(\theta'\,|\,D)q(\theta\,|\,\theta')}{p(\theta\,|\, D)q(\theta'\,|\, \theta)}\right].
+\]</span></p>
+<p>If the proposal distribution is symmetric (which means <span class="math inline">\(q(\theta'\,|\,\theta)=q(\theta\,|\,\theta')\)</span>), then</p>
+<p><span class="math display">\[
+\alpha (\theta,\theta')=\min\left[1, \frac{p(\theta'\,|\, D)}{p(\theta\,|\, D)}\right].
+\]</span></p>
+<p>Because the normalizing constant cancels, Metropolis-Hastings only requires the unnormalized posterior <span class="math inline">\(p(D\,|\,\theta)p(\theta)\)</span>.</p>
+<div id="53d33262" class="cell" data-execution_count="8">
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> scipy.stats <span class="im">import</span> beta</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>rng <span class="op">=</span> np.random.default_rng(<span class="dv">42</span>)</span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>alpha_post, beta_post <span class="op">=</span> <span class="dv">12</span>, <span class="dv">5</span></span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> log_target(theta):</span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> theta <span class="op">&lt;=</span> <span class="dv">0</span> <span class="kw">or</span> theta <span class="op">&gt;=</span> <span class="dv">1</span>:</span>
+<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="op">-</span>np.inf</span>
+<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> beta.logpdf(theta, alpha_post, beta_post)</span>
+<span id="cb11-13"><a href="#cb11-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-14"><a href="#cb11-14" aria-hidden="true" tabindex="-1"></a>n_samples <span class="op">=</span> <span class="dv">8000</span></span>
+<span id="cb11-15"><a href="#cb11-15" aria-hidden="true" tabindex="-1"></a>samples <span class="op">=</span> np.zeros(n_samples)</span>
+<span id="cb11-16"><a href="#cb11-16" aria-hidden="true" tabindex="-1"></a>samples[<span class="dv">0</span>] <span class="op">=</span> <span class="fl">0.5</span></span>
+<span id="cb11-17"><a href="#cb11-17" aria-hidden="true" tabindex="-1"></a>proposal_sd <span class="op">=</span> <span class="fl">0.08</span></span>
+<span id="cb11-18"><a href="#cb11-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-19"><a href="#cb11-19" aria-hidden="true" tabindex="-1"></a>accepted <span class="op">=</span> <span class="dv">0</span></span>
+<span id="cb11-20"><a href="#cb11-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-21"><a href="#cb11-21" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> s <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">1</span>, n_samples):</span>
+<span id="cb11-22"><a href="#cb11-22" aria-hidden="true" tabindex="-1"></a>    current <span class="op">=</span> samples[s <span class="op">-</span> <span class="dv">1</span>]</span>
+<span id="cb11-23"><a href="#cb11-23" aria-hidden="true" tabindex="-1"></a>    proposal <span class="op">=</span> current <span class="op">+</span> rng.normal(<span class="dv">0</span>, proposal_sd)</span>
+<span id="cb11-24"><a href="#cb11-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-25"><a href="#cb11-25" aria-hidden="true" tabindex="-1"></a>    log_accept_ratio <span class="op">=</span> log_target(proposal) <span class="op">-</span> log_target(current)</span>
+<span id="cb11-26"><a href="#cb11-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-27"><a href="#cb11-27" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> np.log(rng.uniform()) <span class="op">&lt;</span> log_accept_ratio:</span>
+<span id="cb11-28"><a href="#cb11-28" aria-hidden="true" tabindex="-1"></a>        samples[s] <span class="op">=</span> proposal</span>
+<span id="cb11-29"><a href="#cb11-29" aria-hidden="true" tabindex="-1"></a>        accepted <span class="op">+=</span> <span class="dv">1</span></span>
+<span id="cb11-30"><a href="#cb11-30" aria-hidden="true" tabindex="-1"></a>    <span class="cf">else</span>:</span>
+<span id="cb11-31"><a href="#cb11-31" aria-hidden="true" tabindex="-1"></a>        samples[s] <span class="op">=</span> current</span>
+<span id="cb11-32"><a href="#cb11-32" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-33"><a href="#cb11-33" aria-hidden="true" tabindex="-1"></a>theta <span class="op">=</span> np.linspace(<span class="fl">0.001</span>, <span class="fl">0.999</span>, <span class="dv">1000</span>)</span>
+<span id="cb11-34"><a href="#cb11-34" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-35"><a href="#cb11-35" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">8</span>, <span class="dv">4</span>))</span>
+<span id="cb11-36"><a href="#cb11-36" aria-hidden="true" tabindex="-1"></a>plt.plot(samples[:<span class="dv">1000</span>])</span>
+<span id="cb11-37"><a href="#cb11-37" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">"Metropolis-Hastings Trace Plot"</span>)</span>
+<span id="cb11-38"><a href="#cb11-38" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">"Iteration"</span>)</span>
+<span id="cb11-39"><a href="#cb11-39" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="vs">r"</span><span class="dv">$</span><span class="ch">\t</span><span class="vs">heta</span><span class="dv">$</span><span class="vs">"</span>)</span>
+<span id="cb11-40"><a href="#cb11-40" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb11-41"><a href="#cb11-41" aria-hidden="true" tabindex="-1"></a>plt.show()</span>
+<span id="cb11-42"><a href="#cb11-42" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-43"><a href="#cb11-43" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">8</span>, <span class="dv">5</span>))</span>
+<span id="cb11-44"><a href="#cb11-44" aria-hidden="true" tabindex="-1"></a>plt.hist(samples[<span class="dv">1000</span>:], bins<span class="op">=</span><span class="dv">50</span>, density<span class="op">=</span><span class="va">True</span>, alpha<span class="op">=</span><span class="fl">0.5</span>, label<span class="op">=</span><span class="st">"MCMC samples"</span>)</span>
+<span id="cb11-45"><a href="#cb11-45" aria-hidden="true" tabindex="-1"></a>plt.plot(theta, beta.pdf(theta, alpha_post, beta_post), label<span class="op">=</span><span class="st">"True posterior"</span>)</span>
+<span id="cb11-46"><a href="#cb11-46" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">"MCMC Approximation to Posterior"</span>)</span>
+<span id="cb11-47"><a href="#cb11-47" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="vs">r"</span><span class="dv">$</span><span class="ch">\t</span><span class="vs">heta</span><span class="dv">$</span><span class="vs">"</span>)</span>
+<span id="cb11-48"><a href="#cb11-48" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">"Density"</span>)</span>
+<span id="cb11-49"><a href="#cb11-49" aria-hidden="true" tabindex="-1"></a>plt.legend()</span>
+<span id="cb11-50"><a href="#cb11-50" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb11-51"><a href="#cb11-51" aria-hidden="true" tabindex="-1"></a>plt.show()</span>
+<span id="cb11-52"><a href="#cb11-52" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-53"><a href="#cb11-53" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Acceptance rate:"</span>, accepted <span class="op">/</span> (n_samples <span class="op">-</span> <span class="dv">1</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="chapter-9_files/figure-html/cell-9-output-1.png" width="757" height="374" class="figure-img"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="chapter-9_files/figure-html/cell-9-output-2.png" width="758" height="469" class="figure-img"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Acceptance rate: 0.7722215276909614</code></pre>
+</div>
+</div>
+</section>
+<section id="gibbs-sampling" class="level3">
+<h3 class="anchored" data-anchor-id="gibbs-sampling">7.6. Gibbs Sampling</h3>
+<p>Gibbs sampling is an MCMC method used when conditional distributions are easier to sample than the joint posterior. Suppose <span class="math inline">\(\theta=(\theta_1, \theta_2, \dots, \theta_d)\)</span>. Gibbs sampling iteratively samples:</p>
+<p><span class="math display">\[
+\begin{aligned}
+\theta_1^{(s+1)} &amp;\sim p(\theta_1\mid\theta_2^{(s)},\ldots,\theta_d^{(s)},D),
+\\
+\theta_2^{(s+1)} &amp;\sim p(\theta_2\mid \theta_1^{(s+1)},\theta_3^{(s)},\ldots,\theta_d^{(s)},D),
+\end{aligned}
+\]</span></p>
+<p>and so on.</p>
+<p>This is useful in hierarchical Bayesian models, mixture models, and latent variable models when full conditional distributions are unknown.</p>
+</section>
+<section id="hamiltonian-monte-carlo" class="level3">
+<h3 class="anchored" data-anchor-id="hamiltonian-monte-carlo">7.7. Hamiltonian Monte Carlo</h3>
+<p>Hamiltonian Monte Carlo, or HMC, improves MCMC by using gradient information to propose distant moves with high acceptance probability.</p>
+<p>Introduce momentum variables <span class="math inline">\(r\)</span> and define the Hamiltonian</p>
+<p><span class="math display">\[
+H(\theta,r) = U(\theta)+K(r),
+\]</span> where <span class="math inline">\(U(\theta) = -\log p(\theta\mid D)\)</span> is potential energy, and <span class="math inline">\(K(r) = \frac{1}{2}r^\top M^{-1}r\)</span> is kinetic energy.</p>
+<p>HMC simulates Hamiltonian dynamics: <span class="math display">\[
+\begin{aligned}
+\frac{d\theta}{dt} &amp;= \frac{\partial H}{\partial r} = M^{-1}r,
+\\
+\frac{dr}{dt} &amp;= -\frac{\partial H}{\partial \theta} = -\nabla_\theta U(\theta).
+\end{aligned}
+\]</span> The purpose is to move through the posterior geometry efficiently rather than wandering randomly.</p>
+</section>
+</section>
+<section id="bayesian-model-comparison" class="level2">
+<h2 class="anchored" data-anchor-id="bayesian-model-comparison">8. Bayesian Model Comparison</h2>
+<section id="marginal-likelihood" class="level3">
+<h3 class="anchored" data-anchor-id="marginal-likelihood">8.1. Marginal Likelihood</h3>
+<p>The marginal likelihood, or evidence, is</p>
+<p><span class="math display">\[
+p(D\mid M) = \int p(D\mid \theta,M)p(\theta\mid M)d\theta.
+\]</span></p>
+<p>It averages the likelihood over the prior. This quantity rewards models that explain the data well but penalizes models that spread prior probability over many unsupported parameter values. This creates a built-in complexity penalty.</p>
+</section>
+<section id="bayes-factors" class="level3">
+<h3 class="anchored" data-anchor-id="bayes-factors">8.2. Bayes Factors</h3>
+<p>For two models M_1 and M_2, the Bayes factor is</p>
+<p><span class="math display">\[
+BF_{12} = \frac{p(D\mid M_1)} {p(D\mid M_2)}.
+\]</span></p>
+<p>The posterior odds satisfy</p>
+<p><span class="math display">\[
+\frac{p(M_1\mid D)} {p(M_2\mid D)} = BF_{12} \cdot \frac{p(M_1)} {p(M_2)}.
+\]</span></p>
+<p>Thus, the Bayes factor updates prior model odds into posterior model odds.</p>
+</section>
+<section id="bayesian-model-averaging" class="level3">
+<h3 class="anchored" data-anchor-id="bayesian-model-averaging">8.3. Bayesian Model Averaging</h3>
+<p>Instead of choosing one model, Bayesian Model Averaging combines predictions across models.</p>
+<p>Let <span class="math inline">\(M_1,\ldots,M_K\)</span> be candidate models. The predictive distribution is</p>
+<p><span class="math display">\[
+p(y_*\mid x_*,D) = \sum_{k=1}^{K} p(y_*\mid x_*,D,M_k) p(M_k\mid D).
+\]</span></p>
+<p>Model averaging accounts for uncertainty about which model is correct.</p>
+</section>
+<section id="bayesian-information-criterion" class="level3">
+<h3 class="anchored" data-anchor-id="bayesian-information-criterion">8.4. Bayesian Information Criterion</h3>
+<p>The Bayesian Information Criterion, or BIC, is</p>
+<p><span class="math display">\[
+BIC = -2\log \hat{L} + d\log n,
+\]</span> where:</p>
+<ul>
+<li><span class="math inline">\(\hat{L}\)</span> is the maximized likelihood,</li>
+<li><span class="math inline">\(d\)</span> is the number of parameters,</li>
+<li><span class="math inline">\(n\)</span> is the sample size.</li>
+</ul>
+<p>A lower BIC is preferred.</p>
+<p>BIC can be understood as a large-sample approximation related to the marginal likelihood. It rewards goodness of fit through <span class="math inline">\(-2\log \hat{L}\)</span> and penalizes model complexity through <span class="math inline">\(d\log n\)</span>.</p>
+</section>
+</section>
+<section id="bayesian-optimization" class="level2">
+<h2 class="anchored" data-anchor-id="bayesian-optimization">9. Bayesian Optimization</h2>
+<p>Bayesian optimization is used to optimize expensive black-box functions. Suppose we want to solve</p>
+<p><span class="math display">\[
+x^* = \arg\max_{x\in\mathcal{X}} f(x),
+\]</span></p>
+<p>but evaluating <span class="math inline">\(f(x)\)</span> is expensive. Examples include tuning deep learning hyperparameters, optimizing chemical compounds, or controlling engineering systems.</p>
+<p>Bayesian optimization builds a probabilistic surrogate model, often a Gaussian process:</p>
+<p><span class="math display">\[
+f\sim\mathcal{GP}(m,k).
+\]</span></p>
+<p>After observing evaluations</p>
+<p><span class="math display">\[
+D_t=\{(x_i,f(x_i))\}_{i=1}^{t},
+\]</span></p>
+<p>the surrogate gives a posterior distribution over f.&nbsp;An acquisition function chooses the next point to evaluate:</p>
+<p><span class="math display">\[
+x_{t+1} = \arg\max_x a(x;D_t).
+\]</span></p>
+<p>Let <span class="math inline">\(f_{\max}\)</span> be the best observed value so far. If the surrogate predicts</p>
+<p><span class="math display">\[
+f(x)\sim \mathcal{N}(\mu(x),\sigma^2(x)),
+\]</span></p>
+<p>then improvement is</p>
+<p><span class="math display">\[
+I(x)=\max(0,f(x)-f_{\max}).
+\]</span> Expected Improvement is</p>
+<p><span class="math display">\[
+EI(x) = \mathbb{E}[I(x)].
+\]</span></p>
+<p>For a Gaussian predictive distribution,</p>
+<p><span class="math display">\[
+EI(x) = (\mu(x)-f_{\max})\Phi(Z) + \sigma(x)\phi(Z),
+\]</span></p>
+<p>where <span class="math inline">\(Z= \frac{\mu(x)-f_{\max}}{\sigma(x)},\)</span> and <span class="math inline">\(\Phi\)</span>, <span class="math inline">\(\phi\)</span> are the standard normal CDF and PDF.</p>
+<p>The first term rewards exploitation, where the predicted mean is high. The second term rewards exploration, where uncertainty is high.</p>
+<div id="b701f386" class="cell" data-execution_count="9">
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> scipy.stats <span class="im">import</span> norm</span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>x <span class="op">=</span> np.linspace(<span class="op">-</span><span class="dv">3</span>, <span class="dv">3</span>, <span class="dv">400</span>)</span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Toy surrogate posterior mean and uncertainty</span></span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a>mu <span class="op">=</span> np.sin(<span class="dv">2</span> <span class="op">*</span> x) <span class="op">+</span> <span class="fl">0.2</span> <span class="op">*</span> x</span>
+<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a>sigma <span class="op">=</span> <span class="fl">0.2</span> <span class="op">+</span> <span class="fl">0.6</span> <span class="op">*</span> np.exp(<span class="op">-</span><span class="fl">0.5</span> <span class="op">*</span> (x <span class="op">-</span> <span class="fl">1.5</span>)<span class="op">**</span><span class="dv">2</span>) <span class="op">+</span> <span class="fl">0.3</span> <span class="op">*</span> np.exp(<span class="op">-</span><span class="fl">0.5</span> <span class="op">*</span> (x <span class="op">+</span> <span class="dv">2</span>)<span class="op">**</span><span class="dv">2</span>)</span>
+<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a>f_best <span class="op">=</span> <span class="fl">0.8</span></span>
+<span id="cb13-12"><a href="#cb13-12" aria-hidden="true" tabindex="-1"></a>Z <span class="op">=</span> (mu <span class="op">-</span> f_best) <span class="op">/</span> sigma</span>
+<span id="cb13-13"><a href="#cb13-13" aria-hidden="true" tabindex="-1"></a>EI <span class="op">=</span> (mu <span class="op">-</span> f_best) <span class="op">*</span> norm.cdf(Z) <span class="op">+</span> sigma <span class="op">*</span> norm.pdf(Z)</span>
+<span id="cb13-14"><a href="#cb13-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-15"><a href="#cb13-15" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">8</span>, <span class="dv">5</span>))</span>
+<span id="cb13-16"><a href="#cb13-16" aria-hidden="true" tabindex="-1"></a>plt.plot(x, mu, label<span class="op">=</span><span class="st">"Surrogate posterior mean"</span>)</span>
+<span id="cb13-17"><a href="#cb13-17" aria-hidden="true" tabindex="-1"></a>plt.fill_between(x, mu <span class="op">-</span> <span class="dv">2</span><span class="op">*</span>sigma, mu <span class="op">+</span> <span class="dv">2</span><span class="op">*</span>sigma, alpha<span class="op">=</span><span class="fl">0.2</span>, label<span class="op">=</span><span class="st">"Uncertainty band"</span>)</span>
+<span id="cb13-18"><a href="#cb13-18" aria-hidden="true" tabindex="-1"></a>plt.axhline(f_best, linestyle<span class="op">=</span><span class="st">"--"</span>, label<span class="op">=</span><span class="st">"Best observed value"</span>)</span>
+<span id="cb13-19"><a href="#cb13-19" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">"Bayesian Optimization Surrogate"</span>)</span>
+<span id="cb13-20"><a href="#cb13-20" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">"x"</span>)</span>
+<span id="cb13-21"><a href="#cb13-21" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">"f(x)"</span>)</span>
+<span id="cb13-22"><a href="#cb13-22" aria-hidden="true" tabindex="-1"></a>plt.legend()</span>
+<span id="cb13-23"><a href="#cb13-23" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb13-24"><a href="#cb13-24" aria-hidden="true" tabindex="-1"></a>plt.show()</span>
+<span id="cb13-25"><a href="#cb13-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-26"><a href="#cb13-26" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">8</span>, <span class="dv">4</span>))</span>
+<span id="cb13-27"><a href="#cb13-27" aria-hidden="true" tabindex="-1"></a>plt.plot(x, EI, label<span class="op">=</span><span class="st">"Expected Improvement"</span>)</span>
+<span id="cb13-28"><a href="#cb13-28" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">"Expected Improvement Acquisition Function"</span>)</span>
+<span id="cb13-29"><a href="#cb13-29" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">"x"</span>)</span>
+<span id="cb13-30"><a href="#cb13-30" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">"EI(x)"</span>)</span>
+<span id="cb13-31"><a href="#cb13-31" aria-hidden="true" tabindex="-1"></a>plt.legend()</span>
+<span id="cb13-32"><a href="#cb13-32" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb13-33"><a href="#cb13-33" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="chapter-9_files/figure-html/cell-10-output-1.png" width="758" height="470" class="figure-img"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="chapter-9_files/figure-html/cell-10-output-2.png" width="758" height="374" class="figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="statistical-relational-learning" class="level2">
+<h2 class="anchored" data-anchor-id="statistical-relational-learning">10. Statistical Relational Learning</h2>
+<p>Many real-world datasets are not flat tables. They contain objects and relations:</p>
+<ul>
+<li>patients, doctors, visits, diagnoses,</li>
+<li>students, courses, instructors,</li>
+<li>papers, authors, institutions,</li>
+<li>users, products, transactions,</li>
+<li>proteins, genes, pathways.</li>
+</ul>
+<p>Statistical Relational Learning combines probabilistic modeling with relational structure. A probabilistic relational model may define distributions over attributes of objects while allowing dependencies through relations.</p>
+<p>For example:</p>
+<p><span class="math display">\[
+P(\text{Grade}_{s,c}\mid \text{Ability}_s,\text{Difficulty}_c,\text{Instructor}_c).
+\]</span></p>
+<p>Bayesian logic programs and probabilistic relational models extend Bayesian networks by allowing logical variables, relations, and repeated structures. The key idea is that uncertainty does not only live in scalar parameters. It also exists in relational systems where entities influence one another through structured dependencies.</p>
+</section>
+<section id="practical-applications" class="level2">
+<h2 class="anchored" data-anchor-id="practical-applications">11. Practical Applications</h2>
+<section id="medical-diagnostics" class="level3">
+<h3 class="anchored" data-anchor-id="medical-diagnostics">11.1. Medical Diagnostics</h3>
+<p>Bayesian methods are natural for medicine because diagnosis is uncertain and evidence accumulates sequentially.</p>
+<p>Let <span class="math inline">\(D\)</span> represent disease status, and let <span class="math inline">\(T\)</span> represent a test result. Bayes’ theorem gives</p>
+<p><span class="math display">\[
+P(D\mid T) = \frac{P(T\mid D)P(D)} {P(T)}.
+\]</span></p>
+<p>The prior <span class="math inline">\(P(D)\)</span> may come from disease prevalence. The likelihood <span class="math inline">\(P(T\mid D)\)</span> comes from test sensitivity and specificity. The posterior <span class="math inline">\(P(D\mid T)\)</span> is the updated probability after the test. This framework makes clear why a highly accurate test can still produce many false positives when the disease is rare.</p>
+<div id="fec5daf9" class="cell" data-execution_count="10">
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>prevalence <span class="op">=</span> np.linspace(<span class="fl">0.001</span>, <span class="fl">0.5</span>, <span class="dv">500</span>)</span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>sensitivity <span class="op">=</span> <span class="fl">0.95</span></span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a>specificity <span class="op">=</span> <span class="fl">0.90</span></span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a><span class="co"># P(Disease | Positive)</span></span>
+<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a>ppv <span class="op">=</span> (</span>
+<span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a>    sensitivity <span class="op">*</span> prevalence</span>
+<span id="cb14-12"><a href="#cb14-12" aria-hidden="true" tabindex="-1"></a>    <span class="op">/</span></span>
+<span id="cb14-13"><a href="#cb14-13" aria-hidden="true" tabindex="-1"></a>    (sensitivity <span class="op">*</span> prevalence <span class="op">+</span> (<span class="dv">1</span> <span class="op">-</span> specificity) <span class="op">*</span> (<span class="dv">1</span> <span class="op">-</span> prevalence))</span>
+<span id="cb14-14"><a href="#cb14-14" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb14-15"><a href="#cb14-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-16"><a href="#cb14-16" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">8</span>, <span class="dv">5</span>))</span>
+<span id="cb14-17"><a href="#cb14-17" aria-hidden="true" tabindex="-1"></a>plt.plot(prevalence, ppv)</span>
+<span id="cb14-18"><a href="#cb14-18" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">"Bayesian Diagnostic Updating: Effect of Prevalence"</span>)</span>
+<span id="cb14-19"><a href="#cb14-19" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">"Disease prevalence P(D)"</span>)</span>
+<span id="cb14-20"><a href="#cb14-20" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">"P(Disease | Positive Test)"</span>)</span>
+<span id="cb14-21"><a href="#cb14-21" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb14-22"><a href="#cb14-22" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="chapter-9_files/figure-html/cell-11-output-1.png" width="759" height="470" class="figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="bioinformatics-and-genetics" class="level3">
+<h3 class="anchored" data-anchor-id="bioinformatics-and-genetics">11.2. Bioinformatics and Genetics</h3>
+<p>Bayesian inference is widely used in genetics and bioinformatics because biological data often contain:</p>
+<ul>
+<li>high-dimensional measurements,</li>
+<li>small sample sizes,</li>
+<li>noisy observations,</li>
+<li>hierarchical structure,</li>
+<li>prior biological knowledge.</li>
+</ul>
+<p>Examples include:</p>
+<ul>
+<li>gene expression modeling,</li>
+<li>protein classification,</li>
+<li>genomic selection,</li>
+<li>phylogenetic inference,</li>
+<li>DNA motif discovery.</li>
+</ul>
+<p>A Bayesian model can include prior knowledge about gene effects or pathway structure, and posterior distributions can express uncertainty in biological conclusions.</p>
+</section>
+<section id="engineering-design-and-control" class="level3">
+<h3 class="anchored" data-anchor-id="engineering-design-and-control">11.3. Engineering Design and Control</h3>
+<p>In engineering, Bayesian methods are useful when experiments are expensive.</p>
+<p>For example, suppose an engineer wants to tune control parameters <span class="math inline">\(x\)</span> to maximize system performance <span class="math inline">\(f(x)\)</span>. Each experiment is costly. Bayesian optimization can use previous evaluations to decide the next experiment efficiently.</p>
+<p>This is especially valuable for:</p>
+<ul>
+<li>particle accelerator tuning,</li>
+<li>analog circuit design,</li>
+<li>robotics control,</li>
+<li>energy management,</li>
+<li>materials discovery.</li>
+</ul>
+</section>
+<section id="chemistry-and-drug-discovery" class="level3">
+<h3 class="anchored" data-anchor-id="chemistry-and-drug-discovery">11.4. Chemistry and Drug Discovery</h3>
+<p>In virtual screening, the goal is to identify molecules likely to have desired properties, such as binding affinity or biological activity.</p>
+<p>Let <span class="math inline">\(x\)</span> represent molecular descriptors, and let <span class="math inline">\(y\)</span> represent measured activity.</p>
+<p>A Bayesian model estimates</p>
+<p><span class="math display">\[
+p(y\mid x,D)
+\]</span></p>
+<p>and can prioritize molecules with high predicted activity or high uncertainty.</p>
+<p>Bayesian optimization can balance:</p>
+<ul>
+<li>exploitation: testing molecules likely to work,</li>
+<li>exploration: testing uncertain molecules that may reveal new chemical structures.</li>
+</ul>
+<hr>
+<p>Bayesian inference is a general framework for learning from data by updating uncertainty. It begins with a prior distribution, combines it with a likelihood, and produces a posterior distribution. This posterior becomes the central object of inference.</p>
+<p>Unlike methods that produce only point estimates or deterministic predictions, Bayesian modeling produces distributions over unknown quantities. A Bayesian model asks not only, “What is the best estimate?” but also, “How uncertain are we, and how should that uncertainty affect prediction and decision-making?”</p>
+<p>The posterior predictive distribution is one of the most important Bayesian outputs:</p>
+<p><span class="math display">\[
+p(z_{\text{new}}\mid D) = \int p(z_{\text{new}}\mid \theta)p(\theta\mid D)d\theta.
+\]</span></p>
+<p>It shows that prediction should average over uncertainty rather than ignore it.</p>
+<p>Bayesian linear regression illustrates how prior precision and data precision combine algebraically. Gaussian processes extend Bayesian reasoning from parameters to functions. Bayesian neural networks extend it to deep nonlinear models, though often requiring approximate inference. Laplace approximation, variational inference, expectation propagation, and MCMC provide different strategies for handling intractable posteriors. Bayesian model comparison, model averaging, and Bayesian optimization show that Bayesian inference is not limited to estimating parameters; it can guide model choice and sequential decision-making.</p>
+<p>The main lesson is that Bayesian inference is not merely a modeling technique. It is a disciplined way to reason under uncertainty. It gives a mathematical language for combining prior knowledge, observed data, model assumptions, and future predictions into a coherent inferential system.</p>
 <p>Next chapter: <a href="../../teaching/cds-303/chapter-10.html">Data Modeling - PCA</a></p>
 
 
 </section>
+</section>
 
 </main> <!-- /main -->
+<script type="ojs-module-contents">
+eyJjb250ZW50cyI6W3sibWV0aG9kTmFtZSI6ImludGVycHJldCIsImNlbGxOYW1lIjoib2pzLWNlbGwtMSIsImlubGluZSI6ZmFsc2UsInNvdXJjZSI6InZpZXdvZiBwYXJhbWV0ZXJzID0gSW5wdXRzLmZvcm0oe1xuICBhbHBoYTogSW5wdXRzLnJhbmdlKFxuICAgIFswLjIsIDEwXSxcbiAgICB7IHZhbHVlOiAyLCBzdGVwOiAwLjEsIGxhYmVsOiBcImFscGhhICjOsSlcIiB9XG4gICksXG4gIGJldGE6IElucHV0cy5yYW5nZShcbiAgICBbMC4yLCAxMF0sXG4gICAgeyB2YWx1ZTogNSwgc3RlcDogMC4xLCBsYWJlbDogXCJiZXRhICjOsilcIiB9XG4gIClcbn0pXG5cbntcbiAgY29uc3QgeyBhbHBoYSwgYmV0YSB9ID0gcGFyYW1ldGVycztcbiAgY29uc3QgY29lZmZpY2llbnRzID0gW1xuICAgIDY3Ni41MjAzNjgxMjE4ODUxLFxuICAgIC0xMjU5LjEzOTIxNjcyMjQwMjgsXG4gICAgNzcxLjMyMzQyODc3NzY1MzEzLFxuICAgIC0xNzYuNjE1MDI5MTYyMTQwNTksXG4gICAgMTIuNTA3MzQzMjc4Njg2OTA1LFxuICAgIC0wLjEzODU3MTA5NTI2NTcyMDEyLFxuICAgIDkuOTg0MzY5NTc4MDE5NTcxNmUtNixcbiAgICAxLjUwNTYzMjczNTE0OTMxMTZlLTdcbiAgXTtcblxuICBjb25zdCBsb2dHYW1tYSA9ICh2YWx1ZSkgPT4ge1xuICAgIGlmICh2YWx1ZSA8IDAuNSkge1xuICAgICAgcmV0dXJuIE1hdGgubG9nKE1hdGguUEkpXG4gICAgICAgIC0gTWF0aC5sb2coTWF0aC5zaW4oTWF0aC5QSSAqIHZhbHVlKSlcbiAgICAgICAgLSBsb2dHYW1tYSgxIC0gdmFsdWUpO1xuICAgIH1cblxuICAgIGNvbnN0IHNoaWZ0ZWQgPSB2YWx1ZSAtIDE7XG4gICAgbGV0IHNlcmllcyA9IDAuOTk5OTk5OTk5OTk5ODA5OTM7XG5cbiAgICBmb3IgKGxldCBpID0gMDsgaSA8IGNvZWZmaWNpZW50cy5sZW5ndGg7IGkrKykge1xuICAgICAgc2VyaWVzICs9IGNvZWZmaWNpZW50c1tpXSAvIChzaGlmdGVkICsgaSArIDEpO1xuICAgIH1cblxuICAgIGNvbnN0IHQgPSBzaGlmdGVkICsgY29lZmZpY2llbnRzLmxlbmd0aCAtIDAuNTtcblxuICAgIHJldHVybiAwLjUgKiBNYXRoLmxvZygyICogTWF0aC5QSSlcbiAgICAgICsgKHNoaWZ0ZWQgKyAwLjUpICogTWF0aC5sb2codClcbiAgICAgIC0gdFxuICAgICAgKyBNYXRoLmxvZyhzZXJpZXMpO1xuICB9O1xuXG4gIGNvbnN0IGxvZ0JldGEgPSBsb2dHYW1tYShhbHBoYSkgKyBsb2dHYW1tYShiZXRhKVxuICAgIC0gbG9nR2FtbWEoYWxwaGEgKyBiZXRhKTtcblxuICBjb25zdCBiZXRhUERGID0gKHgpID0+IE1hdGguZXhwKFxuICAgIChhbHBoYSAtIDEpICogTWF0aC5sb2coeClcbiAgICAgICsgKGJldGEgLSAxKSAqIE1hdGgubG9nMXAoLXgpXG4gICAgICAtIGxvZ0JldGFcbiAgKTtcblxuICAvLyBBIGNvc2luZSBncmlkIGNsdXN0ZXJzIHBvaW50cyBuZWFyIDAgYW5kIDEsIHdoZXJlIEJldGEgZGVuc2l0aWVzIHdpdGhcbiAgLy8gYWxwaGEgPCAxIG9yIGJldGEgPCAxIGhhdmUgaW50ZWdyYWJsZSBzaW5ndWxhcml0aWVzLlxuICBjb25zdCBwb2ludENvdW50ID0gNjAwO1xuICBjb25zdCBiZXRhQ3VydmUgPSBBcnJheS5mcm9tKHsgbGVuZ3RoOiBwb2ludENvdW50IH0sIChfLCBpKSA9PiB7XG4gICAgY29uc3QgYW5nbGUgPSBNYXRoLlBJICogKGkgKyAwLjUpIC8gcG9pbnRDb3VudDtcbiAgICBjb25zdCB4ID0gKDEgLSBNYXRoLmNvcyhhbmdsZSkpIC8gMjtcbiAgICByZXR1cm4geyB4LCBkZW5zaXR5OiBiZXRhUERGKHgpIH07XG4gIH0pO1xuXG4gIGNvbnN0IHBsb3QgPSBQbG90LnBsb3Qoe1xuICAgIHRpdGxlOiBgQmV0YSBEaXN0cmlidXRpb246IM6xID0gJHthbHBoYS50b0ZpeGVkKDEpfSwgzrIgPSAke2JldGEudG9GaXhlZCgxKX1gLFxuICAgIHdpZHRoOiA3MDAsXG4gICAgaGVpZ2h0OiA0MDAsXG4gICAgeDogeyBsYWJlbDogXCJ4XCIsIGRvbWFpbjogWzAsIDFdIH0sXG4gICAgeToge1xuICAgICAgbGFiZWw6IFwiUHJvYmFiaWxpdHkgZGVuc2l0eSBmKHgpIOKAlCB0b3RhbCBhcmVhID0gMVwiLFxuICAgICAgZ3JpZDogdHJ1ZSxcbiAgICAgIG5pY2U6IHRydWVcbiAgICB9LFxuICAgIG1hcmtzOiBbXG4gICAgICBQbG90LmFyZWFZKGJldGFDdXJ2ZSwge1xuICAgICAgICB4OiBcInhcIixcbiAgICAgICAgeTogXCJkZW5zaXR5XCIsXG4gICAgICAgIGZpbGw6IFwic3RlZWxibHVlXCIsXG4gICAgICAgIGZpbGxPcGFjaXR5OiAwLjJcbiAgICAgIH0pLFxuICAgICAgUGxvdC5saW5lKGJldGFDdXJ2ZSwge1xuICAgICAgICB4OiBcInhcIixcbiAgICAgICAgeTogXCJkZW5zaXR5XCIsXG4gICAgICAgIHN0cm9rZTogXCJzdGVlbGJsdWVcIixcbiAgICAgICAgc3Ryb2tlV2lkdGg6IDNcbiAgICAgIH0pLFxuICAgICAgUGxvdC5ydWxlWShbMF0pXG4gICAgXVxuICB9KTtcblxuICBjb25zdCBib3VuZGFyeU5vdGUgPSBhbHBoYSA8IDEgfHwgYmV0YSA8IDFcbiAgICA/IFwiRm9yIHNoYXBlIHBhcmFtZXRlcnMgYmVsb3cgMSwgdGhlIHRydWUgZGVuc2l0eSBpcyB1bmJvdW5kZWQgYXQgb25lIG9yIGJvdGggZW5kcG9pbnRzOyB0aGUgc3Bpa2UgaXMgZXhwZWN0ZWQuXCJcbiAgICA6IFwiVGhlIHNoYWRlZCBhcmVhIHVuZGVyIHRoZSBwcm9iYWJpbGl0eS1kZW5zaXR5IGN1cnZlIGlzIDEuXCI7XG5cbiAgcmV0dXJuIGh0bWxgPGZpZ3VyZSBzdHlsZT1cIm1hcmdpbjogMDtcIj5cbiAgICAke3Bsb3R9XG4gICAgPGZpZ2NhcHRpb24gc3R5bGU9XCJtYXJnaW4tdG9wOiAwLjVyZW07IGNvbG9yOiAjNTU1O1wiPlxuICAgICAgPHN0cm9uZz5Ob3JtYWxpemVkIEJldGEgUERGLjwvc3Ryb25nPiBEZW5zaXR5IGhlaWdodCBtYXkgZXhjZWVkIDE7XG4gICAgICBwcm9iYWJpbGl0eSBpcyBtZWFzdXJlZCBieSBhcmVhLiAke2JvdW5kYXJ5Tm90ZX1cbiAgICA8L2ZpZ2NhcHRpb24+XG4gIDwvZmlndXJlPmA7XG59XG4ifSx7Im1ldGhvZE5hbWUiOiJpbnRlcnByZXRRdWlldCIsInNvdXJjZSI6InNoaW55SW5wdXQoJ3BhcmFtZXRlcnMnKSJ9XX0=
+</script>
+<script type="module">
+if (window.location.protocol === "file:") { alert("The OJS runtime does not work with file:// URLs. Please use a web server to view this document."); }
+window._ojs.paths.runtimeToDoc = "../../teaching/cds-303";
+window._ojs.paths.runtimeToRoot = "../..";
+window._ojs.paths.docToRoot = "../..";
+window._ojs.selfContained = false;
+window._ojs.runtime.interpretFromScriptTags();
+</script>
 <script id="quarto-html-after-body" type="application/javascript">
   window.document.addEventListener("DOMContentLoaded", function (event) {
     const icon = "";
