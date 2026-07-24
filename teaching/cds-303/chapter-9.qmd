@@ -5,11 +5,1462 @@ tags:
   - machine-learning
 sidebar: teaching
 ---
+Bayesian inference is a mathematical framework for learning under uncertainty. Unlike modeling approaches that treat unknown parameters as fixed quantities to be estimated once, Bayesian inference treats unknown quantities as uncertain and represents that uncertainty using probability distributions.
 
-## Overview
+In frequentist modeling, probability is usually interpreted through long-run frequencies of repeatable events. In Bayesian modeling, probability is broader: it measures uncertainty about unknown quantities. These unknown quantities may include model parameters, missing data, future observations, latent variables, model structures, or even competing scientific explanations.
 
-Add your Chapter 9 content here.
+Let $\theta$ denote an unknown parameter or collection of parameters, and let $D$ denote observed data. Bayesian inference begins with a *prior* distribution $p(\theta)$ which represents uncertainty before observing the data. The data are connected to the parameters through a _likelihood_ $p(D\,|\,\theta)$ , which describes how probable the observed data would be if the parameter value were $\theta$. After observing the data, uncertainty is updated into the posterior distribution $p(\theta \,|\, D)$. 
 
-Previous chapter: [Data modeling - ANN](chapter-8.qmd)
+Bayesian inference is therefore a process of __belief revision__. It formalizes how prior assumptions and observed evidence combine to produce updated uncertainty.
+
+## 1. Overview
+
+### 1.1. Bayes' Theorem
+
+::: {.callout-note title="Theorem: Bayes' Theorem"}
+
+_Let $A$ and $B$ be events with $P(B)>0$. Bayes' theorem states that:_
+
+$$
+P(A\,|\, B) = \frac{P(B\,|\, A)P(A)}{P(B)}
+$$
+:::
+
+For continuous parameters and observed data, the same idea is written as
+
+$$
+p(\theta\,|\, D)=\frac{p(D\,|\, \theta)p(\theta)}{p(D)}
+$$
+
+where
+
+| Term                | Name                           | Meaning                                    |
+| ------------------- | ------------------------------ | ------------------------------------------ |
+| $p(\theta)$         | Prior                          | Belief about $\theta$ before seeing data   |
+| $p(D\,\vert\, \theta)$ | Likelihood                     | Data model as a function of $\theta$       |
+| $p(\theta\,\vert\,D)$  | Posterior                      | Updated belief after seeing data           |
+| $p(D)$              | Evidence / marginal likelihood | Normalizing constant and model fit measure |
+
+The denominator is 
+
+$$
+p(D) = \int p(D\,|\, \theta)p(\theta)d\theta
+$$
+
+for continuous parameters, or 
+
+$$
+p(D) = \sum_\theta p(D\,|\,\theta)p(\theta)
+$$
+
+for discrete parameter spaces.
+
+Thus, 
+
+$$ 
+p(\theta \,|\, D) \propto p(D\,|\,\theta)p(\theta)
+$$
+
+This proportional form is often interpreted as $\text{posterior } \propto \text{ likelihood } \times \text{ prior}$.
+
+### 1.2. Sequential Updating
+
+A key property of Bayesian inference is that it can be performed sequentially. Suppose data arrive in two batches $D_1$ and $D_2$. After observing $D_1$, the posterior is 
+
+$$
+p(\theta\,|\, D_1) = \frac{p(D_1\,|\, \theta)p(\theta)}{p(D_1)}
+$$
+
+When $D_2$ arrives, the previous posterior becomes the new prior:
+
+$$
+p(\theta\,|\, D_1, D_2) \propto p(D_2\,|\,\theta,D_1) p(\theta\,|\,D_1)
+$$
+
+If $D_1$ and $D_2$ are conditionally independent given $\theta$, then $p(D_2\,|\,\theta, D_1)= p(D_2\,|\, \theta)$.
+
+Substituting the first posterior, we obtain 
+
+$$
+p(\theta\,|\, D_1, D_2) \propto p(D_2\,|\,\theta)p(D_1\,|\, \theta)p(\theta).
+$$
+
+In general, given $D_1, \dots, D_n$ i.i.d., we have 
+
+$$
+\boxed{
+p(\theta\,|\, D_1, \dots, D_n) \propto p(D_n\,|\,\theta)\dots p(D_1\,|\, \theta) p(\theta)
+}
+$$
+
+### 1.3. Likelihood Versus Posterior
+
+A common mistake is to treat the likelihood as a probability distribution over parameters. The likelihood $p(D\,|\,\theta)$ is a function of $\theta$, but it is not necessarily normalized as a distribution over $\theta$. The posterior $p(\theta\,|\,D)$ is the probability distribution over parameters after observing the data.
+
+The likelihood answers:
+
+> _How compatible is the observed data with each parameter value?_
+
+The posterior answers:
+
+> _After combining prior information and data evidence, how plausible is each parameter value?_
+
+Two Bayesian analysts may use the same likelihood but different priors, producing different posteriors. With enough informative data, the likelihood often dominates.
+
+## 2. Conjugate Bayesian Models
+
+### 2.1. Conjugacy
+
+::: {.callout-note title="Definition: Conjugate Prior"}
+
+_A prior distribution $p(\theta)$ is **conjugate** to a likelihood $p(D\,|\,\theta)$ if the posterior distribution $p(\theta\,|\, D)$ belongs to the same family as the prior._
+
+:::
+
+Conjugacy is useful because it gives closed-form posterior updates.
+
+For example:
+
+| Likelihood                      | Conjugate Prior | Posterior |
+| ------------------------------- | --------------- | --------- |
+| Bernoulli                       | Beta            | Beta      |
+| Binomial                        | Beta            | Beta      |
+| Poisson                         | Gamma           | Gamma     |
+| Normal mean with known variance | Normal          | Normal    |
+| Multinomial                     | Dirichlet       | Dirichlet |
+
+::: {.callout-warning}
+
+_Conjugate models are not always realistic._
+
+:::
+
+### 2.2. Beta-Bernoulli Model
+
+Suppose we observe binary outcomes $y_i \in \{0,1\}$. Let $\theta = P(Y=1)$. The Bernoulli likelihood for one observation is 
+
+$$
+p(y_i\,|\, \theta) =\theta^{y_i}(1-\theta)^{1-y_i}.
+$$
+
+For $n$ independent observations, let $s= \sum_{i=1}^n y_i$ be the number of successes, and $f=n-s$ be the number of failures. The likelihood is 
+
+$$
+p(D\,|\, \theta) = \theta ^s(1-\theta)^f
+$$
+
+Assume a Beta prior $\theta\sim \text{Beta}(\alpha, \beta)$. 
+
+::: {.callout-note title="Definition: Beta distribution"}
+
+_The **Beta distribution** is a family of continuous probability distributions defined on the interval $[0,1]$ in terms of two positive parameters, denoted by $\alpha$ and $\beta$. The **probability density function (PDF)** of the beta distribution for $0\leq \theta\leq 1$ and shape parameters $\alpha, \beta >0$ is a power function of the variable $\theta$ and of its reflection $(1-\theta)$ as follows:_
+
+$$
+\begin{aligned}
+f(\theta;\alpha, \beta) &= \text{constant}\times \theta^{\alpha-1}(1-\theta)^{\beta-1}=\frac{\theta^{\alpha-1}(1-\theta)^{\beta-1}}{\int_0^1 u^{\alpha-1}(1-u)^{\beta-1}du}\\
+&=\frac{\Gamma(\alpha+\beta)}{\Gamma(\alpha)\Gamma(\beta)}\theta^{\alpha-1}(1-\theta)^{\beta-1}
+\end{aligned}
+$$
+
+_where $\Gamma(z)$ is the [Gamma function](https://en.wikipedia.org/wiki/Gamma_function)._
+:::
+
+```{ojs}
+viewof parameters = Inputs.form({
+  alpha: Inputs.range(
+    [0.2, 10],
+    { value: 2, step: 0.1, label: "alpha (α)" }
+  ),
+  beta: Inputs.range(
+    [0.2, 10],
+    { value: 5, step: 0.1, label: "beta (β)" }
+  )
+})
+
+{
+  const { alpha, beta } = parameters;
+  const coefficients = [
+    676.5203681218851,
+    -1259.1392167224028,
+    771.32342877765313,
+    -176.61502916214059,
+    12.507343278686905,
+    -0.13857109526572012,
+    9.9843695780195716e-6,
+    1.5056327351493116e-7
+  ];
+
+  const logGamma = (value) => {
+    if (value < 0.5) {
+      return Math.log(Math.PI)
+        - Math.log(Math.sin(Math.PI * value))
+        - logGamma(1 - value);
+    }
+
+    const shifted = value - 1;
+    let series = 0.99999999999980993;
+
+    for (let i = 0; i < coefficients.length; i++) {
+      series += coefficients[i] / (shifted + i + 1);
+    }
+
+    const t = shifted + coefficients.length - 0.5;
+
+    return 0.5 * Math.log(2 * Math.PI)
+      + (shifted + 0.5) * Math.log(t)
+      - t
+      + Math.log(series);
+  };
+
+  const logBeta = logGamma(alpha) + logGamma(beta)
+    - logGamma(alpha + beta);
+
+  const betaPDF = (x) => Math.exp(
+    (alpha - 1) * Math.log(x)
+      + (beta - 1) * Math.log1p(-x)
+      - logBeta
+  );
+
+  // A cosine grid clusters points near 0 and 1, where Beta densities with
+  // alpha < 1 or beta < 1 have integrable singularities.
+  const pointCount = 600;
+  const betaCurve = Array.from({ length: pointCount }, (_, i) => {
+    const angle = Math.PI * (i + 0.5) / pointCount;
+    const x = (1 - Math.cos(angle)) / 2;
+    return { x, density: betaPDF(x) };
+  });
+
+  const plot = Plot.plot({
+    title: `Beta Distribution: α = ${alpha.toFixed(1)}, β = ${beta.toFixed(1)}`,
+    width: 700,
+    height: 400,
+    x: { label: "x", domain: [0, 1] },
+    y: {
+      label: "Probability density f(x) — total area = 1",
+      grid: true,
+      nice: true
+    },
+    marks: [
+      Plot.areaY(betaCurve, {
+        x: "x",
+        y: "density",
+        fill: "steelblue",
+        fillOpacity: 0.2
+      }),
+      Plot.line(betaCurve, {
+        x: "x",
+        y: "density",
+        stroke: "steelblue",
+        strokeWidth: 3
+      }),
+      Plot.ruleY([0])
+    ]
+  });
+
+  const boundaryNote = alpha < 1 || beta < 1
+    ? "For shape parameters below 1, the true density is unbounded at one or both endpoints; the spike is expected."
+    : "The shaded area under the probability-density curve is 1.";
+
+  return html`<figure style="margin: 0;">
+    ${plot}
+    <figcaption style="margin-top: 0.5rem; color: #555;">
+      <strong>Normalized Beta PDF.</strong> Density height may exceed 1;
+      probability is measured by area. ${boundaryNote}
+    </figcaption>
+  </figure>`;
+}
+```
+
+The posterior is proportional to likelihood times prior:
+
+$$
+p(\theta\,|\, D) \propto \theta^{s}(1-\theta)^f \theta^{\alpha-1}(1-\theta)^{\beta-1} \propto \theta^{\alpha+s-1}(1-\theta)^{\beta+f-1}
+$$
+
+Therefore,
+
+$$
+\theta\,|\,D\sim \text{Beta}(\alpha+s,\beta+f)
+$$
+
+::: {.callout-note title="Theorem: Beta-Bernoulli Posterior"}
+
+_If $Y_i\,|\,\theta \sim \text{Bernoulli}(\theta)$ independently and $\theta\sim \text{Beta}(\alpha,\beta)$, then_
+
+$$
+\theta \, | \, D \sim \text{Beta}\left(\alpha+\sum_{i=1}^n y_i, \beta+n-\sum_{i=1}^n y_i\right).
+$$
+
+:::
+
+The prior parameters $\alpha$ and $\beta$ act like pseudo-counts $\alpha-1$ prior successes and $\beta-1$ prior failures, depending on interpretation. After observing data, Bayesian updating adds observed successes and failures to prior information.
+
+```{python}
+import numpy as np
+import matplotlib.pyplot as plt
+from scipy.stats import beta
+
+theta = np.linspace(0.001, 0.999, 1000)
+
+# Prior belief
+alpha_prior, beta_prior = 2, 2
+
+# Sequential observations: 1 = success, 0 = failure
+data_stream = [1, 1, 0, 1, 1, 1, 0, 1, 0, 1]
+
+checkpoints = [0, 1, 3, 5, 10]
+
+plt.figure(figsize=(8, 5))
+
+for n_obs in checkpoints:
+    observed = data_stream[:n_obs]
+    successes = sum(observed)
+    failures = len(observed) - successes
+
+    alpha_post = alpha_prior + successes
+    beta_post = beta_prior + failures
+
+    density = beta.pdf(theta, alpha_post, beta_post)
+    label = f"n={n_obs}, Beta({alpha_post},{beta_post})"
+    plt.plot(theta, density, label=label)
+
+plt.title("Sequential Bayesian Updating in a Beta-Bernoulli Model")
+plt.xlabel(r"$\theta = P(Y=1)$")
+plt.ylabel("Density")
+plt.legend()
+plt.tight_layout()
+plt.show()
+```
+
+### 2.3. Diagnostic Rate from the Breast Cancer Dataset
+
+The Wisconsin breast cancer dataset contains real diagnostic labels: malignant and benign. We can use a Beta-Bernoulli model to estimate the uncertainty about the proportion of malignant cases in the sample. 
+
+```{python}
+import numpy as np
+import matplotlib.pyplot as plt
+from scipy.stats import beta
+from sklearn.datasets import load_breast_cancer
+
+data = load_breast_cancer()
+y = data.target
+
+# In sklearn breast cancer dataset:
+# target_names are ['malignant', 'benign']
+# y=0 malignant, y=1 benign
+malignant = (y == 0).astype(int)
+
+s = malignant.sum()
+n = len(malignant)
+f = n - s
+
+alpha_prior, beta_prior = 1, 1
+alpha_post = alpha_prior + s
+beta_post = beta_prior + f
+
+theta = np.linspace(0.001, 0.999, 1000)
+
+prior_density = beta.pdf(theta, alpha_prior, beta_prior)
+posterior_density = beta.pdf(theta, alpha_post, beta_post)
+
+plt.figure(figsize=(8, 5))
+plt.plot(theta, prior_density, label="Prior: Beta(1,1)")
+plt.plot(theta, posterior_density, label=f"Posterior: Beta({alpha_post},{beta_post})")
+plt.axvline(s / n, linestyle="--", label="Observed malignant fraction")
+plt.title("Bayesian Estimate of Malignant Case Proportion")
+plt.xlabel(r"$\theta = P(\mathrm{malignant})$")
+plt.ylabel("Density")
+plt.legend()
+plt.tight_layout()
+plt.show()
+
+credible_interval = beta.ppf([0.025, 0.975], alpha_post, beta_post)
+
+print("Number of cases:", n)
+print("Observed malignant cases:", s)
+print("Posterior mean:", alpha_post / (alpha_post + beta_post))
+print("95% credible interval:", credible_interval)
+```
+
+## 3. Posterior Prediction
+
+### 3.1. Posterior Predictive Distribution
+
+Let $z_{new}$ be a future observation. Bayesian prediction averages over posterior uncertainty:
+
+$$
+p(z_{\text{new}}\,|\, D) = \int p(z_{\text{new}} \, |\, \theta)p(\theta\,|\, D)d\theta.
+$$
+
+This is called the **posterior predictive distribution**.
+
+The key idea is that predictions should not pretend the parameter is known exactly; instead, prediction should account for all plausible parameter values, weighted by their posterior probability.
+
+### 3.2. Posterior Predictive Distribution in the Beta-Bernoulli Model
+
+In the Beta-Bernoulli model, $Y_\text{new} \,|\, \theta \sim \text{Bernoulli}(\theta)$ and $\theta\,|\, D\sim \text{Beta}(\alpha+s,\beta+f).$ The posterior predictive probability of success is 
+
+$$
+P(Y_\text{new}=1\,|\, D)=\int_0^1 P(Y_\text{new}=1\,|\,\theta)p(\theta\,|\, D)d\theta.
+$$
+Since $P(Y_\text{new}=1\,|\, \theta)=\theta$, we get 
+
+$$
+P(Y_\text{new}=1\,|\, D) =\int_0^1\theta p(\theta\,|\, D)d\theta = \mathbb E[\theta\,|\, D].
+$$
+
+For a Beta distribution,
+
+$$
+\mathbb E[\theta \,|\, D]=\frac{\alpha+s}{\alpha +\beta+n}
+$$
+
+Therefore,
+
+$$
+P(Y_\text{new}=1 \,|\, D) = \frac{\alpha+s}{\alpha +\beta +n}
+$$
+
+### 3.3. Credible Intervals
+
+A Bayesian credible interval gives an interval that contains the unknown parameter with a specified posterior probability. A 95% credible interval $[a,b]$ satisfies 
+
+$$
+P(a\leq \theta\leq b \,|\, D) = 0.95
+$$
+
+This differs from a frequentist confidence interval, which has a repeated-sampling interpretation. In Bayesian inference, after observing the data and assuming the model, the probability statement is directly about the parameter.
+
+## 4. Bayesian Linear Regression
+
+### 4.1. Linear Regression Revisited
+
+In the [regression chapter](chapter-4.qmd), a linear model was written as 
+
+$$
+y=\Phi w + \epsilon,
+$$
+
+where 
+
+- $\Phi\in \mathbb R^{n\times M}$ is the design matrix,
+- $w\in \mathbb R^M$ is the coefficient vector,
+- $\epsilon$ is noise.
+
+In ordinary least squares, $w$ is estimated as a fixed unknown quantity. In Bayesian linear regression, $w$ is treated as a random vector.
+
+Assume $t= \Phi w+\epsilon$, where $\epsilon\sim \mathcal N(0, \beta^{-1}I)$. Here $\beta$ is the noise precision, meaning $\beta= \frac{1}{\sigma^2}$. The likelihood is 
+
+$$
+p(t\,|\, w, \beta) = \mathcal N(t\,|\, \Phi w, \beta^{-1}I)
+$$
+
+Assume a Gaussian prior on weights:
+
+$$
+p(w) = \mathcal N(w\,|\, m_0, S_0)
+$$
+
+Because the likelihood is Gaussian and the prior is Gaussian, the posterior is also Gaussian:
+
+$$
+p(w\,|\, t) = \mathcal N(w\,|\, m_N, S_N)
+$$
+
+The posterior covariance and mean are 
+
+$$
+S_N^{-1}=\underbrace{S_0^{-1}}_{\text{prior precision}} + \underbrace{\beta\Phi^\top \Phi}_{\text{data precision}}
+$$
+
+and
+
+$$
+m_N = S_N(S_0^{-1}m_0 + \beta\Phi^\top t)
+$$
+
+### 4.2. Bayesian Linear Regression Posterior
+
+Start with 
+
+$$
+p(w\,|\, t) \propto p(t\,|\, w)p(w)
+$$
+
+The likelihood is 
+
+$$
+p(t\,|\, w) \propto \exp\left[-\frac{\beta}{2}(t-\Phi w)^\top(t-\Phi w)\right]
+$$
+
+The prior is 
+
+$$
+p(w) \propto \exp\left[-\frac{1}{2}(w-m_0)^\top S_0^{-1}(w-m_0)\right]
+$$
+
+Therefore, 
+
+$$
+p(w\,|\,t) \propto \exp\left[-\frac{\beta}{2}(t-\Phi w)^\top(t-\Phi w)-\frac{1}{2}(w-m_0)^\top S_0^{-1}(w-m_0)\right]
+$$
+
+Expand the terms involving $w$. First, 
+
+$$
+(t-\Phi w)^\top (t-\Phi w) = t^\top t- 2w^\top \Phi^\top t + w^\top \Phi ^\top \Phi w.
+$$
+
+Second, 
+
+$$
+(w-m_0)^\top S_0^{-1}(w-m_0)= w^\top S_0^{-1}w-2w^\top S_0^{-1}m_0+ m_0^\top S_0^{-1}m_0
+$$
+
+Keeping only terms involving $w$, the negative exponent becomes 
+
+$$
+-\frac{1}{2}\left[w^\top (S_0^{-1}+\beta\Phi^\top \Phi)w-2w^\top (S_0^{-1}m_0+\beta\Phi^\top t)\right]+\text{constant}
+$$
+
+This is the kernel of a multivariate Gaussian. Therefore, 
+
+$$
+S_{N}^{-1}=S_0^{-1}+\beta\Phi^\top \Phi,\qquad S_N^{-1}m_N=S_0^{-1}m_0+\beta\Phi^\top t.
+$$
+
+Multiplying both sides by $S_N$, 
+
+$$
+m_N=S_N(S_0^{-1}m_0+\beta\Phi^\top t).
+$$
+
+Thus, 
+
+$$
+p(w\,|\, t)=\mathcal N(w\,|\, m_N, S_N).
+$$
+
+### 4.3. Bayesian Predictive Distribution for Linear Regression
+
+For a new input $x^*$, define the feature vector 
+
+$$
+\phi^*=\phi(x^*).
+$$
+
+The predictive distribution is 
+
+$$
+p(t^*\,|\, x^*, D) = \int p(t^*\,|\, x^*, w)p(w\,|\, D)dw.
+$$
+
+Because 
+
+$$
+\begin{aligned}
+p(t^*\,|\, x^*, w) &= \mathcal N(t^*\,|\, w^\top \phi^*, \beta^{-1}),\\
+p(w\,|\,D)&= \mathcal N(w\,|\, m_N, S_N),
+\end{aligned}
+$$
+
+the predictive distribution is Gaussian:
+
+$$
+p(t^*\,|\, x^*, D)= \mathcal N (t^*\,|\, m_N^\top \phi^*, \beta^{-1}+\phi^{*\top}S_N\phi^*).
+$$
+
+The predictive **mean** is 
+
+$$
+\mathbb E[t^*\,|\, x^*, D] = m_N^{\top}\phi^*.
+$$
+
+The predictive **variance** is 
+
+$$
+Var(t^*\,|\, x^*, D) = \underbrace{\beta^{-1}}_{\text{observation noise}}+\underbrace{\phi^{*\top}S_N\phi^*}_{\text{parameter uncertainty}}
+$$
+
+### 4.4. Bayesian Linear Regression on Diabetes Data
+
+The diabetes dataset contains real medical measurements and a quantitative disease progression target. We can fit a Bayesian linear regression model to estimate uncertainty in the relationship between body mass index and disease progression.
+
+```{python}
+import numpy as np
+import matplotlib.pyplot as plt
+from sklearn.datasets import load_diabetes
+
+data = load_diabetes()
+
+# Use BMI feature only for visualization
+feature_index = list(data.feature_names).index("bmi")
+x = data.data[:, feature_index]
+t = data.target
+
+# Design matrix: intercept + BMI
+Phi = np.column_stack([np.ones_like(x), x])
+
+# Prior
+m0 = np.zeros(2)
+S0 = np.eye(2) * 10.0
+
+# Noise precision beta
+sigma_noise = 55.0
+beta = 1 / sigma_noise**2
+
+# Posterior
+SN_inv = np.linalg.inv(S0) + beta * Phi.T @ Phi
+SN = np.linalg.inv(SN_inv)
+mN = SN @ (np.linalg.inv(S0) @ m0 + beta * Phi.T @ t)
+
+# Prediction grid
+x_grid = np.linspace(x.min(), x.max(), 200)
+Phi_grid = np.column_stack([np.ones_like(x_grid), x_grid])
+
+pred_mean = Phi_grid @ mN
+pred_var = 1 / beta + np.sum(Phi_grid @ SN * Phi_grid, axis=1)
+pred_std = np.sqrt(pred_var)
+
+plt.figure(figsize=(8, 5))
+plt.scatter(x, t, alpha=0.5, label="Observed diabetes data")
+plt.plot(x_grid, pred_mean, label="Posterior predictive mean")
+plt.fill_between(
+    x_grid,
+    pred_mean - 2 * pred_std,
+    pred_mean + 2 * pred_std,
+    alpha=0.2,
+    label="Approx. 95% predictive interval"
+)
+plt.title("Bayesian Linear Regression on Diabetes Data")
+plt.xlabel("Standardized BMI")
+plt.ylabel("Disease progression")
+plt.legend()
+plt.tight_layout()
+plt.show()
+
+print("Posterior mean of weights:", mN)
+print("Posterior covariance:", SN)
+```
+
+```{python}
+import numpy as np
+import matplotlib.pyplot as plt
+from scipy.stats import multivariate_normal
+
+# Grid over intercept and slope
+w0 = np.linspace(mN[0] - 4*np.sqrt(SN[0, 0]), mN[0] + 4*np.sqrt(SN[0, 0]), 200)
+w1 = np.linspace(mN[1] - 4*np.sqrt(SN[1, 1]), mN[1] + 4*np.sqrt(SN[1, 1]), 200)
+
+W0, W1 = np.meshgrid(w0, w1)
+grid = np.column_stack([W0.ravel(), W1.ravel()])
+
+density = multivariate_normal(mean=mN, cov=SN).pdf(grid).reshape(W0.shape)
+
+plt.figure(figsize=(7, 6))
+plt.contour(W0, W1, density, levels=20)
+plt.scatter([mN[0]], [mN[1]], label="Posterior mean")
+plt.title("Posterior Distribution Over Regression Coefficients")
+plt.xlabel("Intercept")
+plt.ylabel("BMI coefficient")
+plt.legend()
+plt.tight_layout()
+plt.show()
+```
+
+## 5. Gaussian Processes
+
+Bayesian linear regression places a distribution over weights $w$. A Gaussian Process, or GP, places a distribution directly over functions.
+
+![Gaussian Process](https://scikit-learn.org/0.17/_images/plot_gp_regression_001.png)
+
+A GP is useful when we want flexible nonlinear regression with uncertainty quantification.
+
+::: {.callout-note title="Definition: Gaussian Process"}
+
+_A Gaussian Process is a collection of random variables $\{f(x):x\in \mathcal X\}$ such that every finite subset $(f(x_1),\dots,f(x_n))$ has a multivariate normal distribution._
+
+_A GP is written as_
+
+$$
+f(x) \sim \mathcal{GP} (m(x), k(x, x')),
+$$
+_where $m(x) = \mathbb E[f(x)]$ is the mean function, and $k(x, x')=Cov(f(x),f(x'))$ is the covariance or kernel function._ 
+
+:::
+
+### 5.1. Gaussian Process Prior
+
+For inputs $X=(x_1, \dots, x_n),$ define $f_X=(f(x_1), \dots, f(x_n))^\top$. Under a GP prior, 
+
+$$
+f_X \sim \mathcal N(m_X, K_{XX}),
+$$
+
+where $m_X=(m(x_1),\dots, m(x_n))^\top$, $(K_{XX})_{ij}=k(x_i, x_j).$ A common kernel is the squared exponential, or RBF kernel:
+
+$$
+k(x, x') =\sigma_f^2\exp\left(-\frac{\|x-x'\|^2}{2\ell^2}\right),
+$$
+
+where:
+- $\sigma^2_f$ controls vertical variation,
+- $\ell$ is the length-scale.
+
+A small $\ell$ allows rapidly varying functions. A large $\ell$ implies smoother functions.
+
+### 5.2. GP Regression with Gaussian Noise
+
+Assume observations $y_i=f(x_i)+\epsilon_i$ where $e_i\sim \mathcal N(0, \sigma_n^2)$. Then 
+
+$$
+y\sim \mathcal N(m_X, K_{XX}+\sigma^2_nI).
+$$
+
+For test inputs $X^*$, the joint distribution of training outputs $y$ and test function values $f^*$ is 
+
+$$
+\begin{bmatrix}y\\f^* \end{bmatrix}\sim \mathcal N\left(\begin{bmatrix}m_X\\m^*\end{bmatrix},\begin{bmatrix}K_{XX}+\sigma^2_nI& K_{X^*}\\K_{*X} & K_{**}\end{bmatrix}\right).
+$$
+
+Conditioning a joint Gaussian gives the GP posterior predictive distribution:
+
+$$
+f_* \,|\, X, y\sim \mathcal N(\mu_*, \Sigma_*),
+$$
+
+where 
+
+$$
+\begin{aligned}
+\mu_* &= m_* + K_{*X}(K_{XX}+\sigma_n^2I)^{-1}(y-m_X),\\
+\Sigma_* &= K_{**} -K_{*X}(K_{XX}+\sigma_n^2I)^{-1}K_{X^*}.
+\end{aligned}
+$$
+
+### 5.3. Interpretation of GP Prediction
+
+The GP posterior mean is a weighted combination of observed data:
+
+$$
+\mu_* = m_* + K_{*X}(K_{XX}+\sigma_n^2I)^{-1}(y-m_X).
+$$
+
+The weights depend on covariance. A test point is strongly influenced by training points that are similar under the kernel. 
+
+The posterior covariance is 
+
+$$
+\Sigma_*=K_{**}-K_{*X}(K_{XX}+\sigma^2_nI)^{-1}K_{X^*}.
+$$
+
+Uncertainty decreases near observed data and increases away from observed data.
+
+```{python}
+import numpy as np
+import matplotlib.pyplot as plt
+
+def rbf_kernel(x1, x2, length_scale=1.0, sigma_f=1.0):
+    x1 = x1.reshape(-1, 1)
+    x2 = x2.reshape(-1, 1)
+    sqdist = (x1 - x2.T) ** 2
+    return sigma_f**2 * np.exp(-0.5 * sqdist / length_scale**2)
+
+rng = np.random.default_rng(42)
+
+x_grid = np.linspace(-5, 5, 200)
+K = rbf_kernel(x_grid, x_grid, length_scale=1.0, sigma_f=1.0)
+K += 1e-6 * np.eye(len(x_grid))
+
+samples = rng.multivariate_normal(mean=np.zeros(len(x_grid)), cov=K, size=5)
+
+plt.figure(figsize=(8, 5))
+for s in samples:
+    plt.plot(x_grid, s)
+plt.title("Samples from a Gaussian Process Prior")
+plt.xlabel("x")
+plt.ylabel("f(x)")
+plt.tight_layout()
+plt.show()
+```
+
+### 5.4. Gaussian Process Posterior Regression
+
+```{python}
+import numpy as np
+import matplotlib.pyplot as plt
+
+rng = np.random.default_rng(1)
+
+# Training data
+X_train = np.array([-4, -3, -1, 0, 2, 3.5])
+y_train = np.sin(X_train) + rng.normal(0, 0.15, size=len(X_train))
+
+X_test = np.linspace(-5, 5, 300)
+
+sigma_n = 0.15
+length_scale = 1.0
+sigma_f = 1.0
+
+K = rbf_kernel(X_train, X_train, length_scale, sigma_f) + sigma_n**2 * np.eye(len(X_train))
+K_s = rbf_kernel(X_test, X_train, length_scale, sigma_f)
+K_ss = rbf_kernel(X_test, X_test, length_scale, sigma_f) + 1e-8 * np.eye(len(X_test))
+
+K_inv = np.linalg.inv(K)
+
+mu_s = K_s @ K_inv @ y_train
+cov_s = K_ss - K_s @ K_inv @ K_s.T
+std_s = np.sqrt(np.maximum(np.diag(cov_s), 0))
+
+plt.figure(figsize=(8, 5))
+plt.scatter(X_train, y_train, color="black", label="Observed data")
+plt.plot(X_test, mu_s, label="Posterior mean")
+plt.fill_between(
+    X_test,
+    mu_s - 2 * std_s,
+    mu_s + 2 * std_s,
+    alpha=0.2,
+    label="Approx. 95% credible band"
+)
+plt.plot(X_test, np.sin(X_test), linestyle="--", label="True function")
+plt.title("Gaussian Process Posterior")
+plt.xlabel("x")
+plt.ylabel("f(x)")
+plt.legend()
+plt.tight_layout()
+plt.show()
+```
+
+## 6. Bayesian Neural Networks
+
+### 6.1. Bayesian Neural Networks
+
+In previous [chapter](chapter-8.qmd), a deterministic neural network uses fixed weights $\hat y=f_\theta(x)$. A Bayesian Neural Network, or BNN, places a prior over the weights $p(\theta)$. After observing data, $D=\{(x_i, y_i)\}_{i=1}^n$, the posterior is 
+
+$$
+p(\theta\,|\, D)=\frac{p(D\,|\, \theta)p(\theta)}{p(D)}
+$$
+
+Predictions integrate over parameter uncertainty:
+
+$$
+p(y^*\,|\, x^*, D)=\int p(y^*\,|\, x^*, \theta)p(\theta\,|\, D)d\theta
+$$
+
+The difficulty is that neural networks are nonlinear in $\theta$. Therefore, the posterior is usually non-Gaussian and analytically intractable.
+
+BNNs are valuable when uncertainty matters. For example, in medical diagnosis or autonomous control, a model should not only predict a class but also indicate whether it is uncertain due to limited or unfamiliar data.
+
+### 6.2. Epistemic and Aleatoric Uncertainty
+
+Bayesian models often distinguish two kinds of uncertainty.
+
+::: {.callout-note title="Definition: Aleatoric Uncertainty"}
+
+_**Aleatoric uncertainty** is **irreducible** randomness in the data-generating process. It remains even with infinite data. Example:_
+
+$$
+Y=f(X)+ \epsilon,
+$$
+
+_where $\epsilon$ represents observation noise._
+
+:::
+
+::: {.callout-note title="Definition: Epistemic Uncertainty"}
+
+*__Epistemic uncertainty__ is uncertainty due to limited knowledge or limited data. It can decrease as more data are observed. In Bayesian modeling, posterior uncertainty about parameters is epistemic uncertainty.*
+
+:::
+
+For BNNs, prediction uncertainty includes both:
+
+$$
+Var(Y^*\,|\, x^*, D) = \underbrace{\mathbb E_{\theta\,|\, D}[Var(Y^*\,|\, x^*, \theta)]}_{\text{aleatoric uncertainty}}+\underbrace{Var_{\theta\,|\,D}(\mathbb E[Y^*\, |\, x^*, \theta])}_{\text{epistemic uncertainty}}
+$$
+
+## 7. Approximate Bayesian Inference
+
+Exact Bayesian inference requires computing
+
+$$
+p(\theta\,|\, D)= \frac{p(D\,|\, \theta)p(\theta)}{\int p(D\,|\, \theta)p(\theta)d\theta}
+$$
+
+The denominator is often intractable because the parameter space is high-dimensional or the likelihood is non-conjugate. Approximate inference methods replace exact integration with deterministic approximation, optimization, or sampling.
+
+### 7.1. Laplace Approximation
+
+The Laplace approximation approximates the posterior with a Gaussian centered at the maximum a posteriori estimate.
+
+::: {.callout-note title="Definition: MAP Estimate"}
+
+_The maximum a posteriori estimate is_
+
+$$
+\theta_{\text{MAP}}=\arg\max_\theta p(\theta\,|\, D).
+$$
+
+_Equivalently,_ 
+
+$$
+\theta_\text{MAP}= \arg\max [\log p(D\,|\,\theta)+\log p(\theta)]
+$$
+:::
+
+Let 
+
+$$
+\ell(\theta)= \log p(D, \theta)= \log p(D\,|\, \theta)+\log p(\theta)
+$$
+
+Perform a second-order Taylor expansion around $\theta_\text{MAP}$:
+
+$$
+\ell(\theta) \approx \ell(\theta_{\text{MAP}}) -\frac{1}{2}(\theta-\theta_{\text{MAP}})^\top H(\theta-\theta_{\text{MAP}})
+$$
+
+where $H=-\nabla^2\ell(\theta_{\text{MAP}})$ is the negative Hessian at the MAP point.
+
+Exponentiating gives 
+
+$$
+p(\theta\,|\, D)\approx \mathcal N(\theta_{\text{MAP}}, H^{-1}).
+$$
+
+Thus, Laplace approximation converts a posterior into a local Gaussian approximation.
+
+```{python}
+import numpy as np
+import matplotlib.pyplot as plt
+from scipy.stats import beta, norm
+from scipy.optimize import minimize_scalar
+
+# Posterior from a Beta-Bernoulli model
+alpha_post, beta_post = 12, 5
+
+theta = np.linspace(0.001, 0.999, 1000)
+posterior = beta.pdf(theta, alpha_post, beta_post)
+
+# Find MAP
+result = minimize_scalar(
+    lambda x: -beta.logpdf(x, alpha_post, beta_post),
+    bounds=(0.001, 0.999),
+    method="bounded"
+)
+
+theta_map = result.x
+
+# Approximate second derivative numerically
+h = 1e-4
+logp = lambda x: beta.logpdf(x, alpha_post, beta_post)
+second_deriv = (logp(theta_map + h) - 2*logp(theta_map) + logp(theta_map - h)) / h**2
+
+variance_laplace = -1 / second_deriv
+laplace = norm.pdf(theta, theta_map, np.sqrt(variance_laplace))
+
+plt.figure(figsize=(8, 5))
+plt.plot(theta, posterior, label="Exact Beta posterior")
+plt.plot(theta, laplace, linestyle="--", label="Laplace Gaussian approximation")
+plt.axvline(theta_map, linestyle=":", label="MAP")
+plt.title("Laplace Approximation to a Posterior")
+plt.xlabel(r"$\theta$")
+plt.ylabel("Density")
+plt.legend()
+plt.tight_layout()
+plt.show()
+```
+
+### 7.2. Variational Inference
+
+Variational inference, or VI, turns inference into optimization. 
+
+Let $p(z\,|\, x)$ be an intractable posterior. Choose a tractable family $\mathcal Q$ of approximate distributions $q(z) \in \mathcal Q$. The goal is to find
+
+$$
+q^* (z) =\arg\min_{q\in \mathcal Q} KL(q(z)\| p(z\,|\,x))
+$$
+
+The [Kullback-Leibler divergence](https://en.wikipedia.org/wiki/Kullback–Leibler_divergence) is 
+
+$$
+KL(q\|p) = \int q(z)\log \frac{q(z)}{p(z\,|\, x)}dz.
+$$
+
+Because $p(z\,|\, x)$ involves the unknown evidence $p(x)$, VI typically maximizes the Evidence Lower Bound, or ELBO.
+
+::: {.callout-caution title="ELBO Derivation"}
+
+Start from the marginal likelihood 
+
+$$
+\log p(x) = \log \int p(x, z)dz
+$$
+
+Introduce any distribution $q(z)$:
+
+$$
+\log p(x) =\log \int q(z) \frac{p(x, z)}{q(z)}dz
+$$
+
+Using [Jensen's inequality](https://en.wikipedia.org/wiki/Jensen%27s_inequality),
+
+$$
+\log p(x) \geq \int q(z) \log \frac{p(x, z)}{q(z)}dz
+$$
+
+Define the ELBO:
+
+$$
+\mathcal L(q) = \mathbb E_{q(z)}[\log p(x, z)] - \mathbb E_{q(z)}[\log q(z)] 
+$$
+
+Equivalently, 
+
+$$
+\mathcal L(q)=\mathbb E_{q(z)}[\log p(x, z)]+ H(q),
+$$
+
+where $H(q)$ is the entropy of $q$. 
+
+The relationship between evidence, ELBO, and KL divergence is 
+
+$$
+\log p(x) = \mathcal L (q) +KL(q(z)\| p(z\,|\, x)).
+$$
+
+Since $KL(q\|p)\geq 0$, we have $\mathcal L(q) \leq \log p(x)$. Thus, maximizing the ELBO is equivalent to minimizing the KL divergence from $q$ to the posterior.
+:::
+
+### 7.3.  Expectation Propagation
+
+Expectation Propagation, or EP, is a deterministic approximation method that approximates complicated posterior factors with simpler factors.
+
+Suppose the posterior factors as 
+
+$$
+p(\theta\,|\, D)\propto p(\theta)\prod_{i=1}^nf_i(\theta).
+$$
+
+EP approximates each factor $f_i$ by a simpler factor $\tilde f_i$, producing 
+
+$$
+q(\theta)\propto p(\theta)\prod_{i=1}^n \tilde f_i(\theta).
+$$
+
+Each factor is updated by temporarily removing it, incorporating the exact factor, and then projecting the result back into the chosen approximate family by moment matching.
+
+EP is especially useful when local factors are non-Gaussian but can be approximated well by distributions with matched moments.
+
+### 7.4. Markov Chain Monte Carlo
+
+Markov Chain Monte Carlo, or MCMC, approximates posterior expectations using samples.
+
+Suppose we want 
+
+$$
+\mathbb E_{p(\theta\,|\, D)}[h(\theta)].
+$$
+
+If we can generate samples 
+
+$$
+\theta^{(1)}, \dots, \theta^{(S)} \sim p(\theta\,|\,D),
+$$
+
+then 
+
+$$
+\mathbb E[h(\theta)\,|\, D]\approx \frac{1}{S}\sum_{s=1}^S h(\theta^{(s)}).
+$$
+
+MCMC constructs a Markov chain whose stationary distribution is the posterior.
+
+### 7.5. Metropolis-Hastings
+
+Given current state $\theta$, propose a new state $\theta'\sim q(\theta'\,|\,\theta)$. We then accept $\theta'$ with probability 
+
+$$
+\alpha(\theta, \theta')=\min\left[1, \frac{p(\theta'\,|\,D)q(\theta\,|\,\theta')}{p(\theta\,|\, D)q(\theta'\,|\, \theta)}\right].
+$$
+
+If the proposal distribution is symmetric (which means $q(\theta'\,|\,\theta)=q(\theta\,|\,\theta')$), then 
+
+$$
+\alpha (\theta,\theta')=\min\left[1, \frac{p(\theta'\,|\, D)}{p(\theta\,|\, D)}\right].
+$$
+
+Because the normalizing constant cancels, Metropolis-Hastings only requires the unnormalized posterior $p(D\,|\,\theta)p(\theta)$.
+
+```{python}
+import numpy as np
+import matplotlib.pyplot as plt
+from scipy.stats import beta
+
+rng = np.random.default_rng(42)
+
+alpha_post, beta_post = 12, 5
+
+def log_target(theta):
+    if theta <= 0 or theta >= 1:
+        return -np.inf
+    return beta.logpdf(theta, alpha_post, beta_post)
+
+n_samples = 8000
+samples = np.zeros(n_samples)
+samples[0] = 0.5
+proposal_sd = 0.08
+
+accepted = 0
+
+for s in range(1, n_samples):
+    current = samples[s - 1]
+    proposal = current + rng.normal(0, proposal_sd)
+
+    log_accept_ratio = log_target(proposal) - log_target(current)
+
+    if np.log(rng.uniform()) < log_accept_ratio:
+        samples[s] = proposal
+        accepted += 1
+    else:
+        samples[s] = current
+
+theta = np.linspace(0.001, 0.999, 1000)
+
+plt.figure(figsize=(8, 4))
+plt.plot(samples[:1000])
+plt.title("Metropolis-Hastings Trace Plot")
+plt.xlabel("Iteration")
+plt.ylabel(r"$\theta$")
+plt.tight_layout()
+plt.show()
+
+plt.figure(figsize=(8, 5))
+plt.hist(samples[1000:], bins=50, density=True, alpha=0.5, label="MCMC samples")
+plt.plot(theta, beta.pdf(theta, alpha_post, beta_post), label="True posterior")
+plt.title("MCMC Approximation to Posterior")
+plt.xlabel(r"$\theta$")
+plt.ylabel("Density")
+plt.legend()
+plt.tight_layout()
+plt.show()
+
+print("Acceptance rate:", accepted / (n_samples - 1))
+```
+
+### 7.6. Gibbs Sampling
+
+Gibbs sampling is an MCMC method used when conditional distributions are easier to sample than the joint posterior. Suppose $\theta=(\theta_1, \theta_2, \dots, \theta_d)$. Gibbs sampling iteratively samples:
+
+$$
+\begin{aligned}
+\theta_1^{(s+1)} &\sim p(\theta_1\mid\theta_2^{(s)},\ldots,\theta_d^{(s)},D),
+\\
+\theta_2^{(s+1)} &\sim p(\theta_2\mid \theta_1^{(s+1)},\theta_3^{(s)},\ldots,\theta_d^{(s)},D),
+\end{aligned}
+$$
+
+and so on.
+
+This is useful in hierarchical Bayesian models, mixture models, and latent variable models when full conditional distributions are unknown.
+
+### 7.7. Hamiltonian Monte Carlo
+
+Hamiltonian Monte Carlo, or HMC, improves MCMC by using gradient information to propose distant moves with high acceptance probability.
+
+Introduce momentum variables $r$ and define the Hamiltonian
+
+$$
+H(\theta,r) = U(\theta)+K(r),
+$$
+where $U(\theta) = -\log p(\theta\mid D)$ is potential energy, and $K(r) = \frac{1}{2}r^\top M^{-1}r$ is kinetic energy.
+
+HMC simulates Hamiltonian dynamics:
+$$
+\begin{aligned}
+\frac{d\theta}{dt} &= \frac{\partial H}{\partial r} = M^{-1}r,
+\\
+\frac{dr}{dt} &= -\frac{\partial H}{\partial \theta} = -\nabla_\theta U(\theta).
+\end{aligned}
+$$
+The purpose is to move through the posterior geometry efficiently rather than wandering randomly.
+
+## 8. Bayesian Model Comparison
+
+### 8.1. Marginal Likelihood
+
+The marginal likelihood, or evidence, is
+
+$$
+p(D\mid M) = \int p(D\mid \theta,M)p(\theta\mid M)d\theta.
+$$
+
+It averages the likelihood over the prior. This quantity rewards models that explain the data well but penalizes models that spread prior probability over many unsupported parameter values. This creates a built-in complexity penalty.
+
+### 8.2. Bayes Factors
+
+For two models M_1 and M_2, the Bayes factor is
+
+$$
+BF_{12} = \frac{p(D\mid M_1)} {p(D\mid M_2)}.
+$$
+
+The posterior odds satisfy
+
+$$
+\frac{p(M_1\mid D)} {p(M_2\mid D)} = BF_{12} \cdot \frac{p(M_1)} {p(M_2)}.
+$$
+
+Thus, the Bayes factor updates prior model odds into posterior model odds.
+
+### 8.3. Bayesian Model Averaging
+
+Instead of choosing one model, Bayesian Model Averaging combines predictions across models.
+
+Let $M_1,\ldots,M_K$ be candidate models. The predictive distribution is
+
+$$
+p(y_*\mid x_*,D) = \sum_{k=1}^{K} p(y_*\mid x_*,D,M_k) p(M_k\mid D).
+$$
+
+Model averaging accounts for uncertainty about which model is correct.
+
+### 8.4. Bayesian Information Criterion
+
+The Bayesian Information Criterion, or BIC, is
+
+$$
+BIC = -2\log \hat{L} + d\log n,
+$$
+where:
+
+- $\hat{L}$ is the maximized likelihood,
+- $d$ is the number of parameters,
+- $n$ is the sample size.
+
+A lower BIC is preferred.
+
+BIC can be understood as a large-sample approximation related to the marginal likelihood. It rewards goodness of fit through $-2\log \hat{L}$ and penalizes model complexity through $d\log n$.
+
+## 9. Bayesian Optimization
+
+Bayesian optimization is used to optimize expensive black-box functions. Suppose we want to solve
+
+$$
+x^* = \arg\max_{x\in\mathcal{X}} f(x),
+$$
+
+but evaluating $f(x)$ is expensive. Examples include tuning deep learning hyperparameters, optimizing chemical compounds, or controlling engineering systems.
+
+Bayesian optimization builds a probabilistic surrogate model, often a Gaussian process:
+
+$$
+f\sim\mathcal{GP}(m,k).
+$$
+
+After observing evaluations
+
+$$
+D_t=\{(x_i,f(x_i))\}_{i=1}^{t},
+$$
+
+the surrogate gives a posterior distribution over f. An acquisition function chooses the next point to evaluate:
+
+$$
+x_{t+1} = \arg\max_x a(x;D_t).
+$$
+
+Let $f_{\max}$ be the best observed value so far. If the surrogate predicts
+
+$$
+f(x)\sim \mathcal{N}(\mu(x),\sigma^2(x)),
+$$
+
+then improvement is
+
+$$
+I(x)=\max(0,f(x)-f_{\max}).
+$$
+Expected Improvement is
+
+$$
+EI(x) = \mathbb{E}[I(x)].
+$$
+
+For a Gaussian predictive distribution,
+
+$$
+EI(x) = (\mu(x)-f_{\max})\Phi(Z) + \sigma(x)\phi(Z),
+$$
+
+where $Z= \frac{\mu(x)-f_{\max}}{\sigma(x)},$ and $\Phi$, $\phi$ are the standard normal CDF and PDF.
+
+The first term rewards exploitation, where the predicted mean is high. The second term rewards exploration, where uncertainty is high.
+
+```{python}
+import numpy as np
+import matplotlib.pyplot as plt
+from scipy.stats import norm
+
+x = np.linspace(-3, 3, 400)
+
+# Toy surrogate posterior mean and uncertainty
+mu = np.sin(2 * x) + 0.2 * x
+sigma = 0.2 + 0.6 * np.exp(-0.5 * (x - 1.5)**2) + 0.3 * np.exp(-0.5 * (x + 2)**2)
+
+f_best = 0.8
+Z = (mu - f_best) / sigma
+EI = (mu - f_best) * norm.cdf(Z) + sigma * norm.pdf(Z)
+
+plt.figure(figsize=(8, 5))
+plt.plot(x, mu, label="Surrogate posterior mean")
+plt.fill_between(x, mu - 2*sigma, mu + 2*sigma, alpha=0.2, label="Uncertainty band")
+plt.axhline(f_best, linestyle="--", label="Best observed value")
+plt.title("Bayesian Optimization Surrogate")
+plt.xlabel("x")
+plt.ylabel("f(x)")
+plt.legend()
+plt.tight_layout()
+plt.show()
+
+plt.figure(figsize=(8, 4))
+plt.plot(x, EI, label="Expected Improvement")
+plt.title("Expected Improvement Acquisition Function")
+plt.xlabel("x")
+plt.ylabel("EI(x)")
+plt.legend()
+plt.tight_layout()
+plt.show()
+```
+
+## 10. Statistical Relational Learning
+
+Many real-world datasets are not flat tables. They contain objects and relations:
+
+- patients, doctors, visits, diagnoses,
+- students, courses, instructors,
+- papers, authors, institutions,
+- users, products, transactions,
+- proteins, genes, pathways.
+
+Statistical Relational Learning combines probabilistic modeling with relational structure. A probabilistic relational model may define distributions over attributes of objects while allowing dependencies through relations.
+
+For example:
+
+$$
+P(\text{Grade}_{s,c}\mid \text{Ability}_s,\text{Difficulty}_c,\text{Instructor}_c).
+$$
+
+Bayesian logic programs and probabilistic relational models extend Bayesian networks by allowing logical variables, relations, and repeated structures. The key idea is that uncertainty does not only live in scalar parameters. It also exists in relational systems where entities influence one another through structured dependencies.
+
+## 11. Practical Applications
+
+### 11.1. Medical Diagnostics
+
+Bayesian methods are natural for medicine because diagnosis is uncertain and evidence accumulates sequentially.
+
+Let $D$ represent disease status, and let $T$ represent a test result. Bayes’ theorem gives
+
+$$
+P(D\mid T) = \frac{P(T\mid D)P(D)} {P(T)}.
+$$
+
+The prior $P(D)$ may come from disease prevalence. The likelihood $P(T\mid D)$ comes from test sensitivity and specificity. The posterior $P(D\mid T)$ is the updated probability after the test. This framework makes clear why a highly accurate test can still produce many false positives when the disease is rare.
+
+```{python}
+import numpy as np
+import matplotlib.pyplot as plt
+
+prevalence = np.linspace(0.001, 0.5, 500)
+
+sensitivity = 0.95
+specificity = 0.90
+
+# P(Disease | Positive)
+ppv = (
+    sensitivity * prevalence
+    /
+    (sensitivity * prevalence + (1 - specificity) * (1 - prevalence))
+)
+
+plt.figure(figsize=(8, 5))
+plt.plot(prevalence, ppv)
+plt.title("Bayesian Diagnostic Updating: Effect of Prevalence")
+plt.xlabel("Disease prevalence P(D)")
+plt.ylabel("P(Disease | Positive Test)")
+plt.tight_layout()
+plt.show()
+```
+
+### 11.2. Bioinformatics and Genetics
+
+Bayesian inference is widely used in genetics and bioinformatics because biological data often contain:
+
+- high-dimensional measurements,
+- small sample sizes,
+- noisy observations,
+- hierarchical structure,
+- prior biological knowledge.
+
+Examples include:
+
+- gene expression modeling,
+- protein classification,
+- genomic selection,
+- phylogenetic inference,
+- DNA motif discovery.
+
+A Bayesian model can include prior knowledge about gene effects or pathway structure, and posterior distributions can express uncertainty in biological conclusions.
+
+### 11.3. Engineering Design and Control
+
+In engineering, Bayesian methods are useful when experiments are expensive.
+
+For example, suppose an engineer wants to tune control parameters $x$ to maximize system performance $f(x)$. Each experiment is costly. Bayesian optimization can use previous evaluations to decide the next experiment efficiently.
+
+This is especially valuable for:
+
+- particle accelerator tuning,
+- analog circuit design,
+- robotics control,
+- energy management,
+- materials discovery.
+
+### 11.4. Chemistry and Drug Discovery
+
+In virtual screening, the goal is to identify molecules likely to have desired properties, such as binding affinity or biological activity.
+
+Let $x$ represent molecular descriptors, and let $y$ represent measured activity.
+
+A Bayesian model estimates
+
+$$
+p(y\mid x,D)
+$$
+
+and can prioritize molecules with high predicted activity or high uncertainty.
+
+Bayesian optimization can balance:
+
+- exploitation: testing molecules likely to work,
+- exploration: testing uncertain molecules that may reveal new chemical structures.
+
+---
+
+Bayesian inference is a general framework for learning from data by updating uncertainty. It begins with a prior distribution, combines it with a likelihood, and produces a posterior distribution. This posterior becomes the central object of inference.
+
+Unlike methods that produce only point estimates or deterministic predictions, Bayesian modeling produces distributions over unknown quantities. A Bayesian model asks not only, “What is the best estimate?” but also, “How uncertain are we, and how should that uncertainty affect prediction and decision-making?”
+
+The posterior predictive distribution is one of the most important Bayesian outputs:
+
+$$
+p(z_{\text{new}}\mid D) = \int p(z_{\text{new}}\mid \theta)p(\theta\mid D)d\theta.
+$$
+
+It shows that prediction should average over uncertainty rather than ignore it.
+
+Bayesian linear regression illustrates how prior precision and data precision combine algebraically. Gaussian processes extend Bayesian reasoning from parameters to functions. Bayesian neural networks extend it to deep nonlinear models, though often requiring approximate inference. Laplace approximation, variational inference, expectation propagation, and MCMC provide different strategies for handling intractable posteriors. Bayesian model comparison, model averaging, and Bayesian optimization show that Bayesian inference is not limited to estimating parameters; it can guide model choice and sequential decision-making.
+
+The main lesson is that Bayesian inference is not merely a modeling technique. It is a disciplined way to reason under uncertainty. It gives a mathematical language for combining prior knowledge, observed data, model assumptions, and future predictions into a coherent inferential system.
 
 Next chapter: [Data Modeling - PCA](chapter-10.qmd)
