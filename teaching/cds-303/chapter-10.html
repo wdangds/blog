@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.9.38">
+<meta name="generator" content="quarto-1.10.18">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -12,16 +12,54 @@
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
 */
-code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
-div.columns{display: flex; gap: min(4vw, 1.5em);}
-div.column{flex: auto; overflow-x: auto;}
+div.columns{display: flex; gap: 1.5em;}
+div.column{flex: auto;}
+@media screen {
+div.columns{gap: min(4vw, 1.5em);}
+div.column{overflow-x: auto;}
+}
 div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
 ul.task-list{list-style: none;}
 ul.task-list li input[type="checkbox"] {
   width: 0.8em;
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
 </style>
 
@@ -39,10 +77,10 @@ ul.task-list li input[type="checkbox"] {
 <script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="../../site_libs/quarto-html/anchor.min.js"></script>
 <link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-15634bcf2e68342d4ad2dfa704d543f6.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../../site_libs/bootstrap/bootstrap-1b7da60b26a47d4c32e12cd6c71bb08b.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-fb5f3b3fb26a177c4af78adf70c87a98.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -72,6 +110,35 @@ ul.task-list li input[type="checkbox"] {
 }</script>
 <style>html{ scroll-behavior: smooth; }</style>
 
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-chtml.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
 
 <link rel="stylesheet" href="../../styles.css">
 </head>
@@ -244,7 +311,70 @@ ul.task-list li input[type="checkbox"] {
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#overview" id="toc-overview" class="nav-link active" data-scroll-target="#overview">Overview</a></li>
+  <li><a href="#data-representation-and-preprocessing-geometry" id="toc-data-representation-and-preprocessing-geometry" class="nav-link active" data-scroll-target="#data-representation-and-preprocessing-geometry">1. Data Representation and Preprocessing Geometry</a>
+  <ul class="collapse">
+  <li><a href="#covariance-pca-versus-correlation-pca" id="toc-covariance-pca-versus-correlation-pca" class="nav-link" data-scroll-target="#covariance-pca-versus-correlation-pca">1.1. Covariance PCA Versus Correlation PCA</a></li>
+  <li><a href="#messy-data-before-pca" id="toc-messy-data-before-pca" class="nav-link" data-scroll-target="#messy-data-before-pca">1.2. Messy Data Before PCA</a></li>
+  </ul></li>
+  <li><a href="#the-maximum-variance-formulation" id="toc-the-maximum-variance-formulation" class="nav-link" data-scroll-target="#the-maximum-variance-formulation">2. The Maximum-Variance Formulation</a>
+  <ul class="collapse">
+  <li><a href="#projection-onto-a-direction" id="toc-projection-onto-a-direction" class="nav-link" data-scroll-target="#projection-onto-a-direction">2.1. Projection onto a Direction</a></li>
+  <li><a href="#lagrange-multiplier-derivation" id="toc-lagrange-multiplier-derivation" class="nav-link" data-scroll-target="#lagrange-multiplier-derivation">2.2. Lagrange-Multiplier Derivation</a></li>
+  <li><a href="#subsequent-principal-components" id="toc-subsequent-principal-components" class="nav-link" data-scroll-target="#subsequent-principal-components">2.3. Subsequent Principal Components</a></li>
+  <li><a href="#principal-component-scores" id="toc-principal-component-scores" class="nav-link" data-scroll-target="#principal-component-scores">2.4. Principal Component Scores</a></li>
+  </ul></li>
+  <li><a href="#minimum-reconstruction-error" id="toc-minimum-reconstruction-error" class="nav-link" data-scroll-target="#minimum-reconstruction-error">3. Minimum Reconstruction Error</a>
+  <ul class="collapse">
+  <li><a href="#orthogonal-projection-onto-a-subspace" id="toc-orthogonal-projection-onto-a-subspace" class="nav-link" data-scroll-target="#orthogonal-projection-onto-a-subspace">3.1. Orthogonal Projection onto a Subspace</a></li>
+  <li><a href="#reconstruction-objective" id="toc-reconstruction-objective" class="nav-link" data-scroll-target="#reconstruction-objective">3.2. Reconstruction Objective</a></li>
+  <li><a href="#variance-and-reconstruction-equivalence" id="toc-variance-and-reconstruction-equivalence" class="nav-link" data-scroll-target="#variance-and-reconstruction-equivalence">3.3. Variance and Reconstruction Equivalence</a></li>
+  <li><a href="#reconstruction-error-theorem" id="toc-reconstruction-error-theorem" class="nav-link" data-scroll-target="#reconstruction-error-theorem">3.4. Reconstruction Error Theorem</a></li>
+  </ul></li>
+  <li><a href="#singular-value-decomposition" id="toc-singular-value-decomposition" class="nav-link" data-scroll-target="#singular-value-decomposition">4. Singular Value Decomposition</a>
+  <ul class="collapse">
+  <li><a href="#svd-of-the-centered-data-matrix" id="toc-svd-of-the-centered-data-matrix" class="nav-link" data-scroll-target="#svd-of-the-centered-data-matrix">4.1. SVD of the Centered Data Matrix</a></li>
+  <li><a href="#dual-pca-for-dgg-n" id="toc-dual-pca-for-dgg-n" class="nav-link" data-scroll-target="#dual-pca-for-dgg-n">4.2. Dual PCA for <span class="math inline">\(D\gg N\)</span></a></li>
+  </ul></li>
+  <li><a href="#explained-variance-and-selecting-dimension" id="toc-explained-variance-and-selecting-dimension" class="nav-link" data-scroll-target="#explained-variance-and-selecting-dimension">5. Explained Variance and Selecting Dimension</a>
+  <ul class="collapse">
+  <li><a href="#explained-variance-ratio" id="toc-explained-variance-ratio" class="nav-link" data-scroll-target="#explained-variance-ratio">5.1. Explained Variance Ratio</a></li>
+  <li><a href="#scree-plot" id="toc-scree-plot" class="nav-link" data-scroll-target="#scree-plot">5.2. Scree Plot</a></li>
+  </ul></li>
+  <li><a href="#loadings-scores-and-interpretation" id="toc-loadings-scores-and-interpretation" class="nav-link" data-scroll-target="#loadings-scores-and-interpretation">6. Loadings, Scores, and Interpretation</a>
+  <ul class="collapse">
+  <li><a href="#scores-and-loadings" id="toc-scores-and-loadings" class="nav-link" data-scroll-target="#scores-and-loadings">6.1. Scores and Loadings</a></li>
+  <li><a href="#loading-interpretation-requires-care" id="toc-loading-interpretation-requires-care" class="nav-link" data-scroll-target="#loading-interpretation-requires-care">6.2. Loading Interpretation Requires Care</a></li>
+  <li><a href="#biplots" id="toc-biplots" class="nav-link" data-scroll-target="#biplots">6.3. Biplots</a></li>
+  </ul></li>
+  <li><a href="#wine-chemistry" id="toc-wine-chemistry" class="nav-link" data-scroll-target="#wine-chemistry">7. Wine Chemistry</a></li>
+  <li><a href="#handwritten-digit-compression" id="toc-handwritten-digit-compression" class="nav-link" data-scroll-target="#handwritten-digit-compression">8. Handwritten Digit Compression</a>
+  <ul class="collapse">
+  <li><a href="#images-as-high-dimensional-vectors" id="toc-images-as-high-dimensional-vectors" class="nav-link" data-scroll-target="#images-as-high-dimensional-vectors">8.1. Images as High-Dimensional Vectors</a></li>
+  <li><a href="#digit-reconstruction-and-eigenimages" id="toc-digit-reconstruction-and-eigenimages" class="nav-link" data-scroll-target="#digit-reconstruction-and-eigenimages">8.2. Digit Reconstruction and Eigenimages</a></li>
+  </ul></li>
+  <li><a href="#eigenfaces" id="toc-eigenfaces" class="nav-link" data-scroll-target="#eigenfaces">9. Eigenfaces</a></li>
+  <li><a href="#whitening-and-sphering" id="toc-whitening-and-sphering" class="nav-link" data-scroll-target="#whitening-and-sphering">10. Whitening and Sphering</a>
+  <ul class="collapse">
+  <li><a href="#pca-whitening" id="toc-pca-whitening" class="nav-link" data-scroll-target="#pca-whitening">10.1. PCA Whitening</a></li>
+  <li><a href="#whitening-can-amplify-noise" id="toc-whitening-can-amplify-noise" class="nav-link" data-scroll-target="#whitening-can-amplify-noise">10.2. Whitening Can Amplify Noise</a></li>
+  </ul></li>
+  <li><a href="#probabilistic-pca" id="toc-probabilistic-pca" class="nav-link" data-scroll-target="#probabilistic-pca">11. Probabilistic PCA</a>
+  <ul class="collapse">
+  <li><a href="#a-latent-gaussian-model" id="toc-a-latent-gaussian-model" class="nav-link" data-scroll-target="#a-latent-gaussian-model">11.1. A Latent Gaussian Model</a></li>
+  <li><a href="#relationship-between-ppca-and-classical-pca" id="toc-relationship-between-ppca-and-classical-pca" class="nav-link" data-scroll-target="#relationship-between-ppca-and-classical-pca">11.2. Relationship Between PPCA and Classical PCA</a></li>
+  <li><a href="#posterior-distribution-of-the-latent-variable" id="toc-posterior-distribution-of-the-latent-variable" class="nav-link" data-scroll-target="#posterior-distribution-of-the-latent-variable">11.3. Posterior Distribution of the Latent Variable</a></li>
+  </ul></li>
+  <li><a href="#kernel-pca" id="toc-kernel-pca" class="nav-link" data-scroll-target="#kernel-pca">12. Kernel PCA</a>
+  <ul class="collapse">
+  <li><a href="#centering-the-kernel-matrix" id="toc-centering-the-kernel-matrix" class="nav-link" data-scroll-target="#centering-the-kernel-matrix">12.1. Centering the Kernel Matrix</a></li>
+  </ul></li>
+  <li><a href="#sparse-pca" id="toc-sparse-pca" class="nav-link" data-scroll-target="#sparse-pca">13. Sparse PCA</a></li>
+  <li><a href="#pca-in-genetics-and-population-structure" id="toc-pca-in-genetics-and-population-structure" class="nav-link" data-scroll-target="#pca-in-genetics-and-population-structure">14. PCA in Genetics and Population Structure</a></li>
+  <li><a href="#denoising-compression-and-anomaly-scores" id="toc-denoising-compression-and-anomaly-scores" class="nav-link" data-scroll-target="#denoising-compression-and-anomaly-scores">15. Denoising, Compression, and Anomaly Scores</a>
+  <ul class="collapse">
+  <li><a href="#pca-denoising" id="toc-pca-denoising" class="nav-link" data-scroll-target="#pca-denoising">15.1. PCA Denoising</a></li>
+  <li><a href="#reconstruction-error-as-an-anomaly-score" id="toc-reconstruction-error-as-an-anomaly-score" class="nav-link" data-scroll-target="#reconstruction-error-as-an-anomaly-score">15.2. Reconstruction Error as an Anomaly Score</a></li>
+  </ul></li>
   </ul>
 </nav>
     </div>
@@ -270,16 +400,1789 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<section id="overview" class="level2">
-<h2 class="anchored" data-anchor-id="overview">Overview</h2>
-<p>Add your Chapter 10 content here.</p>
-<p>Previous chapter: <a href="../../teaching/cds-303/chapter-9.html">Data modeling - Bayesian Inference</a></p>
+<p>The preceding modeling chapters considered methods that learn from a target variable. Suppose now we have a dataset that contains observations <span class="math inline">\(x_1, x_2, \dots, x_N\in \mathbb R^{D}\)</span>, but no response variable has been specified. The analyst does not initially know which directions in the feature space matter, which variables carry redundant information, whether the observations lie near a lower-dimensional structure, or whether the measurements are dominated by noise.</p>
+<p>PCA seeks directions along which the observations vary most. It replaces the original variables with new variables called <strong>principal component scores</strong>. These components are mutually orthogonal linear combinations of the original features and are ordered according to the amount of sample variance they explain.</p>
+<p>At a geometric level, PCA approximates a cloud of observations by a lower-dimensional affine subspace. At an algebraic level, it computes eigenvectors of the covariance matrix or right singular vectors of the centered data matrix. At an optimization level, it solves two equivalent problems:</p>
+<ol type="1">
+<li>maximize the variance retained after projection;</li>
+<li>minimize the squared reconstruction error after dimension reduction.</li>
+</ol>
+<p>PCA is generally described as a non-parametric, unsupervised method. It does not use class labels or a response during fitting, and classical PCA does not specify a complete probability model. Its apparent simplicity, however, should not conceal its assumptions. PCA is linear, variance-oriented, sensitive to scale and outliers, and dependent on the geometry induced by the chosen variables.</p>
+<p>The central principle of PCA is:</p>
+<blockquote class="blockquote">
+<p>Replace a high-dimensional coordinate system with an orthogonal coordinate system aligned with the dominant directions of variation.</p>
+</blockquote>
+<p>This transformation can support visualization, compression, denoising, exploratory analysis, feature construction, covariance regularization, and downstream modeling. It does not automatically discover the most scientifically important directions, nor does high variance necessarily imply high predictive or causal relevance.</p>
+<section id="data-representation-and-preprocessing-geometry" class="level2">
+<h2 class="anchored" data-anchor-id="data-representation-and-preprocessing-geometry">1. Data Representation and Preprocessing Geometry</h2>
+<p>Let the data matrix be</p>
+<p><span class="math display">\[
+X= \begin{bmatrix} x_1^\top\\ x_2^\top\\ \vdots\\ x_N^\top \end{bmatrix} \in\mathbb{R}^{N\times D},
+\]</span></p>
+<p>where:</p>
+<ul>
+<li><span class="math inline">\(N\)</span> is the number of observations;</li>
+<li><span class="math inline">\(D\)</span> is the number of measured variables;</li>
+<li>row <span class="math inline">\(n\)</span> contains observation <span class="math inline">\(x_n^\top\)</span>;</li>
+<li>column <span class="math inline">\(j\)</span> contains measurements of variable <span class="math inline">\(j\)</span>.</li>
+</ul>
+<p>The sample mean vector is</p>
+<p><span class="math display">\[
+\bar{x} = \frac{1}{N}\sum_{n=1}^{N}x_n.
+\]</span></p>
+<p>Define the centered observation</p>
+<p><span class="math display">\[
+\tilde{x}_n=x_n-\bar{x}.
+\]</span> The centered data matrix is</p>
+<p><span class="math display">\[
+X_c = X-\mathbf{1}_N\bar{x}^\top,
+\]</span> where <span class="math inline">\(\mathbf{1}_N\)</span> is an <span class="math inline">\(N\)</span>-dimensional vector of ones.</p>
+<p>The covariance matrix using the <span class="math inline">\(1/N\)</span> convention is</p>
+<p><span class="math display">\[
+S = \frac{1}{N}X_c^\top X_c = \frac{1}{N} \sum_{n=1}^{N} (x_n-\bar{x})(x_n-\bar{x})^\top.
+\]</span></p>
+<p>Many statistical implementations use</p>
+<p><span class="math display">\[
+S_{\text{sample}} = \frac{1}{N-1}X_c^\top X_c.
+\]</span></p>
+<p>The eigenvectors are identical under both conventions. Only the eigenvalues differ by the factor <span class="math inline">\(N/(N-1)\)</span>.</p>
+<div class="callout callout-style-default callout-tip callout-titled" title="Why Centering is Necessary">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>Why Centering is Necessary
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Classical PCA must ordinarily be applied to centered data.</p>
+<p>Without centering, the <a href="https://en.wikipedia.org/wiki/Structure_tensor">second-moment matrix</a> is</p>
+<p><span class="math display">\[
+\frac{1}{N}X^\top X = S+\bar{x}\bar{x}^\top.
+\]</span></p>
+</div>
+</div>
+<div class="callout callout-style-default callout-note callout-titled" title="Theorem: Decomposition of the Uncentered Second Moment">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Theorem: Decomposition of the Uncentered Second Moment
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><em>For a dataset with mean <span class="math inline">\(\bar{x}\)</span></em>,</p>
+<p><span class="math display">\[
+\frac{1}{N}\sum_{n=1}^{N}x_nx_n^\top = S+\bar{x}\bar{x}^\top.
+\]</span></p>
+</div>
+</div>
+<div class="callout callout-style-default callout-tip callout-titled" title="Proof">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>Proof
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Write</p>
+<p><span class="math display">\[
+x_n=(x_n-\bar{x})+\bar{x}.
+\]</span></p>
+<p>Then</p>
+<p><span class="math display">\[
+x_nx_n^\top = (x_n-\bar{x})(x_n-\bar{x})^\top + (x_n-\bar{x})\bar{x}^\top + \bar{x}(x_n-\bar{x})^\top + \bar{x}\bar{x}^\top.
+\]</span></p>
+<p>Average over <span class="math inline">\(n\)</span>. Since</p>
+<p><span class="math display">\[
+\sum_{n=1}^{N}(x_n-\bar{x})=0,
+\]</span></p>
+<p>the two cross-terms vanish. Therefore,</p>
+<p><span class="math display">\[
+\frac{1}{N}\sum_{n=1}^{N}x_nx_n^\top = \frac{1}{N}\sum_{n=1}^{N} (x_n-\bar{x})(x_n-\bar{x})^\top + \bar{x}\bar{x}^\top = S+\bar{x}\bar{x}^\top.
+\]</span></p>
+</div>
+</div>
+<p>Hence, an uncentered decomposition may identify the direction from the origin to the mean rather than directions of variation around the mean.</p>
+<section id="covariance-pca-versus-correlation-pca" class="level3">
+<h3 class="anchored" data-anchor-id="covariance-pca-versus-correlation-pca">1.1. Covariance PCA Versus Correlation PCA</h3>
+<p>Centering does not resolve differences in measurement scale.</p>
+<p>Suppose a health dataset contains:</p>
+<ul>
+<li>annual income measured in dollars;</li>
+<li>age measured in years;</li>
+<li>body temperature measured in degrees Celsius;</li>
+<li>a biomarker measured in milligrams per liter.</li>
+</ul>
+<p>A variable with large numerical variance may dominate the covariance matrix even if it is not substantively more important.</p>
+<p>Standardization transforms each variable to</p>
+<p><span class="math display">\[
+z_{nj} = \frac{x_{nj}-\bar{x}_j}{s_j},
+\]</span></p>
+<p>where <span class="math inline">\(s_j\)</span> is its sample standard deviation.</p>
+<p>PCA applied to standardized variables is equivalent to eigendecomposition of the correlation matrix</p>
+<p><span class="math display">\[
+R = D_s^{-1}SD_s^{-1},
+\]</span></p>
+<p>where <span class="math inline">\(D_s = \operatorname{diag}(s_1,\ldots,s_D).\)</span></p>
+<p><strong>Covariance-based PCA is suitable when:</strong></p>
+<ul>
+<li>variables share meaningful units;</li>
+<li>absolute variance is scientifically relevant;</li>
+<li>larger physical variability should receive greater weight.</li>
+</ul>
+<p><strong>Correlation-based PCA is suitable when:</strong></p>
+<ul>
+<li>units differ;</li>
+<li>variable scales are arbitrary;</li>
+<li>relative standardized variation is the intended geometry.</li>
+</ul>
+<p>Standardization is not automatically correct. It changes the problem. Covariance PCA asks which physical directions have greatest total variation. Correlation PCA asks which standardized combinations explain the greatest relative variation.</p>
+</section>
+<section id="messy-data-before-pca" class="level3">
+<h3 class="anchored" data-anchor-id="messy-data-before-pca">1.2. Messy Data Before PCA</h3>
+<p>PCA requires a numerical matrix, but real data rarely arrive as a clean, complete, homogeneous array.</p>
+<p>Important problems include:</p>
+<section id="missing-values" class="level4">
+<h4 class="anchored" data-anchor-id="missing-values">1.2.1 Missing Values</h4>
+<p>Ordinary PCA cannot directly eigendecompose a matrix containing undefined values. Common responses include:</p>
+<ul>
+<li>complete-case removal;</li>
+<li>simple mean or median imputation;</li>
+<li>multivariate imputation;</li>
+<li>iterative low-rank reconstruction;</li>
+<li>probabilistic PCA with missing-data inference.</li>
+</ul>
+<p>Mean imputation preserves the column mean but reduces apparent variance and can distort covariance. If missingness is systematic, the estimated principal directions may describe the imputation mechanism rather than the underlying phenomenon.</p>
+</section>
+<section id="categorical-variables" class="level4">
+<h4 class="anchored" data-anchor-id="categorical-variables">1.2.2 Categorical Variables</h4>
+<p>Naively applying PCA to integer category codes creates artificial geometry. Coding regions as</p>
+<p><span class="math display">\[
+\text{North}=1,\quad \text{East}=2,\quad \text{South}=3
+\]</span></p>
+<p>implies distances and ordering that may not exist.</p>
+<p>One-hot encoding is possible, but ordinary Euclidean PCA may still be inappropriate for highly categorical data. Multiple correspondence analysis or methods using suitable mixed-data metrics may be preferable.</p>
+</section>
+<section id="outliers" class="level4">
+<h4 class="anchored" data-anchor-id="outliers">1.2.3 Outliers</h4>
+<p>PCA is based on squared distances and sample covariance. A small number of extreme observations can rotate the principal axes dramatically.</p>
+<p>If one observation lies far from the center, its covariance contribution is</p>
+<p><span class="math display">\[
+(x_n-\bar{x})(x_n-\bar{x})^\top,
+\]</span></p>
+<p>which grows quadratically with distance.</p>
+<p>Outliers must not be deleted automatically; they may be scientifically important. The analyst should distinguish:</p>
+<ul>
+<li>recording errors;</li>
+<li>data-processing errors;</li>
+<li>rare but valid cases;</li>
+<li>observations from a different population;</li>
+<li>influential points revealing non-Gaussian structure.</li>
+</ul>
+<p>Robust PCA variants can reduce the influence of extreme observations.</p>
+</section>
+<section id="nonstationary-or-mixed-populations" class="level4">
+<h4 class="anchored" data-anchor-id="nonstationary-or-mixed-populations">1.2.4 Nonstationary or Mixed Populations</h4>
+<p>A leading principal component may represent:</p>
+<ul>
+<li>time drift;</li>
+<li>instrument changes;</li>
+<li>batch effects;</li>
+<li>population structure;</li>
+<li>site differences;</li>
+<li>a mixture of distinct subgroups.</li>
+</ul>
+<p>This may be useful, but interpretation requires examining how scores relate to known metadata.</p>
+</section>
+</section>
+</section>
+<section id="the-maximum-variance-formulation" class="level2">
+<h2 class="anchored" data-anchor-id="the-maximum-variance-formulation">2. The Maximum-Variance Formulation</h2>
+<section id="projection-onto-a-direction" class="level3">
+<h3 class="anchored" data-anchor-id="projection-onto-a-direction">2.1. Projection onto a Direction</h3>
+<p>Let <span class="math inline">\(u\in\mathbb{R}^D\)</span> be a unit vector (<span class="math inline">\(u^\top u=1\)</span>). The scalar projection, or score, of centered observation <span class="math inline">\(x_n\)</span> onto <span class="math inline">\(u\)</span> is</p>
+<p><span class="math display">\[
+z_n=u^\top(x_n-\bar{x}).
+\]</span></p>
+<p>The sample mean of the projected values is zero:</p>
+<p><span class="math display">\[
+\frac{1}{N}\sum_{n=1}^{N}z_n = u^\top \left( \frac{1}{N}\sum_{n=1}^{N}(x_n-\bar{x}) \right) =0.
+\]</span></p>
+<p>The variance of the projection is</p>
+<p><span class="math display">\[
+\operatorname{Var}(z) = \frac{1}{N}\sum_{n=1}^{N}z_n^2.
+\]</span></p>
+<p>Substitute <span class="math inline">\(z_n=u^\top(x_n-\bar{x})\)</span>:</p>
+<p><span class="math display">\[
+\operatorname{Var}(z) = \frac{1}{N}\sum_{n=1}^{N} u^\top(x_n-\bar{x})(x_n-\bar{x})^\top u.
+\]</span></p>
+<p>Move u outside the sum:</p>
+<p><span class="math display">\[
+\operatorname{Var}(z) = u^\top \left[ \frac{1}{N}\sum_{n=1}^{N} (x_n-\bar{x})(x_n-\bar{x})^\top \right] u.
+\]</span></p>
+<p>Therefore,</p>
+<p><span class="math display">\[
+\operatorname{Var}(z)=u^\top Su.
+\]</span> This quadratic form is called the <a href="https://en.wikipedia.org/wiki/Rayleigh_quotient"><strong>Rayleigh quotient</strong></a> when divided by <span class="math inline">\(u^\top u\)</span>.</p>
+<div class="callout callout-style-default callout-note callout-titled" title="Definition: First Principal Component Direction">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Definition: First Principal Component Direction
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>The first principal direction <span class="math inline">\(u_1\)</span> is the unit vector maximizing projected variance:</p>
+<p><span class="math display">\[
+u_1 = \arg\max_{u} u^\top Su
+\]</span></p>
+<p>subject to <span class="math inline">\(u^\top u=1.\)</span> The corresponding score for observation n is</p>
+<p><span class="math display">\[
+z_{n1}=u_1^\top(x_n-\bar{x}).
+\]</span></p>
+</div>
+</div>
+</section>
+<section id="lagrange-multiplier-derivation" class="level3">
+<h3 class="anchored" data-anchor-id="lagrange-multiplier-derivation">2.2. Lagrange-Multiplier Derivation</h3>
+<p>Construct the Lagrangian</p>
+<p><span class="math display">\[
+\mathcal{L}(u,\lambda) = u^\top Su - \lambda(u^\top u-1).
+\]</span></p>
+<p>Differentiate with respect to u:</p>
+<p><span class="math display">\[
+\nabla_u \mathcal{L} = 2Su-2\lambda u.
+\]</span></p>
+<p>At a stationary point, <span class="math inline">\(Su=\lambda u\)</span>. Thus, every stationary direction is an eigenvector of <span class="math inline">\(S\)</span>.</p>
+<p>Premultiply by <span class="math inline">\(u^\top\)</span>:</p>
+<p><span class="math display">\[
+u^\top Su = \lambda u^\top u=\lambda
+\]</span></p>
+<p>Therefore, the projected variance associated with an eigenvector equals its eigenvalue. The maximum variance is obtained from the largest eigenvalue.</p>
+<div class="callout callout-style-default callout-note callout-titled" title="Theorem: Maximum-Variance Principal Component">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Theorem: Maximum-Variance Principal Component
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><em>Let S be a symmetric positive semidefinite covariance matrix with ordered eigenvalues</em></p>
+<p><span class="math display">\[
+\lambda_1\geq\lambda_2\geq\cdots\geq\lambda_D\geq0
+\]</span></p>
+<p><em>and corresponding orthonormal eigenvectors <span class="math inline">\(u_1,u_2,\ldots,u_D\)</span>. Then</em></p>
+<p><span class="math display">\[
+\max_{\|u\|=1}u^\top Su=\lambda_1,
+\]</span></p>
+<p><em>and the maximum is attained at <span class="math inline">\(u=u_1\)</span>, up to sign and possible eigenspace nonuniqueness.</em></p>
+</div>
+</div>
+<div class="callout callout-style-default callout-tip callout-titled" title="Proof">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>Proof
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Expand an arbitrary unit vector in the orthonormal eigenbasis:</p>
+<p><span class="math display">\[
+u=\sum_{j=1}^{D}a_ju_j,
+\]</span></p>
+<p>where <span class="math inline">\(\sum_{j=1}^{D}a_j^2=1.\)</span> Then</p>
+<p><span class="math display">\[
+u^\top Su = \left(\sum_i a_i u_i^\top\right) S \left(\sum_j a_j u_j\right).
+\]</span></p>
+<p>Since <span class="math inline">\(Su_j=\lambda_j u_j\)</span> and <span class="math inline">\(u_i^\top u_j=\delta_{ij}\)</span>,</p>
+<p><span class="math display">\[
+u^\top Su = \sum_{j=1}^{D}\lambda_j a_j^2.
+\]</span></p>
+<p>Because <span class="math inline">\(\lambda_j\leq\lambda_1\)</span>,</p>
+<p><span class="math display">\[
+u^\top Su \leq \lambda_1\sum_{j=1}^{D}a_j^2 = \lambda_1.
+\]</span></p>
+<p>Equality occurs when <span class="math inline">\(u\)</span> lies entirely in the eigenspace associated with <span class="math inline">\(\lambda_1\)</span>.</p>
+</div>
+</div>
+</section>
+<section id="subsequent-principal-components" class="level3">
+<h3 class="anchored" data-anchor-id="subsequent-principal-components">2.3. Subsequent Principal Components</h3>
+<p>The second principal direction maximizes projected variance subject to orthogonality with the first:</p>
+<p><span class="math display">\[
+u_2 = \arg\max_u u^\top Su\qquad \text{ subject to } u^\top u=1, u^\top u_1=0.
+\]</span></p>
+<p>The solution is the eigenvector associated with <span class="math inline">\(\lambda_2\)</span>. More generally,</p>
+<p><span class="math display">\[
+u_m = \arg\max_u u^\top Su \qquad \text{subject to } u^\top u=1,\quad u^\top u_j=0, \quad j&lt;m.
+\]</span></p>
+<p>The solution is the eigenvector associated with <span class="math inline">\(\lambda_m\)</span>. The principal directions form an orthonormal matrix</p>
+<p><span class="math display">\[
+U= \begin{bmatrix} u_1&amp;u_2&amp;\cdots&amp;u_D \end{bmatrix},
+\]</span> satisfying <span class="math inline">\(U^\top U=I\)</span> and <span class="math inline">\(S=U\Lambda U^\top,\)</span> where</p>
+<p><span class="math display">\[
+\Lambda = \operatorname{diag}(\lambda_1,\ldots,\lambda_D).
+\]</span></p>
+</section>
+<section id="principal-component-scores" class="level3">
+<h3 class="anchored" data-anchor-id="principal-component-scores">2.4. Principal Component Scores</h3>
+<p>Retaining the first M directions gives the loading matrix</p>
+<p><span class="math display">\[
+U_M= \begin{bmatrix} u_1&amp;u_2&amp;\cdots&amp;u_M \end{bmatrix} \in\mathbb{R}^{D\times M}.
+\]</span></p>
+<p>The score matrix is</p>
+<p><span class="math display">\[
+Z=X_cU_M \in\mathbb{R}^{N\times M}.
+\]</span></p>
+<p>For observation <span class="math inline">\(n\)</span>,</p>
+<p><span class="math display">\[
+z_n=U_M^\top(x_n-\bar{x}).
+\]</span></p>
+<p>The covariance of the full score vector is diagonal:</p>
+<p><span class="math display">\[
+\frac{1}{N}Z^\top Z = U^\top SU = \Lambda.
+\]</span></p>
+<p>Thus, principal components are uncorrelated:</p>
+<p><span class="math display">\[
+\operatorname{Cov}(Z_i,Z_j)=0, \qquad i\neq j.
+\]</span></p>
+<p>Uncorrelated does not generally mean statistically independent. Independence follows under stronger conditions, such as joint multivariate normality.</p>
+</section>
+</section>
+<section id="minimum-reconstruction-error" class="level2">
+<h2 class="anchored" data-anchor-id="minimum-reconstruction-error">3. Minimum Reconstruction Error</h2>
+<section id="orthogonal-projection-onto-a-subspace" class="level3">
+<h3 class="anchored" data-anchor-id="orthogonal-projection-onto-a-subspace">3.1. Orthogonal Projection onto a Subspace</h3>
+<p>Let <span class="math inline">\(U_M\)</span> contain <span class="math inline">\(M\)</span> orthonormal basis vectors. The orthogonal projection matrix is</p>
+<p><span class="math display">\[
+P_M=U_MU_M^\top.
+\]</span> For a centered observation <span class="math inline">\(\tilde{x}\)</span>, its reduced representation is</p>
+<p><span class="math display">\[
+z=U_M^\top\tilde{x},
+\]</span></p>
+<p>and its reconstruction is</p>
+<p><span class="math display">\[
+\hat{x} = \bar{x}+U_Mz.
+\]</span></p>
+<p>Substituting <span class="math inline">\(z\)</span>,</p>
+<p><span class="math display">\[
+\hat{x} = \bar{x} + U_MU_M^\top(x-\bar{x}).
+\]</span></p>
+<p>The residual is</p>
+<p><span class="math display">\[
+r = x-\hat{x} = (I-U_MU_M^\top)(x-\bar{x}).
+\]</span></p>
+</section>
+<section id="reconstruction-objective" class="level3">
+<h3 class="anchored" data-anchor-id="reconstruction-objective">3.2. Reconstruction Objective</h3>
+<p>PCA seeks an <span class="math inline">\(M\)</span>-dimensional subspace minimizing total squared reconstruction error:</p>
+<p><span class="math display">\[
+J(U_M) = \frac{1}{N} \sum_{n=1}^{N} \left\| (x_n-\bar{x}) - U_MU_M^\top(x_n-\bar{x}) \right\|_2^2
+\]</span> subject to <span class="math inline">\(U_M^\top U_M=I_M.\)</span></p>
+<p>In matrix notation, <span class="math display">\[
+J(U_M) = \frac{1}{N} \|X_c-X_cU_MU_M^\top\|_F^2.
+\]</span></p>
+</section>
+<section id="variance-and-reconstruction-equivalence" class="level3">
+<h3 class="anchored" data-anchor-id="variance-and-reconstruction-equivalence">3.3. Variance and Reconstruction Equivalence</h3>
+<p>For a centered observation <span class="math inline">\(\tilde x\)</span>, the orthogonal decomposition gives</p>
+<p><span class="math display">\[
+\tilde{x} = P_M\tilde{x} + (I-P_M)\tilde{x}.
+\]</span></p>
+<p>The projected and residual components are orthogonal, so by the Pythagorean theorem,</p>
+<p><span class="math display">\[
+\|\tilde{x}\|^2 = \|P_M\tilde{x}\|^2 + \|(I-P_M)\tilde{x}\|^2.
+\]</span></p>
+<p>Average over all observations:</p>
+<p><span class="math display">\[
+\frac{1}{N}\sum_n\|\tilde{x}_n\|^2 = \frac{1}{N}\sum_n\|P_M\tilde{x}_n\|^2 + J(U_M).
+\]</span></p>
+<p>The total variance on the left is fixed. Therefore:</p>
+<p><span class="math display">\[
+\text{minimizing reconstruction error} \iff \text{maximizing retained projected variance}.
+\]</span></p>
+<p>This proves the equivalence of the two PCA formulations.</p>
+</section>
+<section id="reconstruction-error-theorem" class="level3">
+<h3 class="anchored" data-anchor-id="reconstruction-error-theorem">3.4. Reconstruction Error Theorem</h3>
+<div class="callout callout-style-default callout-note callout-titled" title="Optimal Rank-$M$ PCA Reconstruction">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Optimal Rank-<span class="math inline">\(M\)</span> PCA Reconstruction
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><em>Let</em> <span class="math inline">\(\lambda_1\geq\lambda_2\geq\cdots\geq\lambda_D\)</span> be the covariance eigenvalues. Among all <span class="math inline">\(M\)</span>-dimensional linear subspaces, the subspace spanned by <span class="math inline">\(u_1,\ldots,u_M\)</span> minimizes average squared orthogonal reconstruction error. The minimum error is</p>
+<p><span class="math display">\[
+J_M^* = \sum_{j=M+1}^{D}\lambda_j.
+\]</span></p>
+</div>
+</div>
+<div class="callout callout-style-default callout-tip callout-titled" title="Proof">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>Proof
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Represent the centered observation in the complete eigenbasis:</p>
+<p><span class="math display">\[
+\tilde{x}_n = \sum_{j=1}^{D}z_{nj}u_j.
+\]</span></p>
+<p>The PCA rank-<span class="math inline">\(M\)</span> reconstruction is</p>
+<p><span class="math display">\[
+\hat{\tilde{x}}_n = \sum_{j=1}^{M}z_{nj}u_j.
+\]</span></p>
+<p>The residual is</p>
+<p><span class="math display">\[
+\tilde{x}_n-\hat{\tilde{x}}_n = \sum_{j=M+1}^{D}z_{nj}u_j.
+\]</span></p>
+<p>Because the eigenvectors are orthonormal,</p>
+<p><span class="math display">\[
+\left\| \tilde{x}_n-\hat{\tilde{x}}_n \right\|^2 = \sum_{j=M+1}^{D}z_{nj}^2.
+\]</span></p>
+<p>Average over observations:</p>
+<p><span class="math display">\[
+J_M = \sum_{j=M+1}^{D} \frac{1}{N} \sum_{n=1}^{N}z_{nj}^2.
+\]</span></p>
+<p>The variance of component <span class="math inline">\(j\)</span> is <span class="math inline">\(\lambda_j\)</span>, so</p>
+<p><span class="math display">\[
+J_M = \sum_{j=M+1}^{D}\lambda_j.
+\]</span></p>
+<p>Retaining the largest eigenvalues minimizes the discarded sum. This result is also a consequence of the <a href="https://rich-d-wilkinson.github.io/MATH3030/3.5-lowrank.html">Eckart–Young–Mirsky theorem</a> for optimal low-rank matrix approximation.</p>
+</div>
+</div>
+</section>
+</section>
+<section id="singular-value-decomposition" class="level2">
+<h2 class="anchored" data-anchor-id="singular-value-decomposition">4. Singular Value Decomposition</h2>
+<section id="svd-of-the-centered-data-matrix" class="level3">
+<h3 class="anchored" data-anchor-id="svd-of-the-centered-data-matrix">4.1. SVD of the Centered Data Matrix</h3>
+<p>Instead of explicitly forming <span class="math inline">\(S\)</span>, compute the singular value decomposition</p>
+<p><span class="math display">\[
+X_c=U\Sigma V^\top.
+\]</span></p>
+<p>To avoid conflicting notation with PCA loading vectors, interpret:</p>
+<ul>
+<li><span class="math inline">\(U\in\mathbb{R}^{N\times r}\)</span>: left singular vectors;</li>
+<li><span class="math inline">\(V\in\mathbb{R}^{D\times r}\)</span>: right singular vectors;</li>
+<li><span class="math inline">\(\Sigma=\operatorname{diag}(\sigma_1,\ldots,\sigma_r)\)</span>;</li>
+<li><span class="math inline">\(r=\operatorname{rank}(X_c)\)</span>.</li>
+</ul>
+<p>Then</p>
+<p><span class="math display">\[
+X_c^\top X_c = V\Sigma^2V^\top.
+\]</span></p>
+<p>Therefore,</p>
+<p><span class="math display">\[
+S = \frac{1}{N}V\Sigma^2V^\top.
+\]</span></p>
+<p>The PCA directions are the columns of <span class="math inline">\(V\)</span>, and the covariance eigenvalues are</p>
+<p><span class="math display">\[
+\lambda_j=\frac{\sigma_j^2}{N}.
+\]</span> Using the <span class="math inline">\(1/(N-1)\)</span> covariance convention gives</p>
+<p><span class="math display">\[
+\lambda_j=\frac{\sigma_j^2}{N-1}.
+\]</span></p>
+<p>The score matrix is</p>
+<p><span class="math display">\[
+Z=X_cV=U\Sigma.
+\]</span></p>
+<div class="callout callout-style-default callout-tip callout-titled" title="Why SVD is usually preferred?">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>Why SVD is usually preferred?
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Computing PCA by SVD is usually more stable than explicitly constructing and diagonalizing <span class="math inline">\(X_c^\top X_c\)</span>.</p>
+<p>Forming the covariance matrix squares the condition number:</p>
+<p><span class="math display">\[
+\kappa(X_c^\top X_c) = \kappa(X_c)^2.
+\]</span> This can amplify numerical instability when the data matrix contains nearly dependent columns.</p>
+<p>SVD also naturally supports:</p>
+<ul>
+<li>rank-deficient data;</li>
+<li><span class="math inline">\(D\gg N\)</span> settings;</li>
+<li>truncated algorithms;</li>
+<li>randomized approximations;</li>
+<li>direct low-rank reconstruction.</li>
+</ul>
+</div>
+</div>
+</section>
+<section id="dual-pca-for-dgg-n" class="level3">
+<h3 class="anchored" data-anchor-id="dual-pca-for-dgg-n">4.2. Dual PCA for <span class="math inline">\(D\gg N\)</span></h3>
+<p>When the number of variables is much larger than the number of observations, the covariance matrix <span class="math inline">\(X_c^\top X_c\)</span> has dimension <span class="math inline">\(D\times D\)</span>, which may be expensive to store or diagonalize.</p>
+<p>Instead, solve the eigenproblem for</p>
+<p><span class="math display">\[
+G = \frac{1}{N}X_cX_c^\top \in\mathbb{R}^{N\times N}.
+\]</span></p>
+<p>Suppose <span class="math inline">\(Gv_i=\lambda_i v_i\)</span>. Define</p>
+<p><span class="math display">\[
+u_i = \frac{X_c^\top v_i}{\sqrt{N\lambda_i}}.
+\]</span></p>
+<p>Then <span class="math inline">\(Su_i = \lambda_i u_i.\)</span></p>
+<div class="callout callout-style-default callout-tip callout-titled" title="Proof">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>Proof
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Starting from</p>
+<p><span class="math display">\[
+\frac{1}{N}X_cX_c^\top v_i = \lambda_i v_i,
+\]</span></p>
+<p>multiply by <span class="math inline">\(X_c^\top\)</span>:</p>
+<p><span class="math display">\[
+\frac{1}{N} X_c^\top X_cX_c^\top v_i = \lambda_i X_c^\top v_i.
+\]</span></p>
+<p>Divide by <span class="math inline">\(\sqrt{N\lambda_i}\)</span>:</p>
+<p><span class="math display">\[
+\frac{1}{N} X_c^\top X_c \left( \frac{X_c^\top v_i}{\sqrt{N\lambda_i}} \right) = \lambda_i \left( \frac{X_c^\top v_i}{\sqrt{N\lambda_i}} \right).
+\]</span></p>
+<p>Thus, <span class="math inline">\(Su_i=\lambda_i u_i\)</span>.</p>
+</div>
+</div>
+</section>
+</section>
+<section id="explained-variance-and-selecting-dimension" class="level2">
+<h2 class="anchored" data-anchor-id="explained-variance-and-selecting-dimension">5. Explained Variance and Selecting Dimension</h2>
+<section id="explained-variance-ratio" class="level3">
+<h3 class="anchored" data-anchor-id="explained-variance-ratio">5.1. Explained Variance Ratio</h3>
+<p>The total variance is</p>
+<p><span class="math display">\[
+\operatorname{tr}(S) = \sum_{j=1}^{D}\lambda_j.
+\]</span></p>
+<p>The explained variance ratio of component <span class="math inline">\(j\)</span> is</p>
+<p><span class="math display">\[
+EVR_j = \frac{\lambda_j} {\sum_{\ell=1}^{D}\lambda_\ell}.
+\]</span></p>
+<p>The cumulative explained variance for <span class="math inline">\(M\)</span> components is</p>
+<p><span class="math display">\[
+CEV(M) = \frac{\sum_{j=1}^{M}\lambda_j} {\sum_{j=1}^{D}\lambda_j}.
+\]</span></p>
+<p>A common rule selects the smallest <span class="math inline">\(M\)</span> satisfying</p>
+<p><span class="math display">\[
+CEV(M)\geq\tau,
+\]</span></p>
+<p>where <span class="math inline">\(\tau\)</span> may be 0.90, 0.95, or 0.99.</p>
+<p>This rule is convenient but not universal. A component with low global variance may contain important rare-group structure. Conversely, high variance may reflect nuisance effects, measurement scale, batch effects, or noise.</p>
+<p>Other selection tools include:</p>
+<ul>
+<li>scree plots;</li>
+<li>reconstruction validation;</li>
+<li>parallel analysis;</li>
+<li>downstream task performance;</li>
+<li>domain constraints;</li>
+<li>probabilistic model evidence.</li>
+</ul>
+</section>
+<section id="scree-plot" class="level3">
+<h3 class="anchored" data-anchor-id="scree-plot">5.2. Scree Plot</h3>
+<p>A scree plot displays <span class="math inline">\(\lambda_j\)</span> against component index <span class="math inline">\(j\)</span>. A visible elbow may indicate a transition from dominant structured components to smaller residual components.</p>
+<p>The elbow is often subjective. When eigenvalues decay gradually, no natural low-dimensional boundary may exist.</p>
+</section>
+</section>
+<section id="loadings-scores-and-interpretation" class="level2">
+<h2 class="anchored" data-anchor-id="loadings-scores-and-interpretation">6. Loadings, Scores, and Interpretation</h2>
+<section id="scores-and-loadings" class="level3">
+<h3 class="anchored" data-anchor-id="scores-and-loadings">6.1. Scores and Loadings</h3>
+<p>PCA produces two distinct objects.</p>
+<section id="scores" class="level4">
+<h4 class="anchored" data-anchor-id="scores">Scores</h4>
+<p>The score of observation n on component j is</p>
+<p><span class="math display">\[
+z_{nj} = u_j^\top(x_n-\bar{x}).
+\]</span></p>
+<p>Scores describe observations in the component coordinate system.</p>
+</section>
+<section id="loadings" class="level4">
+<h4 class="anchored" data-anchor-id="loadings">Loadings</h4>
+<p>The entries of <span class="math inline">\(u_j\)</span> describe how original variables contribute to principal direction j.</p>
+<p>For</p>
+<p><span class="math display">\[
+u_j= \begin{bmatrix} u_{1j}\\ u_{2j}\\ \vdots\\ u_{Dj} \end{bmatrix},
+\]</span></p>
+<p>a large magnitude <span class="math inline">\(|u_{kj}|\)</span> means variable k strongly contributes to the component direction.</p>
+<p>The sign of an eigenvector is arbitrary. Both <span class="math inline">\(u_j\)</span> and <span class="math inline">\(-u_j\)</span> describe the same principal axis. Therefore, component signs may differ across software without changing the fitted subspace.</p>
+</section>
+</section>
+<section id="loading-interpretation-requires-care" class="level3">
+<h3 class="anchored" data-anchor-id="loading-interpretation-requires-care">6.2. Loading Interpretation Requires Care</h3>
+<p>A principal component is not automatically a real latent construct. An analyst may label a component “economic development,” “health severity,” or “morphological size,” but such names are interpretations of a weighted combination.</p>
+<p>Interpretation should consider:</p>
+<ul>
+<li>loading magnitude;</li>
+<li>loading sign relative to other variables;</li>
+<li>variable units and scaling;</li>
+<li>score patterns across observations;</li>
+<li>stability under resampling;</li>
+<li>known measurement structure.</li>
+</ul>
+<p>When eigenvalues are similar, individual eigenvectors may be unstable even if the span of their combined subspace is stable.</p>
+</section>
+<section id="biplots" class="level3">
+<h3 class="anchored" data-anchor-id="biplots">6.3. Biplots</h3>
+<p>A PCA biplot places observations and variable directions in the same two-dimensional display.</p>
+<p>Observations are represented by score coordinates such as <span class="math inline">\((z_{n1},z_{n2}).\)</span> Variables are represented through loading-related vectors.</p>
+<p>Approximate interpretation:</p>
+<ul>
+<li>nearby points have similar projected profiles;</li>
+<li>long variable arrows indicate strong representation in the displayed plane;</li>
+<li>arrows in similar directions indicate positive relationships;</li>
+<li>opposite directions suggest negative relationships;</li>
+<li>near-right angles suggest weak projected correlation.</li>
+</ul>
+<p>A biplot is a projection. Apparent distances and angles can be misleading when the first two components explain only a modest share of total variance.</p>
+</section>
+</section>
+<section id="wine-chemistry" class="level2">
+<h2 class="anchored" data-anchor-id="wine-chemistry">7. Wine Chemistry</h2>
+<p>The Wine dataset contains chemical measurements for wines from three cultivars. PCA can reveal dominant chemical variation without using cultivar labels during fitting. Labels may be added afterward only to interpret the resulting unsupervised representation.</p>
+<p>The variables have different scales, so standardization is appropriate when the aim is to prevent high-variance measurements from dominating solely because of units.</p>
+<div id="b0961dd5" class="cell" data-execution_count="1">
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.datasets <span class="im">import</span> load_wine</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.preprocessing <span class="im">import</span> StandardScaler</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.decomposition <span class="im">import</span> PCA</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>wine <span class="op">=</span> load_wine(as_frame<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>X <span class="op">=</span> wine.data</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>labels <span class="op">=</span> wine.target</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>target_names <span class="op">=</span> wine.target_names</span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>feature_std <span class="op">=</span> X.std().sort_values(ascending<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">10</span>, <span class="dv">5</span>))</span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>plt.bar(feature_std.index, feature_std.values)</span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">"Wine Dataset: Original Feature Standard Deviations"</span>)</span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">"Chemical variable"</span>)</span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">"Sample standard deviation"</span>)</span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a>plt.xticks(rotation<span class="op">=</span><span class="dv">75</span>)</span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a>plt.show()</span>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a>scaler <span class="op">=</span> StandardScaler()</span>
+<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a>X_scaled <span class="op">=</span> scaler.fit_transform(X)</span>
+<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a>pca <span class="op">=</span> PCA()</span>
+<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a>scores <span class="op">=</span> pca.fit_transform(X_scaled)</span>
+<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a>explained <span class="op">=</span> pca.explained_variance_ratio_</span>
+<span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a>cumulative <span class="op">=</span> np.cumsum(explained)</span>
+<span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a>component_index <span class="op">=</span> np.arange(<span class="dv">1</span>, <span class="bu">len</span>(explained) <span class="op">+</span> <span class="dv">1</span>)</span>
+<span id="cb1-35"><a href="#cb1-35" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-36"><a href="#cb1-36" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">8</span>, <span class="dv">5</span>))</span>
+<span id="cb1-37"><a href="#cb1-37" aria-hidden="true" tabindex="-1"></a>plt.plot(component_index, explained, marker<span class="op">=</span><span class="st">"o"</span>, label<span class="op">=</span><span class="st">"Individual variance"</span>)</span>
+<span id="cb1-38"><a href="#cb1-38" aria-hidden="true" tabindex="-1"></a>plt.plot(component_index, cumulative, marker<span class="op">=</span><span class="st">"s"</span>, label<span class="op">=</span><span class="st">"Cumulative variance"</span>)</span>
+<span id="cb1-39"><a href="#cb1-39" aria-hidden="true" tabindex="-1"></a>plt.axhline(<span class="fl">0.90</span>, linestyle<span class="op">=</span><span class="st">"--"</span>, label<span class="op">=</span><span class="st">"90% threshold"</span>)</span>
+<span id="cb1-40"><a href="#cb1-40" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">"Wine PCA: Explained Variance"</span>)</span>
+<span id="cb1-41"><a href="#cb1-41" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">"Principal component"</span>)</span>
+<span id="cb1-42"><a href="#cb1-42" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">"Explained variance ratio"</span>)</span>
+<span id="cb1-43"><a href="#cb1-43" aria-hidden="true" tabindex="-1"></a>plt.legend()</span>
+<span id="cb1-44"><a href="#cb1-44" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb1-45"><a href="#cb1-45" aria-hidden="true" tabindex="-1"></a>plt.show()</span>
+<span id="cb1-46"><a href="#cb1-46" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-47"><a href="#cb1-47" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">8</span>, <span class="dv">6</span>))</span>
+<span id="cb1-48"><a href="#cb1-48" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-49"><a href="#cb1-49" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> class_id, name <span class="kw">in</span> <span class="bu">enumerate</span>(target_names):</span>
+<span id="cb1-50"><a href="#cb1-50" aria-hidden="true" tabindex="-1"></a>    mask <span class="op">=</span> labels.to_numpy() <span class="op">==</span> class_id</span>
+<span id="cb1-51"><a href="#cb1-51" aria-hidden="true" tabindex="-1"></a>    plt.scatter(</span>
+<span id="cb1-52"><a href="#cb1-52" aria-hidden="true" tabindex="-1"></a>        scores[mask, <span class="dv">0</span>],</span>
+<span id="cb1-53"><a href="#cb1-53" aria-hidden="true" tabindex="-1"></a>        scores[mask, <span class="dv">1</span>],</span>
+<span id="cb1-54"><a href="#cb1-54" aria-hidden="true" tabindex="-1"></a>        alpha<span class="op">=</span><span class="fl">0.75</span>,</span>
+<span id="cb1-55"><a href="#cb1-55" aria-hidden="true" tabindex="-1"></a>        label<span class="op">=</span>name</span>
+<span id="cb1-56"><a href="#cb1-56" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb1-57"><a href="#cb1-57" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-58"><a href="#cb1-58" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">"Wine Samples Projected onto the First Two Components"</span>)</span>
+<span id="cb1-59"><a href="#cb1-59" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="ss">f"PC1 (</span><span class="sc">{</span>explained[<span class="dv">0</span>]<span class="sc">:.1%}</span><span class="ss"> variance)"</span>)</span>
+<span id="cb1-60"><a href="#cb1-60" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="ss">f"PC2 (</span><span class="sc">{</span>explained[<span class="dv">1</span>]<span class="sc">:.1%}</span><span class="ss"> variance)"</span>)</span>
+<span id="cb1-61"><a href="#cb1-61" aria-hidden="true" tabindex="-1"></a>plt.legend()</span>
+<span id="cb1-62"><a href="#cb1-62" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb1-63"><a href="#cb1-63" aria-hidden="true" tabindex="-1"></a>plt.show()</span>
+<span id="cb1-64"><a href="#cb1-64" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-65"><a href="#cb1-65" aria-hidden="true" tabindex="-1"></a>loadings <span class="op">=</span> pca.components_.T</span>
+<span id="cb1-66"><a href="#cb1-66" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-67"><a href="#cb1-67" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">9</span>, <span class="dv">7</span>))</span>
+<span id="cb1-68"><a href="#cb1-68" aria-hidden="true" tabindex="-1"></a>plt.scatter(scores[:, <span class="dv">0</span>], scores[:, <span class="dv">1</span>], alpha<span class="op">=</span><span class="fl">0.25</span>)</span>
+<span id="cb1-69"><a href="#cb1-69" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-70"><a href="#cb1-70" aria-hidden="true" tabindex="-1"></a>scale_factor <span class="op">=</span> <span class="fl">4.0</span></span>
+<span id="cb1-71"><a href="#cb1-71" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-72"><a href="#cb1-72" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> j, feature <span class="kw">in</span> <span class="bu">enumerate</span>(X.columns):</span>
+<span id="cb1-73"><a href="#cb1-73" aria-hidden="true" tabindex="-1"></a>    x_loading <span class="op">=</span> loadings[j, <span class="dv">0</span>] <span class="op">*</span> scale_factor</span>
+<span id="cb1-74"><a href="#cb1-74" aria-hidden="true" tabindex="-1"></a>    y_loading <span class="op">=</span> loadings[j, <span class="dv">1</span>] <span class="op">*</span> scale_factor</span>
+<span id="cb1-75"><a href="#cb1-75" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-76"><a href="#cb1-76" aria-hidden="true" tabindex="-1"></a>    plt.arrow(</span>
+<span id="cb1-77"><a href="#cb1-77" aria-hidden="true" tabindex="-1"></a>        <span class="dv">0</span>,</span>
+<span id="cb1-78"><a href="#cb1-78" aria-hidden="true" tabindex="-1"></a>        <span class="dv">0</span>,</span>
+<span id="cb1-79"><a href="#cb1-79" aria-hidden="true" tabindex="-1"></a>        x_loading,</span>
+<span id="cb1-80"><a href="#cb1-80" aria-hidden="true" tabindex="-1"></a>        y_loading,</span>
+<span id="cb1-81"><a href="#cb1-81" aria-hidden="true" tabindex="-1"></a>        head_width<span class="op">=</span><span class="fl">0.08</span>,</span>
+<span id="cb1-82"><a href="#cb1-82" aria-hidden="true" tabindex="-1"></a>        length_includes_head<span class="op">=</span><span class="va">True</span></span>
+<span id="cb1-83"><a href="#cb1-83" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb1-84"><a href="#cb1-84" aria-hidden="true" tabindex="-1"></a>    plt.text(</span>
+<span id="cb1-85"><a href="#cb1-85" aria-hidden="true" tabindex="-1"></a>        x_loading <span class="op">*</span> <span class="fl">1.08</span>,</span>
+<span id="cb1-86"><a href="#cb1-86" aria-hidden="true" tabindex="-1"></a>        y_loading <span class="op">*</span> <span class="fl">1.08</span>,</span>
+<span id="cb1-87"><a href="#cb1-87" aria-hidden="true" tabindex="-1"></a>        feature,</span>
+<span id="cb1-88"><a href="#cb1-88" aria-hidden="true" tabindex="-1"></a>        fontsize<span class="op">=</span><span class="dv">8</span></span>
+<span id="cb1-89"><a href="#cb1-89" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb1-90"><a href="#cb1-90" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-91"><a href="#cb1-91" aria-hidden="true" tabindex="-1"></a>plt.axhline(<span class="dv">0</span>, linewidth<span class="op">=</span><span class="fl">0.8</span>)</span>
+<span id="cb1-92"><a href="#cb1-92" aria-hidden="true" tabindex="-1"></a>plt.axvline(<span class="dv">0</span>, linewidth<span class="op">=</span><span class="fl">0.8</span>)</span>
+<span id="cb1-93"><a href="#cb1-93" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">"Wine PCA Biplot: Scores and Variable Directions"</span>)</span>
+<span id="cb1-94"><a href="#cb1-94" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">"PC1"</span>)</span>
+<span id="cb1-95"><a href="#cb1-95" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">"PC2"</span>)</span>
+<span id="cb1-96"><a href="#cb1-96" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb1-97"><a href="#cb1-97" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="chapter-10_files/figure-html/cell-2-output-1.png" width="950" height="469" class="figure-img"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="chapter-10_files/figure-html/cell-2-output-2.png" width="758" height="470" class="figure-img"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="chapter-10_files/figure-html/cell-2-output-3.png" width="758" height="566" class="figure-img"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="chapter-10_files/figure-html/cell-2-output-4.png" width="854" height="662" class="figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>This example illustrates several principles:</p>
+<ol type="1">
+<li>PCA fitting does not use cultivar labels.</li>
+<li>Standardization changes the geometry by equalizing marginal feature scales.</li>
+<li>Labels may be overlaid after fitting to investigate whether unsupervised structure aligns with known groups.</li>
+<li>Components must be interpreted through both scores and loadings.</li>
+</ol>
+</section>
+<section id="handwritten-digit-compression" class="level2">
+<h2 class="anchored" data-anchor-id="handwritten-digit-compression">8. Handwritten Digit Compression</h2>
+<section id="images-as-high-dimensional-vectors" class="level3">
+<h3 class="anchored" data-anchor-id="images-as-high-dimensional-vectors">8.1. Images as High-Dimensional Vectors</h3>
+<p>An <span class="math inline">\(8\times8\)</span> grayscale image can be flattened into <span class="math inline">\(x\in\mathbb{R}^{64}\)</span>.</p>
+<p>Each coordinate is a pixel intensity. PCA treats each image as a point in a 64-dimensional space.</p>
+<p>The mean image is</p>
+<p><span class="math display">\[
+\bar{x} = \frac{1}{N}\sum_{n=1}^{N}x_n.
+\]</span></p>
+<p>Principal directions can be reshaped into <span class="math inline">\(8\times8\)</span> images. These component images represent dominant modes of variation across the dataset.</p>
+<p>A rank-M reconstruction is</p>
+<p><span class="math display">\[
+\hat{x} = \bar{x} + \sum_{j=1}^{M}z_j u_j.
+\]</span></p>
+<p>As <span class="math inline">\(M\)</span> increases, more image detail is recovered.</p>
+</section>
+<section id="digit-reconstruction-and-eigenimages" class="level3">
+<h3 class="anchored" data-anchor-id="digit-reconstruction-and-eigenimages">8.2. Digit Reconstruction and Eigenimages</h3>
+<div id="f5dd6216" class="cell" data-execution_count="2">
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.datasets <span class="im">import</span> load_digits</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.decomposition <span class="im">import</span> PCA</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.preprocessing <span class="im">import</span> StandardScaler</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>digits <span class="op">=</span> load_digits()</span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>X <span class="op">=</span> digits.data</span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>y <span class="op">=</span> digits.target</span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>images <span class="op">=</span> digits.images</span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">10</span>, <span class="dv">4</span>))</span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">10</span>):</span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a>    plt.subplot(<span class="dv">2</span>, <span class="dv">5</span>, i <span class="op">+</span> <span class="dv">1</span>)</span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a>    plt.imshow(images[i], cmap<span class="op">=</span><span class="st">"gray"</span>)</span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a>    plt.title(<span class="ss">f"Label: </span><span class="sc">{</span>y[i]<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a>    plt.axis(<span class="st">"off"</span>)</span>
+<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a>plt.suptitle(<span class="st">"Real Handwritten Digit Observations"</span>)</span>
+<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a>plt.show()</span>
+<span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-25"><a href="#cb2-25" aria-hidden="true" tabindex="-1"></a><span class="co"># Pixel intensities share the same physical scale, so center without</span></span>
+<span id="cb2-26"><a href="#cb2-26" aria-hidden="true" tabindex="-1"></a><span class="co"># unit-variance standardization for image reconstruction.</span></span>
+<span id="cb2-27"><a href="#cb2-27" aria-hidden="true" tabindex="-1"></a>pca_full <span class="op">=</span> PCA()</span>
+<span id="cb2-28"><a href="#cb2-28" aria-hidden="true" tabindex="-1"></a>scores <span class="op">=</span> pca_full.fit_transform(X)</span>
+<span id="cb2-29"><a href="#cb2-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-30"><a href="#cb2-30" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">4</span>, <span class="dv">4</span>))</span>
+<span id="cb2-31"><a href="#cb2-31" aria-hidden="true" tabindex="-1"></a>plt.imshow(pca_full.mean_.reshape(<span class="dv">8</span>, <span class="dv">8</span>), cmap<span class="op">=</span><span class="st">"gray"</span>)</span>
+<span id="cb2-32"><a href="#cb2-32" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">"Mean Digit Image"</span>)</span>
+<span id="cb2-33"><a href="#cb2-33" aria-hidden="true" tabindex="-1"></a>plt.axis(<span class="st">"off"</span>)</span>
+<span id="cb2-34"><a href="#cb2-34" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb2-35"><a href="#cb2-35" aria-hidden="true" tabindex="-1"></a>plt.show()</span>
+<span id="cb2-36"><a href="#cb2-36" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-37"><a href="#cb2-37" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">10</span>, <span class="dv">5</span>))</span>
+<span id="cb2-38"><a href="#cb2-38" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-39"><a href="#cb2-39" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">10</span>):</span>
+<span id="cb2-40"><a href="#cb2-40" aria-hidden="true" tabindex="-1"></a>    plt.subplot(<span class="dv">2</span>, <span class="dv">5</span>, i <span class="op">+</span> <span class="dv">1</span>)</span>
+<span id="cb2-41"><a href="#cb2-41" aria-hidden="true" tabindex="-1"></a>    component <span class="op">=</span> pca_full.components_[i].reshape(<span class="dv">8</span>, <span class="dv">8</span>)</span>
+<span id="cb2-42"><a href="#cb2-42" aria-hidden="true" tabindex="-1"></a>    bound <span class="op">=</span> np.<span class="bu">abs</span>(component).<span class="bu">max</span>()</span>
+<span id="cb2-43"><a href="#cb2-43" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-44"><a href="#cb2-44" aria-hidden="true" tabindex="-1"></a>    plt.imshow(</span>
+<span id="cb2-45"><a href="#cb2-45" aria-hidden="true" tabindex="-1"></a>        component,</span>
+<span id="cb2-46"><a href="#cb2-46" aria-hidden="true" tabindex="-1"></a>        cmap<span class="op">=</span><span class="st">"coolwarm"</span>,</span>
+<span id="cb2-47"><a href="#cb2-47" aria-hidden="true" tabindex="-1"></a>        vmin<span class="op">=-</span>bound,</span>
+<span id="cb2-48"><a href="#cb2-48" aria-hidden="true" tabindex="-1"></a>        vmax<span class="op">=</span>bound</span>
+<span id="cb2-49"><a href="#cb2-49" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb2-50"><a href="#cb2-50" aria-hidden="true" tabindex="-1"></a>    plt.title(<span class="ss">f"PC </span><span class="sc">{</span>i <span class="op">+</span> <span class="dv">1</span><span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb2-51"><a href="#cb2-51" aria-hidden="true" tabindex="-1"></a>    plt.axis(<span class="st">"off"</span>)</span>
+<span id="cb2-52"><a href="#cb2-52" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-53"><a href="#cb2-53" aria-hidden="true" tabindex="-1"></a>plt.suptitle(<span class="st">"Leading PCA Directions Reshaped as Images"</span>)</span>
+<span id="cb2-54"><a href="#cb2-54" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb2-55"><a href="#cb2-55" aria-hidden="true" tabindex="-1"></a>plt.show()</span>
+<span id="cb2-56"><a href="#cb2-56" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-57"><a href="#cb2-57" aria-hidden="true" tabindex="-1"></a>cumulative <span class="op">=</span> np.cumsum(pca_full.explained_variance_ratio_)</span>
+<span id="cb2-58"><a href="#cb2-58" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-59"><a href="#cb2-59" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">8</span>, <span class="dv">5</span>))</span>
+<span id="cb2-60"><a href="#cb2-60" aria-hidden="true" tabindex="-1"></a>plt.plot(</span>
+<span id="cb2-61"><a href="#cb2-61" aria-hidden="true" tabindex="-1"></a>    np.arange(<span class="dv">1</span>, <span class="bu">len</span>(cumulative) <span class="op">+</span> <span class="dv">1</span>),</span>
+<span id="cb2-62"><a href="#cb2-62" aria-hidden="true" tabindex="-1"></a>    cumulative,</span>
+<span id="cb2-63"><a href="#cb2-63" aria-hidden="true" tabindex="-1"></a>    marker<span class="op">=</span><span class="st">"o"</span>,</span>
+<span id="cb2-64"><a href="#cb2-64" aria-hidden="true" tabindex="-1"></a>    markersize<span class="op">=</span><span class="dv">3</span></span>
+<span id="cb2-65"><a href="#cb2-65" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb2-66"><a href="#cb2-66" aria-hidden="true" tabindex="-1"></a>plt.axhline(<span class="fl">0.90</span>, linestyle<span class="op">=</span><span class="st">"--"</span>, label<span class="op">=</span><span class="st">"90%"</span>)</span>
+<span id="cb2-67"><a href="#cb2-67" aria-hidden="true" tabindex="-1"></a>plt.axhline(<span class="fl">0.95</span>, linestyle<span class="op">=</span><span class="st">":"</span>, label<span class="op">=</span><span class="st">"95%"</span>)</span>
+<span id="cb2-68"><a href="#cb2-68" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">"Digits PCA: Cumulative Explained Variance"</span>)</span>
+<span id="cb2-69"><a href="#cb2-69" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">"Number of retained components"</span>)</span>
+<span id="cb2-70"><a href="#cb2-70" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">"Cumulative explained variance"</span>)</span>
+<span id="cb2-71"><a href="#cb2-71" aria-hidden="true" tabindex="-1"></a>plt.legend()</span>
+<span id="cb2-72"><a href="#cb2-72" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb2-73"><a href="#cb2-73" aria-hidden="true" tabindex="-1"></a>plt.show()</span>
+<span id="cb2-74"><a href="#cb2-74" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-75"><a href="#cb2-75" aria-hidden="true" tabindex="-1"></a>query_index <span class="op">=</span> <span class="dv">13</span></span>
+<span id="cb2-76"><a href="#cb2-76" aria-hidden="true" tabindex="-1"></a>original <span class="op">=</span> X[query_index]</span>
+<span id="cb2-77"><a href="#cb2-77" aria-hidden="true" tabindex="-1"></a>component_counts <span class="op">=</span> [<span class="dv">1</span>, <span class="dv">3</span>, <span class="dv">5</span>, <span class="dv">10</span>, <span class="dv">20</span>, <span class="dv">40</span>, <span class="dv">64</span>]</span>
+<span id="cb2-78"><a href="#cb2-78" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-79"><a href="#cb2-79" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">14</span>, <span class="dv">4</span>))</span>
+<span id="cb2-80"><a href="#cb2-80" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-81"><a href="#cb2-81" aria-hidden="true" tabindex="-1"></a>plt.subplot(<span class="dv">2</span>, <span class="dv">4</span>, <span class="dv">1</span>)</span>
+<span id="cb2-82"><a href="#cb2-82" aria-hidden="true" tabindex="-1"></a>plt.imshow(original.reshape(<span class="dv">8</span>, <span class="dv">8</span>), cmap<span class="op">=</span><span class="st">"gray"</span>)</span>
+<span id="cb2-83"><a href="#cb2-83" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="ss">f"Original: </span><span class="sc">{</span>y[query_index]<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb2-84"><a href="#cb2-84" aria-hidden="true" tabindex="-1"></a>plt.axis(<span class="st">"off"</span>)</span>
+<span id="cb2-85"><a href="#cb2-85" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-86"><a href="#cb2-86" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> panel, m <span class="kw">in</span> <span class="bu">enumerate</span>(component_counts, start<span class="op">=</span><span class="dv">2</span>):</span>
+<span id="cb2-87"><a href="#cb2-87" aria-hidden="true" tabindex="-1"></a>    pca_m <span class="op">=</span> PCA(n_components<span class="op">=</span>m)</span>
+<span id="cb2-88"><a href="#cb2-88" aria-hidden="true" tabindex="-1"></a>    compressed <span class="op">=</span> pca_m.fit_transform(X)</span>
+<span id="cb2-89"><a href="#cb2-89" aria-hidden="true" tabindex="-1"></a>    reconstructed <span class="op">=</span> pca_m.inverse_transform(compressed)[query_index]</span>
+<span id="cb2-90"><a href="#cb2-90" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-91"><a href="#cb2-91" aria-hidden="true" tabindex="-1"></a>    plt.subplot(<span class="dv">2</span>, <span class="dv">4</span>, panel)</span>
+<span id="cb2-92"><a href="#cb2-92" aria-hidden="true" tabindex="-1"></a>    plt.imshow(reconstructed.reshape(<span class="dv">8</span>, <span class="dv">8</span>), cmap<span class="op">=</span><span class="st">"gray"</span>)</span>
+<span id="cb2-93"><a href="#cb2-93" aria-hidden="true" tabindex="-1"></a>    plt.title(<span class="ss">f"</span><span class="sc">{</span>m<span class="sc">}</span><span class="ss"> components"</span>)</span>
+<span id="cb2-94"><a href="#cb2-94" aria-hidden="true" tabindex="-1"></a>    plt.axis(<span class="st">"off"</span>)</span>
+<span id="cb2-95"><a href="#cb2-95" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-96"><a href="#cb2-96" aria-hidden="true" tabindex="-1"></a>plt.suptitle(<span class="st">"Lossy PCA Reconstruction of a Real Digit"</span>)</span>
+<span id="cb2-97"><a href="#cb2-97" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb2-98"><a href="#cb2-98" aria-hidden="true" tabindex="-1"></a>plt.show()</span>
+<span id="cb2-99"><a href="#cb2-99" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-100"><a href="#cb2-100" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">9</span>, <span class="dv">7</span>))</span>
+<span id="cb2-101"><a href="#cb2-101" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-102"><a href="#cb2-102" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> digit <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">10</span>):</span>
+<span id="cb2-103"><a href="#cb2-103" aria-hidden="true" tabindex="-1"></a>    mask <span class="op">=</span> y <span class="op">==</span> digit</span>
+<span id="cb2-104"><a href="#cb2-104" aria-hidden="true" tabindex="-1"></a>    plt.scatter(</span>
+<span id="cb2-105"><a href="#cb2-105" aria-hidden="true" tabindex="-1"></a>        scores[mask, <span class="dv">0</span>],</span>
+<span id="cb2-106"><a href="#cb2-106" aria-hidden="true" tabindex="-1"></a>        scores[mask, <span class="dv">1</span>],</span>
+<span id="cb2-107"><a href="#cb2-107" aria-hidden="true" tabindex="-1"></a>        s<span class="op">=</span><span class="dv">18</span>,</span>
+<span id="cb2-108"><a href="#cb2-108" aria-hidden="true" tabindex="-1"></a>        alpha<span class="op">=</span><span class="fl">0.55</span>,</span>
+<span id="cb2-109"><a href="#cb2-109" aria-hidden="true" tabindex="-1"></a>        label<span class="op">=</span><span class="bu">str</span>(digit)</span>
+<span id="cb2-110"><a href="#cb2-110" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb2-111"><a href="#cb2-111" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-112"><a href="#cb2-112" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">"Digits Projected onto the First Two Principal Components"</span>)</span>
+<span id="cb2-113"><a href="#cb2-113" aria-hidden="true" tabindex="-1"></a>plt.xlabel(</span>
+<span id="cb2-114"><a href="#cb2-114" aria-hidden="true" tabindex="-1"></a>    <span class="ss">f"PC1 (</span><span class="sc">{</span>pca_full<span class="sc">.</span>explained_variance_ratio_[<span class="dv">0</span>]<span class="sc">:.1%}</span><span class="ss"> variance)"</span></span>
+<span id="cb2-115"><a href="#cb2-115" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb2-116"><a href="#cb2-116" aria-hidden="true" tabindex="-1"></a>plt.ylabel(</span>
+<span id="cb2-117"><a href="#cb2-117" aria-hidden="true" tabindex="-1"></a>    <span class="ss">f"PC2 (</span><span class="sc">{</span>pca_full<span class="sc">.</span>explained_variance_ratio_[<span class="dv">1</span>]<span class="sc">:.1%}</span><span class="ss"> variance)"</span></span>
+<span id="cb2-118"><a href="#cb2-118" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb2-119"><a href="#cb2-119" aria-hidden="true" tabindex="-1"></a>plt.legend(ncol<span class="op">=</span><span class="dv">2</span>)</span>
+<span id="cb2-120"><a href="#cb2-120" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb2-121"><a href="#cb2-121" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="chapter-10_files/figure-html/cell-3-output-1.png" width="916" height="381" class="figure-img"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="chapter-10_files/figure-html/cell-3-output-2.png" width="354" height="374" class="figure-img"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="chapter-10_files/figure-html/cell-3-output-3.png" width="950" height="456" class="figure-img"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="chapter-10_files/figure-html/cell-3-output-4.png" width="758" height="470" class="figure-img"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="chapter-10_files/figure-html/cell-3-output-5.png" width="1083" height="381" class="figure-img"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="chapter-10_files/figure-html/cell-3-output-6.png" width="854" height="662" class="figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="eigenfaces" class="level2">
+<h2 class="anchored" data-anchor-id="eigenfaces">9. Eigenfaces</h2>
+<p>A grayscale face image of height H and width W is represented as <span class="math inline">\(x\in\mathbb{R}^{HW}\)</span>.</p>
+<p>Given aligned face images, PCA estimates:</p>
+<ul>
+<li>the mean face;</li>
+<li>principal modes of facial variation;</li>
+<li>low-dimensional face coordinates;</li>
+<li>approximate reconstructions.</li>
+</ul>
+<p>The principal directions reshaped as images are called <strong>eigenfaces</strong>. Turk and Pentland’s classical recognition framework represented faces through coefficients in an eigenface basis.</p>
+<p>PCA-based face recognition works best when images are aligned and collected under controlled conditions. Illumination, head pose, background, occlusion, and expression may dominate identity-related variation.</p>
+<div id="502c53e2" class="cell" data-execution_count="3">
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.datasets <span class="im">import</span> fetch_olivetti_faces</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.decomposition <span class="im">import</span> PCA</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>faces <span class="op">=</span> fetch_olivetti_faces(shuffle<span class="op">=</span><span class="va">True</span>, random_state<span class="op">=</span><span class="dv">42</span>)</span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>X <span class="op">=</span> faces.data</span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>images <span class="op">=</span> faces.images</span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>person_id <span class="op">=</span> faces.target</span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>height, width <span class="op">=</span> images.shape[<span class="dv">1</span>:]</span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>pca <span class="op">=</span> PCA(n_components<span class="op">=</span><span class="dv">100</span>, whiten<span class="op">=</span><span class="va">False</span>, random_state<span class="op">=</span><span class="dv">42</span>)</span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a>scores <span class="op">=</span> pca.fit_transform(X)</span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">10</span>, <span class="dv">5</span>))</span>
+<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">15</span>):</span>
+<span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a>    plt.subplot(<span class="dv">3</span>, <span class="dv">5</span>, i <span class="op">+</span> <span class="dv">1</span>)</span>
+<span id="cb3-21"><a href="#cb3-21" aria-hidden="true" tabindex="-1"></a>    plt.imshow(images[i], cmap<span class="op">=</span><span class="st">"gray"</span>)</span>
+<span id="cb3-22"><a href="#cb3-22" aria-hidden="true" tabindex="-1"></a>    plt.title(<span class="ss">f"Person </span><span class="sc">{</span>person_id[i]<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb3-23"><a href="#cb3-23" aria-hidden="true" tabindex="-1"></a>    plt.axis(<span class="st">"off"</span>)</span>
+<span id="cb3-24"><a href="#cb3-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-25"><a href="#cb3-25" aria-hidden="true" tabindex="-1"></a>plt.suptitle(<span class="st">"Olivetti Face Dataset: Real Observations"</span>)</span>
+<span id="cb3-26"><a href="#cb3-26" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb3-27"><a href="#cb3-27" aria-hidden="true" tabindex="-1"></a>plt.show()</span>
+<span id="cb3-28"><a href="#cb3-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-29"><a href="#cb3-29" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">4</span>, <span class="dv">4</span>))</span>
+<span id="cb3-30"><a href="#cb3-30" aria-hidden="true" tabindex="-1"></a>plt.imshow(pca.mean_.reshape(height, width), cmap<span class="op">=</span><span class="st">"gray"</span>)</span>
+<span id="cb3-31"><a href="#cb3-31" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">"Mean Face"</span>)</span>
+<span id="cb3-32"><a href="#cb3-32" aria-hidden="true" tabindex="-1"></a>plt.axis(<span class="st">"off"</span>)</span>
+<span id="cb3-33"><a href="#cb3-33" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb3-34"><a href="#cb3-34" aria-hidden="true" tabindex="-1"></a>plt.show()</span>
+<span id="cb3-35"><a href="#cb3-35" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-36"><a href="#cb3-36" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">12</span>, <span class="dv">6</span>))</span>
+<span id="cb3-37"><a href="#cb3-37" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-38"><a href="#cb3-38" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">20</span>):</span>
+<span id="cb3-39"><a href="#cb3-39" aria-hidden="true" tabindex="-1"></a>    plt.subplot(<span class="dv">4</span>, <span class="dv">5</span>, i <span class="op">+</span> <span class="dv">1</span>)</span>
+<span id="cb3-40"><a href="#cb3-40" aria-hidden="true" tabindex="-1"></a>    component <span class="op">=</span> pca.components_[i].reshape(height, width)</span>
+<span id="cb3-41"><a href="#cb3-41" aria-hidden="true" tabindex="-1"></a>    bound <span class="op">=</span> np.<span class="bu">abs</span>(component).<span class="bu">max</span>()</span>
+<span id="cb3-42"><a href="#cb3-42" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-43"><a href="#cb3-43" aria-hidden="true" tabindex="-1"></a>    plt.imshow(</span>
+<span id="cb3-44"><a href="#cb3-44" aria-hidden="true" tabindex="-1"></a>        component,</span>
+<span id="cb3-45"><a href="#cb3-45" aria-hidden="true" tabindex="-1"></a>        cmap<span class="op">=</span><span class="st">"coolwarm"</span>,</span>
+<span id="cb3-46"><a href="#cb3-46" aria-hidden="true" tabindex="-1"></a>        vmin<span class="op">=-</span>bound,</span>
+<span id="cb3-47"><a href="#cb3-47" aria-hidden="true" tabindex="-1"></a>        vmax<span class="op">=</span>bound</span>
+<span id="cb3-48"><a href="#cb3-48" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb3-49"><a href="#cb3-49" aria-hidden="true" tabindex="-1"></a>    plt.title(<span class="ss">f"PC </span><span class="sc">{</span>i <span class="op">+</span> <span class="dv">1</span><span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb3-50"><a href="#cb3-50" aria-hidden="true" tabindex="-1"></a>    plt.axis(<span class="st">"off"</span>)</span>
+<span id="cb3-51"><a href="#cb3-51" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-52"><a href="#cb3-52" aria-hidden="true" tabindex="-1"></a>plt.suptitle(<span class="st">"Leading Eigenfaces"</span>)</span>
+<span id="cb3-53"><a href="#cb3-53" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb3-54"><a href="#cb3-54" aria-hidden="true" tabindex="-1"></a>plt.show()</span>
+<span id="cb3-55"><a href="#cb3-55" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-56"><a href="#cb3-56" aria-hidden="true" tabindex="-1"></a>query_index <span class="op">=</span> <span class="dv">0</span></span>
+<span id="cb3-57"><a href="#cb3-57" aria-hidden="true" tabindex="-1"></a>component_counts <span class="op">=</span> [<span class="dv">5</span>, <span class="dv">10</span>, <span class="dv">25</span>, <span class="dv">50</span>, <span class="dv">100</span>]</span>
+<span id="cb3-58"><a href="#cb3-58" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-59"><a href="#cb3-59" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">12</span>, <span class="dv">4</span>))</span>
+<span id="cb3-60"><a href="#cb3-60" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-61"><a href="#cb3-61" aria-hidden="true" tabindex="-1"></a>plt.subplot(<span class="dv">1</span>, <span class="dv">6</span>, <span class="dv">1</span>)</span>
+<span id="cb3-62"><a href="#cb3-62" aria-hidden="true" tabindex="-1"></a>plt.imshow(images[query_index], cmap<span class="op">=</span><span class="st">"gray"</span>)</span>
+<span id="cb3-63"><a href="#cb3-63" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">"Original"</span>)</span>
+<span id="cb3-64"><a href="#cb3-64" aria-hidden="true" tabindex="-1"></a>plt.axis(<span class="st">"off"</span>)</span>
+<span id="cb3-65"><a href="#cb3-65" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-66"><a href="#cb3-66" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> panel, m <span class="kw">in</span> <span class="bu">enumerate</span>(component_counts, start<span class="op">=</span><span class="dv">2</span>):</span>
+<span id="cb3-67"><a href="#cb3-67" aria-hidden="true" tabindex="-1"></a>    pca_m <span class="op">=</span> PCA(n_components<span class="op">=</span>m, random_state<span class="op">=</span><span class="dv">42</span>)</span>
+<span id="cb3-68"><a href="#cb3-68" aria-hidden="true" tabindex="-1"></a>    z <span class="op">=</span> pca_m.fit_transform(X)</span>
+<span id="cb3-69"><a href="#cb3-69" aria-hidden="true" tabindex="-1"></a>    reconstructed <span class="op">=</span> pca_m.inverse_transform(z)[query_index]</span>
+<span id="cb3-70"><a href="#cb3-70" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-71"><a href="#cb3-71" aria-hidden="true" tabindex="-1"></a>    plt.subplot(<span class="dv">1</span>, <span class="dv">6</span>, panel)</span>
+<span id="cb3-72"><a href="#cb3-72" aria-hidden="true" tabindex="-1"></a>    plt.imshow(reconstructed.reshape(height, width), cmap<span class="op">=</span><span class="st">"gray"</span>)</span>
+<span id="cb3-73"><a href="#cb3-73" aria-hidden="true" tabindex="-1"></a>    plt.title(<span class="ss">f"M=</span><span class="sc">{</span>m<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb3-74"><a href="#cb3-74" aria-hidden="true" tabindex="-1"></a>    plt.axis(<span class="st">"off"</span>)</span>
+<span id="cb3-75"><a href="#cb3-75" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-76"><a href="#cb3-76" aria-hidden="true" tabindex="-1"></a>plt.suptitle(<span class="st">"Face Reconstruction from an Eigenface Basis"</span>)</span>
+<span id="cb3-77"><a href="#cb3-77" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb3-78"><a href="#cb3-78" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="chapter-10_files/figure-html/cell-4-output-1.png" width="871" height="475" class="figure-img"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="chapter-10_files/figure-html/cell-4-output-2.png" width="354" height="374" class="figure-img"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="chapter-10_files/figure-html/cell-4-output-3.png" width="982" height="569" class="figure-img"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="chapter-10_files/figure-html/cell-4-output-4.png" width="1142" height="306" class="figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="whitening-and-sphering" class="level2">
+<h2 class="anchored" data-anchor-id="whitening-and-sphering">10. Whitening and Sphering</h2>
+<section id="pca-whitening" class="level3">
+<h3 class="anchored" data-anchor-id="pca-whitening">10.1. PCA Whitening</h3>
+<p>Let the centered PCA coordinates be</p>
+<p><span class="math display">\[
+z=U^\top(x-\bar{x}).
+\]</span></p>
+<p>Their covariance is</p>
+<p><span class="math display">\[
+\operatorname{Cov}(z)=\Lambda.
+\]</span> Whitening rescales each component by the inverse square root of its eigenvalue:</p>
+<p><span class="math display">\[
+z_{\text{white}} = \Lambda^{-1/2}U^\top(x-\bar{x}).
+\]</span></p>
+<p>Then</p>
+<p><span class="math display">\[
+\operatorname{Cov}(z_{\text{white}}) = \Lambda^{-1/2} U^\top SU \Lambda^{-1/2}.
+\]</span></p>
+<p>Since <span class="math inline">\(U^\top SU=\Lambda\)</span>, we obtain</p>
+<p><span class="math display">\[
+\operatorname{Cov}(z_{\text{white}}) = \Lambda^{-1/2}\Lambda\Lambda^{-1/2} = I.
+\]</span></p>
+<p>Thus, whitened features are uncorrelated and have unit variance.</p>
+</section>
+<section id="whitening-can-amplify-noise" class="level3">
+<h3 class="anchored" data-anchor-id="whitening-can-amplify-noise">10.2. Whitening Can Amplify Noise</h3>
+<p>If an eigenvalue <span class="math inline">\(\lambda_j\)</span> is very small, multiplication by</p>
+<p><span class="math display">\[
+\frac{1}{\sqrt{\lambda_j}}
+\]</span> greatly amplifies that direction. Small-variance directions may contain measurement noise.</p>
+<p>A regularized whitening transform is</p>
+<p><span class="math display">\[
+z_{\text{white}} = (\Lambda+\varepsilon I)^{-1/2} U^\top(x-\bar{x}),
+\]</span></p>
+<p>where <span class="math inline">\(\varepsilon&gt;0\)</span> prevents extreme amplification.</p>
+<p>Whitening is useful when downstream methods assume spherical covariance, but it destroys the original variance hierarchy. It should not be treated as an automatically beneficial transformation.</p>
+<div id="321f0008" class="cell" data-execution_count="4">
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.preprocessing <span class="im">import</span> StandardScaler</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.decomposition <span class="im">import</span> PCA</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>rng <span class="op">=</span> np.random.default_rng(<span class="dv">42</span>)</span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>mean <span class="op">=</span> np.array([<span class="fl">0.0</span>, <span class="fl">0.0</span>])</span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>covariance <span class="op">=</span> np.array([</span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>    [<span class="fl">4.0</span>, <span class="fl">3.2</span>],</span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>    [<span class="fl">3.2</span>, <span class="fl">4.0</span>]</span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>])</span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>X <span class="op">=</span> rng.multivariate_normal(mean, covariance, size<span class="op">=</span><span class="dv">500</span>)</span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a>pca_regular <span class="op">=</span> PCA(whiten<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a>X_pc <span class="op">=</span> pca_regular.fit_transform(X)</span>
+<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a>pca_white <span class="op">=</span> PCA(whiten<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a>X_white <span class="op">=</span> pca_white.fit_transform(X)</span>
+<span id="cb4-22"><a href="#cb4-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-23"><a href="#cb4-23" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> transformed, title <span class="kw">in</span> [</span>
+<span id="cb4-24"><a href="#cb4-24" aria-hidden="true" tabindex="-1"></a>    (X, <span class="st">"Original Correlated Data"</span>),</span>
+<span id="cb4-25"><a href="#cb4-25" aria-hidden="true" tabindex="-1"></a>    (X_pc, <span class="st">"PCA Coordinates"</span>),</span>
+<span id="cb4-26"><a href="#cb4-26" aria-hidden="true" tabindex="-1"></a>    (X_white, <span class="st">"Whitened PCA Coordinates"</span>)</span>
+<span id="cb4-27"><a href="#cb4-27" aria-hidden="true" tabindex="-1"></a>]:</span>
+<span id="cb4-28"><a href="#cb4-28" aria-hidden="true" tabindex="-1"></a>    plt.figure(figsize<span class="op">=</span>(<span class="dv">6</span>, <span class="dv">6</span>))</span>
+<span id="cb4-29"><a href="#cb4-29" aria-hidden="true" tabindex="-1"></a>    plt.scatter(transformed[:, <span class="dv">0</span>], transformed[:, <span class="dv">1</span>], alpha<span class="op">=</span><span class="fl">0.45</span>)</span>
+<span id="cb4-30"><a href="#cb4-30" aria-hidden="true" tabindex="-1"></a>    plt.axhline(<span class="dv">0</span>, linewidth<span class="op">=</span><span class="fl">0.8</span>)</span>
+<span id="cb4-31"><a href="#cb4-31" aria-hidden="true" tabindex="-1"></a>    plt.axvline(<span class="dv">0</span>, linewidth<span class="op">=</span><span class="fl">0.8</span>)</span>
+<span id="cb4-32"><a href="#cb4-32" aria-hidden="true" tabindex="-1"></a>    plt.title(title)</span>
+<span id="cb4-33"><a href="#cb4-33" aria-hidden="true" tabindex="-1"></a>    plt.xlabel(<span class="st">"Coordinate 1"</span>)</span>
+<span id="cb4-34"><a href="#cb4-34" aria-hidden="true" tabindex="-1"></a>    plt.ylabel(<span class="st">"Coordinate 2"</span>)</span>
+<span id="cb4-35"><a href="#cb4-35" aria-hidden="true" tabindex="-1"></a>    plt.axis(<span class="st">"equal"</span>)</span>
+<span id="cb4-36"><a href="#cb4-36" aria-hidden="true" tabindex="-1"></a>    plt.tight_layout()</span>
+<span id="cb4-37"><a href="#cb4-37" aria-hidden="true" tabindex="-1"></a>    plt.show()</span>
+<span id="cb4-38"><a href="#cb4-38" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-39"><a href="#cb4-39" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Original covariance:</span><span class="ch">\n</span><span class="st">"</span>, np.cov(X, rowvar<span class="op">=</span><span class="va">False</span>))</span>
+<span id="cb4-40"><a href="#cb4-40" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"PCA-coordinate covariance:</span><span class="ch">\n</span><span class="st">"</span>, np.cov(X_pc, rowvar<span class="op">=</span><span class="va">False</span>))</span>
+<span id="cb4-41"><a href="#cb4-41" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Whitened covariance:</span><span class="ch">\n</span><span class="st">"</span>, np.cov(X_white, rowvar<span class="op">=</span><span class="va">False</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="chapter-10_files/figure-html/cell-5-output-1.png" width="566" height="566" class="figure-img"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="chapter-10_files/figure-html/cell-5-output-2.png" width="566" height="566" class="figure-img"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="chapter-10_files/figure-html/cell-5-output-3.png" width="566" height="566" class="figure-img"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Original covariance:
+ [[4.27893002 3.15026665]
+ [3.15026665 3.58224635]]
+PCA-coordinate covariance:
+ [[7.10005533e+00 1.06795000e-16]
+ [1.06795000e-16 7.61121036e-01]]
+Whitened covariance:
+ [[1.0000000e+00 5.2952521e-17]
+ [5.2952521e-17 1.0000000e+00]]</code></pre>
+</div>
+</div>
+</section>
+</section>
+<section id="probabilistic-pca" class="level2">
+<h2 class="anchored" data-anchor-id="probabilistic-pca">11. Probabilistic PCA</h2>
+<section id="a-latent-gaussian-model" class="level3">
+<h3 class="anchored" data-anchor-id="a-latent-gaussian-model">11.1. A Latent Gaussian Model</h3>
+<p>Classical PCA gives a geometric decomposition but not a complete generative probability model. Probabilistic PCA, or PPCA, introduces latent variables.</p>
+<p>Let <span class="math inline">\(z\in\mathbb{R}^M\)</span> be a latent vector with <span class="math inline">\(z\sim\mathcal{N}(0,I_M)\)</span>.</p>
+<p>The observed variable is generated by</p>
+<p><span class="math display">\[
+x=Wz+\mu+\epsilon,
+\]</span> where <span class="math inline">\(W\in\mathbb{R}^{D\times M}\)</span>, <span class="math inline">\(\epsilon\sim\mathcal{N}(0,\sigma^2I_D)\)</span>.</p>
+<p>Conditional on <span class="math inline">\(z\)</span>,</p>
+<p><span class="math display">\[
+x\mid z \sim \mathcal{N}(Wz+\mu,\sigma^2I).
+\]</span> Marginalizing over <span class="math inline">\(z\)</span>,</p>
+<p><span class="math display">\[
+x \sim \mathcal{N}(\mu,C),
+\]</span> where <span class="math inline">\(C=WW^\top+\sigma^2I\)</span>.</p>
+<div class="callout callout-style-default callout-tip callout-titled" title="Derivation">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>Derivation
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Because <span class="math inline">\(x-\mu=Wz+\epsilon\)</span>, and <span class="math inline">\(z\)</span> and <span class="math inline">\(\epsilon\)</span> are independent,</p>
+<p><span class="math display">\[
+\operatorname{Cov}(x) = W\operatorname{Cov}(z)W^\top + \operatorname{Cov}(\epsilon).
+\]</span></p>
+<p>Therefore,</p>
+<p><span class="math display">\[
+\operatorname{Cov}(x) = WIW^\top+\sigma^2I = WW^\top+\sigma^2I.
+\]</span></p>
+</div>
+</div>
+</section>
+<section id="relationship-between-ppca-and-classical-pca" class="level3">
+<h3 class="anchored" data-anchor-id="relationship-between-ppca-and-classical-pca">11.2. Relationship Between PPCA and Classical PCA</h3>
+<p>At maximum likelihood, the column space of the PPCA loading matrix W is the classical principal subspace. Tipping and Bishop<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a> showed that the maximum-likelihood form is</p>
+<p><span class="math display">\[
+W_{\text{ML}} = U_M (\Lambda_M-\sigma^2I)^{1/2}R,
+\]</span></p>
+<p>where:</p>
+<ul>
+<li><span class="math inline">\(U_M\)</span> contains the leading covariance eigenvectors;</li>
+<li><span class="math inline">\(\Lambda_M\)</span> contains the leading eigenvalues;</li>
+<li><span class="math inline">\(R\)</span> is an arbitrary orthogonal rotation.</li>
+</ul>
+<p>The maximum-likelihood noise variance is the average of the discarded eigenvalues:</p>
+<p><span class="math display">\[
+\sigma_{\text{ML}}^2 = \frac{1}{D-M} \sum_{j=M+1}^{D}\lambda_j.
+\]</span></p>
+<p>PPCA supplies:</p>
+<ul>
+<li>a likelihood;</li>
+<li>posterior distributions for latent coordinates;</li>
+<li>probabilistic handling of uncertainty;</li>
+<li>an EM formulation;</li>
+<li>principled extensions for missing data and mixtures.</li>
+</ul>
+</section>
+<section id="posterior-distribution-of-the-latent-variable" class="level3">
+<h3 class="anchored" data-anchor-id="posterior-distribution-of-the-latent-variable">11.3. Posterior Distribution of the Latent Variable</h3>
+<p>Given an observation <span class="math inline">\(x\)</span>, the latent posterior is Gaussian:</p>
+<p><span class="math display">\[
+p(z\mid x) = \mathcal{N}(z\mid m_z,\Sigma_z),
+\]</span></p>
+<p>where</p>
+<p><span class="math display">\[
+\begin{aligned}
+M_W&amp;=W^\top W+\sigma^2I,\\
+m_z &amp;= M_W^{-1}W^\top(x-\mu),\\
+\Sigma_z &amp;= \sigma^2M_W^{-1}.
+\end{aligned}
+\]</span></p>
+<p>Unlike classical PCA scores, PPCA latent coordinates are uncertain random variables.</p>
+</section>
+</section>
+<section id="kernel-pca" class="level2">
+<h2 class="anchored" data-anchor-id="kernel-pca">12. Kernel PCA</h2>
+<p>Classical PCA finds a linear subspace. If observations lie near a curved manifold, a linear projection may require many dimensions or may collapse distinct parts of the structure.</p>
+<p>Kernel PCA first maps data through <span class="math inline">\(\phi:\mathcal{X}\rightarrow\mathcal{H},\)</span> where <span class="math inline">\(\mathcal{H}\)</span> may be high- or infinite-dimensional, and then performs linear PCA in <span class="math inline">\(\mathcal{H}\)</span>.</p>
+<p>The mapping is accessed through a kernel:</p>
+<p><span class="math display">\[
+k(x_i,x_j) = \langle\phi(x_i),\phi(x_j)\rangle.
+\]</span></p>
+<p>Define the Gram matrix <span class="math display">\[
+K_{ij}=k(x_i,x_j).
+\]</span></p>
+<section id="centering-the-kernel-matrix" class="level3">
+<h3 class="anchored" data-anchor-id="centering-the-kernel-matrix">12.1. Centering the Kernel Matrix</h3>
+<p>Even if the original <span class="math inline">\(X\)</span> is centered, <span class="math inline">\(\phi(X)\)</span> need not be centered in feature space.</p>
+<p>Let <span class="math display">\[
+H = I_N-\frac{1}{N}\mathbf{1}\mathbf{1}^\top.
+\]</span></p>
+<p>The centered Gram matrix is <span class="math inline">\(K_c=HKH\)</span>. Expanded,</p>
+<p><span class="math display">\[
+K_c = K - \frac{1}{N}\mathbf{1}\mathbf{1}^\top K - \frac{1}{N}K\mathbf{1}\mathbf{1}^\top + \frac{1}{N^2} \mathbf{1}\mathbf{1}^\top K \mathbf{1}\mathbf{1}^\top.
+\]</span></p>
+<p>Kernel PCA solves</p>
+<p><span class="math display">\[
+K_c\alpha_j=N\lambda_j\alpha_j.
+\]</span></p>
+<p>The component score of a training observation is obtained from kernel eigenvectors. For new observations, scores require centered kernel evaluations against the training data.</p>
+<div id="d6c2cd66" class="cell" data-execution_count="5">
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.datasets <span class="im">import</span> make_circles</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.decomposition <span class="im">import</span> PCA, KernelPCA</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.preprocessing <span class="im">import</span> StandardScaler</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>X, labels <span class="op">=</span> make_circles(</span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>    n_samples<span class="op">=</span><span class="dv">700</span>,</span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>    factor<span class="op">=</span><span class="fl">0.30</span>,</span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>    noise<span class="op">=</span><span class="fl">0.06</span>,</span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>    random_state<span class="op">=</span><span class="dv">42</span></span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a>X_scaled <span class="op">=</span> StandardScaler().fit_transform(X)</span>
+<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a>linear_pca <span class="op">=</span> PCA(n_components<span class="op">=</span><span class="dv">2</span>)</span>
+<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a>Z_linear <span class="op">=</span> linear_pca.fit_transform(X_scaled)</span>
+<span id="cb6-18"><a href="#cb6-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-19"><a href="#cb6-19" aria-hidden="true" tabindex="-1"></a>kernel_pca <span class="op">=</span> KernelPCA(</span>
+<span id="cb6-20"><a href="#cb6-20" aria-hidden="true" tabindex="-1"></a>    n_components<span class="op">=</span><span class="dv">2</span>,</span>
+<span id="cb6-21"><a href="#cb6-21" aria-hidden="true" tabindex="-1"></a>    kernel<span class="op">=</span><span class="st">"rbf"</span>,</span>
+<span id="cb6-22"><a href="#cb6-22" aria-hidden="true" tabindex="-1"></a>    gamma<span class="op">=</span><span class="dv">8</span>,</span>
+<span id="cb6-23"><a href="#cb6-23" aria-hidden="true" tabindex="-1"></a>    eigen_solver<span class="op">=</span><span class="st">"arpack"</span></span>
+<span id="cb6-24"><a href="#cb6-24" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb6-25"><a href="#cb6-25" aria-hidden="true" tabindex="-1"></a>Z_kernel <span class="op">=</span> kernel_pca.fit_transform(X_scaled)</span>
+<span id="cb6-26"><a href="#cb6-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-27"><a href="#cb6-27" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">7</span>, <span class="dv">6</span>))</span>
+<span id="cb6-28"><a href="#cb6-28" aria-hidden="true" tabindex="-1"></a>plt.scatter(</span>
+<span id="cb6-29"><a href="#cb6-29" aria-hidden="true" tabindex="-1"></a>    Z_linear[:, <span class="dv">0</span>],</span>
+<span id="cb6-30"><a href="#cb6-30" aria-hidden="true" tabindex="-1"></a>    Z_linear[:, <span class="dv">1</span>],</span>
+<span id="cb6-31"><a href="#cb6-31" aria-hidden="true" tabindex="-1"></a>    c<span class="op">=</span>labels,</span>
+<span id="cb6-32"><a href="#cb6-32" aria-hidden="true" tabindex="-1"></a>    alpha<span class="op">=</span><span class="fl">0.7</span></span>
+<span id="cb6-33"><a href="#cb6-33" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb6-34"><a href="#cb6-34" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">"Linear PCA on Concentric Circles"</span>)</span>
+<span id="cb6-35"><a href="#cb6-35" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">"Linear PC1"</span>)</span>
+<span id="cb6-36"><a href="#cb6-36" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">"Linear PC2"</span>)</span>
+<span id="cb6-37"><a href="#cb6-37" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb6-38"><a href="#cb6-38" aria-hidden="true" tabindex="-1"></a>plt.show()</span>
+<span id="cb6-39"><a href="#cb6-39" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-40"><a href="#cb6-40" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">7</span>, <span class="dv">6</span>))</span>
+<span id="cb6-41"><a href="#cb6-41" aria-hidden="true" tabindex="-1"></a>plt.scatter(</span>
+<span id="cb6-42"><a href="#cb6-42" aria-hidden="true" tabindex="-1"></a>    Z_kernel[:, <span class="dv">0</span>],</span>
+<span id="cb6-43"><a href="#cb6-43" aria-hidden="true" tabindex="-1"></a>    Z_kernel[:, <span class="dv">1</span>],</span>
+<span id="cb6-44"><a href="#cb6-44" aria-hidden="true" tabindex="-1"></a>    c<span class="op">=</span>labels,</span>
+<span id="cb6-45"><a href="#cb6-45" aria-hidden="true" tabindex="-1"></a>    alpha<span class="op">=</span><span class="fl">0.7</span></span>
+<span id="cb6-46"><a href="#cb6-46" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb6-47"><a href="#cb6-47" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">"RBF Kernel PCA on Concentric Circles"</span>)</span>
+<span id="cb6-48"><a href="#cb6-48" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">"Kernel PC1"</span>)</span>
+<span id="cb6-49"><a href="#cb6-49" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">"Kernel PC2"</span>)</span>
+<span id="cb6-50"><a href="#cb6-50" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb6-51"><a href="#cb6-51" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="chapter-10_files/figure-html/cell-6-output-1.png" width="662" height="566" class="figure-img"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="chapter-10_files/figure-html/cell-6-output-2.png" width="662" height="566" class="figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="sparse-pca" class="level2">
+<h2 class="anchored" data-anchor-id="sparse-pca">13. Sparse PCA</h2>
+<p>A classical loading vector usually has nonzero coefficients for most variables:</p>
+<p><span class="math display">\[
+u_j= (u_{1j},\ldots,u_{Dj})^\top.
+\]</span></p>
+<p>For datasets with thousands of variables, a component involving every variable may be difficult to interpret.</p>
+<p>Sparse PCA seeks loading vectors with many exact zeros:</p>
+<p><span class="math display">\[
+\|u_j\|_0 = \#\{k:u_{kj}\neq0\} \ll D.
+\]</span></p>
+<p>A direct sparse-variance objective may be written as</p>
+<p>$$ _u u^Su</p>
+<p>|u|_2=1, |u|_0q. $$</p>
+<p>The <span class="math inline">\(L_0\)</span> constraint is combinatorial. Practical approaches use relaxations, regression formulations, <span class="math inline">\(L_1\)</span> penalties, elastic-net penalties, or semidefinite approximations.</p>
+<p>A schematic penalized objective is</p>
+<p>$$ _u </p>
+<p>|u|_2. $$</p>
+<p>Zou, Hastie, and Tibshirani developed a regression-based sparse PCA using lasso and elastic-net regularization <a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a>.</p>
+<div class="callout callout-style-default callout-tip callout-titled" title="Interpretability-Variance Tradeoff">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>Interpretability-Variance Tradeoff
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Sparse loadings are easier to interpret, but sparsity changes the optimization problem. Sparse PCA usually explains less variance than ordinary PCA for the same number of components.</p>
+<p>Thus, sparse PCA balances: <span class="math display">\[
+\text{variance retention} \quad\text{against}\quad \text{loading simplicity}.
+\]</span> Sparse components may also lose exact orthogonality, depending on the formulation.</p>
+</div>
+</div>
+<div id="acad96e9" class="cell" data-execution_count="6">
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.datasets <span class="im">import</span> load_breast_cancer</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.preprocessing <span class="im">import</span> StandardScaler</span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.decomposition <span class="im">import</span> PCA, SparsePCA</span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>data <span class="op">=</span> load_breast_cancer(as_frame<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>X <span class="op">=</span> data.data</span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>X_scaled <span class="op">=</span> StandardScaler().fit_transform(X)</span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a>ordinary <span class="op">=</span> PCA(n_components<span class="op">=</span><span class="dv">3</span>)</span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a>ordinary_scores <span class="op">=</span> ordinary.fit_transform(X_scaled)</span>
+<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a>sparse <span class="op">=</span> SparsePCA(</span>
+<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a>    n_components<span class="op">=</span><span class="dv">3</span>,</span>
+<span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a>    alpha<span class="op">=</span><span class="fl">2.0</span>,</span>
+<span id="cb7-20"><a href="#cb7-20" aria-hidden="true" tabindex="-1"></a>    ridge_alpha<span class="op">=</span><span class="fl">0.01</span>,</span>
+<span id="cb7-21"><a href="#cb7-21" aria-hidden="true" tabindex="-1"></a>    random_state<span class="op">=</span><span class="dv">42</span></span>
+<span id="cb7-22"><a href="#cb7-22" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb7-23"><a href="#cb7-23" aria-hidden="true" tabindex="-1"></a>sparse_scores <span class="op">=</span> sparse.fit_transform(X_scaled)</span>
+<span id="cb7-24"><a href="#cb7-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-25"><a href="#cb7-25" aria-hidden="true" tabindex="-1"></a>ordinary_loadings <span class="op">=</span> pd.DataFrame(</span>
+<span id="cb7-26"><a href="#cb7-26" aria-hidden="true" tabindex="-1"></a>    ordinary.components_.T,</span>
+<span id="cb7-27"><a href="#cb7-27" aria-hidden="true" tabindex="-1"></a>    index<span class="op">=</span>X.columns,</span>
+<span id="cb7-28"><a href="#cb7-28" aria-hidden="true" tabindex="-1"></a>    columns<span class="op">=</span>[<span class="st">"PC1"</span>, <span class="st">"PC2"</span>, <span class="st">"PC3"</span>]</span>
+<span id="cb7-29"><a href="#cb7-29" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb7-30"><a href="#cb7-30" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-31"><a href="#cb7-31" aria-hidden="true" tabindex="-1"></a>sparse_loadings <span class="op">=</span> pd.DataFrame(</span>
+<span id="cb7-32"><a href="#cb7-32" aria-hidden="true" tabindex="-1"></a>    sparse.components_.T,</span>
+<span id="cb7-33"><a href="#cb7-33" aria-hidden="true" tabindex="-1"></a>    index<span class="op">=</span>X.columns,</span>
+<span id="cb7-34"><a href="#cb7-34" aria-hidden="true" tabindex="-1"></a>    columns<span class="op">=</span>[<span class="st">"SPC1"</span>, <span class="st">"SPC2"</span>, <span class="st">"SPC3"</span>]</span>
+<span id="cb7-35"><a href="#cb7-35" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb7-36"><a href="#cb7-36" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-37"><a href="#cb7-37" aria-hidden="true" tabindex="-1"></a><span class="co"># Compare loading sparsity for first component</span></span>
+<span id="cb7-38"><a href="#cb7-38" aria-hidden="true" tabindex="-1"></a>comparison <span class="op">=</span> pd.DataFrame({</span>
+<span id="cb7-39"><a href="#cb7-39" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Ordinary PCA"</span>: ordinary_loadings[<span class="st">"PC1"</span>],</span>
+<span id="cb7-40"><a href="#cb7-40" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Sparse PCA"</span>: sparse_loadings[<span class="st">"SPC1"</span>]</span>
+<span id="cb7-41"><a href="#cb7-41" aria-hidden="true" tabindex="-1"></a>})</span>
+<span id="cb7-42"><a href="#cb7-42" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-43"><a href="#cb7-43" aria-hidden="true" tabindex="-1"></a>comparison <span class="op">=</span> comparison.reindex(</span>
+<span id="cb7-44"><a href="#cb7-44" aria-hidden="true" tabindex="-1"></a>    comparison.<span class="bu">abs</span>().<span class="bu">max</span>(axis<span class="op">=</span><span class="dv">1</span>).sort_values(ascending<span class="op">=</span><span class="va">False</span>).index</span>
+<span id="cb7-45"><a href="#cb7-45" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb7-46"><a href="#cb7-46" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-47"><a href="#cb7-47" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">11</span>, <span class="dv">6</span>))</span>
+<span id="cb7-48"><a href="#cb7-48" aria-hidden="true" tabindex="-1"></a>positions <span class="op">=</span> np.arange(<span class="bu">len</span>(comparison))</span>
+<span id="cb7-49"><a href="#cb7-49" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-50"><a href="#cb7-50" aria-hidden="true" tabindex="-1"></a>plt.bar(</span>
+<span id="cb7-51"><a href="#cb7-51" aria-hidden="true" tabindex="-1"></a>    positions <span class="op">-</span> <span class="fl">0.2</span>,</span>
+<span id="cb7-52"><a href="#cb7-52" aria-hidden="true" tabindex="-1"></a>    comparison[<span class="st">"Ordinary PCA"</span>],</span>
+<span id="cb7-53"><a href="#cb7-53" aria-hidden="true" tabindex="-1"></a>    width<span class="op">=</span><span class="fl">0.4</span>,</span>
+<span id="cb7-54"><a href="#cb7-54" aria-hidden="true" tabindex="-1"></a>    label<span class="op">=</span><span class="st">"Ordinary PCA"</span></span>
+<span id="cb7-55"><a href="#cb7-55" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb7-56"><a href="#cb7-56" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-57"><a href="#cb7-57" aria-hidden="true" tabindex="-1"></a>plt.bar(</span>
+<span id="cb7-58"><a href="#cb7-58" aria-hidden="true" tabindex="-1"></a>    positions <span class="op">+</span> <span class="fl">0.2</span>,</span>
+<span id="cb7-59"><a href="#cb7-59" aria-hidden="true" tabindex="-1"></a>    comparison[<span class="st">"Sparse PCA"</span>],</span>
+<span id="cb7-60"><a href="#cb7-60" aria-hidden="true" tabindex="-1"></a>    width<span class="op">=</span><span class="fl">0.4</span>,</span>
+<span id="cb7-61"><a href="#cb7-61" aria-hidden="true" tabindex="-1"></a>    label<span class="op">=</span><span class="st">"Sparse PCA"</span></span>
+<span id="cb7-62"><a href="#cb7-62" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb7-63"><a href="#cb7-63" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-64"><a href="#cb7-64" aria-hidden="true" tabindex="-1"></a>plt.xticks(positions, comparison.index, rotation<span class="op">=</span><span class="dv">80</span>)</span>
+<span id="cb7-65"><a href="#cb7-65" aria-hidden="true" tabindex="-1"></a>plt.axhline(<span class="dv">0</span>, linewidth<span class="op">=</span><span class="fl">0.8</span>)</span>
+<span id="cb7-66"><a href="#cb7-66" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">"Ordinary and Sparse First-Component Loadings"</span>)</span>
+<span id="cb7-67"><a href="#cb7-67" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">"Loading coefficient"</span>)</span>
+<span id="cb7-68"><a href="#cb7-68" aria-hidden="true" tabindex="-1"></a>plt.legend()</span>
+<span id="cb7-69"><a href="#cb7-69" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb7-70"><a href="#cb7-70" aria-hidden="true" tabindex="-1"></a>plt.show()</span>
+<span id="cb7-71"><a href="#cb7-71" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-72"><a href="#cb7-72" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Number of nonzero ordinary PC1 loadings:"</span>,</span>
+<span id="cb7-73"><a href="#cb7-73" aria-hidden="true" tabindex="-1"></a>      np.count_nonzero(ordinary.components_[<span class="dv">0</span>]))</span>
+<span id="cb7-74"><a href="#cb7-74" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-75"><a href="#cb7-75" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Number of nonzero sparse PC1 loadings:"</span>,</span>
+<span id="cb7-76"><a href="#cb7-76" aria-hidden="true" tabindex="-1"></a>      np.count_nonzero(sparse.components_[<span class="dv">0</span>]))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="chapter-10_files/figure-html/cell-7-output-1.png" width="1046" height="565" class="figure-img"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Number of nonzero ordinary PC1 loadings: 30
+Number of nonzero sparse PC1 loadings: 23</code></pre>
+</div>
+</div>
+</section>
+<section id="pca-in-genetics-and-population-structure" class="level2">
+<h2 class="anchored" data-anchor-id="pca-in-genetics-and-population-structure">14. PCA in Genetics and Population Structure</h2>
+<p>In population genetics, observations may be individuals and columns may be genetic variants. A genotype matrix might encode the number of minor alleles <span class="math inline">\(X_{ij}\in\{0,1,2\}\)</span>. PCA can reveal population structure because individuals with shared ancestry may have correlated allele-frequency patterns.</p>
+<p>A simplified standardized genotype value is</p>
+<p><span class="math display">\[
+Z_{ij} = \frac{X_{ij}-2p_j} {\sqrt{2p_j(1-p_j)}},
+\]</span> where <span class="math inline">\(p_j\)</span> is the estimated allele frequency for variant <span class="math inline">\(j\)</span>.</p>
+<p>PCA of <span class="math inline">\(Z\)</span> can expose continuous ancestry gradients, clusters, relatedness, and technical artifacts. Price et al.&nbsp;demonstrated how principal components can be used to detect and correct population stratification in genome-wide association studies<a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a>.</p>
+<div class="callout callout-style-default callout-caution callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Caution
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>A genetic PCA plot does not reveal biologically fixed “types.” Components depend on sampled populations, preprocessing, variant filtering, relatedness, and the geometry of the selected data.</p>
+</div>
+</div>
+<div id="1ab05dff" class="cell" data-execution_count="7">
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.decomposition <span class="im">import</span> PCA</span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.preprocessing <span class="im">import</span> StandardScaler</span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>rng <span class="op">=</span> np.random.default_rng(<span class="dv">42</span>)</span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>n_group <span class="op">=</span> <span class="dv">120</span></span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>n_variants <span class="op">=</span> <span class="dv">500</span></span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a><span class="co"># Group-specific allele frequencies</span></span>
+<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a>base_freq <span class="op">=</span> rng.uniform(<span class="fl">0.05</span>, <span class="fl">0.50</span>, n_variants)</span>
+<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a>shift <span class="op">=</span> rng.normal(<span class="dv">0</span>, <span class="fl">0.05</span>, n_variants)</span>
+<span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-16"><a href="#cb9-16" aria-hidden="true" tabindex="-1"></a>freq_a <span class="op">=</span> np.clip(base_freq <span class="op">-</span> shift, <span class="fl">0.01</span>, <span class="fl">0.99</span>)</span>
+<span id="cb9-17"><a href="#cb9-17" aria-hidden="true" tabindex="-1"></a>freq_b <span class="op">=</span> np.clip(base_freq <span class="op">+</span> shift, <span class="fl">0.01</span>, <span class="fl">0.99</span>)</span>
+<span id="cb9-18"><a href="#cb9-18" aria-hidden="true" tabindex="-1"></a>freq_c <span class="op">=</span> np.clip(base_freq <span class="op">+</span> <span class="dv">2</span> <span class="op">*</span> shift, <span class="fl">0.01</span>, <span class="fl">0.99</span>)</span>
+<span id="cb9-19"><a href="#cb9-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-20"><a href="#cb9-20" aria-hidden="true" tabindex="-1"></a>A <span class="op">=</span> rng.binomial(<span class="dv">2</span>, freq_a, size<span class="op">=</span>(n_group, n_variants))</span>
+<span id="cb9-21"><a href="#cb9-21" aria-hidden="true" tabindex="-1"></a>B <span class="op">=</span> rng.binomial(<span class="dv">2</span>, freq_b, size<span class="op">=</span>(n_group, n_variants))</span>
+<span id="cb9-22"><a href="#cb9-22" aria-hidden="true" tabindex="-1"></a>C <span class="op">=</span> rng.binomial(<span class="dv">2</span>, freq_c, size<span class="op">=</span>(n_group, n_variants))</span>
+<span id="cb9-23"><a href="#cb9-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-24"><a href="#cb9-24" aria-hidden="true" tabindex="-1"></a>X <span class="op">=</span> np.vstack([A, B, C])</span>
+<span id="cb9-25"><a href="#cb9-25" aria-hidden="true" tabindex="-1"></a>groups <span class="op">=</span> np.repeat([<span class="st">"Population A"</span>, <span class="st">"Population B"</span>, <span class="st">"Population C"</span>], n_group)</span>
+<span id="cb9-26"><a href="#cb9-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-27"><a href="#cb9-27" aria-hidden="true" tabindex="-1"></a>X_scaled <span class="op">=</span> StandardScaler().fit_transform(X)</span>
+<span id="cb9-28"><a href="#cb9-28" aria-hidden="true" tabindex="-1"></a>scores <span class="op">=</span> PCA(n_components<span class="op">=</span><span class="dv">2</span>).fit_transform(X_scaled)</span>
+<span id="cb9-29"><a href="#cb9-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-30"><a href="#cb9-30" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">8</span>, <span class="dv">6</span>))</span>
+<span id="cb9-31"><a href="#cb9-31" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-32"><a href="#cb9-32" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> group <span class="kw">in</span> np.unique(groups):</span>
+<span id="cb9-33"><a href="#cb9-33" aria-hidden="true" tabindex="-1"></a>    mask <span class="op">=</span> groups <span class="op">==</span> group</span>
+<span id="cb9-34"><a href="#cb9-34" aria-hidden="true" tabindex="-1"></a>    plt.scatter(</span>
+<span id="cb9-35"><a href="#cb9-35" aria-hidden="true" tabindex="-1"></a>        scores[mask, <span class="dv">0</span>],</span>
+<span id="cb9-36"><a href="#cb9-36" aria-hidden="true" tabindex="-1"></a>        scores[mask, <span class="dv">1</span>],</span>
+<span id="cb9-37"><a href="#cb9-37" aria-hidden="true" tabindex="-1"></a>        alpha<span class="op">=</span><span class="fl">0.65</span>,</span>
+<span id="cb9-38"><a href="#cb9-38" aria-hidden="true" tabindex="-1"></a>        label<span class="op">=</span>group</span>
+<span id="cb9-39"><a href="#cb9-39" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb9-40"><a href="#cb9-40" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-41"><a href="#cb9-41" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">"PCA of a Simulated Genotype Matrix"</span>)</span>
+<span id="cb9-42"><a href="#cb9-42" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">"PC1"</span>)</span>
+<span id="cb9-43"><a href="#cb9-43" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">"PC2"</span>)</span>
+<span id="cb9-44"><a href="#cb9-44" aria-hidden="true" tabindex="-1"></a>plt.legend()</span>
+<span id="cb9-45"><a href="#cb9-45" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb9-46"><a href="#cb9-46" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="chapter-10_files/figure-html/cell-8-output-1.png" width="758" height="566" class="figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="denoising-compression-and-anomaly-scores" class="level2">
+<h2 class="anchored" data-anchor-id="denoising-compression-and-anomaly-scores">15. Denoising, Compression, and Anomaly Scores</h2>
+<section id="pca-denoising" class="level3">
+<h3 class="anchored" data-anchor-id="pca-denoising">15.1. PCA Denoising</h3>
+<p>Suppose <span class="math inline">\(x=s+\epsilon\)</span>, where <span class="math inline">\(s\)</span> lies approximately in a low-dimensional signal subspace and <span class="math inline">\(\epsilon\)</span> is high-dimensional noise.</p>
+<p>A truncated PCA reconstruction</p>
+<p><span class="math display">\[
+\hat{x} = \bar{x} + U_MU_M^\top(x-\bar{x})
+\]</span></p>
+<p>removes components orthogonal to the retained subspace.</p>
+<p>This can denoise data when:</p>
+<ul>
+<li>the signal is concentrated in leading components;</li>
+<li>noise is broadly distributed across low-variance directions;</li>
+<li>the training data adequately represent signal structure.</li>
+</ul>
+<p>PCA can also remove meaningful rare variation if that variation lies in discarded components.</p>
+</section>
+<section id="reconstruction-error-as-an-anomaly-score" class="level3">
+<h3 class="anchored" data-anchor-id="reconstruction-error-as-an-anomaly-score">15.2. Reconstruction Error as an Anomaly Score</h3>
+<p>For an observation <span class="math inline">\(x\)</span>, define</p>
+<p><span class="math display">\[
+A_M(x) = \left\| (I-U_MU_M^\top)(x-\bar{x}) \right\|_2^2.
+\]</span></p>
+<p>Large reconstruction error indicates that the observation is poorly represented by the learned principal subspace. This can be used for anomaly detection, particularly when normal observations lie near a low-dimensional structure.</p>
+<p>However, an anomaly lying far along a retained high-variance component may have low reconstruction error. Complementary score-distance measures may be necessary.</p>
+<p>A score-space distance is</p>
+<p><span class="math display">\[
+T^2(x) = \sum_{j=1}^{M} \frac{z_j^2}{\lambda_j}.
+\]</span></p>
+<p>This is related to Hotelling’s <span class="math inline">\(T^2\)</span> statistic. Reconstruction error measures departure from the subspace; score distance measures extremeness within the subspace.</p>
+<div id="925ffe75" class="cell" data-execution_count="8">
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.decomposition <span class="im">import</span> PCA</span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.preprocessing <span class="im">import</span> StandardScaler</span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>rng <span class="op">=</span> np.random.default_rng(<span class="dv">42</span>)</span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Normal observations near a 2D plane embedded in 5D</span></span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>latent <span class="op">=</span> rng.normal(size<span class="op">=</span>(<span class="dv">500</span>, <span class="dv">2</span>))</span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a>mixing <span class="op">=</span> np.array([</span>
+<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a>    [<span class="fl">1.0</span>, <span class="fl">0.2</span>],</span>
+<span id="cb10-14"><a href="#cb10-14" aria-hidden="true" tabindex="-1"></a>    [<span class="fl">0.5</span>, <span class="fl">1.0</span>],</span>
+<span id="cb10-15"><a href="#cb10-15" aria-hidden="true" tabindex="-1"></a>    [<span class="op">-</span><span class="fl">0.8</span>, <span class="fl">0.4</span>],</span>
+<span id="cb10-16"><a href="#cb10-16" aria-hidden="true" tabindex="-1"></a>    [<span class="fl">0.2</span>, <span class="op">-</span><span class="fl">0.9</span>],</span>
+<span id="cb10-17"><a href="#cb10-17" aria-hidden="true" tabindex="-1"></a>    [<span class="fl">0.7</span>, <span class="fl">0.6</span>]</span>
+<span id="cb10-18"><a href="#cb10-18" aria-hidden="true" tabindex="-1"></a>])</span>
+<span id="cb10-19"><a href="#cb10-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-20"><a href="#cb10-20" aria-hidden="true" tabindex="-1"></a>normal <span class="op">=</span> latent <span class="op">@</span> mixing.T <span class="op">+</span> rng.normal(<span class="dv">0</span>, <span class="fl">0.08</span>, size<span class="op">=</span>(<span class="dv">500</span>, <span class="dv">5</span>))</span>
+<span id="cb10-21"><a href="#cb10-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-22"><a href="#cb10-22" aria-hidden="true" tabindex="-1"></a><span class="co"># Anomalies departing from the normal subspace</span></span>
+<span id="cb10-23"><a href="#cb10-23" aria-hidden="true" tabindex="-1"></a>anomalies <span class="op">=</span> rng.normal(size<span class="op">=</span>(<span class="dv">15</span>, <span class="dv">5</span>)) <span class="op">*</span> <span class="fl">2.5</span></span>
+<span id="cb10-24"><a href="#cb10-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-25"><a href="#cb10-25" aria-hidden="true" tabindex="-1"></a>X <span class="op">=</span> np.vstack([normal, anomalies])</span>
+<span id="cb10-26"><a href="#cb10-26" aria-hidden="true" tabindex="-1"></a>true_kind <span class="op">=</span> np.array([<span class="st">"normal"</span>] <span class="op">*</span> <span class="bu">len</span>(normal) <span class="op">+</span> [<span class="st">"anomaly"</span>] <span class="op">*</span> <span class="bu">len</span>(anomalies))</span>
+<span id="cb10-27"><a href="#cb10-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-28"><a href="#cb10-28" aria-hidden="true" tabindex="-1"></a>scaler <span class="op">=</span> StandardScaler()</span>
+<span id="cb10-29"><a href="#cb10-29" aria-hidden="true" tabindex="-1"></a>normal_scaled <span class="op">=</span> scaler.fit_transform(normal)</span>
+<span id="cb10-30"><a href="#cb10-30" aria-hidden="true" tabindex="-1"></a>X_scaled <span class="op">=</span> scaler.transform(X)</span>
+<span id="cb10-31"><a href="#cb10-31" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-32"><a href="#cb10-32" aria-hidden="true" tabindex="-1"></a>pca <span class="op">=</span> PCA(n_components<span class="op">=</span><span class="dv">2</span>)</span>
+<span id="cb10-33"><a href="#cb10-33" aria-hidden="true" tabindex="-1"></a>pca.fit(normal_scaled)</span>
+<span id="cb10-34"><a href="#cb10-34" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-35"><a href="#cb10-35" aria-hidden="true" tabindex="-1"></a>scores <span class="op">=</span> pca.transform(X_scaled)</span>
+<span id="cb10-36"><a href="#cb10-36" aria-hidden="true" tabindex="-1"></a>reconstruction <span class="op">=</span> pca.inverse_transform(scores)</span>
+<span id="cb10-37"><a href="#cb10-37" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-38"><a href="#cb10-38" aria-hidden="true" tabindex="-1"></a>reconstruction_error <span class="op">=</span> np.<span class="bu">sum</span>(</span>
+<span id="cb10-39"><a href="#cb10-39" aria-hidden="true" tabindex="-1"></a>    (X_scaled <span class="op">-</span> reconstruction) <span class="op">**</span> <span class="dv">2</span>,</span>
+<span id="cb10-40"><a href="#cb10-40" aria-hidden="true" tabindex="-1"></a>    axis<span class="op">=</span><span class="dv">1</span></span>
+<span id="cb10-41"><a href="#cb10-41" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb10-42"><a href="#cb10-42" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-43"><a href="#cb10-43" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">8</span>, <span class="dv">6</span>))</span>
+<span id="cb10-44"><a href="#cb10-44" aria-hidden="true" tabindex="-1"></a>scatter <span class="op">=</span> plt.scatter(</span>
+<span id="cb10-45"><a href="#cb10-45" aria-hidden="true" tabindex="-1"></a>    scores[:, <span class="dv">0</span>],</span>
+<span id="cb10-46"><a href="#cb10-46" aria-hidden="true" tabindex="-1"></a>    scores[:, <span class="dv">1</span>],</span>
+<span id="cb10-47"><a href="#cb10-47" aria-hidden="true" tabindex="-1"></a>    c<span class="op">=</span>reconstruction_error,</span>
+<span id="cb10-48"><a href="#cb10-48" aria-hidden="true" tabindex="-1"></a>    s<span class="op">=</span><span class="dv">35</span></span>
+<span id="cb10-49"><a href="#cb10-49" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb10-50"><a href="#cb10-50" aria-hidden="true" tabindex="-1"></a>plt.colorbar(scatter, label<span class="op">=</span><span class="st">"Squared reconstruction error"</span>)</span>
+<span id="cb10-51"><a href="#cb10-51" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">"PCA Score Space with Reconstruction-Error Coloring"</span>)</span>
+<span id="cb10-52"><a href="#cb10-52" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">"PC1"</span>)</span>
+<span id="cb10-53"><a href="#cb10-53" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">"PC2"</span>)</span>
+<span id="cb10-54"><a href="#cb10-54" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb10-55"><a href="#cb10-55" aria-hidden="true" tabindex="-1"></a>plt.show()</span>
+<span id="cb10-56"><a href="#cb10-56" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-57"><a href="#cb10-57" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">8</span>, <span class="dv">5</span>))</span>
+<span id="cb10-58"><a href="#cb10-58" aria-hidden="true" tabindex="-1"></a>plt.hist(</span>
+<span id="cb10-59"><a href="#cb10-59" aria-hidden="true" tabindex="-1"></a>    reconstruction_error[true_kind <span class="op">==</span> <span class="st">"normal"</span>],</span>
+<span id="cb10-60"><a href="#cb10-60" aria-hidden="true" tabindex="-1"></a>    bins<span class="op">=</span><span class="dv">35</span>,</span>
+<span id="cb10-61"><a href="#cb10-61" aria-hidden="true" tabindex="-1"></a>    alpha<span class="op">=</span><span class="fl">0.7</span>,</span>
+<span id="cb10-62"><a href="#cb10-62" aria-hidden="true" tabindex="-1"></a>    label<span class="op">=</span><span class="st">"Normal"</span></span>
+<span id="cb10-63"><a href="#cb10-63" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb10-64"><a href="#cb10-64" aria-hidden="true" tabindex="-1"></a>plt.hist(</span>
+<span id="cb10-65"><a href="#cb10-65" aria-hidden="true" tabindex="-1"></a>    reconstruction_error[true_kind <span class="op">==</span> <span class="st">"anomaly"</span>],</span>
+<span id="cb10-66"><a href="#cb10-66" aria-hidden="true" tabindex="-1"></a>    bins<span class="op">=</span><span class="dv">15</span>,</span>
+<span id="cb10-67"><a href="#cb10-67" aria-hidden="true" tabindex="-1"></a>    alpha<span class="op">=</span><span class="fl">0.7</span>,</span>
+<span id="cb10-68"><a href="#cb10-68" aria-hidden="true" tabindex="-1"></a>    label<span class="op">=</span><span class="st">"Anomaly"</span></span>
+<span id="cb10-69"><a href="#cb10-69" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb10-70"><a href="#cb10-70" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">"PCA Reconstruction Error as an Anomaly Score"</span>)</span>
+<span id="cb10-71"><a href="#cb10-71" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">"Squared reconstruction error"</span>)</span>
+<span id="cb10-72"><a href="#cb10-72" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">"Count"</span>)</span>
+<span id="cb10-73"><a href="#cb10-73" aria-hidden="true" tabindex="-1"></a>plt.legend()</span>
+<span id="cb10-74"><a href="#cb10-74" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb10-75"><a href="#cb10-75" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="chapter-10_files/figure-html/cell-9-output-1.png" width="723" height="566" class="figure-img"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="chapter-10_files/figure-html/cell-9-output-2.png" width="758" height="470" class="figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<hr>
+<p>Principal Component Analysis is a method for discovering and representing dominant linear variation in unlabeled, multivariate data. It replaces the original variables with orthogonal directions chosen from the covariance structure.</p>
+<p>The maximum-variance formulation begins with</p>
+<p><span class="math display">\[
+\max_{\|u\|=1}u^\top Su.
+\]</span></p>
+<p>Its solution is the leading covariance eigenvector. Subsequent components are obtained through orthogonality constraints and decreasing eigenvalues.</p>
+<p>The reconstruction formulation seeks an <span class="math inline">\(M\)</span>-dimensional subspace minimizing</p>
+<p><span class="math display">\[
+\frac{1}{N} \|X_c-X_cU_MU_M^\top\|_F^2.
+\]</span></p>
+<p>Its solution is the same leading eigenspace, and the minimum lost variance is</p>
+<p><span class="math display">\[
+\sum_{j=M+1}^{D}\lambda_j.
+\]</span></p>
+<p>This equivalence explains why PCA simultaneously performs variance preservation and optimal linear compression.</p>
+<p>SVD provides the practical computational formulation:</p>
+<p><span class="math display">\[
+X_c=U\Sigma V^\top.
+\]</span></p>
+<p>The right singular vectors are principal directions, singular values determine explained variance, and truncated SVD gives the optimal low-rank representation.</p>
+<p>PCA can reveal redundancy, latent gradients, groups, batch effects, image structure, population structure, and low-rank signal. It can compress images, generate eigenfaces, whiten features, denoise observations, and create anomaly scores. Probabilistic PCA adds a latent Gaussian model and uncertainty. Kernel PCA extends the method to nonlinear feature spaces. Sparse PCA sacrifices some variance to obtain simpler loading patterns.</p>
+<p>The method’s limitations are equally fundamental. PCA is linear, scale-sensitive, outlier-sensitive, and unsupervised. It preserves high variance, not necessarily meaningful, predictive, causal, or rare variation. Its components depend on the variables, units, preprocessing decisions, observations, and sampling context.</p>
+<p>PCA should therefore be understood not as a neutral compression command but as a model of data geometry. It proposes that the most useful low-dimensional representation is the orthogonal linear subspace capturing the greatest variance. Whether that proposal is scientifically appropriate must be evaluated through data provenance, scale, loading interpretation, stability, reconstruction behavior, and the purpose of the analysis.</p>
 <p>Next chapter: <a href="../../teaching/cds-303/chapter-11.html">Data Modeling - Clustering</a></p>
 
 
 </section>
+</section>
 
-</main> <!-- /main -->
+
+<div id="quarto-appendix" class="default"><section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes"><h2 class="anchored quarto-appendix-heading">Footnotes</h2>
+
+<ol>
+<li id="fn1"><p>Tipping, Michael E., and Christopher M. Bishop. <em>Probabilistic Principal Component Analysis</em>. n.d.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn2"><p>Zou, Hui, Trevor Hastie, and Robert Tibshirani. “Sparse Principal Component Analysis.” <em>Journal of Computational and Graphical Statistics</em> 15, no. 2 (2006): 265–86. <a href="https://doi.org/10.1198/106186006X113430">https://doi.org/10.1198/106186006X113430</a>.<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn3"><p>Price, Alkes L., Nick J. Patterson, Robert M. Plenge, Michael E. Weinblatt, Nancy A. Shadick, and David Reich. “Principal Components Analysis Corrects for Stratification in Genome-Wide Association Studies.” <em>Nature Genetics</em> 38, no. 8 (2006): 904–9. <a href="https://doi.org/10.1038/ng1847">https://doi.org/10.1038/ng1847</a>.<a href="#fnref3" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+</ol>
+</section></div></main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
   window.document.addEventListener("DOMContentLoaded", function (event) {
     const icon = "";

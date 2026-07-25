@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.9.38">
+<meta name="generator" content="quarto-1.10.18">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -12,10 +12,13 @@
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
 */
-code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
-div.columns{display: flex; gap: min(4vw, 1.5em);}
-div.column{flex: auto; overflow-x: auto;}
+div.columns{display: flex; gap: 1.5em;}
+div.column{flex: auto;}
+@media screen {
+div.columns{gap: min(4vw, 1.5em);}
+div.column{overflow-x: auto;}
+}
 div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
 ul.task-list{list-style: none;}
 ul.task-list li input[type="checkbox"] {
@@ -74,10 +77,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="../../site_libs/quarto-html/anchor.min.js"></script>
 <link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-15634bcf2e68342d4ad2dfa704d543f6.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../../site_libs/bootstrap/bootstrap-1b7da60b26a47d4c32e12cd6c71bb08b.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-fb5f3b3fb26a177c4af78adf70c87a98.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -108,7 +111,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <style>html{ scroll-behavior: smooth; }</style>
 
   <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
-  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-chtml.js" type="text/javascript"></script>
 
 <script type="text/javascript">
 const typesetMath = (el) => {
@@ -646,7 +649,7 @@ Caution
 </div>
 </div>
 <div class="cell-output cell-output-display">
-<div id="fig-comparing-distance-geometries-2" class="quarto-float quarto-figure quarto-figure-center anchored" width="470" height="470">
+<div id="fig-comparing-distance-geometries-2" class="quarto-float quarto-figure quarto-figure-center anchored" height="470" width="470">
 <figure class="quarto-float quarto-subfloat-fig figure">
 <div aria-describedby="fig-comparing-distance-geometries-2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <img src="chapter-6_files/figure-html/fig-comparing-distance-geometries-output-2.png" id="fig-comparing-distance-geometries-2" data-ref-parent="fig-comparing-distance-geometries" width="470" height="470" class="figure-img">
@@ -658,7 +661,7 @@ Caution
 </div>
 </div>
 <div class="cell-output cell-output-display">
-<div id="fig-comparing-distance-geometries-3" class="quarto-float quarto-figure quarto-figure-center anchored" width="470" height="470">
+<div id="fig-comparing-distance-geometries-3" class="quarto-float quarto-figure quarto-figure-center anchored" height="470" width="470">
 <figure class="quarto-float quarto-subfloat-fig figure">
 <div aria-describedby="fig-comparing-distance-geometries-3-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <img src="chapter-6_files/figure-html/fig-comparing-distance-geometries-output-3.png" id="fig-comparing-distance-geometries-3" data-ref-parent="fig-comparing-distance-geometries" width="470" height="470" class="figure-img">
@@ -788,7 +791,7 @@ w_i(x) = \exp\left(-\frac{d(x, x_i)^2}{2h^2}\right),
 </div>
 </div>
 <div class="cell-output cell-output-display">
-<div id="fig-knn-classification-decision-boundaries-2" class="quarto-float quarto-figure quarto-figure-center anchored" width="662" height="470">
+<div id="fig-knn-classification-decision-boundaries-2" class="quarto-float quarto-figure quarto-figure-center anchored" height="470" width="662">
 <figure class="quarto-float quarto-subfloat-fig figure">
 <div aria-describedby="fig-knn-classification-decision-boundaries-2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <img src="chapter-6_files/figure-html/fig-knn-classification-decision-boundaries-output-2.png" id="fig-knn-classification-decision-boundaries-2" data-ref-parent="fig-knn-classification-decision-boundaries" width="662" height="470" class="figure-img">
@@ -800,7 +803,7 @@ w_i(x) = \exp\left(-\frac{d(x, x_i)^2}{2h^2}\right),
 </div>
 </div>
 <div class="cell-output cell-output-display">
-<div id="fig-knn-classification-decision-boundaries-3" class="quarto-float quarto-figure quarto-figure-center anchored" width="662" height="470">
+<div id="fig-knn-classification-decision-boundaries-3" class="quarto-float quarto-figure quarto-figure-center anchored" height="470" width="662">
 <figure class="quarto-float quarto-subfloat-fig figure">
 <div aria-describedby="fig-knn-classification-decision-boundaries-3-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <img src="chapter-6_files/figure-html/fig-knn-classification-decision-boundaries-output-3.png" id="fig-knn-classification-decision-boundaries-3" data-ref-parent="fig-knn-classification-decision-boundaries" width="662" height="470" class="figure-img">
@@ -812,7 +815,7 @@ w_i(x) = \exp\left(-\frac{d(x, x_i)^2}{2h^2}\right),
 </div>
 </div>
 <div class="cell-output cell-output-display">
-<div id="fig-knn-classification-decision-boundaries-4" class="quarto-float quarto-figure quarto-figure-center anchored" width="662" height="470">
+<div id="fig-knn-classification-decision-boundaries-4" class="quarto-float quarto-figure quarto-figure-center anchored" height="470" width="662">
 <figure class="quarto-float quarto-subfloat-fig figure">
 <div aria-describedby="fig-knn-classification-decision-boundaries-4-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <img src="chapter-6_files/figure-html/fig-knn-classification-decision-boundaries-output-4.png" id="fig-knn-classification-decision-boundaries-4" data-ref-parent="fig-knn-classification-decision-boundaries" width="662" height="470" class="figure-img">
@@ -915,7 +918,7 @@ J(c) = \sum_{i\in N_k(x)}(y_i-c)^2
 </div>
 </div>
 <div class="cell-output cell-output-display">
-<div id="fig-knn-regression-smoothing-2" class="quarto-float quarto-figure quarto-figure-center anchored" width="758" height="470">
+<div id="fig-knn-regression-smoothing-2" class="quarto-float quarto-figure quarto-figure-center anchored" height="470" width="758">
 <figure class="quarto-float quarto-subfloat-fig figure">
 <div aria-describedby="fig-knn-regression-smoothing-2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <img src="chapter-6_files/figure-html/fig-knn-regression-smoothing-output-2.png" id="fig-knn-regression-smoothing-2" data-ref-parent="fig-knn-regression-smoothing" width="758" height="470" class="figure-img">
@@ -927,7 +930,7 @@ J(c) = \sum_{i\in N_k(x)}(y_i-c)^2
 </div>
 </div>
 <div class="cell-output cell-output-display">
-<div id="fig-knn-regression-smoothing-3" class="quarto-float quarto-figure quarto-figure-center anchored" width="758" height="470">
+<div id="fig-knn-regression-smoothing-3" class="quarto-float quarto-figure quarto-figure-center anchored" height="470" width="758">
 <figure class="quarto-float quarto-subfloat-fig figure">
 <div aria-describedby="fig-knn-regression-smoothing-3-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <img src="chapter-6_files/figure-html/fig-knn-regression-smoothing-output-3.png" id="fig-knn-regression-smoothing-3" data-ref-parent="fig-knn-regression-smoothing" width="758" height="470" class="figure-img">
@@ -939,7 +942,7 @@ J(c) = \sum_{i\in N_k(x)}(y_i-c)^2
 </div>
 </div>
 <div class="cell-output cell-output-display">
-<div id="fig-knn-regression-smoothing-4" class="quarto-float quarto-figure quarto-figure-center anchored" width="758" height="470">
+<div id="fig-knn-regression-smoothing-4" class="quarto-float quarto-figure quarto-figure-center anchored" height="470" width="758">
 <figure class="quarto-float quarto-subfloat-fig figure">
 <div aria-describedby="fig-knn-regression-smoothing-4-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <img src="chapter-6_files/figure-html/fig-knn-regression-smoothing-output-4.png" id="fig-knn-regression-smoothing-4" data-ref-parent="fig-knn-regression-smoothing" width="758" height="470" class="figure-img">
