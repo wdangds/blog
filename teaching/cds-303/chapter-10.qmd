@@ -5,11 +5,1764 @@ tags:
   - machine-learning
 sidebar: teaching
 ---
+The preceding modeling chapters considered methods that learn from a target variable. Suppose now we have a dataset that contains observations $x_1, x_2, \dots, x_N\in \mathbb R^{D}$, but no response variable has been specified. The analyst does not initially know which directions in the feature space matter, which variables carry redundant information, whether the observations lie near a lower-dimensional structure, or whether the measurements are dominated by noise.
 
-## Overview
+PCA seeks directions along which the observations vary most. It replaces the original variables with new variables called **principal component scores**. These components are mutually orthogonal linear combinations of the original features and are ordered according to the amount of sample variance they explain.
 
-Add your Chapter 10 content here.
+At a geometric level, PCA approximates a cloud of observations by a lower-dimensional affine subspace. At an algebraic level, it computes eigenvectors of the covariance matrix or right singular vectors of the centered data matrix. At an optimization level, it solves two equivalent problems:
 
-Previous chapter: [Data modeling - Bayesian Inference](chapter-9.qmd)
+1. maximize the variance retained after projection;
+2. minimize the squared reconstruction error after dimension reduction.
+
+PCA is generally described as a non-parametric, unsupervised method. It does not use class labels or a response during fitting, and classical PCA does not specify a complete probability model. Its apparent simplicity, however, should not conceal its assumptions. PCA is linear, variance-oriented, sensitive to scale and outliers, and dependent on the geometry induced by the chosen variables.
+
+The central principle of PCA is:
+
+> Replace a high-dimensional coordinate system with an orthogonal coordinate system aligned with the dominant directions of variation.
+
+This transformation can support visualization, compression, denoising, exploratory analysis, feature construction, covariance regularization, and downstream modeling. It does not automatically discover the most scientifically important directions, nor does high variance necessarily imply high predictive or causal relevance.
+
+## 1. Data Representation and Preprocessing Geometry
+
+Let the data matrix be
+
+$$
+X= \begin{bmatrix} x_1^\top\\ x_2^\top\\ \vdots\\ x_N^\top \end{bmatrix} \in\mathbb{R}^{N\times D},
+$$
+
+where:
+
+- $N$ is the number of observations;
+- $D$ is the number of measured variables;
+- row $n$ contains observation $x_n^\top$;
+- column $j$ contains measurements of variable $j$.
+
+The sample mean vector is
+
+$$
+\bar{x} = \frac{1}{N}\sum_{n=1}^{N}x_n.
+$$
+
+Define the centered observation
+
+$$
+\tilde{x}_n=x_n-\bar{x}.
+$$
+The centered data matrix is
+
+$$
+X_c = X-\mathbf{1}_N\bar{x}^\top,
+$$
+where $\mathbf{1}_N$ is an $N$-dimensional vector of ones.
+
+The covariance matrix using the $1/N$ convention is
+
+$$
+S = \frac{1}{N}X_c^\top X_c = \frac{1}{N} \sum_{n=1}^{N} (x_n-\bar{x})(x_n-\bar{x})^\top.
+$$
+
+Many statistical implementations use
+
+$$
+S_{\text{sample}} = \frac{1}{N-1}X_c^\top X_c.
+$$
+
+The eigenvectors are identical under both conventions. Only the eigenvalues differ by the factor $N/(N-1)$.
+
+::: {.callout-tip title="Why Centering is Necessary"}
+
+Classical PCA must ordinarily be applied to centered data.
+
+Without centering, the [second-moment matrix](https://en.wikipedia.org/wiki/Structure_tensor) is
+
+$$
+\frac{1}{N}X^\top X = S+\bar{x}\bar{x}^\top.
+$$
+:::
+
+::: {.callout-note title="Theorem: Decomposition of the Uncentered Second Moment"}
+
+_For a dataset with mean $\bar{x}$_,
+
+$$
+\frac{1}{N}\sum_{n=1}^{N}x_nx_n^\top = S+\bar{x}\bar{x}^\top.
+$$
+:::
+
+::: {.callout-tip title="Proof"}
+
+Write
+
+$$
+x_n=(x_n-\bar{x})+\bar{x}.
+$$
+
+Then
+
+$$
+x_nx_n^\top = (x_n-\bar{x})(x_n-\bar{x})^\top + (x_n-\bar{x})\bar{x}^\top + \bar{x}(x_n-\bar{x})^\top + \bar{x}\bar{x}^\top.
+$$
+
+Average over $n$. Since
+
+$$
+\sum_{n=1}^{N}(x_n-\bar{x})=0,
+$$
+
+the two cross-terms vanish. Therefore,
+
+$$
+\frac{1}{N}\sum_{n=1}^{N}x_nx_n^\top = \frac{1}{N}\sum_{n=1}^{N} (x_n-\bar{x})(x_n-\bar{x})^\top + \bar{x}\bar{x}^\top = S+\bar{x}\bar{x}^\top.
+$$
+
+:::
+
+Hence, an uncentered decomposition may identify the direction from the origin to the mean rather than directions of variation around the mean.
+
+### 1.1. Covariance PCA Versus Correlation PCA
+
+Centering does not resolve differences in measurement scale.
+
+Suppose a health dataset contains:
+
+- annual income measured in dollars;
+- age measured in years;
+- body temperature measured in degrees Celsius;
+- a biomarker measured in milligrams per liter.
+
+A variable with large numerical variance may dominate the covariance matrix even if it is not substantively more important.
+
+Standardization transforms each variable to
+
+$$
+z_{nj} = \frac{x_{nj}-\bar{x}_j}{s_j},
+$$
+
+where $s_j$ is its sample standard deviation.
+
+PCA applied to standardized variables is equivalent to eigendecomposition of the correlation matrix
+
+$$
+R = D_s^{-1}SD_s^{-1},
+$$
+
+where $D_s = \operatorname{diag}(s_1,\ldots,s_D).$
+
+**Covariance-based PCA is suitable when:**
+
+- variables share meaningful units;
+- absolute variance is scientifically relevant;
+- larger physical variability should receive greater weight.
+
+**Correlation-based PCA is suitable when:**
+
+- units differ;
+- variable scales are arbitrary;
+- relative standardized variation is the intended geometry.
+
+Standardization is not automatically correct. It changes the problem. Covariance PCA asks which physical directions have greatest total variation. Correlation PCA asks which standardized combinations explain the greatest relative variation.
+
+### 1.2. Messy Data Before PCA
+
+PCA requires a numerical matrix, but real data rarely arrive as a clean, complete, homogeneous array.
+
+Important problems include:
+
+#### 1.2.1 Missing Values
+
+Ordinary PCA cannot directly eigendecompose a matrix containing undefined values. Common responses include:
+
+- complete-case removal;
+- simple mean or median imputation;
+- multivariate imputation;
+- iterative low-rank reconstruction;
+- probabilistic PCA with missing-data inference.
+
+Mean imputation preserves the column mean but reduces apparent variance and can distort covariance. If missingness is systematic, the estimated principal directions may describe the imputation mechanism rather than the underlying phenomenon.
+
+#### 1.2.2 Categorical Variables
+
+Naively applying PCA to integer category codes creates artificial geometry. Coding regions as
+
+$$
+\text{North}=1,\quad \text{East}=2,\quad \text{South}=3
+$$
+
+implies distances and ordering that may not exist.
+
+One-hot encoding is possible, but ordinary Euclidean PCA may still be inappropriate for highly categorical data. Multiple correspondence analysis or methods using suitable mixed-data metrics may be preferable.
+
+#### 1.2.3 Outliers
+
+PCA is based on squared distances and sample covariance. A small number of extreme observations can rotate the principal axes dramatically.
+
+If one observation lies far from the center, its covariance contribution is
+
+$$
+(x_n-\bar{x})(x_n-\bar{x})^\top,
+$$
+
+which grows quadratically with distance.
+
+Outliers must not be deleted automatically; they may be scientifically important. The analyst should distinguish:
+
+- recording errors;
+- data-processing errors;
+- rare but valid cases;
+- observations from a different population;
+- influential points revealing non-Gaussian structure.
+
+Robust PCA variants can reduce the influence of extreme observations.
+
+#### 1.2.4 Nonstationary or Mixed Populations
+
+A leading principal component may represent:
+
+- time drift;
+- instrument changes;
+- batch effects;
+- population structure;
+- site differences;
+- a mixture of distinct subgroups.
+
+This may be useful, but interpretation requires examining how scores relate to known metadata.
+
+## 2. The Maximum-Variance Formulation
+
+### 2.1. Projection onto a Direction
+
+Let $u\in\mathbb{R}^D$ be a unit vector ($u^\top u=1$). The scalar projection, or score, of centered observation $x_n$ onto $u$ is
+
+$$
+z_n=u^\top(x_n-\bar{x}).
+$$
+
+The sample mean of the projected values is zero:
+
+$$
+\frac{1}{N}\sum_{n=1}^{N}z_n = u^\top \left( \frac{1}{N}\sum_{n=1}^{N}(x_n-\bar{x}) \right) =0.
+$$
+
+The variance of the projection is
+
+$$
+\operatorname{Var}(z) = \frac{1}{N}\sum_{n=1}^{N}z_n^2.
+$$
+
+Substitute $z_n=u^\top(x_n-\bar{x})$:
+
+$$
+\operatorname{Var}(z) = \frac{1}{N}\sum_{n=1}^{N} u^\top(x_n-\bar{x})(x_n-\bar{x})^\top u.
+$$
+
+Move u outside the sum:
+
+$$
+\operatorname{Var}(z) = u^\top \left[ \frac{1}{N}\sum_{n=1}^{N} (x_n-\bar{x})(x_n-\bar{x})^\top \right] u.
+$$
+
+Therefore,
+
+$$
+\operatorname{Var}(z)=u^\top Su.
+$$
+This quadratic form is called the [**Rayleigh quotient**](https://en.wikipedia.org/wiki/Rayleigh_quotient) when divided by $u^\top u$.
+
+::: {.callout-note title="Definition: First Principal Component Direction"}
+
+The first principal direction $u_1$ is the unit vector maximizing projected variance:
+
+$$
+u_1 = \arg\max_{u} u^\top Su
+$$
+
+subject to $u^\top u=1.$ The corresponding score for observation n is
+
+$$
+z_{n1}=u_1^\top(x_n-\bar{x}).
+$$
+
+:::
+### 2.2. Lagrange-Multiplier Derivation
+
+Construct the Lagrangian
+
+$$
+\mathcal{L}(u,\lambda) = u^\top Su - \lambda(u^\top u-1).
+$$
+
+Differentiate with respect to u:
+
+$$
+\nabla_u \mathcal{L} = 2Su-2\lambda u.
+$$
+
+At a stationary point, $Su=\lambda u$. Thus, every stationary direction is an eigenvector of $S$.
+
+Premultiply by $u^\top$:
+
+$$
+u^\top Su = \lambda u^\top u=\lambda
+$$
+
+Therefore, the projected variance associated with an eigenvector equals its eigenvalue. The maximum variance is obtained from the largest eigenvalue.
+
+::: {.callout-note title="Theorem: Maximum-Variance Principal Component"}
+
+_Let S be a symmetric positive semidefinite covariance matrix with ordered eigenvalues_
+
+$$
+\lambda_1\geq\lambda_2\geq\cdots\geq\lambda_D\geq0
+$$
+
+_and corresponding orthonormal eigenvectors $u_1,u_2,\ldots,u_D$. Then_
+
+$$
+\max_{\|u\|=1}u^\top Su=\lambda_1,
+$$
+
+_and the maximum is attained at $u=u_1$, up to sign and possible eigenspace nonuniqueness._
+:::
+
+::: {.callout-tip title="Proof"}
+
+Expand an arbitrary unit vector in the orthonormal eigenbasis:
+
+$$
+u=\sum_{j=1}^{D}a_ju_j,
+$$
+
+where $\sum_{j=1}^{D}a_j^2=1.$ Then
+
+$$
+u^\top Su = \left(\sum_i a_i u_i^\top\right) S \left(\sum_j a_j u_j\right).
+$$
+
+Since $Su_j=\lambda_j u_j$ and $u_i^\top u_j=\delta_{ij}$,
+
+$$
+u^\top Su = \sum_{j=1}^{D}\lambda_j a_j^2.
+$$
+
+Because $\lambda_j\leq\lambda_1$,
+
+$$
+u^\top Su \leq \lambda_1\sum_{j=1}^{D}a_j^2 = \lambda_1.
+$$
+
+Equality occurs when $u$ lies entirely in the eigenspace associated with $\lambda_1$.
+
+:::
+
+### 2.3. Subsequent Principal Components
+
+The second principal direction maximizes projected variance subject to orthogonality with the first:
+
+$$
+u_2 = \arg\max_u u^\top Su\qquad \text{ subject to } u^\top u=1, u^\top u_1=0.
+$$
+
+The solution is the eigenvector associated with $\lambda_2$. More generally,
+
+$$
+u_m = \arg\max_u u^\top Su \qquad \text{subject to } u^\top u=1,\quad u^\top u_j=0, \quad j<m.
+$$
+
+The solution is the eigenvector associated with $\lambda_m$. The principal directions form an orthonormal matrix
+
+$$
+U= \begin{bmatrix} u_1&u_2&\cdots&u_D \end{bmatrix},
+$$
+satisfying $U^\top U=I$ and $S=U\Lambda U^\top,$ where
+
+$$
+\Lambda = \operatorname{diag}(\lambda_1,\ldots,\lambda_D).
+$$
+
+### 2.4.  Principal Component Scores
+
+Retaining the first M directions gives the loading matrix
+
+$$
+U_M= \begin{bmatrix} u_1&u_2&\cdots&u_M \end{bmatrix} \in\mathbb{R}^{D\times M}.
+$$
+
+The score matrix is
+
+$$
+Z=X_cU_M \in\mathbb{R}^{N\times M}.
+$$
+
+For observation $n$,
+
+$$
+z_n=U_M^\top(x_n-\bar{x}).
+$$
+
+The covariance of the full score vector is diagonal:
+
+$$
+\frac{1}{N}Z^\top Z = U^\top SU = \Lambda.
+$$
+
+Thus, principal components are uncorrelated:
+
+$$
+\operatorname{Cov}(Z_i,Z_j)=0, \qquad i\neq j.
+$$
+
+Uncorrelated does not generally mean statistically independent. Independence follows under stronger conditions, such as joint multivariate normality.
+
+## 3. Minimum Reconstruction Error
+### 3.1. Orthogonal Projection onto a Subspace
+
+Let $U_M$ contain $M$ orthonormal basis vectors. The orthogonal projection matrix is
+
+$$
+P_M=U_MU_M^\top.
+$$
+For a centered observation $\tilde{x}$, its reduced representation is
+
+$$
+z=U_M^\top\tilde{x},
+$$
+
+and its reconstruction is
+
+$$
+\hat{x} = \bar{x}+U_Mz.
+$$
+
+Substituting $z$,
+
+$$
+\hat{x} = \bar{x} + U_MU_M^\top(x-\bar{x}).
+$$
+
+The residual is
+
+$$
+r = x-\hat{x} = (I-U_MU_M^\top)(x-\bar{x}).
+$$
+
+### 3.2. Reconstruction Objective
+
+PCA seeks an $M$-dimensional subspace minimizing total squared reconstruction error:
+
+$$
+J(U_M) = \frac{1}{N} \sum_{n=1}^{N} \left\| (x_n-\bar{x}) - U_MU_M^\top(x_n-\bar{x}) \right\|_2^2
+$$
+subject to $U_M^\top U_M=I_M.$
+
+In matrix notation,
+$$
+J(U_M) = \frac{1}{N} \|X_c-X_cU_MU_M^\top\|_F^2.
+$$
+
+### 3.3. Variance and Reconstruction Equivalence
+
+For a centered observation $\tilde x$, the orthogonal decomposition gives
+
+$$
+\tilde{x} = P_M\tilde{x} + (I-P_M)\tilde{x}.
+$$
+
+The projected and residual components are orthogonal, so by the Pythagorean theorem,
+
+$$
+\|\tilde{x}\|^2 = \|P_M\tilde{x}\|^2 + \|(I-P_M)\tilde{x}\|^2.
+$$
+
+Average over all observations:
+
+$$
+\frac{1}{N}\sum_n\|\tilde{x}_n\|^2 = \frac{1}{N}\sum_n\|P_M\tilde{x}_n\|^2 + J(U_M).
+$$
+
+The total variance on the left is fixed. Therefore:
+
+$$
+\text{minimizing reconstruction error} \iff \text{maximizing retained projected variance}.
+$$
+
+This proves the equivalence of the two PCA formulations.
+
+### 3.4. Reconstruction Error Theorem
+
+::: {.callout-note title="Optimal Rank-$M$ PCA Reconstruction"}
+
+_Let_ $\lambda_1\geq\lambda_2\geq\cdots\geq\lambda_D$ be the covariance eigenvalues. Among all $M$-dimensional linear subspaces, the subspace spanned by $u_1,\ldots,u_M$ minimizes average squared orthogonal reconstruction error. The minimum error is
+
+$$
+J_M^* = \sum_{j=M+1}^{D}\lambda_j.
+$$
+
+:::
+
+::: {.callout-tip title="Proof"}
+
+Represent the centered observation in the complete eigenbasis:
+
+$$
+\tilde{x}_n = \sum_{j=1}^{D}z_{nj}u_j.
+$$
+
+The PCA rank-$M$ reconstruction is
+
+$$
+\hat{\tilde{x}}_n = \sum_{j=1}^{M}z_{nj}u_j.
+$$
+
+The residual is
+
+$$
+\tilde{x}_n-\hat{\tilde{x}}_n = \sum_{j=M+1}^{D}z_{nj}u_j.
+$$
+
+Because the eigenvectors are orthonormal,
+
+$$
+\left\| \tilde{x}_n-\hat{\tilde{x}}_n \right\|^2 = \sum_{j=M+1}^{D}z_{nj}^2.
+$$
+
+Average over observations:
+
+$$
+J_M = \sum_{j=M+1}^{D} \frac{1}{N} \sum_{n=1}^{N}z_{nj}^2.
+$$
+
+The variance of component $j$ is $\lambda_j$, so
+
+$$
+J_M = \sum_{j=M+1}^{D}\lambda_j.
+$$
+
+Retaining the largest eigenvalues minimizes the discarded sum. This result is also a consequence of the [Eckart–Young–Mirsky theorem](https://rich-d-wilkinson.github.io/MATH3030/3.5-lowrank.html) for optimal low-rank matrix approximation.
+
+:::
+
+## 4. Singular Value Decomposition
+
+### 4.1. SVD of the Centered Data Matrix
+
+Instead of explicitly forming $S$, compute the singular value decomposition
+
+$$
+X_c=U\Sigma V^\top.
+$$
+
+To avoid conflicting notation with PCA loading vectors, interpret:
+
+- $U\in\mathbb{R}^{N\times r}$: left singular vectors;
+- $V\in\mathbb{R}^{D\times r}$: right singular vectors;
+- $\Sigma=\operatorname{diag}(\sigma_1,\ldots,\sigma_r)$;
+- $r=\operatorname{rank}(X_c)$.
+
+Then
+
+$$
+X_c^\top X_c = V\Sigma^2V^\top.
+$$
+
+Therefore,
+
+$$
+S = \frac{1}{N}V\Sigma^2V^\top.
+$$
+
+The PCA directions are the columns of $V$, and the covariance eigenvalues are
+
+$$
+\lambda_j=\frac{\sigma_j^2}{N}.
+$$
+Using the $1/(N-1)$ covariance convention gives
+
+$$
+\lambda_j=\frac{\sigma_j^2}{N-1}.
+$$
+
+The score matrix is
+
+$$
+Z=X_cV=U\Sigma.
+$$
+
+::: {.callout-tip title="Why SVD is usually preferred?"}
+
+Computing PCA by SVD is usually more stable than explicitly constructing and diagonalizing $X_c^\top X_c$.
+
+Forming the covariance matrix squares the condition number:
+
+$$
+\kappa(X_c^\top X_c) = \kappa(X_c)^2.
+$$
+This can amplify numerical instability when the data matrix contains nearly dependent columns.
+
+SVD also naturally supports:
+
+- rank-deficient data;
+- $D\gg N$ settings;
+- truncated algorithms;
+- randomized approximations;
+- direct low-rank reconstruction.
+
+:::
+
+### 4.2. Dual PCA for $D\gg N$
+
+When the number of variables is much larger than the number of observations, the covariance matrix $X_c^\top X_c$ has dimension $D\times D$, which may be expensive to store or diagonalize.
+
+Instead, solve the eigenproblem for
+
+$$
+G = \frac{1}{N}X_cX_c^\top \in\mathbb{R}^{N\times N}.
+$$
+
+Suppose $Gv_i=\lambda_i v_i$. Define
+
+$$
+u_i = \frac{X_c^\top v_i}{\sqrt{N\lambda_i}}.
+$$
+
+Then $Su_i = \lambda_i u_i.$
+
+::: {.callout-tip title="Proof"}
+
+Starting from
+
+$$
+\frac{1}{N}X_cX_c^\top v_i = \lambda_i v_i,
+$$
+
+multiply by $X_c^\top$:
+
+$$
+\frac{1}{N} X_c^\top X_cX_c^\top v_i = \lambda_i X_c^\top v_i.
+$$
+
+Divide by $\sqrt{N\lambda_i}$:
+
+$$
+\frac{1}{N} X_c^\top X_c \left( \frac{X_c^\top v_i}{\sqrt{N\lambda_i}} \right) = \lambda_i \left( \frac{X_c^\top v_i}{\sqrt{N\lambda_i}} \right).
+$$
+
+Thus, $Su_i=\lambda_i u_i$.
+
+:::
+
+## 5. Explained Variance and Selecting Dimension 
+
+### 5.1. Explained Variance Ratio
+
+The total variance is
+
+$$
+\operatorname{tr}(S) = \sum_{j=1}^{D}\lambda_j.
+$$
+
+The explained variance ratio of component $j$ is
+
+$$
+EVR_j = \frac{\lambda_j} {\sum_{\ell=1}^{D}\lambda_\ell}.
+$$
+
+The cumulative explained variance for $M$ components is
+
+$$
+CEV(M) = \frac{\sum_{j=1}^{M}\lambda_j} {\sum_{j=1}^{D}\lambda_j}.
+$$
+
+A common rule selects the smallest $M$ satisfying
+
+$$
+CEV(M)\geq\tau,
+$$
+
+where $\tau$ may be 0.90, 0.95, or 0.99.
+
+This rule is convenient but not universal. A component with low global variance may contain important rare-group structure. Conversely, high variance may reflect nuisance effects, measurement scale, batch effects, or noise.
+
+Other selection tools include:
+
+- scree plots;
+- reconstruction validation;
+- parallel analysis;
+- downstream task performance;
+- domain constraints;
+- probabilistic model evidence.
+
+### 5.2. Scree Plot
+
+A scree plot displays $\lambda_j$ against component index $j$. A visible elbow may indicate a transition from dominant structured components to smaller residual components.
+
+The elbow is often subjective. When eigenvalues decay gradually, no natural low-dimensional boundary may exist.
+
+## 6. Loadings, Scores, and Interpretation
+
+### 6.1. Scores and Loadings
+
+PCA produces two distinct objects.
+
+#### Scores
+
+The score of observation n on component j is
+
+$$
+z_{nj} = u_j^\top(x_n-\bar{x}).
+$$
+
+Scores describe observations in the component coordinate system.
+
+#### Loadings
+
+The entries of $u_j$ describe how original variables contribute to principal direction j.
+
+For
+
+$$
+u_j= \begin{bmatrix} u_{1j}\\ u_{2j}\\ \vdots\\ u_{Dj} \end{bmatrix},
+$$
+
+a large magnitude $|u_{kj}|$ means variable k strongly contributes to the component direction.
+
+The sign of an eigenvector is arbitrary. Both $u_j$ and $-u_j$ describe the same principal axis. Therefore, component signs may differ across software without changing the fitted subspace.
+
+### 6.2. Loading Interpretation Requires Care
+
+A principal component is not automatically a real latent construct. An analyst may label a component “economic development,” “health severity,” or “morphological size,” but such names are interpretations of a weighted combination.
+
+Interpretation should consider:
+
+- loading magnitude;
+- loading sign relative to other variables;
+- variable units and scaling;
+- score patterns across observations;
+- stability under resampling;
+- known measurement structure.
+
+When eigenvalues are similar, individual eigenvectors may be unstable even if the span of their combined subspace is stable.
+
+### 6.3. Biplots
+
+A PCA biplot places observations and variable directions in the same two-dimensional display.
+
+Observations are represented by score coordinates such as $(z_{n1},z_{n2}).$ Variables are represented through loading-related vectors.
+
+Approximate interpretation:
+
+- nearby points have similar projected profiles;
+- long variable arrows indicate strong representation in the displayed plane;
+- arrows in similar directions indicate positive relationships;
+- opposite directions suggest negative relationships;
+- near-right angles suggest weak projected correlation.
+
+A biplot is a projection. Apparent distances and angles can be misleading when the first two components explain only a modest share of total variance.
+
+## 7. Wine Chemistry
+
+The Wine dataset contains chemical measurements for wines from three cultivars. PCA can reveal dominant chemical variation without using cultivar labels during fitting. Labels may be added afterward only to interpret the resulting unsupervised representation.
+
+The variables have different scales, so standardization is appropriate when the aim is to prevent high-variance measurements from dominating solely because of units.
+
+```{python}
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+
+from sklearn.datasets import load_wine
+from sklearn.preprocessing import StandardScaler
+from sklearn.decomposition import PCA
+
+wine = load_wine(as_frame=True)
+X = wine.data
+labels = wine.target
+target_names = wine.target_names
+
+feature_std = X.std().sort_values(ascending=False)
+
+plt.figure(figsize=(10, 5))
+plt.bar(feature_std.index, feature_std.values)
+plt.title("Wine Dataset: Original Feature Standard Deviations")
+plt.xlabel("Chemical variable")
+plt.ylabel("Sample standard deviation")
+plt.xticks(rotation=75)
+plt.tight_layout()
+plt.show()
+
+scaler = StandardScaler()
+X_scaled = scaler.fit_transform(X)
+
+pca = PCA()
+scores = pca.fit_transform(X_scaled)
+
+explained = pca.explained_variance_ratio_
+cumulative = np.cumsum(explained)
+
+component_index = np.arange(1, len(explained) + 1)
+
+plt.figure(figsize=(8, 5))
+plt.plot(component_index, explained, marker="o", label="Individual variance")
+plt.plot(component_index, cumulative, marker="s", label="Cumulative variance")
+plt.axhline(0.90, linestyle="--", label="90% threshold")
+plt.title("Wine PCA: Explained Variance")
+plt.xlabel("Principal component")
+plt.ylabel("Explained variance ratio")
+plt.legend()
+plt.tight_layout()
+plt.show()
+
+plt.figure(figsize=(8, 6))
+
+for class_id, name in enumerate(target_names):
+    mask = labels.to_numpy() == class_id
+    plt.scatter(
+        scores[mask, 0],
+        scores[mask, 1],
+        alpha=0.75,
+        label=name
+    )
+
+plt.title("Wine Samples Projected onto the First Two Components")
+plt.xlabel(f"PC1 ({explained[0]:.1%} variance)")
+plt.ylabel(f"PC2 ({explained[1]:.1%} variance)")
+plt.legend()
+plt.tight_layout()
+plt.show()
+
+loadings = pca.components_.T
+
+plt.figure(figsize=(9, 7))
+plt.scatter(scores[:, 0], scores[:, 1], alpha=0.25)
+
+scale_factor = 4.0
+
+for j, feature in enumerate(X.columns):
+    x_loading = loadings[j, 0] * scale_factor
+    y_loading = loadings[j, 1] * scale_factor
+
+    plt.arrow(
+        0,
+        0,
+        x_loading,
+        y_loading,
+        head_width=0.08,
+        length_includes_head=True
+    )
+    plt.text(
+        x_loading * 1.08,
+        y_loading * 1.08,
+        feature,
+        fontsize=8
+    )
+
+plt.axhline(0, linewidth=0.8)
+plt.axvline(0, linewidth=0.8)
+plt.title("Wine PCA Biplot: Scores and Variable Directions")
+plt.xlabel("PC1")
+plt.ylabel("PC2")
+plt.tight_layout()
+plt.show()
+```
+
+This example illustrates several principles:
+
+1. PCA fitting does not use cultivar labels.
+2. Standardization changes the geometry by equalizing marginal feature scales.
+3. Labels may be overlaid after fitting to investigate whether unsupervised structure aligns with known groups.
+4. Components must be interpreted through both scores and loadings.
+
+## 8. Handwritten Digit Compression
+
+### 8.1. Images as High-Dimensional Vectors
+
+An $8\times8$ grayscale image can be flattened into $x\in\mathbb{R}^{64}$.
+
+Each coordinate is a pixel intensity. PCA treats each image as a point in a 64-dimensional space.
+
+The mean image is
+
+$$
+\bar{x} = \frac{1}{N}\sum_{n=1}^{N}x_n.
+$$
+
+Principal directions can be reshaped into $8\times8$ images. These component images represent dominant modes of variation across the dataset.
+
+A rank-M reconstruction is
+
+$$
+\hat{x} = \bar{x} + \sum_{j=1}^{M}z_j u_j.
+$$
+
+As $M$ increases, more image detail is recovered.
+
+### 8.2. Digit Reconstruction and Eigenimages
+
+```{python}
+import numpy as np
+import matplotlib.pyplot as plt
+
+from sklearn.datasets import load_digits
+from sklearn.decomposition import PCA
+from sklearn.preprocessing import StandardScaler
+
+digits = load_digits()
+X = digits.data
+y = digits.target
+images = digits.images
+
+plt.figure(figsize=(10, 4))
+
+for i in range(10):
+    plt.subplot(2, 5, i + 1)
+    plt.imshow(images[i], cmap="gray")
+    plt.title(f"Label: {y[i]}")
+    plt.axis("off")
+
+plt.suptitle("Real Handwritten Digit Observations")
+plt.tight_layout()
+plt.show()
+
+# Pixel intensities share the same physical scale, so center without
+# unit-variance standardization for image reconstruction.
+pca_full = PCA()
+scores = pca_full.fit_transform(X)
+
+plt.figure(figsize=(4, 4))
+plt.imshow(pca_full.mean_.reshape(8, 8), cmap="gray")
+plt.title("Mean Digit Image")
+plt.axis("off")
+plt.tight_layout()
+plt.show()
+
+plt.figure(figsize=(10, 5))
+
+for i in range(10):
+    plt.subplot(2, 5, i + 1)
+    component = pca_full.components_[i].reshape(8, 8)
+    bound = np.abs(component).max()
+
+    plt.imshow(
+        component,
+        cmap="coolwarm",
+        vmin=-bound,
+        vmax=bound
+    )
+    plt.title(f"PC {i + 1}")
+    plt.axis("off")
+
+plt.suptitle("Leading PCA Directions Reshaped as Images")
+plt.tight_layout()
+plt.show()
+
+cumulative = np.cumsum(pca_full.explained_variance_ratio_)
+
+plt.figure(figsize=(8, 5))
+plt.plot(
+    np.arange(1, len(cumulative) + 1),
+    cumulative,
+    marker="o",
+    markersize=3
+)
+plt.axhline(0.90, linestyle="--", label="90%")
+plt.axhline(0.95, linestyle=":", label="95%")
+plt.title("Digits PCA: Cumulative Explained Variance")
+plt.xlabel("Number of retained components")
+plt.ylabel("Cumulative explained variance")
+plt.legend()
+plt.tight_layout()
+plt.show()
+
+query_index = 13
+original = X[query_index]
+component_counts = [1, 3, 5, 10, 20, 40, 64]
+
+plt.figure(figsize=(14, 4))
+
+plt.subplot(2, 4, 1)
+plt.imshow(original.reshape(8, 8), cmap="gray")
+plt.title(f"Original: {y[query_index]}")
+plt.axis("off")
+
+for panel, m in enumerate(component_counts, start=2):
+    pca_m = PCA(n_components=m)
+    compressed = pca_m.fit_transform(X)
+    reconstructed = pca_m.inverse_transform(compressed)[query_index]
+
+    plt.subplot(2, 4, panel)
+    plt.imshow(reconstructed.reshape(8, 8), cmap="gray")
+    plt.title(f"{m} components")
+    plt.axis("off")
+
+plt.suptitle("Lossy PCA Reconstruction of a Real Digit")
+plt.tight_layout()
+plt.show()
+
+plt.figure(figsize=(9, 7))
+
+for digit in range(10):
+    mask = y == digit
+    plt.scatter(
+        scores[mask, 0],
+        scores[mask, 1],
+        s=18,
+        alpha=0.55,
+        label=str(digit)
+    )
+
+plt.title("Digits Projected onto the First Two Principal Components")
+plt.xlabel(
+    f"PC1 ({pca_full.explained_variance_ratio_[0]:.1%} variance)"
+)
+plt.ylabel(
+    f"PC2 ({pca_full.explained_variance_ratio_[1]:.1%} variance)"
+)
+plt.legend(ncol=2)
+plt.tight_layout()
+plt.show()
+```
+
+## 9. Eigenfaces
+
+A grayscale face image of height H and width W is represented as $x\in\mathbb{R}^{HW}$.
+
+Given aligned face images, PCA estimates:
+
+- the mean face;
+- principal modes of facial variation;
+- low-dimensional face coordinates;
+- approximate reconstructions.
+
+The principal directions reshaped as images are called **eigenfaces**. Turk and Pentland’s classical recognition framework represented faces through coefficients in an eigenface basis.
+
+PCA-based face recognition works best when images are aligned and collected under controlled conditions. Illumination, head pose, background, occlusion, and expression may dominate identity-related variation.
+
+```{python}
+import numpy as np
+import matplotlib.pyplot as plt
+
+from sklearn.datasets import fetch_olivetti_faces
+from sklearn.decomposition import PCA
+
+faces = fetch_olivetti_faces(shuffle=True, random_state=42)
+X = faces.data
+images = faces.images
+person_id = faces.target
+
+height, width = images.shape[1:]
+
+pca = PCA(n_components=100, whiten=False, random_state=42)
+scores = pca.fit_transform(X)
+
+plt.figure(figsize=(10, 5))
+
+for i in range(15):
+    plt.subplot(3, 5, i + 1)
+    plt.imshow(images[i], cmap="gray")
+    plt.title(f"Person {person_id[i]}")
+    plt.axis("off")
+
+plt.suptitle("Olivetti Face Dataset: Real Observations")
+plt.tight_layout()
+plt.show()
+
+plt.figure(figsize=(4, 4))
+plt.imshow(pca.mean_.reshape(height, width), cmap="gray")
+plt.title("Mean Face")
+plt.axis("off")
+plt.tight_layout()
+plt.show()
+
+plt.figure(figsize=(12, 6))
+
+for i in range(20):
+    plt.subplot(4, 5, i + 1)
+    component = pca.components_[i].reshape(height, width)
+    bound = np.abs(component).max()
+
+    plt.imshow(
+        component,
+        cmap="coolwarm",
+        vmin=-bound,
+        vmax=bound
+    )
+    plt.title(f"PC {i + 1}")
+    plt.axis("off")
+
+plt.suptitle("Leading Eigenfaces")
+plt.tight_layout()
+plt.show()
+
+query_index = 0
+component_counts = [5, 10, 25, 50, 100]
+
+plt.figure(figsize=(12, 4))
+
+plt.subplot(1, 6, 1)
+plt.imshow(images[query_index], cmap="gray")
+plt.title("Original")
+plt.axis("off")
+
+for panel, m in enumerate(component_counts, start=2):
+    pca_m = PCA(n_components=m, random_state=42)
+    z = pca_m.fit_transform(X)
+    reconstructed = pca_m.inverse_transform(z)[query_index]
+
+    plt.subplot(1, 6, panel)
+    plt.imshow(reconstructed.reshape(height, width), cmap="gray")
+    plt.title(f"M={m}")
+    plt.axis("off")
+
+plt.suptitle("Face Reconstruction from an Eigenface Basis")
+plt.tight_layout()
+plt.show()
+```
+
+## 10. Whitening and Sphering
+
+### 10.1. PCA Whitening
+
+Let the centered PCA coordinates be
+
+$$
+z=U^\top(x-\bar{x}).
+$$
+
+Their covariance is
+
+$$
+\operatorname{Cov}(z)=\Lambda.
+$$
+Whitening rescales each component by the inverse square root of its eigenvalue:
+
+$$
+z_{\text{white}} = \Lambda^{-1/2}U^\top(x-\bar{x}).
+$$
+
+Then
+
+$$
+\operatorname{Cov}(z_{\text{white}}) = \Lambda^{-1/2} U^\top SU \Lambda^{-1/2}.
+$$
+
+Since $U^\top SU=\Lambda$, we obtain
+
+$$
+\operatorname{Cov}(z_{\text{white}}) = \Lambda^{-1/2}\Lambda\Lambda^{-1/2} = I.
+$$
+
+Thus, whitened features are uncorrelated and have unit variance.
+
+### 10.2. Whitening Can Amplify Noise
+
+If an eigenvalue $\lambda_j$ is very small, multiplication by
+
+$$
+\frac{1}{\sqrt{\lambda_j}}
+$$
+greatly amplifies that direction. Small-variance directions may contain measurement noise.
+
+A regularized whitening transform is
+
+$$
+z_{\text{white}} = (\Lambda+\varepsilon I)^{-1/2} U^\top(x-\bar{x}),
+$$
+
+where $\varepsilon>0$ prevents extreme amplification.
+
+Whitening is useful when downstream methods assume spherical covariance, but it destroys the original variance hierarchy. It should not be treated as an automatically beneficial transformation.
+
+```{python}
+import numpy as np
+import matplotlib.pyplot as plt
+
+from sklearn.preprocessing import StandardScaler
+from sklearn.decomposition import PCA
+
+rng = np.random.default_rng(42)
+
+mean = np.array([0.0, 0.0])
+covariance = np.array([
+    [4.0, 3.2],
+    [3.2, 4.0]
+])
+
+X = rng.multivariate_normal(mean, covariance, size=500)
+
+pca_regular = PCA(whiten=False)
+X_pc = pca_regular.fit_transform(X)
+
+pca_white = PCA(whiten=True)
+X_white = pca_white.fit_transform(X)
+
+for transformed, title in [
+    (X, "Original Correlated Data"),
+    (X_pc, "PCA Coordinates"),
+    (X_white, "Whitened PCA Coordinates")
+]:
+    plt.figure(figsize=(6, 6))
+    plt.scatter(transformed[:, 0], transformed[:, 1], alpha=0.45)
+    plt.axhline(0, linewidth=0.8)
+    plt.axvline(0, linewidth=0.8)
+    plt.title(title)
+    plt.xlabel("Coordinate 1")
+    plt.ylabel("Coordinate 2")
+    plt.axis("equal")
+    plt.tight_layout()
+    plt.show()
+
+print("Original covariance:\n", np.cov(X, rowvar=False))
+print("PCA-coordinate covariance:\n", np.cov(X_pc, rowvar=False))
+print("Whitened covariance:\n", np.cov(X_white, rowvar=False))
+```
+
+## 11. Probabilistic PCA
+
+### 11.1. A Latent Gaussian Model
+
+Classical PCA gives a geometric decomposition but not a complete generative probability model. Probabilistic PCA, or PPCA, introduces latent variables.
+
+Let $z\in\mathbb{R}^M$ be a latent vector with $z\sim\mathcal{N}(0,I_M)$.
+
+The observed variable is generated by
+
+$$
+x=Wz+\mu+\epsilon,
+$$
+where $W\in\mathbb{R}^{D\times M}$, $\epsilon\sim\mathcal{N}(0,\sigma^2I_D)$.
+
+Conditional on $z$,
+
+$$
+x\mid z \sim \mathcal{N}(Wz+\mu,\sigma^2I).
+$$
+Marginalizing over $z$,
+
+$$
+x \sim \mathcal{N}(\mu,C),
+$$
+where $C=WW^\top+\sigma^2I$.
+
+::: {.callout-tip title="Derivation"}
+
+Because $x-\mu=Wz+\epsilon$, and $z$ and $\epsilon$ are independent,
+
+$$
+\operatorname{Cov}(x) = W\operatorname{Cov}(z)W^\top + \operatorname{Cov}(\epsilon).
+$$
+
+Therefore,
+
+$$
+\operatorname{Cov}(x) = WIW^\top+\sigma^2I = WW^\top+\sigma^2I.
+$$
+
+:::
+
+### 11.2. Relationship Between PPCA and Classical PCA
+
+At maximum likelihood, the column space of the PPCA loading matrix W is the classical principal subspace. Tipping and Bishop[^1] showed that the maximum-likelihood form is
+
+$$
+W_{\text{ML}} = U_M (\Lambda_M-\sigma^2I)^{1/2}R,
+$$
+
+where:
+
+- $U_M$ contains the leading covariance eigenvectors;
+- $\Lambda_M$ contains the leading eigenvalues;
+- $R$ is an arbitrary orthogonal rotation.
+
+The maximum-likelihood noise variance is the average of the discarded eigenvalues:
+
+$$
+\sigma_{\text{ML}}^2 = \frac{1}{D-M} \sum_{j=M+1}^{D}\lambda_j.
+$$
+
+PPCA supplies:
+
+- a likelihood;
+- posterior distributions for latent coordinates;
+- probabilistic handling of uncertainty;
+- an EM formulation;
+- principled extensions for missing data and mixtures.
+
+[^1]: Tipping, Michael E., and Christopher M. Bishop. _Probabilistic Principal Component Analysis_. n.d.
+
+
+### 11.3. Posterior Distribution of the Latent Variable
+
+Given an observation $x$, the latent posterior is Gaussian:
+
+$$
+p(z\mid x) = \mathcal{N}(z\mid m_z,\Sigma_z),
+$$
+
+where
+
+$$
+\begin{aligned}
+M_W&=W^\top W+\sigma^2I,\\
+m_z &= M_W^{-1}W^\top(x-\mu),\\
+\Sigma_z &= \sigma^2M_W^{-1}.
+\end{aligned}
+$$
+
+Unlike classical PCA scores, PPCA latent coordinates are uncertain random variables.
+
+## 12. Kernel PCA
+
+Classical PCA finds a linear subspace. If observations lie near a curved manifold, a linear projection may require many dimensions or may collapse distinct parts of the structure.
+
+Kernel PCA first maps data through $\phi:\mathcal{X}\rightarrow\mathcal{H},$ where $\mathcal{H}$ may be high- or infinite-dimensional, and then performs linear PCA in $\mathcal{H}$.
+
+The mapping is accessed through a kernel:
+
+$$
+k(x_i,x_j) = \langle\phi(x_i),\phi(x_j)\rangle.
+$$
+
+Define the Gram matrix
+$$
+K_{ij}=k(x_i,x_j).
+$$
+
+### 12.1. Centering the Kernel Matrix
+
+Even if the original $X$ is centered, $\phi(X)$ need not be centered in feature space.
+
+Let
+$$
+H = I_N-\frac{1}{N}\mathbf{1}\mathbf{1}^\top.
+$$
+
+The centered Gram matrix is $K_c=HKH$. Expanded,
+
+$$
+K_c = K - \frac{1}{N}\mathbf{1}\mathbf{1}^\top K - \frac{1}{N}K\mathbf{1}\mathbf{1}^\top + \frac{1}{N^2} \mathbf{1}\mathbf{1}^\top K \mathbf{1}\mathbf{1}^\top.
+$$
+
+Kernel PCA solves
+
+$$
+K_c\alpha_j=N\lambda_j\alpha_j.
+$$
+
+The component score of a training observation is obtained from kernel eigenvectors. For new observations, scores require centered kernel evaluations against the training data.
+
+```{python}
+import matplotlib.pyplot as plt
+
+from sklearn.datasets import make_circles
+from sklearn.decomposition import PCA, KernelPCA
+from sklearn.preprocessing import StandardScaler
+
+X, labels = make_circles(
+    n_samples=700,
+    factor=0.30,
+    noise=0.06,
+    random_state=42
+)
+
+X_scaled = StandardScaler().fit_transform(X)
+
+linear_pca = PCA(n_components=2)
+Z_linear = linear_pca.fit_transform(X_scaled)
+
+kernel_pca = KernelPCA(
+    n_components=2,
+    kernel="rbf",
+    gamma=8,
+    eigen_solver="arpack"
+)
+Z_kernel = kernel_pca.fit_transform(X_scaled)
+
+plt.figure(figsize=(7, 6))
+plt.scatter(
+    Z_linear[:, 0],
+    Z_linear[:, 1],
+    c=labels,
+    alpha=0.7
+)
+plt.title("Linear PCA on Concentric Circles")
+plt.xlabel("Linear PC1")
+plt.ylabel("Linear PC2")
+plt.tight_layout()
+plt.show()
+
+plt.figure(figsize=(7, 6))
+plt.scatter(
+    Z_kernel[:, 0],
+    Z_kernel[:, 1],
+    c=labels,
+    alpha=0.7
+)
+plt.title("RBF Kernel PCA on Concentric Circles")
+plt.xlabel("Kernel PC1")
+plt.ylabel("Kernel PC2")
+plt.tight_layout()
+plt.show()
+```
+
+## 13. Sparse PCA
+
+A classical loading vector usually has nonzero coefficients for most variables:
+
+$$
+u_j= (u_{1j},\ldots,u_{Dj})^\top.
+$$
+
+For datasets with thousands of variables, a component involving every variable may be difficult to interpret.
+
+Sparse PCA seeks loading vectors with many exact zeros:
+
+$$
+\|u_j\|_0 = \#\{k:u_{kj}\neq0\} \ll D.
+$$
+
+A direct sparse-variance objective may be written as
+
+$$
+\max_u u^\top Su\qquad 
+
+\text{subject to }
+
+\|u\|_2=1, \|u\|_0\leq q.
+$$
+
+The $L_0$ constraint is combinatorial. Practical approaches use relaxations, regression formulations, $L_1$ penalties, elastic-net penalties, or semidefinite approximations.
+
+A schematic penalized objective is
+
+$$
+\max_u \left[ u^\top Su-\lambda\|u\|_1 \right]
+\qquad 
+\text{subject to }
+
+\|u\|_2\leq1.
+$$
+
+Zou, Hastie, and Tibshirani developed a regression-based sparse PCA using lasso and elastic-net regularization [^2].
+
+::: {.callout-tip title="Interpretability-Variance Tradeoff"}
+Sparse loadings are easier to interpret, but sparsity changes the optimization problem. Sparse PCA usually explains less variance than ordinary PCA for the same number of components.
+
+Thus, sparse PCA balances:
+$$
+\text{variance retention} \quad\text{against}\quad \text{loading simplicity}.
+$$
+Sparse components may also lose exact orthogonality, depending on the formulation.
+:::
+
+```{python}
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+
+from sklearn.datasets import load_breast_cancer
+from sklearn.preprocessing import StandardScaler
+from sklearn.decomposition import PCA, SparsePCA
+
+data = load_breast_cancer(as_frame=True)
+X = data.data
+
+X_scaled = StandardScaler().fit_transform(X)
+
+ordinary = PCA(n_components=3)
+ordinary_scores = ordinary.fit_transform(X_scaled)
+
+sparse = SparsePCA(
+    n_components=3,
+    alpha=2.0,
+    ridge_alpha=0.01,
+    random_state=42
+)
+sparse_scores = sparse.fit_transform(X_scaled)
+
+ordinary_loadings = pd.DataFrame(
+    ordinary.components_.T,
+    index=X.columns,
+    columns=["PC1", "PC2", "PC3"]
+)
+
+sparse_loadings = pd.DataFrame(
+    sparse.components_.T,
+    index=X.columns,
+    columns=["SPC1", "SPC2", "SPC3"]
+)
+
+# Compare loading sparsity for first component
+comparison = pd.DataFrame({
+    "Ordinary PCA": ordinary_loadings["PC1"],
+    "Sparse PCA": sparse_loadings["SPC1"]
+})
+
+comparison = comparison.reindex(
+    comparison.abs().max(axis=1).sort_values(ascending=False).index
+)
+
+plt.figure(figsize=(11, 6))
+positions = np.arange(len(comparison))
+
+plt.bar(
+    positions - 0.2,
+    comparison["Ordinary PCA"],
+    width=0.4,
+    label="Ordinary PCA"
+)
+
+plt.bar(
+    positions + 0.2,
+    comparison["Sparse PCA"],
+    width=0.4,
+    label="Sparse PCA"
+)
+
+plt.xticks(positions, comparison.index, rotation=80)
+plt.axhline(0, linewidth=0.8)
+plt.title("Ordinary and Sparse First-Component Loadings")
+plt.ylabel("Loading coefficient")
+plt.legend()
+plt.tight_layout()
+plt.show()
+
+print("Number of nonzero ordinary PC1 loadings:",
+      np.count_nonzero(ordinary.components_[0]))
+
+print("Number of nonzero sparse PC1 loadings:",
+      np.count_nonzero(sparse.components_[0]))
+```
+
+
+
+[^2]: Zou, Hui, Trevor Hastie, and Robert Tibshirani. “Sparse Principal Component Analysis.” _Journal of Computational and Graphical Statistics_ 15, no. 2 (2006): 265–86. [https://doi.org/10.1198/106186006X113430](https://doi.org/10.1198/106186006X113430).
+
+## 14. PCA in Genetics and Population Structure
+
+In population genetics, observations may be individuals and columns may be genetic variants. A genotype matrix might encode the number of minor alleles $X_{ij}\in\{0,1,2\}$. PCA can reveal population structure because individuals with shared ancestry may have correlated allele-frequency patterns.
+
+A simplified standardized genotype value is
+
+$$
+Z_{ij} = \frac{X_{ij}-2p_j} {\sqrt{2p_j(1-p_j)}},
+$$
+where $p_j$ is the estimated allele frequency for variant $j$.
+
+PCA of $Z$ can expose continuous ancestry gradients, clusters, relatedness, and technical artifacts. Price et al. demonstrated how principal components can be used to detect and correct population stratification in genome-wide association studies[^3].
+
+::: {.callout-caution}
+
+A genetic PCA plot does not reveal biologically fixed “types.” Components depend on sampled populations, preprocessing, variant filtering, relatedness, and the geometry of the selected data.
+
+:::
+
+```{python}
+import numpy as np
+import matplotlib.pyplot as plt
+
+from sklearn.decomposition import PCA
+from sklearn.preprocessing import StandardScaler
+
+rng = np.random.default_rng(42)
+
+n_group = 120
+n_variants = 500
+
+# Group-specific allele frequencies
+base_freq = rng.uniform(0.05, 0.50, n_variants)
+shift = rng.normal(0, 0.05, n_variants)
+
+freq_a = np.clip(base_freq - shift, 0.01, 0.99)
+freq_b = np.clip(base_freq + shift, 0.01, 0.99)
+freq_c = np.clip(base_freq + 2 * shift, 0.01, 0.99)
+
+A = rng.binomial(2, freq_a, size=(n_group, n_variants))
+B = rng.binomial(2, freq_b, size=(n_group, n_variants))
+C = rng.binomial(2, freq_c, size=(n_group, n_variants))
+
+X = np.vstack([A, B, C])
+groups = np.repeat(["Population A", "Population B", "Population C"], n_group)
+
+X_scaled = StandardScaler().fit_transform(X)
+scores = PCA(n_components=2).fit_transform(X_scaled)
+
+plt.figure(figsize=(8, 6))
+
+for group in np.unique(groups):
+    mask = groups == group
+    plt.scatter(
+        scores[mask, 0],
+        scores[mask, 1],
+        alpha=0.65,
+        label=group
+    )
+
+plt.title("PCA of a Simulated Genotype Matrix")
+plt.xlabel("PC1")
+plt.ylabel("PC2")
+plt.legend()
+plt.tight_layout()
+plt.show()
+```
+
+[^3]: Price, Alkes L., Nick J. Patterson, Robert M. Plenge, Michael E. Weinblatt, Nancy A. Shadick, and David Reich. “Principal Components Analysis Corrects for Stratification in Genome-Wide Association Studies.” _Nature Genetics_ 38, no. 8 (2006): 904–9. [https://doi.org/10.1038/ng1847](https://doi.org/10.1038/ng1847).
+
+## 15. Denoising, Compression, and Anomaly Scores
+
+### 15.1. PCA Denoising
+
+Suppose $x=s+\epsilon$, where $s$ lies approximately in a low-dimensional signal subspace and $\epsilon$ is high-dimensional noise.
+
+A truncated PCA reconstruction
+
+$$
+\hat{x} = \bar{x} + U_MU_M^\top(x-\bar{x})
+$$
+
+removes components orthogonal to the retained subspace.
+
+This can denoise data when:
+
+- the signal is concentrated in leading components;
+- noise is broadly distributed across low-variance directions;
+- the training data adequately represent signal structure.
+
+PCA can also remove meaningful rare variation if that variation lies in discarded components.
+
+### 15.2. Reconstruction Error as an Anomaly Score
+
+For an observation $x$, define
+
+$$
+A_M(x) = \left\| (I-U_MU_M^\top)(x-\bar{x}) \right\|_2^2.
+$$
+
+Large reconstruction error indicates that the observation is poorly represented by the learned principal subspace. This can be used for anomaly detection, particularly when normal observations lie near a low-dimensional structure.
+
+However, an anomaly lying far along a retained high-variance component may have low reconstruction error. Complementary score-distance measures may be necessary.
+
+A score-space distance is
+
+$$
+T^2(x) = \sum_{j=1}^{M} \frac{z_j^2}{\lambda_j}.
+$$
+
+This is related to Hotelling’s $T^2$ statistic. Reconstruction error measures departure from the subspace; score distance measures extremeness within the subspace.
+
+```{python}
+import numpy as np
+import matplotlib.pyplot as plt
+
+from sklearn.decomposition import PCA
+from sklearn.preprocessing import StandardScaler
+
+rng = np.random.default_rng(42)
+
+# Normal observations near a 2D plane embedded in 5D
+latent = rng.normal(size=(500, 2))
+
+mixing = np.array([
+    [1.0, 0.2],
+    [0.5, 1.0],
+    [-0.8, 0.4],
+    [0.2, -0.9],
+    [0.7, 0.6]
+])
+
+normal = latent @ mixing.T + rng.normal(0, 0.08, size=(500, 5))
+
+# Anomalies departing from the normal subspace
+anomalies = rng.normal(size=(15, 5)) * 2.5
+
+X = np.vstack([normal, anomalies])
+true_kind = np.array(["normal"] * len(normal) + ["anomaly"] * len(anomalies))
+
+scaler = StandardScaler()
+normal_scaled = scaler.fit_transform(normal)
+X_scaled = scaler.transform(X)
+
+pca = PCA(n_components=2)
+pca.fit(normal_scaled)
+
+scores = pca.transform(X_scaled)
+reconstruction = pca.inverse_transform(scores)
+
+reconstruction_error = np.sum(
+    (X_scaled - reconstruction) ** 2,
+    axis=1
+)
+
+plt.figure(figsize=(8, 6))
+scatter = plt.scatter(
+    scores[:, 0],
+    scores[:, 1],
+    c=reconstruction_error,
+    s=35
+)
+plt.colorbar(scatter, label="Squared reconstruction error")
+plt.title("PCA Score Space with Reconstruction-Error Coloring")
+plt.xlabel("PC1")
+plt.ylabel("PC2")
+plt.tight_layout()
+plt.show()
+
+plt.figure(figsize=(8, 5))
+plt.hist(
+    reconstruction_error[true_kind == "normal"],
+    bins=35,
+    alpha=0.7,
+    label="Normal"
+)
+plt.hist(
+    reconstruction_error[true_kind == "anomaly"],
+    bins=15,
+    alpha=0.7,
+    label="Anomaly"
+)
+plt.title("PCA Reconstruction Error as an Anomaly Score")
+plt.xlabel("Squared reconstruction error")
+plt.ylabel("Count")
+plt.legend()
+plt.tight_layout()
+plt.show()
+```
+
+---
+Principal Component Analysis is a method for discovering and representing dominant linear variation in unlabeled, multivariate data. It replaces the original variables with orthogonal directions chosen from the covariance structure.
+
+The maximum-variance formulation begins with
+
+$$
+\max_{\|u\|=1}u^\top Su.
+$$
+
+Its solution is the leading covariance eigenvector. Subsequent components are obtained through orthogonality constraints and decreasing eigenvalues.
+
+The reconstruction formulation seeks an $M$-dimensional subspace minimizing
+
+$$
+\frac{1}{N} \|X_c-X_cU_MU_M^\top\|_F^2.
+$$
+
+Its solution is the same leading eigenspace, and the minimum lost variance is
+
+$$
+\sum_{j=M+1}^{D}\lambda_j.
+$$
+
+This equivalence explains why PCA simultaneously performs variance preservation and optimal linear compression.
+
+SVD provides the practical computational formulation:
+
+$$
+X_c=U\Sigma V^\top.
+$$
+
+The right singular vectors are principal directions, singular values determine explained variance, and truncated SVD gives the optimal low-rank representation.
+
+PCA can reveal redundancy, latent gradients, groups, batch effects, image structure, population structure, and low-rank signal. It can compress images, generate eigenfaces, whiten features, denoise observations, and create anomaly scores. Probabilistic PCA adds a latent Gaussian model and uncertainty. Kernel PCA extends the method to nonlinear feature spaces. Sparse PCA sacrifices some variance to obtain simpler loading patterns.
+
+The method’s limitations are equally fundamental. PCA is linear, scale-sensitive, outlier-sensitive, and unsupervised. It preserves high variance, not necessarily meaningful, predictive, causal, or rare variation. Its components depend on the variables, units, preprocessing decisions, observations, and sampling context.
+
+PCA should therefore be understood not as a neutral compression command but as a model of data geometry. It proposes that the most useful low-dimensional representation is the orthogonal linear subspace capturing the greatest variance. Whether that proposal is scientifically appropriate must be evaluated through data provenance, scale, loading interpretation, stability, reconstruction behavior, and the purpose of the analysis.
 
 Next chapter: [Data Modeling - Clustering](chapter-11.qmd)
