@@ -1065,7 +1065,7 @@ u_j= \begin{bmatrix} u_{1j}\\ u_{2j}\\ \vdots\\ u_{Dj} \end{bmatrix},
 <h2 class="anchored" data-anchor-id="wine-chemistry">7. Wine Chemistry</h2>
 <p>The Wine dataset contains chemical measurements for wines from three cultivars. PCA can reveal dominant chemical variation without using cultivar labels during fitting. Labels may be added afterward only to interpret the resulting unsupervised representation.</p>
 <p>The variables have different scales, so standardization is appropriate when the aim is to prevent high-variance measurements from dominating solely because of units.</p>
-<div id="b0961dd5" class="cell" data-execution_count="1">
+<div id="19f425b3" class="cell" data-execution_count="1">
 <details class="code-fold">
 <summary>Show code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
@@ -1222,7 +1222,7 @@ u_j= \begin{bmatrix} u_{1j}\\ u_{2j}\\ \vdots\\ u_{Dj} \end{bmatrix},
 </section>
 <section id="digit-reconstruction-and-eigenimages" class="level3">
 <h3 class="anchored" data-anchor-id="digit-reconstruction-and-eigenimages">8.2. Digit Reconstruction and Eigenimages</h3>
-<div id="f5dd6216" class="cell" data-execution_count="2">
+<div id="a663f691" class="cell" data-execution_count="2">
 <details class="code-fold">
 <summary>Show code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
@@ -1404,7 +1404,7 @@ u_j= \begin{bmatrix} u_{1j}\\ u_{2j}\\ \vdots\\ u_{Dj} \end{bmatrix},
 </ul>
 <p>The principal directions reshaped as images are called <strong>eigenfaces</strong>. Turk and Pentland’s classical recognition framework represented faces through coefficients in an eigenface basis.</p>
 <p>PCA-based face recognition works best when images are aligned and collected under controlled conditions. Illumination, head pose, background, occlusion, and expression may dominate identity-related variation.</p>
-<div id="502c53e2" class="cell" data-execution_count="3">
+<div id="a90f8fb1" class="cell" data-execution_count="3">
 <details class="code-fold">
 <summary>Show code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
@@ -1553,7 +1553,7 @@ z_{\text{white}} = (\Lambda+\varepsilon I)^{-1/2} U^\top(x-\bar{x}),
 \]</span></p>
 <p>where <span class="math inline">\(\varepsilon&gt;0\)</span> prevents extreme amplification.</p>
 <p>Whitening is useful when downstream methods assume spherical covariance, but it destroys the original variance hierarchy. It should not be treated as an automatically beneficial transformation.</p>
-<div id="321f0008" class="cell" data-execution_count="4">
+<div id="ded8aa8e" class="cell" data-execution_count="4">
 <details class="code-fold">
 <summary>Show code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
@@ -1739,7 +1739,7 @@ K_c = K - \frac{1}{N}\mathbf{1}\mathbf{1}^\top K - \frac{1}{N}K\mathbf{1}\mathbf
 K_c\alpha_j=N\lambda_j\alpha_j.
 \]</span></p>
 <p>The component score of a training observation is obtained from kernel eigenvectors. For new observations, scores require centered kernel evaluations against the training data.</p>
-<div id="d6c2cd66" class="cell" data-execution_count="5">
+<div id="f77a0208" class="cell" data-execution_count="5">
 <details class="code-fold">
 <summary>Show code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
@@ -1823,12 +1823,21 @@ u_j= (u_{1j},\ldots,u_{Dj})^\top.
 \|u_j\|_0 = \#\{k:u_{kj}\neq0\} \ll D.
 \]</span></p>
 <p>A direct sparse-variance objective may be written as</p>
-<p>$$ _u u^Su</p>
-<p>|u|_2=1, |u|_0q. $$</p>
+<p><span class="math display">\[
+\begin{aligned}
+\max_u \quad &amp; u^\top S u \\
+\text{subject to} \quad &amp; \|u\|_2=1, \\
+&amp; \|u\|_0\leq q.
+\end{aligned}
+\]</span></p>
 <p>The <span class="math inline">\(L_0\)</span> constraint is combinatorial. Practical approaches use relaxations, regression formulations, <span class="math inline">\(L_1\)</span> penalties, elastic-net penalties, or semidefinite approximations.</p>
 <p>A schematic penalized objective is</p>
-<p>$$ _u </p>
-<p>|u|_2. $$</p>
+<p><span class="math display">\[
+\begin{aligned}
+\max_u \quad &amp; u^\top S u-\lambda\|u\|_1 \\
+\text{subject to} \quad &amp; \|u\|_2\leq1.
+\end{aligned}
+\]</span></p>
 <p>Zou, Hastie, and Tibshirani developed a regression-based sparse PCA using lasso and elastic-net regularization <a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a>.</p>
 <div class="callout callout-style-default callout-tip callout-titled" title="Interpretability-Variance Tradeoff">
 <div class="callout-header d-flex align-content-center">
@@ -1846,7 +1855,7 @@ u_j= (u_{1j},\ldots,u_{Dj})^\top.
 \]</span> Sparse components may also lose exact orthogonality, depending on the formulation.</p>
 </div>
 </div>
-<div id="acad96e9" class="cell" data-execution_count="6">
+<div id="9f525458" class="cell" data-execution_count="6">
 <details class="code-fold">
 <summary>Show code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
@@ -1960,7 +1969,7 @@ Caution
 <p>A genetic PCA plot does not reveal biologically fixed “types.” Components depend on sampled populations, preprocessing, variant filtering, relatedness, and the geometry of the selected data.</p>
 </div>
 </div>
-<div id="1ab05dff" class="cell" data-execution_count="7">
+<div id="9e20afcb" class="cell" data-execution_count="7">
 <details class="code-fold">
 <summary>Show code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
@@ -2050,7 +2059,7 @@ A_M(x) = \left\| (I-U_MU_M^\top)(x-\bar{x}) \right\|_2^2.
 T^2(x) = \sum_{j=1}^{M} \frac{z_j^2}{\lambda_j}.
 \]</span></p>
 <p>This is related to Hotelling’s <span class="math inline">\(T^2\)</span> statistic. Reconstruction error measures departure from the subspace; score distance measures extremeness within the subspace.</p>
-<div id="925ffe75" class="cell" data-execution_count="8">
+<div id="1e44a734" class="cell" data-execution_count="8">
 <details class="code-fold">
 <summary>Show code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
