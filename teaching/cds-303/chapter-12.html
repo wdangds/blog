@@ -26,6 +26,41 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
 </style>
 
 
@@ -75,6 +110,35 @@ ul.task-list li input[type="checkbox"] {
 }</script>
 <style>html{ scroll-behavior: smooth; }</style>
 
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-chtml.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
 
 <link rel="stylesheet" href="../../styles.css">
 </head>
@@ -247,7 +311,67 @@ ul.task-list li input[type="checkbox"] {
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#overview" id="toc-overview" class="nav-link active" data-scroll-target="#overview">Overview</a></li>
+  <li><a href="#evaluation-as-a-decision-problem" id="toc-evaluation-as-a-decision-problem" class="nav-link active" data-scroll-target="#evaluation-as-a-decision-problem">1. Evaluation as a Decision Problem</a>
+  <ul class="collapse">
+  <li><a href="#prediction-quality-is-not-the-final-objective" id="toc-prediction-quality-is-not-the-final-objective" class="nav-link" data-scroll-target="#prediction-quality-is-not-the-final-objective">1.1. Prediction Quality is Not the Final Objective</a></li>
+  <li><a href="#the-cost-matrix" id="toc-the-cost-matrix" class="nav-link" data-scroll-target="#the-cost-matrix">1.2. The Cost Matrix</a></li>
+  <li><a href="#deriving-a-decision-threshold-from-costs" id="toc-deriving-a-decision-threshold-from-costs" class="nav-link" data-scroll-target="#deriving-a-decision-threshold-from-costs">1.3. Deriving a Decision Threshold from Costs</a></li>
+  <li><a href="#stakeholder-metrics" id="toc-stakeholder-metrics" class="nav-link" data-scroll-target="#stakeholder-metrics">1.4. Stakeholder Metrics</a></li>
+  </ul></li>
+  <li><a href="#designing-a-trustworthy-evaluation" id="toc-designing-a-trustworthy-evaluation" class="nav-link" data-scroll-target="#designing-a-trustworthy-evaluation">2. Designing a Trustworthy Evaluation</a>
+  <ul class="collapse">
+  <li><a href="#training-validation-and-test-data" id="toc-training-validation-and-test-data" class="nav-link" data-scroll-target="#training-validation-and-test-data">2.1. Training, Validation, and Test Data</a></li>
+  <li><a href="#the-evaluation-unit-must-match-deployment" id="toc-the-evaluation-unit-must-match-deployment" class="nav-link" data-scroll-target="#the-evaluation-unit-must-match-deployment">2.2. The Evaluation Unit Must Match Deployment</a></li>
+  <li><a href="#random-grouped-spatial-and-temporal-splits" id="toc-random-grouped-spatial-and-temporal-splits" class="nav-link" data-scroll-target="#random-grouped-spatial-and-temporal-splits">2.3. Random, Grouped, Spatial, and Temporal Splits</a></li>
+  <li><a href="#cross-validation" id="toc-cross-validation" class="nav-link" data-scroll-target="#cross-validation">2.4. Cross-Validation</a></li>
+  <li><a href="#nested-cross-validation" id="toc-nested-cross-validation" class="nav-link" data-scroll-target="#nested-cross-validation">2.5. Nested Cross-Validation</a></li>
+  <li><a href="#data-leakage" id="toc-data-leakage" class="nav-link" data-scroll-target="#data-leakage">2.6. Data Leakage</a></li>
+  <li><a href="#bootstrap-evaluation" id="toc-bootstrap-evaluation" class="nav-link" data-scroll-target="#bootstrap-evaluation">2.7. Bootstrap Evaluation</a></li>
+  </ul></li>
+  <li><a href="#bias-variance-and-learning-curves" id="toc-bias-variance-and-learning-curves" class="nav-link" data-scroll-target="#bias-variance-and-learning-curves">3. Bias, Variance, and Learning Curves</a>
+  <ul class="collapse">
+  <li><a href="#biasvariance-decomposition" id="toc-biasvariance-decomposition" class="nav-link" data-scroll-target="#biasvariance-decomposition">3.1. Bias–Variance Decomposition</a></li>
+  <li><a href="#practical-signs-of-bias-and-variance" id="toc-practical-signs-of-bias-and-variance" class="nav-link" data-scroll-target="#practical-signs-of-bias-and-variance">3.2. Practical Signs of Bias and Variance</a></li>
+  <li><a href="#learning-curves" id="toc-learning-curves" class="nav-link" data-scroll-target="#learning-curves">3.3. Learning Curves</a></li>
+  </ul></li>
+  <li><a href="#regression-evaluation-and-debugging" id="toc-regression-evaluation-and-debugging" class="nav-link" data-scroll-target="#regression-evaluation-and-debugging">4. Regression Evaluation and Debugging</a>
+  <ul class="collapse">
+  <li><a href="#regression-metrics" id="toc-regression-metrics" class="nav-link" data-scroll-target="#regression-metrics">4.1. Regression Metrics</a></li>
+  <li><a href="#choosing-between-mae-and-rmse" id="toc-choosing-between-mae-and-rmse" class="nav-link" data-scroll-target="#choosing-between-mae-and-rmse">4.2. Choosing Between MAE and RMSE</a></li>
+  <li><a href="#residual-diagnostics" id="toc-residual-diagnostics" class="nav-link" data-scroll-target="#residual-diagnostics">4.3. Residual Diagnostics</a></li>
+  <li><a href="#substantive-validity-and-impossible-predictions" id="toc-substantive-validity-and-impossible-predictions" class="nav-link" data-scroll-target="#substantive-validity-and-impossible-predictions">4.4. Substantive Validity and Impossible Predictions</a></li>
+  <li><a href="#prediction-intervals" id="toc-prediction-intervals" class="nav-link" data-scroll-target="#prediction-intervals">4.5. Prediction Intervals</a></li>
+  </ul></li>
+  <li><a href="#classification-evaluation-and-debugging" id="toc-classification-evaluation-and-debugging" class="nav-link" data-scroll-target="#classification-evaluation-and-debugging">5. Classification Evaluation and Debugging</a>
+  <ul class="collapse">
+  <li><a href="#confusion-matrix-metrics" id="toc-confusion-matrix-metrics" class="nav-link" data-scroll-target="#confusion-matrix-metrics">5.1. Confusion-Matrix Metrics</a></li>
+  <li><a href="#accuracy-under-class-imbalance" id="toc-accuracy-under-class-imbalance" class="nav-link" data-scroll-target="#accuracy-under-class-imbalance">5.2. Accuracy Under Class Imbalance</a></li>
+  <li><a href="#roc-and-precisionrecall-curves" id="toc-roc-and-precisionrecall-curves" class="nav-link" data-scroll-target="#roc-and-precisionrecall-curves">5.3. ROC and Precision–Recall Curves</a></li>
+  <li><a href="#capacity-constrained-evaluation" id="toc-capacity-constrained-evaluation" class="nav-link" data-scroll-target="#capacity-constrained-evaluation">5.4. Capacity-Constrained Evaluation</a></li>
+  <li><a href="#probability-calibration" id="toc-probability-calibration" class="nav-link" data-scroll-target="#probability-calibration">5.5. Probability Calibration</a></li>
+  </ul></li>
+  <li><a href="#evaluating-unsupervised-models" id="toc-evaluating-unsupervised-models" class="nav-link" data-scroll-target="#evaluating-unsupervised-models">6. Evaluating Unsupervised Models</a>
+  <ul class="collapse">
+  <li><a href="#clustering" id="toc-clustering" class="nav-link" data-scroll-target="#clustering">6.1. Clustering</a></li>
+  <li><a href="#dimensionality-reduction" id="toc-dimensionality-reduction" class="nav-link" data-scroll-target="#dimensionality-reduction">6.2. Dimensionality Reduction</a></li>
+  </ul></li>
+  <li><a href="#numerical-and-statistical-stability" id="toc-numerical-and-statistical-stability" class="nav-link" data-scroll-target="#numerical-and-statistical-stability">7. Numerical and Statistical Stability</a>
+  <ul class="collapse">
+  <li><a href="#conditioning" id="toc-conditioning" class="nav-link" data-scroll-target="#conditioning">7.1. Conditioning</a></li>
+  <li><a href="#backward-error" id="toc-backward-error" class="nav-link" data-scroll-target="#backward-error">7.2. Backward Error</a></li>
+  <li><a href="#perturbation-testing" id="toc-perturbation-testing" class="nav-link" data-scroll-target="#perturbation-testing">7.3. Perturbation Testing</a></li>
+  </ul></li>
+  <li><a href="#dataset-shift-and-production-failure" id="toc-dataset-shift-and-production-failure" class="nav-link" data-scroll-target="#dataset-shift-and-production-failure">8. Dataset Shift and Production Failure</a>
+  <ul class="collapse">
+  <li><a href="#training-and-deployment-distributions" id="toc-training-and-deployment-distributions" class="nav-link" data-scroll-target="#training-and-deployment-distributions">8.1. Training and Deployment Distributions</a></li>
+  <li><a href="#importance-weighting" id="toc-importance-weighting" class="nav-link" data-scroll-target="#importance-weighting">8.2. Importance Weighting</a></li>
+  <li><a href="#detecting-input-drift" id="toc-detecting-input-drift" class="nav-link" data-scroll-target="#detecting-input-drift">8.3. Detecting Input Drift</a></li>
+  </ul></li>
+  <li><a href="#subgroup-performance-and-fairness" id="toc-subgroup-performance-and-fairness" class="nav-link" data-scroll-target="#subgroup-performance-and-fairness">9. Subgroup Performance and Fairness</a>
+  <ul class="collapse">
+  <li><a href="#aggregate-metrics-can-hide-failure" id="toc-aggregate-metrics-can-hide-failure" class="nav-link" data-scroll-target="#aggregate-metrics-can-hide-failure">9.1. Aggregate Metrics Can Hide Failure</a></li>
+  <li><a href="#relevant-group-metrics" id="toc-relevant-group-metrics" class="nav-link" data-scroll-target="#relevant-group-metrics">9.2. Relevant Group Metrics</a></li>
+  </ul></li>
   </ul>
 </nav>
     </div>
@@ -273,15 +397,1512 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<section id="overview" class="level2">
-<h2 class="anchored" data-anchor-id="overview">Overview</h2>
-<p>Add your Chapter 12 content here.</p>
+<p>The preceding chapters developed mathematical models for regression, classification, dimensionality reduction, clustering, Bayesian inference, and nonlinear representation learning. Those methods may produce elegant equations, low optimization loss, and impressive validation scores. None of these achievements alone establishes that a model is useful.</p>
+<p>A model becomes valuable only when it performs reliably on observations that were not used to construct it, supports a meaningful decision, remains stable under realistic operating conditions, and produces benefits greater than its practical costs.</p>
+<p>In research, the model is often treated as the principal object. In deployment, the model is only one component of a larger system involving:</p>
+<ul>
+<li>data collection;</li>
+<li>feature computation;</li>
+<li>software pipelines;</li>
+<li>decision thresholds;</li>
+<li>human review;</li>
+<li>monitoring;</li>
+<li>retraining;</li>
+<li>security;</li>
+<li>governance;</li>
+<li>operational costs;</li>
+<li>consequences of incorrect decisions.</li>
+</ul>
+<p>Production machine-learning systems can accumulate failure modes beyond ordinary software defects because their behavior depends on changing data and on interactions among many data-producing and data-consuming components. This creates forms of technical debt that may not be visible from an offline accuracy score alone<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>.</p>
+<p>The central principle of this chapter is:</p>
+<blockquote class="blockquote">
+<p><em>A model is not evaluated by asking only whether it predicts accurately. It is evaluated by asking whether it makes the intended decision better, under the conditions in which it will actually operate.</em></p>
+</blockquote>
+<p>The practical evaluation process therefore asks five questions:</p>
+<ol type="1">
+<li><strong>Validity:</strong> Was the model evaluated without leakage or contamination?</li>
+<li><strong>Generalization:</strong> Does it work on genuinely unseen and representative data?</li>
+<li><strong>Decision value:</strong> Does it improve the action that stakeholders care about?</li>
+<li><strong>Robustness:</strong> Does it remain reliable under perturbation, subgroup variation, and distribution shift?</li>
+<li><strong>Operational readiness:</strong> Can it be monitored, maintained, reproduced, and safely replaced?</li>
+</ol>
+<section id="evaluation-as-a-decision-problem" class="level2">
+<h2 class="anchored" data-anchor-id="evaluation-as-a-decision-problem">1. Evaluation as a Decision Problem</h2>
+<section id="prediction-quality-is-not-the-final-objective" class="level3">
+<h3 class="anchored" data-anchor-id="prediction-quality-is-not-the-final-objective">1.1. Prediction Quality is Not the Final Objective</h3>
+<p>Suppose a model predicts whether a customer will cancel a subscription. A data scientist may report <span class="math inline">\(\operatorname{AUC}=0.86\)</span>. A stakeholder may instead ask:</p>
+<ul>
+<li>How many customers should receive a retention offer?</li>
+<li>How much does each offer cost?</li>
+<li>How many cancellations can realistically be prevented?</li>
+<li>What happens if loyal customers receive unnecessary discounts?</li>
+<li>Is the campaign more profitable than the existing strategy?</li>
+<li>Can the marketing team contact the selected customers in time?</li>
+</ul>
+<p>The model score is only an intermediate quantity. The final quantity is often an expected operational value.</p>
+<p>Let:</p>
+<ul>
+<li><span class="math inline">\(a\in\mathcal A\)</span> denote an action;</li>
+<li><span class="math inline">\(Y\)</span> denote an uncertain outcome;</li>
+<li><span class="math inline">\(U(a,Y)\)</span> denote the utility or financial value of action a when outcome Y occurs;</li>
+<li><span class="math inline">\(x\)</span> denote available information.</li>
+</ul>
+<p>The decision rule should ideally choose</p>
+<p><span class="math display">\[
+a^*(x) = \arg\max_{a\in\mathcal A} \mathbb E[U(a,Y)\mid X=x].
+\]</span></p>
+<p>A predictive model estimates information required by this decision. It does not define the utility function.</p>
+<p>This distinction is essential. Two models with similar statistical performance can produce very different operational value if their errors occur in different cases or if they are used with different thresholds.</p>
+</section>
+<section id="the-cost-matrix" class="level3">
+<h3 class="anchored" data-anchor-id="the-cost-matrix">1.2. The Cost Matrix</h3>
+<p>For binary classification, let the positive class represent an event such as fraud, disease, equipment failure, or customer cancellation.</p>
+<p>A decision produces one of four outcomes:</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Actual outcome</th>
+<th>Predicted positive</th>
+<th>Predicted negative</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Positive</td>
+<td>True positive</td>
+<td>False negative</td>
+</tr>
+<tr class="even">
+<td>Negative</td>
+<td>False positive</td>
+<td>True negative</td>
+</tr>
+</tbody>
+</table>
+<p>Assign costs</p>
+<p><span class="math display">\[
+C_{\mathrm{TP}}, \quad C_{\mathrm{FP}}, \quad C_{\mathrm{FN}}, \quad C_{\mathrm{TN}}.
+\]</span></p>
+<p>The total cost is</p>
+<p><span class="math display">\[
+C_{\text{total}} = C_{\mathrm{TP}}TP + C_{\mathrm{FP}}FP + C_{\mathrm{FN}}FN + C_{\mathrm{TN}}TN.
+\]</span></p>
+<p>Frequently,</p>
+<p><span class="math display">\[
+C_{\mathrm{FN}}\neq C_{\mathrm{FP}}.
+\]</span></p>
+<p>For example:</p>
+<ul>
+<li>In cancer screening, a false negative may delay treatment.</li>
+<li>In fraud prevention, a false positive may block a legitimate customer.</li>
+<li>In spam filtering, a false positive may hide an important message.</li>
+<li>In predictive maintenance, a false negative may cause equipment damage, while a false positive may cause unnecessary inspection.</li>
+</ul>
+<p>Accuracy treats every mistake equally:</p>
+<p><span class="math display">\[
+\operatorname{Accuracy} = \frac{TP+TN}{TP+TN+FP+FN}.
+\]</span></p>
+<p>Real decisions rarely do.</p>
+</section>
+<section id="deriving-a-decision-threshold-from-costs" class="level3">
+<h3 class="anchored" data-anchor-id="deriving-a-decision-threshold-from-costs">1.3. Deriving a Decision Threshold from Costs</h3>
+<p>Suppose a calibrated model estimates</p>
+<p><span class="math display">\[
+p(x)=P(Y=1\mid X=x).
+\]</span></p>
+<p>Consider two actions:</p>
+<ul>
+<li>predict or act positive;</li>
+<li>predict or act negative.</li>
+</ul>
+<p>Assume zero cost for correct decisions for simplicity. The expected cost of predicting positive is</p>
+<p><span class="math display">\[
+R(+\mid x) = C_{\mathrm{FP}}P(Y=0\mid x) = C_{\mathrm{FP}}(1-p(x)).
+\]</span></p>
+<p>The expected cost of predicting negative is</p>
+<p><span class="math display">\[
+R(-\mid x) = C_{\mathrm{FN}}P(Y=1\mid x) = C_{\mathrm{FN}}p(x).
+\]</span></p>
+<p>Choose the positive action when</p>
+<p><span class="math display">\[
+R(+\mid x)&lt;R(-\mid x).
+\]</span></p>
+<p>Therefore,</p>
+<p><span class="math display">\[
+C_{\mathrm{FP}}(1-p) &lt; C_{\mathrm{FN}}p.
+\]</span></p>
+<p>Rearranging,</p>
+<p><span class="math display">\[
+C_{\mathrm{FP}} &lt; p(C_{\mathrm{FP}}+C_{\mathrm{FN}}),
+\]</span></p>
+<p>so the optimal threshold is</p>
+<p><span class="math display">\[
+p(x) &gt; \frac{C_{\mathrm{FP}}} {C_{\mathrm{FP}}+C_{\mathrm{FN}}}.
+\]</span></p>
+<p>Thus, the conventional threshold 0.5 is optimal only under particular cost assumptions. If false negatives are much more costly than false positives, the appropriate threshold can be substantially below 0.5.</p>
+</section>
+<section id="stakeholder-metrics" class="level3">
+<h3 class="anchored" data-anchor-id="stakeholder-metrics">1.4. Stakeholder Metrics</h3>
+<p>A useful evaluation translates statistical quantities into operational language.</p>
+<p>Instead of reporting only <span class="math inline">\(\operatorname{Recall}=0.82\)</span>, report:</p>
+<blockquote class="blockquote">
+<p><em>At the selected operating threshold, the system identifies approximately 82 of every 100 actual failures, while generating 14 unnecessary inspections per 1,000 machines.</em></p>
+</blockquote>
+<p>Instead of reporting only <span class="math inline">\(RMSE=12.4\)</span>, report:</p>
+<blockquote class="blockquote">
+<p><em>The typical error is approximately 12 units, but for the highest-value accounts it rises to 31 units</em>.</p>
+</blockquote>
+<p>Instead of reporting only <span class="math inline">\(\operatorname{AUC}=0.91\)</span>, report:</p>
+<blockquote class="blockquote">
+<p><em>If one fraud case and one legitimate transaction are selected at random, the model ranks the fraud case higher approximately 91% of the time.</em></p>
+</blockquote>
+<p>The stakeholder normally cares about:</p>
+<ul>
+<li>dollars gained or lost;</li>
+<li>failures prevented;</li>
+<li>patients missed;</li>
+<li>cases requiring manual review;</li>
+<li>time saved;</li>
+<li>service-level constraints;</li>
+<li>capacity limits;</li>
+<li>downstream harms.</li>
+</ul>
+<p>The evaluation should be built around those quantities.</p>
+</section>
+</section>
+<section id="designing-a-trustworthy-evaluation" class="level2">
+<h2 class="anchored" data-anchor-id="designing-a-trustworthy-evaluation">2. Designing a Trustworthy Evaluation</h2>
+<section id="training-validation-and-test-data" class="level3">
+<h3 class="anchored" data-anchor-id="training-validation-and-test-data">2.1. Training, Validation, and Test Data</h3>
+<p>Let the available dataset be <span class="math inline">\(D=\{(x_i,y_i)\}_{i=1}^{N}\)</span>.</p>
+<p>A standard partition contains:</p>
+<ul>
+<li>training data <span class="math inline">\(D_{\mathrm{train}}\)</span>;</li>
+<li>validation data <span class="math inline">\(D_{\mathrm{val}}\)</span>;</li>
+<li>test data <span class="math inline">\(D_{\mathrm{test}}\)</span>.</li>
+</ul>
+<p>The training set estimates model parameters. The validation set selects:</p>
+<ul>
+<li>model family;</li>
+<li>hyperparameters;</li>
+<li>feature transformations;</li>
+<li>decision thresholds;</li>
+<li>regularization strength;</li>
+<li>stopping time.</li>
+</ul>
+<p>The test set estimates performance only after the full modeling procedure has been selected.</p>
+<p>The test data should be treated as a sealed evaluation resource. If the researcher repeatedly checks test performance and modifies the model in response, the test set becomes another validation set.</p>
+<p>The final evaluation must test the <strong>whole procedure</strong>, not only the final mathematical estimator.</p>
+</section>
+<section id="the-evaluation-unit-must-match-deployment" class="level3">
+<h3 class="anchored" data-anchor-id="the-evaluation-unit-must-match-deployment">2.2. The Evaluation Unit Must Match Deployment</h3>
+<p>A random row-level split is not always valid.</p>
+<p>Suppose a hospital dataset contains several visits per patient. If visits from the same patient appear in both training and test sets, the model may exploit patient-specific information that will not be available when predicting for a genuinely new patient.</p>
+<p>Possible split units include:</p>
+<ul>
+<li>patient;</li>
+<li>household;</li>
+<li>customer;</li>
+<li>device;</li>
+<li>geographic region;</li>
+<li>school;</li>
+<li>company;</li>
+<li>time period;</li>
+<li>document source.</li>
+</ul>
+<p>The grouping unit should match the unit over which generalization is claimed.</p>
+<p>If the deployment goal is prediction for future visits of existing patients, a patient-overlapping temporal split may be reasonable. If the goal is prediction for new patients, patients must not overlap.</p>
+</section>
+<section id="random-grouped-spatial-and-temporal-splits" class="level3">
+<h3 class="anchored" data-anchor-id="random-grouped-spatial-and-temporal-splits">2.3. Random, Grouped, Spatial, and Temporal Splits</h3>
+<section id="random-split" class="level4">
+<h4 class="anchored" data-anchor-id="random-split">2.3.1. Random split</h4>
+<p>A random split is suitable when observations are approximately independent and exchangeable:</p>
+<p><span class="math display">\[
+(X_i,Y_i) \overset{\text{i.i.d.}}{\sim} P.
+\]</span></p>
+</section>
+<section id="stratified-split" class="level4">
+<h4 class="anchored" data-anchor-id="stratified-split">2.3.2. Stratified split</h4>
+<p>For rare classes, stratification approximately preserves class proportions in each partition.</p>
+</section>
+<section id="grouped-split" class="level4">
+<h4 class="anchored" data-anchor-id="grouped-split">2.3.3. Grouped split</h4>
+<p>All observations from the same group are assigned together:</p>
+<p><span class="math display">\[
+g_i=g_j \implies \operatorname{split}(i)=\operatorname{split}(j).
+\]</span></p>
+</section>
+<section id="temporal-split" class="level4">
+<h4 class="anchored" data-anchor-id="temporal-split">2.3.4. Temporal split</h4>
+<p>Training observations precede test observations:</p>
+<p><span class="math display">\[
+t_i&lt;t_j \quad \text{for training }i \text{ and test }j.
+\]</span></p>
+<p>This imitates forecasting deployment and prevents future information from influencing past predictions.</p>
+</section>
+<section id="spatial-split" class="level4">
+<h4 class="anchored" data-anchor-id="spatial-split">2.3.5. Spatial split</h4>
+<p>Geographic regions are separated to evaluate transfer to new locations.</p>
+<p>A spatial model tested by randomly splitting nearby observations may benefit from strong spatial autocorrelation and provide an optimistic estimate of performance at genuinely new sites.</p>
+</section>
+</section>
+<section id="cross-validation" class="level3">
+<h3 class="anchored" data-anchor-id="cross-validation">2.4. Cross-Validation</h3>
+<p>In K-fold cross-validation, the development data are partitioned into folds <span class="math inline">\(F_1,\ldots,F_K\)</span>.</p>
+<p>For each fold <span class="math inline">\(k\)</span>, train the full modeling procedure on <span class="math inline">\(D\setminus F_k\)</span> and evaluate on <span class="math inline">\(F_k\)</span>.</p>
+<p>For loss function L, the estimate is</p>
+<p><span class="math display">\[
+\widehat R_{\mathrm{CV}} = \frac1N \sum_{k=1}^{K} \sum_{i\in F_k} L \left( y_i, \hat f^{(-k)}(x_i) \right).
+\]</span></p>
+<p>Cross-validation is useful both for model selection and for estimating performance.</p>
+</section>
+<section id="nested-cross-validation" class="level3">
+<h3 class="anchored" data-anchor-id="nested-cross-validation">2.5. Nested Cross-Validation</h3>
+<p>Suppose hyperparameters are selected by minimizing cross-validation error:</p>
+<p><span class="math display">\[
+\hat\lambda = \arg\min_{\lambda\in\Lambda} \widehat R_{\mathrm{CV}}(\lambda).
+\]</span></p>
+<p>Reporting the same minimum error</p>
+<p><span class="math display">\[
+\min_{\lambda\in\Lambda} \widehat R_{\mathrm{CV}}(\lambda)
+\]</span></p>
+<p>is optimistic because the estimate was used to choose <span class="math inline">\(\lambda\)</span>.</p>
+<p>Nested cross-validation separates tuning from evaluation:</p>
+<ul>
+<li>the <strong>inner loop</strong> selects hyperparameters;</li>
+<li>the <strong>outer loop</strong> evaluates the complete selection procedure.</li>
+</ul>
+<p>For outer folds <span class="math inline">\(G_1,\ldots,G_J\)</span>:</p>
+<ol type="1">
+<li>Reserve <span class="math inline">\(G_j\)</span> as the outer test fold.</li>
+<li>Use only <span class="math inline">\(D\setminus G_j\)</span> to tune the model through inner cross-validation.</li>
+<li>Refit the selected procedure on <span class="math inline">\(D\setminus G_j\)</span>.</li>
+<li>Evaluate on <span class="math inline">\(G_j\)</span>.</li>
+<li>Aggregate the outer-fold losses.</li>
+</ol>
+<p>This evaluates what would happen if the entire model-selection process were repeated on new data.</p>
+</section>
+<section id="data-leakage" class="level3">
+<h3 class="anchored" data-anchor-id="data-leakage">2.6. Data Leakage</h3>
+<div class="callout callout-style-default callout-note callout-titled" title="Definition 1: Data Leakage">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Definition 1: Data Leakage
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><em>Data leakage occurs when model training or model selection uses information that would not be available at the time of prediction or that belongs to the evaluation observations.</em></p>
+</div>
+</div>
+<p>Leakage can enter through:</p>
+<ul>
+<li>scaling before splitting;</li>
+<li>imputation using all observations;</li>
+<li>feature selection using the full dataset;</li>
+<li>PCA before cross-validation;</li>
+<li>target-derived features;</li>
+<li>future timestamps;</li>
+<li>duplicate observations;</li>
+<li>patient overlap;</li>
+<li>post-outcome variables;</li>
+<li>manual corrections informed by test labels;</li>
+<li>threshold selection on test data.</li>
+</ul>
+<p>Leakage can produce apparently excellent performance even when no real predictive relationship exists.</p>
+<div id="857467a0" class="cell" data-execution_count="1">
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.feature_selection <span class="im">import</span> SelectKBest, f_classif</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.linear_model <span class="im">import</span> LogisticRegression</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.model_selection <span class="im">import</span> StratifiedKFold, cross_val_score</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.pipeline <span class="im">import</span> Pipeline</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.preprocessing <span class="im">import</span> StandardScaler</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>rng <span class="op">=</span> np.random.default_rng(<span class="dv">42</span>)</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>n_observations <span class="op">=</span> <span class="dv">120</span></span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>n_features <span class="op">=</span> <span class="dv">5000</span></span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>X <span class="op">=</span> rng.normal(size<span class="op">=</span>(n_observations, n_features))</span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>y <span class="op">=</span> rng.integers(<span class="dv">0</span>, <span class="dv">2</span>, size<span class="op">=</span>n_observations)</span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>cv <span class="op">=</span> StratifiedKFold(</span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a>    n_splits<span class="op">=</span><span class="dv">5</span>,</span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a>    shuffle<span class="op">=</span><span class="va">True</span>,</span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a>    random_state<span class="op">=</span><span class="dv">42</span></span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a><span class="co"># Wrong: feature selection sees every label before cross-validation.</span></span>
+<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a>selector <span class="op">=</span> SelectKBest(f_classif, k<span class="op">=</span><span class="dv">20</span>)</span>
+<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a>X_leaked <span class="op">=</span> selector.fit_transform(X, y)</span>
+<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a>leaked_model <span class="op">=</span> Pipeline([</span>
+<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a>    (<span class="st">"scaler"</span>, StandardScaler()),</span>
+<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a>    (<span class="st">"classifier"</span>, LogisticRegression(max_iter<span class="op">=</span><span class="dv">3000</span>))</span>
+<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a>])</span>
+<span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a>leaked_scores <span class="op">=</span> cross_val_score(</span>
+<span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a>    leaked_model,</span>
+<span id="cb1-35"><a href="#cb1-35" aria-hidden="true" tabindex="-1"></a>    X_leaked,</span>
+<span id="cb1-36"><a href="#cb1-36" aria-hidden="true" tabindex="-1"></a>    y,</span>
+<span id="cb1-37"><a href="#cb1-37" aria-hidden="true" tabindex="-1"></a>    cv<span class="op">=</span>cv,</span>
+<span id="cb1-38"><a href="#cb1-38" aria-hidden="true" tabindex="-1"></a>    scoring<span class="op">=</span><span class="st">"accuracy"</span></span>
+<span id="cb1-39"><a href="#cb1-39" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb1-40"><a href="#cb1-40" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-41"><a href="#cb1-41" aria-hidden="true" tabindex="-1"></a><span class="co"># Correct: selection is fitted only on each training fold.</span></span>
+<span id="cb1-42"><a href="#cb1-42" aria-hidden="true" tabindex="-1"></a>correct_model <span class="op">=</span> Pipeline([</span>
+<span id="cb1-43"><a href="#cb1-43" aria-hidden="true" tabindex="-1"></a>    (<span class="st">"selector"</span>, SelectKBest(f_classif, k<span class="op">=</span><span class="dv">20</span>)),</span>
+<span id="cb1-44"><a href="#cb1-44" aria-hidden="true" tabindex="-1"></a>    (<span class="st">"scaler"</span>, StandardScaler()),</span>
+<span id="cb1-45"><a href="#cb1-45" aria-hidden="true" tabindex="-1"></a>    (<span class="st">"classifier"</span>, LogisticRegression(max_iter<span class="op">=</span><span class="dv">3000</span>))</span>
+<span id="cb1-46"><a href="#cb1-46" aria-hidden="true" tabindex="-1"></a>])</span>
+<span id="cb1-47"><a href="#cb1-47" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-48"><a href="#cb1-48" aria-hidden="true" tabindex="-1"></a>correct_scores <span class="op">=</span> cross_val_score(</span>
+<span id="cb1-49"><a href="#cb1-49" aria-hidden="true" tabindex="-1"></a>    correct_model,</span>
+<span id="cb1-50"><a href="#cb1-50" aria-hidden="true" tabindex="-1"></a>    X,</span>
+<span id="cb1-51"><a href="#cb1-51" aria-hidden="true" tabindex="-1"></a>    y,</span>
+<span id="cb1-52"><a href="#cb1-52" aria-hidden="true" tabindex="-1"></a>    cv<span class="op">=</span>cv,</span>
+<span id="cb1-53"><a href="#cb1-53" aria-hidden="true" tabindex="-1"></a>    scoring<span class="op">=</span><span class="st">"accuracy"</span></span>
+<span id="cb1-54"><a href="#cb1-54" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb1-55"><a href="#cb1-55" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-56"><a href="#cb1-56" aria-hidden="true" tabindex="-1"></a>results <span class="op">=</span> [</span>
+<span id="cb1-57"><a href="#cb1-57" aria-hidden="true" tabindex="-1"></a>    leaked_scores.mean(),</span>
+<span id="cb1-58"><a href="#cb1-58" aria-hidden="true" tabindex="-1"></a>    correct_scores.mean()</span>
+<span id="cb1-59"><a href="#cb1-59" aria-hidden="true" tabindex="-1"></a>]</span>
+<span id="cb1-60"><a href="#cb1-60" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-61"><a href="#cb1-61" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">7</span>, <span class="dv">5</span>))</span>
+<span id="cb1-62"><a href="#cb1-62" aria-hidden="true" tabindex="-1"></a>plt.bar(</span>
+<span id="cb1-63"><a href="#cb1-63" aria-hidden="true" tabindex="-1"></a>    [<span class="st">"Selection before CV</span><span class="ch">\n</span><span class="st">(leakage)"</span>, <span class="st">"Selection inside CV</span><span class="ch">\n</span><span class="st">(correct)"</span>],</span>
+<span id="cb1-64"><a href="#cb1-64" aria-hidden="true" tabindex="-1"></a>    results</span>
+<span id="cb1-65"><a href="#cb1-65" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb1-66"><a href="#cb1-66" aria-hidden="true" tabindex="-1"></a>plt.axhline(</span>
+<span id="cb1-67"><a href="#cb1-67" aria-hidden="true" tabindex="-1"></a>    <span class="fl">0.5</span>,</span>
+<span id="cb1-68"><a href="#cb1-68" aria-hidden="true" tabindex="-1"></a>    linestyle<span class="op">=</span><span class="st">"--"</span>,</span>
+<span id="cb1-69"><a href="#cb1-69" aria-hidden="true" tabindex="-1"></a>    label<span class="op">=</span><span class="st">"Chance performance"</span></span>
+<span id="cb1-70"><a href="#cb1-70" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb1-71"><a href="#cb1-71" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">"Mean cross-validation accuracy"</span>)</span>
+<span id="cb1-72"><a href="#cb1-72" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">"Data Leakage Can Create Predictive Performance from Noise"</span>)</span>
+<span id="cb1-73"><a href="#cb1-73" aria-hidden="true" tabindex="-1"></a>plt.legend()</span>
+<span id="cb1-74"><a href="#cb1-74" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb1-75"><a href="#cb1-75" aria-hidden="true" tabindex="-1"></a>plt.show()</span>
+<span id="cb1-76"><a href="#cb1-76" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-77"><a href="#cb1-77" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Leaked scores:"</span>, leaked_scores)</span>
+<span id="cb1-78"><a href="#cb1-78" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Correct scores:"</span>, correct_scores)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="chapter-12_files/figure-html/cell-2-output-1.png" width="662" height="470" class="figure-img"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Leaked scores: [1.         0.91666667 0.91666667 0.91666667 0.91666667]
+Correct scores: [0.625      0.5        0.625      0.58333333 0.58333333]</code></pre>
+</div>
+</div>
+</section>
+<section id="bootstrap-evaluation" class="level3">
+<h3 class="anchored" data-anchor-id="bootstrap-evaluation">2.7. Bootstrap Evaluation</h3>
+<p>A bootstrap sample draws <span class="math inline">\(N\)</span> observations with replacement from the original sample. Some observations appear multiple times, while others are omitted.</p>
+<p>The probability that a particular observation is absent is</p>
+<p><span class="math display">\[
+\left(1-\frac1N\right)^N \rightarrow e^{-1} \approx0.368.
+\]</span></p>
+<p>Therefore, approximately <span class="math inline">\(1-e^{-1}\approx0.632\)</span> of distinct observations appear in an ordinary bootstrap sample.</p>
+<p>The original <span class="math inline">\(.632\)</span> estimator combines apparent training error and out-of-bootstrap error:</p>
+<p><span class="math display">\[
+\widehat R_{.632} = 0.368\widehat R_{\mathrm{train}} + 0.632\widehat R_{\mathrm{OOB}}.
+\]</span></p>
+<p>The .632+ estimator modifies the weight to address severe overfitting. Efron and Tibshirani developed the .632+ method as an improvement for estimating prediction error in overfit settings<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a>.</p>
+<p>Bootstrap evaluation is especially useful for:</p>
+<ul>
+<li>uncertainty intervals;</li>
+<li>optimism correction;</li>
+<li>small datasets;</li>
+<li>assessing coefficient stability;</li>
+<li>comparing model variability.</li>
+</ul>
+</section>
+</section>
+<section id="bias-variance-and-learning-curves" class="level2">
+<h2 class="anchored" data-anchor-id="bias-variance-and-learning-curves">3. Bias, Variance, and Learning Curves</h2>
+<section id="biasvariance-decomposition" class="level3">
+<h3 class="anchored" data-anchor-id="biasvariance-decomposition">3.1. Bias–Variance Decomposition</h3>
+<p>Assume <span class="math inline">\(Y=f(X)+\varepsilon\)</span>,</p>
+<p>where</p>
+<p><span class="math display">\[
+\mathbb E[\varepsilon\mid X]=0, \qquad \operatorname{Var}(\varepsilon\mid X=x)=\sigma^2.
+\]</span></p>
+<p>Let <span class="math inline">\(\hat f_D(x)\)</span> denote a model trained on random dataset <span class="math inline">\(D\)</span>.</p>
+<p>At a fixed input <span class="math inline">\(x\)</span>,</p>
+<p><span class="math display">\[
+\mathbb E_D \mathbb E_{Y\mid x} \left[ (Y-\hat f_D(x))^2 \right]
+\]</span></p>
+<p>decomposes as</p>
+<p><span class="math display">\[
+\sigma^2 + \left( \mathbb E_D[\hat f_D(x)]-f(x) \right)^2 + \operatorname{Var}_D(\hat f_D(x)).
+\]</span></p>
+<p>These terms are:</p>
+<p><span class="math display">\[
+\text{irreducible noise} + \text{squared bias} + \text{variance}.
+\]</span></p>
+<div class="callout callout-style-default callout-tip callout-titled" title="Derivation">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>Derivation
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Write</p>
+<p><span class="math display">\[
+Y-\hat f_D(x) = \varepsilon + f(x)-\hat f_D(x).
+\]</span></p>
+<p>Squaring and taking expectations removes the cross-term because</p>
+<p><span class="math display">\[
+\mathbb E[\varepsilon\mid X=x]=0.
+\]</span></p>
+<p>Then insert and subtract</p>
+<p><span class="math display">\[
+\bar f(x) = \mathbb E_D[\hat f_D(x)].
+\]</span></p>
+<p>The expected squared deviation separates into</p>
+<p><span class="math display">\[
+(f(x)-\bar f(x))^2 + \mathbb E_D[ (\hat f_D(x)-\bar f(x))^2 ].
+\]</span></p>
+<p>These are squared bias and variance.</p>
+</div>
+</div>
+</section>
+<section id="practical-signs-of-bias-and-variance" class="level3">
+<h3 class="anchored" data-anchor-id="practical-signs-of-bias-and-variance">3.2. Practical Signs of Bias and Variance</h3>
+<blockquote class="blockquote">
+<p><strong>High bias</strong></p>
+</blockquote>
+<ul>
+<li>training performance is poor;</li>
+<li>validation performance is similarly poor;</li>
+<li>residual patterns remain systematic;</li>
+<li>adding more data produces little improvement;</li>
+<li>increasing model flexibility may help.</li>
+</ul>
+<blockquote class="blockquote">
+<p><strong>High variance</strong></p>
+</blockquote>
+<ul>
+<li>training performance is excellent;</li>
+<li>validation performance is substantially worse;</li>
+<li>results vary across folds or random seeds;</li>
+<li>coefficients or selected features are unstable;</li>
+<li>more data or stronger regularization may help.</li>
+</ul>
+<blockquote class="blockquote">
+<p><strong>Data limitation</strong></p>
+</blockquote>
+<ul>
+<li>training and validation performance are both improving as data increase;</li>
+<li>the learning curve has not plateaued;</li>
+<li>acquiring additional representative data may be more valuable than changing algorithms.</li>
+</ul>
+</section>
+<section id="learning-curves" class="level3">
+<h3 class="anchored" data-anchor-id="learning-curves">3.3. Learning Curves</h3>
+<p>A learning curve plots performance against training-set size.</p>
+<p>Let <span class="math inline">\(m_1&lt;m_2&lt;\cdots&lt;m_R\)</span> be sample sizes. For each <span class="math inline">\(m_r\)</span>:</p>
+<ol type="1">
+<li>draw or select a training sample of size <span class="math inline">\(m_r\)</span>;</li>
+<li>fit the model;</li>
+<li>record training and validation loss;</li>
+<li>repeat to measure variability.</li>
+</ol>
+<div id="54448097" class="cell" data-execution_count="2">
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.datasets <span class="im">import</span> load_diabetes</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.model_selection <span class="im">import</span> learning_curve, KFold</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.pipeline <span class="im">import</span> Pipeline</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.preprocessing <span class="im">import</span> StandardScaler, PolynomialFeatures</span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.linear_model <span class="im">import</span> Ridge</span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>data <span class="op">=</span> load_diabetes()</span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>X <span class="op">=</span> data.data</span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>y <span class="op">=</span> data.target</span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>model <span class="op">=</span> Pipeline([</span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a>    (<span class="st">"polynomial"</span>, PolynomialFeatures(</span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a>        degree<span class="op">=</span><span class="dv">2</span>,</span>
+<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a>        include_bias<span class="op">=</span><span class="va">False</span></span>
+<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a>    )),</span>
+<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a>    (<span class="st">"scaler"</span>, StandardScaler()),</span>
+<span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a>    (<span class="st">"ridge"</span>, Ridge(alpha<span class="op">=</span><span class="fl">10.0</span>))</span>
+<span id="cb3-21"><a href="#cb3-21" aria-hidden="true" tabindex="-1"></a>])</span>
+<span id="cb3-22"><a href="#cb3-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-23"><a href="#cb3-23" aria-hidden="true" tabindex="-1"></a>cv <span class="op">=</span> KFold(</span>
+<span id="cb3-24"><a href="#cb3-24" aria-hidden="true" tabindex="-1"></a>    n_splits<span class="op">=</span><span class="dv">5</span>,</span>
+<span id="cb3-25"><a href="#cb3-25" aria-hidden="true" tabindex="-1"></a>    shuffle<span class="op">=</span><span class="va">True</span>,</span>
+<span id="cb3-26"><a href="#cb3-26" aria-hidden="true" tabindex="-1"></a>    random_state<span class="op">=</span><span class="dv">42</span></span>
+<span id="cb3-27"><a href="#cb3-27" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb3-28"><a href="#cb3-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-29"><a href="#cb3-29" aria-hidden="true" tabindex="-1"></a>sizes, train_scores, validation_scores <span class="op">=</span> learning_curve(</span>
+<span id="cb3-30"><a href="#cb3-30" aria-hidden="true" tabindex="-1"></a>    model,</span>
+<span id="cb3-31"><a href="#cb3-31" aria-hidden="true" tabindex="-1"></a>    X,</span>
+<span id="cb3-32"><a href="#cb3-32" aria-hidden="true" tabindex="-1"></a>    y,</span>
+<span id="cb3-33"><a href="#cb3-33" aria-hidden="true" tabindex="-1"></a>    train_sizes<span class="op">=</span>np.linspace(<span class="fl">0.15</span>, <span class="fl">1.0</span>, <span class="dv">8</span>),</span>
+<span id="cb3-34"><a href="#cb3-34" aria-hidden="true" tabindex="-1"></a>    cv<span class="op">=</span>cv,</span>
+<span id="cb3-35"><a href="#cb3-35" aria-hidden="true" tabindex="-1"></a>    scoring<span class="op">=</span><span class="st">"neg_root_mean_squared_error"</span></span>
+<span id="cb3-36"><a href="#cb3-36" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb3-37"><a href="#cb3-37" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-38"><a href="#cb3-38" aria-hidden="true" tabindex="-1"></a>train_rmse <span class="op">=</span> <span class="op">-</span>train_scores.mean(axis<span class="op">=</span><span class="dv">1</span>)</span>
+<span id="cb3-39"><a href="#cb3-39" aria-hidden="true" tabindex="-1"></a>validation_rmse <span class="op">=</span> <span class="op">-</span>validation_scores.mean(axis<span class="op">=</span><span class="dv">1</span>)</span>
+<span id="cb3-40"><a href="#cb3-40" aria-hidden="true" tabindex="-1"></a>validation_std <span class="op">=</span> validation_scores.std(axis<span class="op">=</span><span class="dv">1</span>)</span>
+<span id="cb3-41"><a href="#cb3-41" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-42"><a href="#cb3-42" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">8</span>, <span class="dv">5</span>))</span>
+<span id="cb3-43"><a href="#cb3-43" aria-hidden="true" tabindex="-1"></a>plt.plot(sizes, train_rmse, marker<span class="op">=</span><span class="st">"o"</span>, label<span class="op">=</span><span class="st">"Training RMSE"</span>)</span>
+<span id="cb3-44"><a href="#cb3-44" aria-hidden="true" tabindex="-1"></a>plt.plot(</span>
+<span id="cb3-45"><a href="#cb3-45" aria-hidden="true" tabindex="-1"></a>    sizes,</span>
+<span id="cb3-46"><a href="#cb3-46" aria-hidden="true" tabindex="-1"></a>    validation_rmse,</span>
+<span id="cb3-47"><a href="#cb3-47" aria-hidden="true" tabindex="-1"></a>    marker<span class="op">=</span><span class="st">"o"</span>,</span>
+<span id="cb3-48"><a href="#cb3-48" aria-hidden="true" tabindex="-1"></a>    label<span class="op">=</span><span class="st">"Validation RMSE"</span></span>
+<span id="cb3-49"><a href="#cb3-49" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb3-50"><a href="#cb3-50" aria-hidden="true" tabindex="-1"></a>plt.fill_between(</span>
+<span id="cb3-51"><a href="#cb3-51" aria-hidden="true" tabindex="-1"></a>    sizes,</span>
+<span id="cb3-52"><a href="#cb3-52" aria-hidden="true" tabindex="-1"></a>    validation_rmse <span class="op">-</span> validation_std,</span>
+<span id="cb3-53"><a href="#cb3-53" aria-hidden="true" tabindex="-1"></a>    validation_rmse <span class="op">+</span> validation_std,</span>
+<span id="cb3-54"><a href="#cb3-54" aria-hidden="true" tabindex="-1"></a>    alpha<span class="op">=</span><span class="fl">0.2</span></span>
+<span id="cb3-55"><a href="#cb3-55" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb3-56"><a href="#cb3-56" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">"Learning Curve: Is More Data Likely to Help?"</span>)</span>
+<span id="cb3-57"><a href="#cb3-57" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">"Number of training observations"</span>)</span>
+<span id="cb3-58"><a href="#cb3-58" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">"RMSE"</span>)</span>
+<span id="cb3-59"><a href="#cb3-59" aria-hidden="true" tabindex="-1"></a>plt.legend()</span>
+<span id="cb3-60"><a href="#cb3-60" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb3-61"><a href="#cb3-61" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="chapter-12_files/figure-html/cell-3-output-1.png" width="758" height="470" class="figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="regression-evaluation-and-debugging" class="level2">
+<h2 class="anchored" data-anchor-id="regression-evaluation-and-debugging">4. Regression Evaluation and Debugging</h2>
+<section id="regression-metrics" class="level3">
+<h3 class="anchored" data-anchor-id="regression-metrics">4.1. Regression Metrics</h3>
+<p>Let residuals be <span class="math inline">\(e_i=y_i-\hat y_i\)</span>.</p>
+<blockquote class="blockquote">
+<p><strong>Mean squared error</strong></p>
+</blockquote>
+<p><span class="math display">\[
+MSE = \frac1N \sum_{i=1}^{N}e_i^2.
+\]</span></p>
+<p>MSE corresponds to the mean negative log-likelihood under a homoskedastic Gaussian error model, apart from constants and scale.</p>
+<blockquote class="blockquote">
+<p><strong>Root mean squared error</strong></p>
+</blockquote>
+<p><span class="math display">\[
+RMSE=\sqrt{MSE}.
+\]</span></p>
+<p>RMSE has the same units as the response.</p>
+<blockquote class="blockquote">
+<p><strong>Mean absolute error</strong></p>
+</blockquote>
+<p><span class="math display">\[
+MAE = \frac1N \sum_{i=1}^{N}|e_i|.
+\]</span></p>
+<p>MAE is less dominated by large residuals than RMSE.</p>
+<blockquote class="blockquote">
+<p><strong>Median absolute error</strong></p>
+</blockquote>
+<p><span class="math display">\[
+\operatorname{MedAE} = \operatorname{median}_i|e_i|.
+\]</span></p>
+<p>This describes a typical absolute error robustly.</p>
+<blockquote class="blockquote">
+<p><strong>Coefficient of determination</strong></p>
+</blockquote>
+<p><span class="math display">\[
+R^2 = 1- \frac{ \sum_i(y_i-\hat y_i)^2 }{ \sum_i(y_i-\bar y)^2 }.
+\]</span></p>
+<p>On unseen data, <span class="math inline">\(R^2\)</span> can be negative. This means the model performs worse than the baseline that predicts the test-set mean under the corresponding definition.</p>
+</section>
+<section id="choosing-between-mae-and-rmse" class="level3">
+<h3 class="anchored" data-anchor-id="choosing-between-mae-and-rmse">4.2. Choosing Between MAE and RMSE</h3>
+<p>RMSE penalizes large errors more strongly because <span class="math inline">\(e^2\)</span> grows faster than <span class="math inline">\(|e|\)</span>.</p>
+<p>If an error of 20 is more than twice as harmful as an error of 10, RMSE may align better with the decision.</p>
+<p>If cost grows approximately linearly with error, MAE may be more suitable.</p>
+<p>The chosen metric should reflect operational cost, not convention.</p>
+<p>For example:</p>
+<ul>
+<li>electricity imbalance penalties may rise sharply for large misses;</li>
+<li>delivery-time error may be approximately linear;</li>
+<li>financial loss may be asymmetric;</li>
+<li>underprediction and overprediction may have different costs.</li>
+</ul>
+<p>An asymmetric loss can be written as</p>
+<p><span class="math display">\[
+L_\tau(y,\hat y) = \begin{cases} \tau(y-\hat y), &amp; y\geq\hat y,\\ (1-\tau)(\hat y-y), &amp; y&lt;\hat y. \end{cases}
+\]</span></p>
+<p>This is the quantile or pinball loss.</p>
+</section>
+<section id="residual-diagnostics" class="level3">
+<h3 class="anchored" data-anchor-id="residual-diagnostics">4.3. Residual Diagnostics</h3>
+<p>A scalar metric compresses many errors into one number. Residual plots reveal structure that the scalar hides.</p>
+<p>Useful plots include:</p>
+<ul>
+<li>residual versus fitted value;</li>
+<li>residual versus each predictor;</li>
+<li>residual versus time;</li>
+<li>residual distribution;</li>
+<li>absolute residual versus fitted value;</li>
+<li>observed versus predicted;</li>
+<li>quantile–quantile plot;</li>
+<li>residuals by group or location.</li>
+</ul>
+<blockquote class="blockquote">
+<p><strong>Curvature</strong></p>
+</blockquote>
+<p><span class="math display">\[
+\mathbb E[e\mid \hat y]\neq0
+\]</span></p>
+<p>suggests missing nonlinearity or interaction.</p>
+<blockquote class="blockquote">
+<p><strong>Fanning</strong></p>
+</blockquote>
+<p><span class="math display">\[
+\operatorname{Var}(e\mid \hat y)
+\]</span></p>
+<p>increases with fitted value, suggesting heteroskedasticity.</p>
+<blockquote class="blockquote">
+<p><strong>Temporal structure</strong></p>
+</blockquote>
+<p><span class="math display">\[
+\operatorname{Corr}(e_t,e_{t-h})\neq0
+\]</span></p>
+<p>suggests omitted time dependence.</p>
+<blockquote class="blockquote">
+<p><strong>Group offsets</strong></p>
+</blockquote>
+<p><span class="math display">\[
+\mathbb E[e\mid G=g]
+\]</span></p>
+<p>differs across groups, suggesting systematic subgroup bias or missing contextual variables.</p>
+<div id="3d38a26e" class="cell" data-execution_count="3">
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.datasets <span class="im">import</span> load_diabetes</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.linear_model <span class="im">import</span> LinearRegression</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.model_selection <span class="im">import</span> train_test_split</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.metrics <span class="im">import</span> (</span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>    mean_absolute_error,</span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>    mean_squared_error,</span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>    r2_score</span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>data <span class="op">=</span> load_diabetes()</span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>bmi_index <span class="op">=</span> <span class="bu">list</span>(data.feature_names).index(<span class="st">"bmi"</span>)</span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>X <span class="op">=</span> data.data[:, [bmi_index]]</span>
+<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a>y <span class="op">=</span> data.target</span>
+<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a>X_train, X_test, y_train, y_test <span class="op">=</span> train_test_split(</span>
+<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a>    X,</span>
+<span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a>    y,</span>
+<span id="cb4-22"><a href="#cb4-22" aria-hidden="true" tabindex="-1"></a>    test_size<span class="op">=</span><span class="fl">0.30</span>,</span>
+<span id="cb4-23"><a href="#cb4-23" aria-hidden="true" tabindex="-1"></a>    random_state<span class="op">=</span><span class="dv">42</span></span>
+<span id="cb4-24"><a href="#cb4-24" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb4-25"><a href="#cb4-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-26"><a href="#cb4-26" aria-hidden="true" tabindex="-1"></a>model <span class="op">=</span> LinearRegression()</span>
+<span id="cb4-27"><a href="#cb4-27" aria-hidden="true" tabindex="-1"></a>model.fit(X_train, y_train)</span>
+<span id="cb4-28"><a href="#cb4-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-29"><a href="#cb4-29" aria-hidden="true" tabindex="-1"></a>predicted <span class="op">=</span> model.predict(X_test)</span>
+<span id="cb4-30"><a href="#cb4-30" aria-hidden="true" tabindex="-1"></a>residuals <span class="op">=</span> y_test <span class="op">-</span> predicted</span>
+<span id="cb4-31"><a href="#cb4-31" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-32"><a href="#cb4-32" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"MAE:"</span>, mean_absolute_error(y_test, predicted))</span>
+<span id="cb4-33"><a href="#cb4-33" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"RMSE:"</span>, mean_squared_error(</span>
+<span id="cb4-34"><a href="#cb4-34" aria-hidden="true" tabindex="-1"></a>    y_test,</span>
+<span id="cb4-35"><a href="#cb4-35" aria-hidden="true" tabindex="-1"></a>    predicted</span>
+<span id="cb4-36"><a href="#cb4-36" aria-hidden="true" tabindex="-1"></a>) <span class="op">**</span> <span class="fl">0.5</span>)</span>
+<span id="cb4-37"><a href="#cb4-37" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"R²:"</span>, r2_score(y_test, predicted))</span>
+<span id="cb4-38"><a href="#cb4-38" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-39"><a href="#cb4-39" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">7</span>, <span class="dv">5</span>))</span>
+<span id="cb4-40"><a href="#cb4-40" aria-hidden="true" tabindex="-1"></a>plt.scatter(predicted, residuals, alpha<span class="op">=</span><span class="fl">0.7</span>)</span>
+<span id="cb4-41"><a href="#cb4-41" aria-hidden="true" tabindex="-1"></a>plt.axhline(<span class="dv">0</span>, linestyle<span class="op">=</span><span class="st">"--"</span>)</span>
+<span id="cb4-42"><a href="#cb4-42" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">"Residuals Versus Fitted Values"</span>)</span>
+<span id="cb4-43"><a href="#cb4-43" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">"Predicted disease progression"</span>)</span>
+<span id="cb4-44"><a href="#cb4-44" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">"Residual"</span>)</span>
+<span id="cb4-45"><a href="#cb4-45" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb4-46"><a href="#cb4-46" aria-hidden="true" tabindex="-1"></a>plt.show()</span>
+<span id="cb4-47"><a href="#cb4-47" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-48"><a href="#cb4-48" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">7</span>, <span class="dv">5</span>))</span>
+<span id="cb4-49"><a href="#cb4-49" aria-hidden="true" tabindex="-1"></a>plt.scatter(y_test, predicted, alpha<span class="op">=</span><span class="fl">0.7</span>)</span>
+<span id="cb4-50"><a href="#cb4-50" aria-hidden="true" tabindex="-1"></a>minimum <span class="op">=</span> <span class="bu">min</span>(y_test.<span class="bu">min</span>(), predicted.<span class="bu">min</span>())</span>
+<span id="cb4-51"><a href="#cb4-51" aria-hidden="true" tabindex="-1"></a>maximum <span class="op">=</span> <span class="bu">max</span>(y_test.<span class="bu">max</span>(), predicted.<span class="bu">max</span>())</span>
+<span id="cb4-52"><a href="#cb4-52" aria-hidden="true" tabindex="-1"></a>plt.plot(</span>
+<span id="cb4-53"><a href="#cb4-53" aria-hidden="true" tabindex="-1"></a>    [minimum, maximum],</span>
+<span id="cb4-54"><a href="#cb4-54" aria-hidden="true" tabindex="-1"></a>    [minimum, maximum],</span>
+<span id="cb4-55"><a href="#cb4-55" aria-hidden="true" tabindex="-1"></a>    linestyle<span class="op">=</span><span class="st">"--"</span>,</span>
+<span id="cb4-56"><a href="#cb4-56" aria-hidden="true" tabindex="-1"></a>    label<span class="op">=</span><span class="st">"Perfect prediction"</span></span>
+<span id="cb4-57"><a href="#cb4-57" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb4-58"><a href="#cb4-58" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">"Observed Versus Predicted"</span>)</span>
+<span id="cb4-59"><a href="#cb4-59" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">"Observed value"</span>)</span>
+<span id="cb4-60"><a href="#cb4-60" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">"Predicted value"</span>)</span>
+<span id="cb4-61"><a href="#cb4-61" aria-hidden="true" tabindex="-1"></a>plt.legend()</span>
+<span id="cb4-62"><a href="#cb4-62" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb4-63"><a href="#cb4-63" aria-hidden="true" tabindex="-1"></a>plt.show()</span>
+<span id="cb4-64"><a href="#cb4-64" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-65"><a href="#cb4-65" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">7</span>, <span class="dv">5</span>))</span>
+<span id="cb4-66"><a href="#cb4-66" aria-hidden="true" tabindex="-1"></a>plt.scatter(</span>
+<span id="cb4-67"><a href="#cb4-67" aria-hidden="true" tabindex="-1"></a>    predicted,</span>
+<span id="cb4-68"><a href="#cb4-68" aria-hidden="true" tabindex="-1"></a>    np.<span class="bu">abs</span>(residuals),</span>
+<span id="cb4-69"><a href="#cb4-69" aria-hidden="true" tabindex="-1"></a>    alpha<span class="op">=</span><span class="fl">0.7</span></span>
+<span id="cb4-70"><a href="#cb4-70" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb4-71"><a href="#cb4-71" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">"Absolute Error Versus Fitted Value"</span>)</span>
+<span id="cb4-72"><a href="#cb4-72" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">"Predicted value"</span>)</span>
+<span id="cb4-73"><a href="#cb4-73" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">"Absolute residual"</span>)</span>
+<span id="cb4-74"><a href="#cb4-74" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb4-75"><a href="#cb4-75" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>MAE: 50.59307504375872
+RMSE: 62.32926055201547
+R²: 0.2803417492440603</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="chapter-12_files/figure-html/cell-4-output-2.png" width="662" height="470" class="figure-img"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="chapter-12_files/figure-html/cell-4-output-3.png" width="662" height="470" class="figure-img"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="chapter-12_files/figure-html/cell-4-output-4.png" width="662" height="470" class="figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="substantive-validity-and-impossible-predictions" class="level3">
+<h3 class="anchored" data-anchor-id="substantive-validity-and-impossible-predictions">4.4. Substantive Validity and Impossible Predictions</h3>
+<p>A regression model may minimize average error while producing impossible outputs:</p>
+<ul>
+<li>negative demand;</li>
+<li>probabilities above 1;</li>
+<li>negative recovery score;</li>
+<li>negative remaining lifetime;</li>
+<li>temperatures outside a physical operating range;</li>
+<li>revenue larger than the market itself.</li>
+</ul>
+<p>Possible remedies include:</p>
+<ul>
+<li>transforming the target;</li>
+<li>using an appropriate response distribution;</li>
+<li>imposing constraints;</li>
+<li>modeling rates or proportions directly;</li>
+<li>adding monotonicity constraints;</li>
+<li>changing the model family.</li>
+</ul>
+<p>A post-processing clip,</p>
+<p><span class="math display">\[
+\hat y_{\text{clipped}} = \min(b,\max(a,\hat y)),
+\]</span></p>
+<p>may prevent impossible output but does not repair the underlying misspecification.</p>
+</section>
+<section id="prediction-intervals" class="level3">
+<h3 class="anchored" data-anchor-id="prediction-intervals">4.5. Prediction Intervals</h3>
+<p>A point prediction does not communicate uncertainty. A prediction interval seeks bounds <span class="math inline">\([L(x),U(x)]\)</span> such that</p>
+<p><span class="math display">\[
+P \left( Y_{\mathrm{new}}\in[L(X_{\mathrm{new}}),U(X_{\mathrm{new}})] \right) \approx1-\alpha.
+\]</span> Evaluation must include both:</p>
+<blockquote class="blockquote">
+<p><strong>Coverage</strong></p>
+</blockquote>
+<p><span class="math display">\[
+\widehat{\operatorname{Coverage}} = \frac1N \sum_{i=1}^{N} I(y_i\in[L_i,U_i]).
+\]</span></p>
+<blockquote class="blockquote">
+<p><strong>Width</strong></p>
+</blockquote>
+<p><span class="math display">\[
+\widehat W = \frac1N \sum_{i=1}^{N}(U_i-L_i).
+\]</span></p>
+<p>Intervals that cover almost everything by being extremely wide are not useful. Coverage and sharpness must be considered together.</p>
+</section>
+</section>
+<section id="classification-evaluation-and-debugging" class="level2">
+<h2 class="anchored" data-anchor-id="classification-evaluation-and-debugging">5. Classification Evaluation and Debugging</h2>
+<section id="confusion-matrix-metrics" class="level3">
+<h3 class="anchored" data-anchor-id="confusion-matrix-metrics">5.1. Confusion-Matrix Metrics</h3>
+<p>For binary classification:</p>
+<p><span class="math display">\[
+\operatorname{Precision} = \frac{TP}{TP+FP},
+\]</span> <span class="math display">\[
+\operatorname{Recall} = \frac{TP}{TP+FN},
+\]</span> <span class="math display">\[
+\operatorname{Specificity} = \frac{TN}{TN+FP},
+\]</span> <span class="math display">\[
+F_1 = 2 \frac{ \operatorname{Precision}\cdot\operatorname{Recall} }{ \operatorname{Precision}+\operatorname{Recall} }.
+\]</span></p>
+<p>The <span class="math inline">\(F_\beta\)</span> score weights recall relative to precision:</p>
+<p><span class="math display">\[
+F_\beta = (1+\beta^2) \frac{PR}{\beta^2P+R}.
+\]</span> When <span class="math inline">\(\beta&gt;1\)</span>, recall receives greater weight.</p>
+</section>
+<section id="accuracy-under-class-imbalance" class="level3">
+<h3 class="anchored" data-anchor-id="accuracy-under-class-imbalance">5.2. Accuracy Under Class Imbalance</h3>
+<p>Suppose 1% of transactions are fraudulent. A classifier predicting every transaction as legitimate has</p>
+<p><span class="math display">\[
+\operatorname{Accuracy}=0.99.
+\]</span></p>
+<p>Yet <span class="math inline">\(\operatorname{Recall}=0\)</span>.</p>
+<p>The correct baseline depends on the use case:</p>
+<ul>
+<li>majority-class classifier;</li>
+<li>existing business rules;</li>
+<li>random ranking;</li>
+<li>previous production model;</li>
+<li>manual review process;</li>
+<li>no-action policy.</li>
+</ul>
+<p>A new model should beat the operational baseline, not merely a weak academic baseline.</p>
+</section>
+<section id="roc-and-precisionrecall-curves" class="level3">
+<h3 class="anchored" data-anchor-id="roc-and-precisionrecall-curves">5.3. ROC and Precision–Recall Curves</h3>
+<p>Given score <span class="math inline">\(s(x)\)</span> and threshold <span class="math inline">\(t\)</span>:</p>
+<p><span class="math display">\[
+\begin{aligned}
+TPR(t) &amp;= P(s(X)\geq t\mid Y=1),\\
+FPR(t) &amp;= P(s(X)\geq t\mid Y=0).
+\end{aligned}
+\]</span></p>
+<p>The ROC curve plots <span class="math inline">\(TPR(t)\)</span> against <span class="math inline">\(FPR(t)\)</span>.</p>
+<p>ROC-AUC has a ranking interpretation:</p>
+<p><span class="math display">\[
+AUC = P(s(X^+)&gt;s(X^-)),
+\]</span></p>
+<p>with a tie adjustment under discrete scores.</p>
+<p>For rare positive classes, precision–recall curves are often more operationally informative because precision depends directly on prevalence:</p>
+<p><span class="math display">\[
+\operatorname{Precision} = \frac{ TPR\cdot P(Y=1) }{ TPR\cdot P(Y=1) + FPR\cdot P(Y=0) }.
+\]</span></p>
+<p>Even a small false-positive rate can generate many false alerts when negatives are abundant.</p>
+<div id="a4ef35df" class="cell" data-execution_count="4">
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.datasets <span class="im">import</span> load_breast_cancer</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.linear_model <span class="im">import</span> LogisticRegression</span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.metrics <span class="im">import</span> (</span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>    confusion_matrix,</span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>    precision_recall_curve,</span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>    roc_curve,</span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>    roc_auc_score,</span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>    average_precision_score</span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.model_selection <span class="im">import</span> train_test_split</span>
+<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.pipeline <span class="im">import</span> Pipeline</span>
+<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.preprocessing <span class="im">import</span> StandardScaler</span>
+<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-18"><a href="#cb6-18" aria-hidden="true" tabindex="-1"></a>data <span class="op">=</span> load_breast_cancer()</span>
+<span id="cb6-19"><a href="#cb6-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-20"><a href="#cb6-20" aria-hidden="true" tabindex="-1"></a>X <span class="op">=</span> data.data</span>
+<span id="cb6-21"><a href="#cb6-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-22"><a href="#cb6-22" aria-hidden="true" tabindex="-1"></a><span class="co"># Convert malignant to positive class.</span></span>
+<span id="cb6-23"><a href="#cb6-23" aria-hidden="true" tabindex="-1"></a>y <span class="op">=</span> (data.target <span class="op">==</span> <span class="dv">0</span>).astype(<span class="bu">int</span>)</span>
+<span id="cb6-24"><a href="#cb6-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-25"><a href="#cb6-25" aria-hidden="true" tabindex="-1"></a>X_train, X_test, y_train, y_test <span class="op">=</span> train_test_split(</span>
+<span id="cb6-26"><a href="#cb6-26" aria-hidden="true" tabindex="-1"></a>    X,</span>
+<span id="cb6-27"><a href="#cb6-27" aria-hidden="true" tabindex="-1"></a>    y,</span>
+<span id="cb6-28"><a href="#cb6-28" aria-hidden="true" tabindex="-1"></a>    test_size<span class="op">=</span><span class="fl">0.30</span>,</span>
+<span id="cb6-29"><a href="#cb6-29" aria-hidden="true" tabindex="-1"></a>    stratify<span class="op">=</span>y,</span>
+<span id="cb6-30"><a href="#cb6-30" aria-hidden="true" tabindex="-1"></a>    random_state<span class="op">=</span><span class="dv">42</span></span>
+<span id="cb6-31"><a href="#cb6-31" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb6-32"><a href="#cb6-32" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-33"><a href="#cb6-33" aria-hidden="true" tabindex="-1"></a>model <span class="op">=</span> Pipeline([</span>
+<span id="cb6-34"><a href="#cb6-34" aria-hidden="true" tabindex="-1"></a>    (<span class="st">"scaler"</span>, StandardScaler()),</span>
+<span id="cb6-35"><a href="#cb6-35" aria-hidden="true" tabindex="-1"></a>    (<span class="st">"classifier"</span>, LogisticRegression(max_iter<span class="op">=</span><span class="dv">3000</span>))</span>
+<span id="cb6-36"><a href="#cb6-36" aria-hidden="true" tabindex="-1"></a>])</span>
+<span id="cb6-37"><a href="#cb6-37" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-38"><a href="#cb6-38" aria-hidden="true" tabindex="-1"></a>model.fit(X_train, y_train)</span>
+<span id="cb6-39"><a href="#cb6-39" aria-hidden="true" tabindex="-1"></a>probability <span class="op">=</span> model.predict_proba(X_test)[:, <span class="dv">1</span>]</span>
+<span id="cb6-40"><a href="#cb6-40" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-41"><a href="#cb6-41" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"ROC-AUC:"</span>, roc_auc_score(y_test, probability))</span>
+<span id="cb6-42"><a href="#cb6-42" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(</span>
+<span id="cb6-43"><a href="#cb6-43" aria-hidden="true" tabindex="-1"></a>    <span class="st">"PR-AUC:"</span>,</span>
+<span id="cb6-44"><a href="#cb6-44" aria-hidden="true" tabindex="-1"></a>    average_precision_score(y_test, probability)</span>
+<span id="cb6-45"><a href="#cb6-45" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb6-46"><a href="#cb6-46" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-47"><a href="#cb6-47" aria-hidden="true" tabindex="-1"></a>thresholds <span class="op">=</span> [<span class="fl">0.10</span>, <span class="fl">0.25</span>, <span class="fl">0.50</span>, <span class="fl">0.75</span>]</span>
+<span id="cb6-48"><a href="#cb6-48" aria-hidden="true" tabindex="-1"></a>rows <span class="op">=</span> []</span>
+<span id="cb6-49"><a href="#cb6-49" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-50"><a href="#cb6-50" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> threshold <span class="kw">in</span> thresholds:</span>
+<span id="cb6-51"><a href="#cb6-51" aria-hidden="true" tabindex="-1"></a>    predicted <span class="op">=</span> (probability <span class="op">&gt;=</span> threshold).astype(<span class="bu">int</span>)</span>
+<span id="cb6-52"><a href="#cb6-52" aria-hidden="true" tabindex="-1"></a>    tn, fp, fn, tp <span class="op">=</span> confusion_matrix(</span>
+<span id="cb6-53"><a href="#cb6-53" aria-hidden="true" tabindex="-1"></a>        y_test,</span>
+<span id="cb6-54"><a href="#cb6-54" aria-hidden="true" tabindex="-1"></a>        predicted</span>
+<span id="cb6-55"><a href="#cb6-55" aria-hidden="true" tabindex="-1"></a>    ).ravel()</span>
+<span id="cb6-56"><a href="#cb6-56" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-57"><a href="#cb6-57" aria-hidden="true" tabindex="-1"></a>    rows.append({</span>
+<span id="cb6-58"><a href="#cb6-58" aria-hidden="true" tabindex="-1"></a>        <span class="st">"threshold"</span>: threshold,</span>
+<span id="cb6-59"><a href="#cb6-59" aria-hidden="true" tabindex="-1"></a>        <span class="st">"TP"</span>: tp,</span>
+<span id="cb6-60"><a href="#cb6-60" aria-hidden="true" tabindex="-1"></a>        <span class="st">"FP"</span>: fp,</span>
+<span id="cb6-61"><a href="#cb6-61" aria-hidden="true" tabindex="-1"></a>        <span class="st">"FN"</span>: fn,</span>
+<span id="cb6-62"><a href="#cb6-62" aria-hidden="true" tabindex="-1"></a>        <span class="st">"TN"</span>: tn,</span>
+<span id="cb6-63"><a href="#cb6-63" aria-hidden="true" tabindex="-1"></a>        <span class="st">"precision"</span>: tp <span class="op">/</span> (tp <span class="op">+</span> fp) <span class="cf">if</span> tp <span class="op">+</span> fp <span class="cf">else</span> <span class="dv">0</span>,</span>
+<span id="cb6-64"><a href="#cb6-64" aria-hidden="true" tabindex="-1"></a>        <span class="st">"recall"</span>: tp <span class="op">/</span> (tp <span class="op">+</span> fn) <span class="cf">if</span> tp <span class="op">+</span> fn <span class="cf">else</span> <span class="dv">0</span></span>
+<span id="cb6-65"><a href="#cb6-65" aria-hidden="true" tabindex="-1"></a>    })</span>
+<span id="cb6-66"><a href="#cb6-66" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-67"><a href="#cb6-67" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(pd.DataFrame(rows))</span>
+<span id="cb6-68"><a href="#cb6-68" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-69"><a href="#cb6-69" aria-hidden="true" tabindex="-1"></a>fpr, tpr, _ <span class="op">=</span> roc_curve(y_test, probability)</span>
+<span id="cb6-70"><a href="#cb6-70" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-71"><a href="#cb6-71" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">7</span>, <span class="dv">5</span>))</span>
+<span id="cb6-72"><a href="#cb6-72" aria-hidden="true" tabindex="-1"></a>plt.plot(fpr, tpr)</span>
+<span id="cb6-73"><a href="#cb6-73" aria-hidden="true" tabindex="-1"></a>plt.plot([<span class="dv">0</span>, <span class="dv">1</span>], [<span class="dv">0</span>, <span class="dv">1</span>], linestyle<span class="op">=</span><span class="st">"--"</span>)</span>
+<span id="cb6-74"><a href="#cb6-74" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">"ROC Curve"</span>)</span>
+<span id="cb6-75"><a href="#cb6-75" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">"False-positive rate"</span>)</span>
+<span id="cb6-76"><a href="#cb6-76" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">"True-positive rate"</span>)</span>
+<span id="cb6-77"><a href="#cb6-77" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb6-78"><a href="#cb6-78" aria-hidden="true" tabindex="-1"></a>plt.show()</span>
+<span id="cb6-79"><a href="#cb6-79" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-80"><a href="#cb6-80" aria-hidden="true" tabindex="-1"></a>precision, recall, _ <span class="op">=</span> precision_recall_curve(</span>
+<span id="cb6-81"><a href="#cb6-81" aria-hidden="true" tabindex="-1"></a>    y_test,</span>
+<span id="cb6-82"><a href="#cb6-82" aria-hidden="true" tabindex="-1"></a>    probability</span>
+<span id="cb6-83"><a href="#cb6-83" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb6-84"><a href="#cb6-84" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-85"><a href="#cb6-85" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">7</span>, <span class="dv">5</span>))</span>
+<span id="cb6-86"><a href="#cb6-86" aria-hidden="true" tabindex="-1"></a>plt.plot(recall, precision)</span>
+<span id="cb6-87"><a href="#cb6-87" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">"Precision–Recall Curve"</span>)</span>
+<span id="cb6-88"><a href="#cb6-88" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">"Recall"</span>)</span>
+<span id="cb6-89"><a href="#cb6-89" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">"Precision"</span>)</span>
+<span id="cb6-90"><a href="#cb6-90" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb6-91"><a href="#cb6-91" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>ROC-AUC: 0.997517523364486
+PR-AUC: 0.9962959459630412
+   threshold  TP  FP  FN   TN  precision    recall
+0       0.10  63   7   1  100   0.900000  0.984375
+1       0.25  62   1   2  106   0.984127  0.968750
+2       0.50  60   1   4  106   0.983607  0.937500
+3       0.75  56   0   8  107   1.000000  0.875000</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="chapter-12_files/figure-html/cell-5-output-2.png" width="662" height="470" class="figure-img"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="chapter-12_files/figure-html/cell-5-output-3.png" width="662" height="470" class="figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="capacity-constrained-evaluation" class="level3">
+<h3 class="anchored" data-anchor-id="capacity-constrained-evaluation">5.4. Capacity-Constrained Evaluation</h3>
+<p>Suppose a fraud-review team can inspect only 500 transactions per day. The relevant question is not performance at threshold 0.5. It is performance among the 500 highest-risk cases.</p>
+<p>Useful metrics include:</p>
+<blockquote class="blockquote">
+<p><strong>Precision at</strong> k</p>
+</blockquote>
+<p><span class="math display">\[
+P@k = \frac{ \text{positive cases among top }k }{ k }.
+\]</span></p>
+<blockquote class="blockquote">
+<p><strong>Recall at</strong> k</p>
+</blockquote>
+<p><span class="math display">\[
+R@k = \frac{ \text{positive cases among top }k }{ \text{all positive cases} }.
+\]</span></p>
+<blockquote class="blockquote">
+<p><strong>Lift at</strong> k</p>
+</blockquote>
+<p><span class="math display">\[
+\operatorname{Lift}@k = \frac{P@k}{P(Y=1)}.
+\]</span></p>
+<p>These metrics align evaluation with resource constraints.</p>
+</section>
+<section id="probability-calibration" class="level3">
+<h3 class="anchored" data-anchor-id="probability-calibration">5.5. Probability Calibration</h3>
+<p>A classifier is calibrated when predicted probabilities correspond to observed frequencies.</p>
+<p>For cases with <span class="math inline">\(\hat p(x)\approx0.8\)</span>, approximately 80% should be positive.</p>
+<p>A model can rank cases well but be poorly calibrated. Guo et al.&nbsp;found that modern neural networks in their experiments could be miscalibrated and showed that temperature scaling was an effective post-hoc method in many evaluated settings<a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a>.</p>
+<p>The Brier score is</p>
+<p><span class="math display">\[
+BS = \frac1N \sum_{i=1}^{N} (\hat p_i-y_i)^2.
+\]</span></p>
+<p>It evaluates probabilistic predictions rather than hard classifications and traces to Brier’s work on verifying probability forecasts <a href="#fn4" class="footnote-ref" id="fnref4" role="doc-noteref"><sup>4</sup></a>.</p>
+<p>Log loss is</p>
+<p><span class="math display">\[
+LL = -\frac1N \sum_{i=1}^{N} \left[ y_i\log\hat p_i + (1-y_i)\log(1-\hat p_i) \right].
+\]</span></p>
+<p>Log loss strongly penalizes confident wrong predictions.</p>
+<div id="d085ef6e" class="cell" data-execution_count="5">
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.calibration <span class="im">import</span> CalibrationDisplay</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.datasets <span class="im">import</span> load_breast_cancer</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.ensemble <span class="im">import</span> RandomForestClassifier</span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.model_selection <span class="im">import</span> train_test_split</span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.metrics <span class="im">import</span> brier_score_loss</span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>data <span class="op">=</span> load_breast_cancer()</span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>X <span class="op">=</span> data.data</span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>y <span class="op">=</span> (data.target <span class="op">==</span> <span class="dv">0</span>).astype(<span class="bu">int</span>)</span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a>X_train, X_test, y_train, y_test <span class="op">=</span> train_test_split(</span>
+<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a>    X,</span>
+<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a>    y,</span>
+<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a>    test_size<span class="op">=</span><span class="fl">0.35</span>,</span>
+<span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a>    stratify<span class="op">=</span>y,</span>
+<span id="cb8-18"><a href="#cb8-18" aria-hidden="true" tabindex="-1"></a>    random_state<span class="op">=</span><span class="dv">42</span></span>
+<span id="cb8-19"><a href="#cb8-19" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb8-20"><a href="#cb8-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-21"><a href="#cb8-21" aria-hidden="true" tabindex="-1"></a>model <span class="op">=</span> RandomForestClassifier(</span>
+<span id="cb8-22"><a href="#cb8-22" aria-hidden="true" tabindex="-1"></a>    n_estimators<span class="op">=</span><span class="dv">400</span>,</span>
+<span id="cb8-23"><a href="#cb8-23" aria-hidden="true" tabindex="-1"></a>    min_samples_leaf<span class="op">=</span><span class="dv">2</span>,</span>
+<span id="cb8-24"><a href="#cb8-24" aria-hidden="true" tabindex="-1"></a>    random_state<span class="op">=</span><span class="dv">42</span></span>
+<span id="cb8-25"><a href="#cb8-25" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb8-26"><a href="#cb8-26" aria-hidden="true" tabindex="-1"></a>model.fit(X_train, y_train)</span>
+<span id="cb8-27"><a href="#cb8-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-28"><a href="#cb8-28" aria-hidden="true" tabindex="-1"></a>probability <span class="op">=</span> model.predict_proba(X_test)[:, <span class="dv">1</span>]</span>
+<span id="cb8-29"><a href="#cb8-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-30"><a href="#cb8-30" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(</span>
+<span id="cb8-31"><a href="#cb8-31" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Brier score:"</span>,</span>
+<span id="cb8-32"><a href="#cb8-32" aria-hidden="true" tabindex="-1"></a>    brier_score_loss(y_test, probability)</span>
+<span id="cb8-33"><a href="#cb8-33" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb8-34"><a href="#cb8-34" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-35"><a href="#cb8-35" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">7</span>, <span class="dv">5</span>))</span>
+<span id="cb8-36"><a href="#cb8-36" aria-hidden="true" tabindex="-1"></a>CalibrationDisplay.from_predictions(</span>
+<span id="cb8-37"><a href="#cb8-37" aria-hidden="true" tabindex="-1"></a>    y_test,</span>
+<span id="cb8-38"><a href="#cb8-38" aria-hidden="true" tabindex="-1"></a>    probability,</span>
+<span id="cb8-39"><a href="#cb8-39" aria-hidden="true" tabindex="-1"></a>    n_bins<span class="op">=</span><span class="dv">10</span>,</span>
+<span id="cb8-40"><a href="#cb8-40" aria-hidden="true" tabindex="-1"></a>    strategy<span class="op">=</span><span class="st">"quantile"</span></span>
+<span id="cb8-41"><a href="#cb8-41" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb8-42"><a href="#cb8-42" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">"Reliability Diagram"</span>)</span>
+<span id="cb8-43"><a href="#cb8-43" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb8-44"><a href="#cb8-44" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>Brier score: 0.03487893804487709</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<pre><code>&lt;Figure size 672x480 with 0 Axes&gt;</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="chapter-12_files/figure-html/cell-6-output-3.png" width="662" height="470" class="figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="evaluating-unsupervised-models" class="level2">
+<h2 class="anchored" data-anchor-id="evaluating-unsupervised-models">6. Evaluating Unsupervised Models</h2>
+<section id="clustering" class="level3">
+<h3 class="anchored" data-anchor-id="clustering">6.1. Clustering</h3>
+<p>Clustering evaluation differs because no target is required during fitting.</p>
+<p>Internal metrics include:</p>
+<ul>
+<li>within-cluster sum of squares;</li>
+<li>silhouette score;</li>
+<li>gap statistic;</li>
+<li>density connectivity;</li>
+<li>stability.</li>
+</ul>
+<p>When external labels exist, one may compute:</p>
+<ul>
+<li>adjusted Rand index;</li>
+<li>normalized mutual information;</li>
+<li>purity.</li>
+</ul>
+<p>However, an unsupervised cluster can be useful without matching an existing label. Conversely, a high agreement score does not guarantee operational value.</p>
+<p>Important practical checks include:</p>
+<ul>
+<li>Does the solution persist across random seeds?</li>
+<li>Does it persist under resampling?</li>
+<li>Are clusters driven by a single scale-dominated variable?</li>
+<li>Are tiny clusters merely outliers?</li>
+<li>Can new observations be assigned?</li>
+<li>Do cluster profiles remain stable over time?</li>
+<li>Does acting on the segmentation produce value?</li>
+</ul>
+</section>
+<section id="dimensionality-reduction" class="level3">
+<h3 class="anchored" data-anchor-id="dimensionality-reduction">6.2. Dimensionality Reduction</h3>
+<p>For PCA and autoencoders, evaluation can include reconstruction error:</p>
+<p><span class="math display">\[
+R_M = \frac1N \sum_{i=1}^{N} \|x_i-\hat x_i^{(M)}\|^2.
+\]</span></p>
+<p>Additional questions include:</p>
+<ul>
+<li>Are neighborhoods preserved?</li>
+<li>Are downstream models improved?</li>
+<li>Are rare cases destroyed?</li>
+<li>Are conclusions stable under scaling?</li>
+<li>Does the two-dimensional display represent enough variation?</li>
+<li>Are important structures hidden in later dimensions?</li>
+</ul>
+<p>A visually appealing projection is not evidence that the embedding preserves every relevant relationship.</p>
+</section>
+</section>
+<section id="numerical-and-statistical-stability" class="level2">
+<h2 class="anchored" data-anchor-id="numerical-and-statistical-stability">7. Numerical and Statistical Stability</h2>
+<section id="conditioning" class="level3">
+<h3 class="anchored" data-anchor-id="conditioning">7.1. Conditioning</h3>
+<p>A mathematical problem is ill-conditioned when small input perturbations produce large output changes.</p>
+<p>For linear system <span class="math inline">\(Ax=b\)</span>, the condition number under the 2-norm is</p>
+<p><span class="math display">\[
+\kappa_2(A) = \|A\|_2\|A^{-1}\|_2 = \frac{\sigma_{\max}(A)} {\sigma_{\min}(A)}.
+\]</span></p>
+<p>A large condition number indicates sensitivity.</p>
+<p>In linear regression,</p>
+<p><span class="math display">\[
+\hat\beta = (X^\top X)^{-1}X^\top y.
+\]</span></p>
+<p>Highly correlated columns make the smallest singular values of X small, increasing instability.</p>
+<p>Symptoms include:</p>
+<ul>
+<li>large coefficient changes under small data perturbations;</li>
+<li>opposite coefficient signs across samples;</li>
+<li>huge standard errors;</li>
+<li>unstable selected variables;</li>
+<li>good prediction but unreliable attribution.</li>
+</ul>
+<p>Possible responses include:</p>
+<ul>
+<li>removing redundant variables;</li>
+<li>ridge regularization;</li>
+<li>PCA or partial least squares;</li>
+<li>acquiring more varied data;</li>
+<li>reporting predictive rather than causal interpretations.</li>
+</ul>
+</section>
+<section id="backward-error" class="level3">
+<h3 class="anchored" data-anchor-id="backward-error">7.2. Backward Error</h3>
+<p>Forward error asks <span class="math inline">\(\|\hat x-x^*\|\)</span>, where <span class="math inline">\(x^*\)</span> is the exact unknown solution.</p>
+<p>Backward error asks:</p>
+<blockquote class="blockquote">
+<p>What smallest perturbation to the original problem would make <span class="math inline">\(\hat x\)</span> an exact solution?</p>
+</blockquote>
+<p>For <span class="math inline">\(Ax=b\)</span>, the residual is</p>
+<p><span class="math display">\[
+r=b-A\hat x.
+\]</span></p>
+<p>A small residual means <span class="math inline">\(\hat x\)</span> solves a nearby equation well. However, in an ill-conditioned problem, a small residual does not guarantee a small forward error.</p>
+<p>This distinction matters in optimization and numerical linear algebra. The algorithm may be numerically stable even when the statistical problem is intrinsically unstable.</p>
+</section>
+<section id="perturbation-testing" class="level3">
+<h3 class="anchored" data-anchor-id="perturbation-testing">7.3. Perturbation Testing</h3>
+<p>A practical sensitivity analysis repeatedly perturbs the data:</p>
+<ol type="1">
+<li>bootstrap observations;</li>
+<li>add small measurement noise;</li>
+<li>change preprocessing choices;</li>
+<li>refit the model;</li>
+<li>compare parameters and predictions.</li>
+</ol>
+<p>For parameter vector <span class="math inline">\(\hat\theta^{(b)}\)</span>, inspect:</p>
+<p><span class="math display">\[
+\operatorname{Var}_b(\hat\theta^{(b)}).
+\]</span></p>
+<p>For predictions at <span class="math inline">\(x\)</span>, inspect:</p>
+<p><span class="math display">\[
+\operatorname{Var}_b \left[ \hat f^{(b)}(x) \right].
+\]</span></p>
+<p>A model can have stable aggregate accuracy but unstable individual predictions. That instability matters when decisions are made at the individual level.</p>
+</section>
+</section>
+<section id="dataset-shift-and-production-failure" class="level2">
+<h2 class="anchored" data-anchor-id="dataset-shift-and-production-failure">8. Dataset Shift and Production Failure</h2>
+<section id="training-and-deployment-distributions" class="level3">
+<h3 class="anchored" data-anchor-id="training-and-deployment-distributions">8.1. Training and Deployment Distributions</h3>
+<p>Offline evaluation usually assumes future observations resemble development observations.</p>
+<p>Let: <span class="math inline">\(P_{\mathrm{train}}(X,Y)\)</span> be the development distribution and <span class="math inline">\(P_{\mathrm{prod}}(X,Y)\)</span> the production distribution.</p>
+<p>Dataset shift occurs when</p>
+<p><span class="math display">\[
+P_{\mathrm{train}}(X,Y) \neq P_{\mathrm{prod}}(X,Y).
+\]</span></p>
+<p>Common forms include:</p>
+<blockquote class="blockquote">
+<p><strong>Covariate shift</strong></p>
+</blockquote>
+<p><span class="math display">\[
+P_{\mathrm{train}}(X) \neq P_{\mathrm{prod}}(X),
+\]</span></p>
+<p>but</p>
+<p><span class="math display">\[
+P_{\mathrm{train}}(Y\mid X) = P_{\mathrm{prod}}(Y\mid X).
+\]</span></p>
+<blockquote class="blockquote">
+<p><strong>Label shift</strong></p>
+</blockquote>
+<p><span class="math display">\[
+P_{\mathrm{train}}(Y) \neq P_{\mathrm{prod}}(Y),
+\]</span></p>
+<p>with approximately stable <span class="math inline">\(P(X\mid Y)\)</span>.</p>
+<blockquote class="blockquote">
+<p><strong>Concept shift</strong></p>
+</blockquote>
+<p><span class="math display">\[
+P_{\mathrm{train}}(Y\mid X) \neq P_{\mathrm{prod}}(Y\mid X).
+\]</span></p>
+<p>Dataset shift is a broad family of problems in which training and deployment distributions differ; covariate shift is only one special case.</p>
+</section>
+<section id="importance-weighting" class="level3">
+<h3 class="anchored" data-anchor-id="importance-weighting">8.2. Importance Weighting</h3>
+<p>Under covariate shift, production risk is</p>
+<p><span class="math display">\[
+R_{\mathrm{prod}}(f) = \mathbb E_{\mathrm{prod}} [L(Y,f(X))].
+\]</span></p>
+<p>Assuming stable conditional outcome distribution,</p>
+<p><span class="math display">\[
+P_{\mathrm{prod}}(Y\mid X) = P_{\mathrm{train}}(Y\mid X),
+\]</span></p>
+<p>we can write</p>
+<p><span class="math display">\[
+R_{\mathrm{prod}}(f) = \mathbb E_{\mathrm{train}} \left[ w(X)L(Y,f(X)) \right],
+\]</span> where <span class="math inline">\(w(x) = \frac{ p_{\mathrm{prod}}(x) }{ p_{\mathrm{train}}(x) }.\)</span></p>
+<p>This suggests a weighted empirical objective:</p>
+<p><span class="math display">\[
+\widehat R_w(f) = \frac1N \sum_{i=1}^{N} w(x_i)L(y_i,f(x_i)).
+\]</span></p>
+<p>In practice, density-ratio estimation can be difficult, and large weights increase variance. Reweighting is not a universal repair for arbitrary production failure.</p>
+</section>
+<section id="detecting-input-drift" class="level3">
+<h3 class="anchored" data-anchor-id="detecting-input-drift">8.3. Detecting Input Drift</h3>
+<p>For numerical feature <span class="math inline">\(X_j\)</span>, compare training and recent production distributions using:</p>
+<ul>
+<li>mean and variance;</li>
+<li>quantiles;</li>
+<li>missingness rate;</li>
+<li>range violations;</li>
+<li>population stability index;</li>
+<li>Kolmogorov–Smirnov distance;</li>
+<li>Wasserstein distance;</li>
+<li>learned two-sample classifiers.</li>
+</ul>
+<p>A simple standardized mean difference is</p>
+<p><span class="math display">\[
+SMD_j = \frac{ \bar x_{j,\mathrm{prod}} - \bar x_{j,\mathrm{train}} }{ s_{j,\mathrm{pooled}} }.
+\]</span></p>
+<p>For categorical features, compare category frequencies and unseen-category rates.</p>
+<p>Drift does not automatically imply performance loss. A feature may drift without affecting predictions. Conversely, performance may degrade without obvious marginal drift if relationships among variables change.</p>
+<div id="786c028a" class="cell" data-execution_count="6">
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.linear_model <span class="im">import</span> LinearRegression</span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.metrics <span class="im">import</span> mean_squared_error</span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>rng <span class="op">=</span> np.random.default_rng(<span class="dv">42</span>)</span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Training inputs concentrated near zero.</span></span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a>x_train <span class="op">=</span> rng.normal(<span class="dv">0</span>, <span class="fl">1.0</span>, size<span class="op">=</span><span class="dv">400</span>)</span>
+<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a>y_train <span class="op">=</span> (</span>
+<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a>    np.sin(x_train)</span>
+<span id="cb11-13"><a href="#cb11-13" aria-hidden="true" tabindex="-1"></a>    <span class="op">+</span> <span class="fl">0.15</span> <span class="op">*</span> rng.normal(size<span class="op">=</span><span class="bu">len</span>(x_train))</span>
+<span id="cb11-14"><a href="#cb11-14" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb11-15"><a href="#cb11-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-16"><a href="#cb11-16" aria-hidden="true" tabindex="-1"></a><span class="co"># Production inputs shift toward a region poorly represented in training.</span></span>
+<span id="cb11-17"><a href="#cb11-17" aria-hidden="true" tabindex="-1"></a>x_production <span class="op">=</span> rng.normal(<span class="fl">2.5</span>, <span class="fl">0.8</span>, size<span class="op">=</span><span class="dv">250</span>)</span>
+<span id="cb11-18"><a href="#cb11-18" aria-hidden="true" tabindex="-1"></a>y_production <span class="op">=</span> (</span>
+<span id="cb11-19"><a href="#cb11-19" aria-hidden="true" tabindex="-1"></a>    np.sin(x_production)</span>
+<span id="cb11-20"><a href="#cb11-20" aria-hidden="true" tabindex="-1"></a>    <span class="op">+</span> <span class="fl">0.15</span> <span class="op">*</span> rng.normal(size<span class="op">=</span><span class="bu">len</span>(x_production))</span>
+<span id="cb11-21"><a href="#cb11-21" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb11-22"><a href="#cb11-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-23"><a href="#cb11-23" aria-hidden="true" tabindex="-1"></a>model <span class="op">=</span> LinearRegression()</span>
+<span id="cb11-24"><a href="#cb11-24" aria-hidden="true" tabindex="-1"></a>model.fit(x_train.reshape(<span class="op">-</span><span class="dv">1</span>, <span class="dv">1</span>), y_train)</span>
+<span id="cb11-25"><a href="#cb11-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-26"><a href="#cb11-26" aria-hidden="true" tabindex="-1"></a>train_prediction <span class="op">=</span> model.predict(</span>
+<span id="cb11-27"><a href="#cb11-27" aria-hidden="true" tabindex="-1"></a>    x_train.reshape(<span class="op">-</span><span class="dv">1</span>, <span class="dv">1</span>)</span>
+<span id="cb11-28"><a href="#cb11-28" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb11-29"><a href="#cb11-29" aria-hidden="true" tabindex="-1"></a>production_prediction <span class="op">=</span> model.predict(</span>
+<span id="cb11-30"><a href="#cb11-30" aria-hidden="true" tabindex="-1"></a>    x_production.reshape(<span class="op">-</span><span class="dv">1</span>, <span class="dv">1</span>)</span>
+<span id="cb11-31"><a href="#cb11-31" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb11-32"><a href="#cb11-32" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-33"><a href="#cb11-33" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(</span>
+<span id="cb11-34"><a href="#cb11-34" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Training RMSE:"</span>,</span>
+<span id="cb11-35"><a href="#cb11-35" aria-hidden="true" tabindex="-1"></a>    mean_squared_error(</span>
+<span id="cb11-36"><a href="#cb11-36" aria-hidden="true" tabindex="-1"></a>        y_train,</span>
+<span id="cb11-37"><a href="#cb11-37" aria-hidden="true" tabindex="-1"></a>        train_prediction</span>
+<span id="cb11-38"><a href="#cb11-38" aria-hidden="true" tabindex="-1"></a>    ) <span class="op">**</span> <span class="fl">0.5</span></span>
+<span id="cb11-39"><a href="#cb11-39" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb11-40"><a href="#cb11-40" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-41"><a href="#cb11-41" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(</span>
+<span id="cb11-42"><a href="#cb11-42" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Production RMSE:"</span>,</span>
+<span id="cb11-43"><a href="#cb11-43" aria-hidden="true" tabindex="-1"></a>    mean_squared_error(</span>
+<span id="cb11-44"><a href="#cb11-44" aria-hidden="true" tabindex="-1"></a>        y_production,</span>
+<span id="cb11-45"><a href="#cb11-45" aria-hidden="true" tabindex="-1"></a>        production_prediction</span>
+<span id="cb11-46"><a href="#cb11-46" aria-hidden="true" tabindex="-1"></a>    ) <span class="op">**</span> <span class="fl">0.5</span></span>
+<span id="cb11-47"><a href="#cb11-47" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb11-48"><a href="#cb11-48" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-49"><a href="#cb11-49" aria-hidden="true" tabindex="-1"></a>grid <span class="op">=</span> np.linspace(<span class="op">-</span><span class="dv">4</span>, <span class="dv">5</span>, <span class="dv">400</span>)</span>
+<span id="cb11-50"><a href="#cb11-50" aria-hidden="true" tabindex="-1"></a>grid_prediction <span class="op">=</span> model.predict(grid.reshape(<span class="op">-</span><span class="dv">1</span>, <span class="dv">1</span>))</span>
+<span id="cb11-51"><a href="#cb11-51" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-52"><a href="#cb11-52" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">8</span>, <span class="dv">5</span>))</span>
+<span id="cb11-53"><a href="#cb11-53" aria-hidden="true" tabindex="-1"></a>plt.scatter(</span>
+<span id="cb11-54"><a href="#cb11-54" aria-hidden="true" tabindex="-1"></a>    x_train,</span>
+<span id="cb11-55"><a href="#cb11-55" aria-hidden="true" tabindex="-1"></a>    y_train,</span>
+<span id="cb11-56"><a href="#cb11-56" aria-hidden="true" tabindex="-1"></a>    alpha<span class="op">=</span><span class="fl">0.35</span>,</span>
+<span id="cb11-57"><a href="#cb11-57" aria-hidden="true" tabindex="-1"></a>    label<span class="op">=</span><span class="st">"Training observations"</span></span>
+<span id="cb11-58"><a href="#cb11-58" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb11-59"><a href="#cb11-59" aria-hidden="true" tabindex="-1"></a>plt.scatter(</span>
+<span id="cb11-60"><a href="#cb11-60" aria-hidden="true" tabindex="-1"></a>    x_production,</span>
+<span id="cb11-61"><a href="#cb11-61" aria-hidden="true" tabindex="-1"></a>    y_production,</span>
+<span id="cb11-62"><a href="#cb11-62" aria-hidden="true" tabindex="-1"></a>    alpha<span class="op">=</span><span class="fl">0.35</span>,</span>
+<span id="cb11-63"><a href="#cb11-63" aria-hidden="true" tabindex="-1"></a>    label<span class="op">=</span><span class="st">"Production observations"</span></span>
+<span id="cb11-64"><a href="#cb11-64" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb11-65"><a href="#cb11-65" aria-hidden="true" tabindex="-1"></a>plt.plot(</span>
+<span id="cb11-66"><a href="#cb11-66" aria-hidden="true" tabindex="-1"></a>    grid,</span>
+<span id="cb11-67"><a href="#cb11-67" aria-hidden="true" tabindex="-1"></a>    grid_prediction,</span>
+<span id="cb11-68"><a href="#cb11-68" aria-hidden="true" tabindex="-1"></a>    label<span class="op">=</span><span class="st">"Fitted linear model"</span></span>
+<span id="cb11-69"><a href="#cb11-69" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb11-70"><a href="#cb11-70" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">"Distribution Shift Exposes Model Misspecification"</span>)</span>
+<span id="cb11-71"><a href="#cb11-71" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">"x"</span>)</span>
+<span id="cb11-72"><a href="#cb11-72" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">"y"</span>)</span>
+<span id="cb11-73"><a href="#cb11-73" aria-hidden="true" tabindex="-1"></a>plt.legend()</span>
+<span id="cb11-74"><a href="#cb11-74" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb11-75"><a href="#cb11-75" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>Training RMSE: 0.26750159054323086
+Production RMSE: 1.4247840786736916</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="chapter-12_files/figure-html/cell-7-output-2.png" width="758" height="470" class="figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="subgroup-performance-and-fairness" class="level2">
+<h2 class="anchored" data-anchor-id="subgroup-performance-and-fairness">9. Subgroup Performance and Fairness</h2>
+<section id="aggregate-metrics-can-hide-failure" class="level3">
+<h3 class="anchored" data-anchor-id="aggregate-metrics-can-hide-failure">9.1. Aggregate Metrics Can Hide Failure</h3>
+<p>Suppose two groups have sizes <span class="math inline">\(n_A\)</span> and <span class="math inline">\(n_B\)</span>. Aggregate error is</p>
+<p><span class="math display">\[
+R = \frac{ n_AR_A+n_BR_B }{ n_A+n_B }.
+\]</span></p>
+<p>If <span class="math inline">\(n_A\gg n_B\)</span>, poor performance in group <span class="math inline">\(B\)</span> may barely affect the overall metric.</p>
+<p>Evaluation should therefore examine:</p>
+<ul>
+<li>performance by demographic group;</li>
+<li>performance by location;</li>
+<li>performance by device type;</li>
+<li>performance by time;</li>
+<li>performance by severity;</li>
+<li>performance by data-quality level;</li>
+<li>performance for rare and high-cost cases.</li>
+</ul>
+<p>These slices should be planned before inspecting results when possible, because searching many slices can create false discoveries.</p>
+</section>
+<section id="relevant-group-metrics" class="level3">
+<h3 class="anchored" data-anchor-id="relevant-group-metrics">9.2. Relevant Group Metrics</h3>
+<p>For classification, possible comparisons include:</p>
+<blockquote class="blockquote">
+<p><strong>True-positive rate</strong></p>
+</blockquote>
+<p><span class="math display">\[
+TPR_g = P(\hat Y=1\mid Y=1,G=g).
+\]</span></p>
+<blockquote class="blockquote">
+<p><strong>False-positive rate</strong></p>
+</blockquote>
+<p><span class="math display">\[
+FPR_g = P(\hat Y=1\mid Y=0,G=g).
+\]</span></p>
+<blockquote class="blockquote">
+<p><strong>Positive predictive value</strong></p>
+</blockquote>
+<p><span class="math display">\[
+PPV_g = P(Y=1\mid\hat Y=1,G=g).
+\]</span></p>
+<blockquote class="blockquote">
+<p><strong>Calibration by group</strong></p>
+</blockquote>
+<p><span class="math display">\[
+P(Y=1\mid\hat p=p,G=g)\approx p.
+\]</span></p>
+<p>These criteria cannot always be satisfied simultaneously when group base rates differ. Therefore, fairness evaluation requires explicit decisions about the relevant harms and institutional context.</p>
+<hr>
+<p>The purpose of modeling is not to produce an elegant fitted function. It is to support reliable understanding and effective action.</p>
+<p>Evaluation begins by separating training, model selection, and final assessment. Cross-validation, bootstrap methods, temporal splits, spatial splits, and grouped splits are not interchangeable conventions. They represent different claims about how the model will generalize.</p>
+<p>Leakage is among the most dangerous evaluation failures because it can produce strong apparent performance without genuine predictive information. Every operation that learns from data—including scaling, feature selection, imputation, PCA, threshold selection, and hyperparameter tuning—must be contained within the appropriate training partition.</p>
+<p>Metrics must match the decision. RMSE and MAE correspond to different error priorities. Accuracy can be meaningless under imbalance. ROC-AUC evaluates ranking but not operational thresholds. Precision, recall, calibration, top-k performance, and expected cost answer different questions. No single metric is universally sufficient.</p>
+<p>Debugging requires more than comparing scalar scores. Residual plots reveal nonlinear misspecification, heteroskedasticity, temporal dependence, and subgroup failure. Sensitivity analysis reveals unstable parameters and predictions. Calibration diagnostics reveal whether reported probabilities are trustworthy. Learning curves indicate whether the limiting factor is bias, variance, or insufficient data.</p>
+<p>Production evaluation expands the object of analysis from the model to the entire system. Feature pipelines, database joins, software versions, thresholds, human review, latency, and feedback loops can determine whether an apparently strong model succeeds or fails. A production model must therefore be tested and monitored as a data-dependent software system, not merely as a mathematical function.</p>
+<p>Stakeholders rarely need every derivation underlying the model. They need clear answers:</p>
+<ul>
+<li>Does it improve the current process?</li>
+<li>What does it cost?</li>
+<li>Which errors remain?</li>
+<li>Who is harmed when it fails?</li>
+<li>How many cases can be processed?</li>
+<li>What evidence supports deployment?</li>
+<li>How will failure be detected?</li>
+<li>How quickly can the system be rolled back?</li>
+</ul>
+<p>The strongest final model is not necessarily the most complicated or the most accurate under one benchmark. It is the model whose evidence, decision value, operational behavior, and limitations are understood well enough that the organization can use it responsibly.</p>
 <p>Previous chapter: <a href="../../teaching/cds-303/chapter-11.html">Data Modeling - Clustering</a></p>
 
 
 </section>
+</section>
 
-</main> <!-- /main -->
+
+<div id="quarto-appendix" class="default"><section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes"><h2 class="anchored quarto-appendix-heading">Footnotes</h2>
+
+<ol>
+<li id="fn1"><p>Sculley, D., Gary Holt, Daniel Golovin, et al.&nbsp;“Hidden Technical Debt in Machine Learning Systems.” <em>Advances in Neural Information Processing Systems</em> 28 (2015). <a href="https://proceedings.neurips.cc/paper_files/paper/2015/hash/86df7dcfd896fcaf2674f757a2463eba-Abstract.html">https://proceedings.neurips.cc/paper_files/paper/2015/hash/86df7dcfd896fcaf2674f757a2463eba-Abstract.html</a>.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn2"><p>Efron, Bradley, and Robert Tibshirani. “Improvements on Cross-Validation: The 632+ Bootstrap Method.” <em>Journal of the American Statistical Association</em> 92, no. 438 (1997): 548–60. <a href="https://doi.org/10.1080/01621459.1997.10474007">https://doi.org/10.1080/01621459.1997.10474007</a>.<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn3"><p>Guo, Chuan, Geoff Pleiss, Yu Sun, and Kilian Q. Weinberger. “On Calibration of Modern Neural Networks.” <em>Proceedings of the 34th International Conference on Machine Learning</em>, July 17, 2017, 1321–30. <a href="https://proceedings.mlr.press/v70/guo17a.html">https://proceedings.mlr.press/v70/guo17a.html</a>.<a href="#fnref3" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn4"><p>Brier, Glenn W. <em>VERIFICATION OF FORECASTS EXPRESSED IN TERMS OF PROBABILITY</em>. Monthly Weather Review. January 1, 1950. <a href="https://journals.ametsoc.org/view/journals/mwre/78/1/1520-0493_1950_078_0001_vofeit_2_0_co_2.xml">https://journals.ametsoc.org/view/journals/mwre/78/1/1520-0493_1950_078_0001_vofeit_2_0_co_2.xml</a>.<a href="#fnref4" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+</ol>
+</section></div></main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
   window.document.addEventListener("DOMContentLoaded", function (event) {
     const icon = "";
