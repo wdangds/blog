@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+PYTHON_BIN="/Library/Frameworks/Python.framework/Versions/3.14/bin/python3"
+PYTHON_DIR="$(dirname "$PYTHON_BIN")"
+
+export QUARTO_PYTHON="$PYTHON_BIN"
+export PATH="$PYTHON_DIR:/usr/local/bin:/opt/homebrew/bin:/usr/bin:/bin:/usr/sbin:/sbin:${PATH:-}"
+
+exec /usr/local/bin/quarto "$@"

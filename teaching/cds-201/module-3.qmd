@@ -1,0 +1,34 @@
+---
+title: Data, Ethics, and Reproducible Workflows
+tags:
+  - computational-social-science
+  - ethics
+  - reproducibility
+sidebar: teaching
+---
+
+## Overview
+
+Add module overview here.
+
+## Learning Objectives
+
+- Add learning objective.
+- Add learning objective.
+- Add learning objective.
+
+## Materials
+
+- Add reading, slide, dataset, or notebook links.
+
+## Activities
+
+- Add in-class activity or lab prompt.
+
+## Assignment
+
+Add assignment details here.
+
+## Notes
+
+Add teaching notes here.

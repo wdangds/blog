@@ -1,0 +1,13 @@
+jupyter: python3
+
+execute:
+  echo: true
+  warning: false
+  message: false
+  freeze: auto
+
+format:
+  html:
+    code-copy: true
+    code-fold: true
+    code-summary: "Show code"

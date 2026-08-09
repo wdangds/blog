@@ -31,6 +31,19 @@ website:
         - section: "Teaching"
           href: teaching/index.qmd
           contents:
+            - section: "CDS 201: Introduction to Computational Social Science"
+              href: teaching/cds-201/index.qmd
+              contents:
+                - teaching/cds-201/module-1.qmd
+                - teaching/cds-201/module-2.qmd
+                - teaching/cds-201/module-3.qmd
+                - teaching/cds-201/module-4.qmd
+                - teaching/cds-201/module-5.qmd
+                - teaching/cds-201/module-6.qmd
+                - teaching/cds-201/module-7.qmd
+                - teaching/cds-201/module-8.qmd
+                - teaching/cds-201/module-9.qmd
+                - teaching/cds-201/module-10.qmd
             - section: "CDS 303: Scientific Data Mining"
               href: teaching/cds-303/index.qmd
               contents:

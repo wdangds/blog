@@ -1,7 +1,8 @@
 .DS_Store
 .quarto/
 _site/
-**/*.quarto_ipynb
+**/*.quarto_ipynb*
+**/*_files/
 teaching/cds-303/data/
 node_modules/
 public/
@@ -13,3 +14,5 @@ private/
 replit.nix
 
 /.quarto/
+
+**/*.quarto_ipynb

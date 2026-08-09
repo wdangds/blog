@@ -1,0 +1,34 @@
+---
+title: Simulation and Agent-Based Modeling
+tags:
+  - computational-social-science
+  - simulation
+  - agent-based-modeling
+sidebar: teaching
+---
+
+## Overview
+
+Add module overview here.
+
+## Learning Objectives
+
+- Add learning objective.
+- Add learning objective.
+- Add learning objective.
+
+## Materials
+
+- Add reading, slide, dataset, or notebook links.
+
+## Activities
+
+- Add in-class activity or lab prompt.
+
+## Assignment
+
+Add assignment details here.
+
+## Notes
+
+Add teaching notes here.

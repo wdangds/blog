@@ -1,0 +1,17 @@
+---
+title: "CDS 201: Introduction to Computational Social Science"
+sidebar: teaching
+---
+
+## Modules
+
+1. [Module 1: Mathematical, Physical, and Statistical Foundations of Computational Social Science](module-1.qmd)
+2. [Module 2: Research Questions, Concepts, and Measurement](module-2.qmd)
+3. [Module 3: Data, Ethics, and Reproducible Workflows](module-3.qmd)
+4. [Module 4: Working with Social Data in Python](module-4.qmd)
+5. [Module 5: Text as Data](module-5.qmd)
+6. [Module 6: Networks and Social Structure](module-6.qmd)
+7. [Module 7: Simulation and Agent-Based Modeling](module-7.qmd)
+8. [Module 8: Prediction, Classification, and Model Evaluation](module-8.qmd)
+9. [Module 9: Causal Inference and Experiments](module-9.qmd)
+10. [Module 10: Communicating Computational Social Science Projects](module-10.qmd)
