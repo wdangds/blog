@@ -1,0 +1,8 @@
+---
+title: "CDS 201: Introduction to Computational Social Science"
+sidebar: teaching
+---
+
+## Modules
+
+1. [Module 1: Mathematical, Physical, and Statistical Foundations of Computational Social Science](module-1.qmd)
