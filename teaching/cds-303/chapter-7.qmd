@@ -2783,4 +2783,3 @@ SVMs also extend beyond binary classification. SVR uses an $\epsilon$-insensitiv
 
 Next chapter: [Data modeling - ANN](chapter-8.qmd)
 
-

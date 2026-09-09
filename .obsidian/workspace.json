@@ -4,21 +4,17 @@
     "type": "split",
     "children": [
       {
-        "id": "8208b7221a377859",
+        "id": "adf77aca7cd38f8e",
         "type": "tabs",
         "children": [
           {
-            "id": "278edfeea4ca20f5",
+            "id": "2ee6bd500ac2595e",
             "type": "leaf",
             "state": {
-              "type": "markdown",
-              "state": {
-                "file": "teaching/cds-303/chapter-8.qmd",
-                "mode": "source",
-                "source": false
-              },
+              "type": "empty",
+              "state": {},
               "icon": "lucide-file",
-              "title": "chapter-8"
+              "title": "New tab"
             }
           }
         ]
@@ -41,7 +37,9 @@
               "type": "file-explorer",
               "state": {
                 "sortOrder": "alphabetical",
-                "autoReveal": false
+                "autoReveal": false,
+                "showSearch": false,
+                "searchQuery": ""
               },
               "icon": "lucide-folder-closed",
               "title": "Files"
@@ -78,8 +76,7 @@
       }
     ],
     "direction": "horizontal",
-    "width": 200,
-    "collapsed": true
+    "width": 200
   },
   "right": {
     "id": "9bbd21cf42bdba39",
@@ -187,29 +184,29 @@
       "qmd-as-md-obsidian:Render Quarto to PDF": false
     }
   },
-  "active": "278edfeea4ca20f5",
+  "active": "2ee6bd500ac2595e",
   "lastOpenFiles": [
-    "_site/teaching/cds-303/chapter-7_files/figure-html/fig-svr-with-epsilon-tube-output-1.png",
-    "_site/teaching/cds-303/chapter-7_files/figure-html/fig-svr--output-1.png",
-    "_site/teaching/cds-303/chapter-7_files/figure-html/fig-rbf-kernel-as-local-similarity-output-1.png",
-    "_site/teaching/cds-303/chapter-7_files/figure-html/fig-rbf-ker-output-1.png",
-    "_site/teaching/cds-303/chapter-7_files/figure-html/fig-one-class-svm-output-1.png",
-    "_site/teaching/cds-303/chapter-7_files/figure-html/fig-maximum-margin-hyperplane-output-1.png",
-    "_site/teaching/cds-303/chapter-7_files/figure-html/fig-kernel-decision-boundaries-output-3.png",
-    "_site/teaching/cds-303/chapter-7_files/figure-html/fig-kernel-decision-boundaries-output-2.png",
-    "_site/teaching/cds-303/chapter-7_files/figure-html/fig-kernel-decision-boundaries-output-1.png",
-    "_site/teaching/cds-303/chapter-7_files/figure-html/fig-hinge-loss-output-1.png",
-    "_site/teaching/cds-303/chapter-7_files/figure-html/fig-comparing-distance-geometries-output-1.png",
-    "_site/teaching/cds-303/chapter-7_files/figure-html",
-    "_site/teaching/cds-303/chapter-7_files",
-    "_site/teaching/cds-303/chapter-6_files/figure-html",
-    "_site/teaching/cds-303/chapter-6_files",
-    "_site/teaching/cds-303/chapter-5_files/figure-html",
-    "_site/teaching/cds-303/chapter-5_files",
-    "_site/teaching/cds-303/chapter-4_files/figure-html",
-    "_site/teaching/cds-303/chapter-4_files",
-    "_site/teaching/cds-303/chapter-3_files/figure-html",
-    "_site/teaching/cds-303/chapter-3_files",
+    "teaching/cds-303/chapter-1.qmd",
+    "teaching/cds-201/module-1.qmd",
+    "site_libs/bootstrap/bootstrap-icons.woff",
+    "site_libs/bootstrap/bootstrap.min.js",
+    "site_libs/bootstrap/bootstrap-icons.css",
+    "site_libs/bootstrap/bootstrap-0441d281c0042f78ca5e6da214781463.min.css",
+    "site_libs/bootstrap",
+    "site_libs/quarto-html/tabsets/tabsets.js",
+    "site_libs/quarto-html/zenscroll-min.js",
+    "site_libs/quarto-html/tippy.umd.min.js",
+    "site_libs/quarto-html/tippy.css",
+    "teaching/cds-201/module-1_files/figure-html/fig-randomization-output-1.png",
+    "teaching/cds-201/module-1_files/figure-html/fig-lln-clt-output-1.png",
+    "teaching/cds-201/module-1_files/figure-html/fig-free-fall-output-1.png",
+    "teaching/cds-201/module-1_files/figure-html/fig-chaos-output-1.png",
+    "teaching/cds-201/module-1_files/figure-html/fig-accuracy-precision-output-1.png",
+    "_site/teaching/cds-201/module-1_files/figure-html/fig-randomization-output-1.png",
+    "_freeze/teaching/cds-201/module-1/figure-html/fig-randomization-output-1.png",
+    "_site/teaching/cds-201/module-1_files/figure-html/fig-accuracy-precision-output-1.png",
+    "_freeze/teaching/cds-201/module-1/figure-html/fig-accuracy-precision-output-1.png",
+    "_site/teaching/cds-201/module-1_files/figure-html/fig-lln-clt-output-1.png",
     "archive/quartz-content/Teaching/CDS 303/Chapter 1.md",
     "Untitled.md",
     "archive/quartz-content/Teaching/CDS 303/Chapter 3.md",

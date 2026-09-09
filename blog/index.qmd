@@ -7,6 +7,24 @@ page-layout: full
 
 ::::: {.blog-archive}
 
+## September 2026
+
+:::: {.blog-entry}
+::: {.blog-entry-copy}
+### [Foundations of Computational Algorithms and Computational Complexity](foundations-of-computational-algorithms-and-computational-complexity.qmd)
+
+::: {.blog-entry-tags}
+[Algorithms]{.blog-tag}
+[Computational complexity]{.blog-tag}
+[Theoretical computer science]{.blog-tag}
+:::
+:::
+
+::: {.blog-entry-date}
+September 6
+:::
+::::
+
 ## July 2026
 
 :::: {.blog-entry}
