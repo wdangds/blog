@@ -82,7 +82,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="../site_libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-fb5f3b3fb26a177c4af78adf70c87a98.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-ee55caa158e530c0c52bbb44840fb07f.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -765,7 +765,7 @@ Warning
 <p>Previously, we demonstrated the shape (or visualization) of the multivariate normal distribution, but that example did not cover the problem end to end. In the rest of this section, we will address every property from Part III, allowing us to apply the guidelines practically rather than just describing them.</p>
 <p><big>Setting up: fit, sample, evaluate</big></p>
 <p><code>scipy.stats.multivariate_normal</code> and plain <code>numpy</code> cover the basics (density evaluation and sampling):</p>
-<div id="36fb79dd" class="cell" data-execution_count="5">
+<div id="2cd5d239" class="cell" data-execution_count="5">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> scipy.stats <span class="im">import</span> multivariate_normal</span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -784,7 +784,7 @@ Warning
 </div>
 <p><big>Applying the conditioning formula</big></p>
 <p><code>scipy</code> doesn’t expose conditioning directly, so this is worth writing once by hand.</p>
-<div id="e7421234" class="cell" data-execution_count="6">
+<div id="b173a9e1" class="cell" data-execution_count="6">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> condition_gaussian(mu, Sigma, idx1, idx2, x2):</span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Return the conditional N(x1 | x2) parameters.</span></span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -805,7 +805,7 @@ Warning
 <p>This function is the measurement-update step of a Kalman filter, once we set it up with the right blocks. If <span class="math inline">\(\mathbf x\)</span> is our unknown state and <span class="math inline">\(\mathbf y\)</span> is a noisy linear observation of it, <span class="math inline">\(y=Hx + \epsilon\)</span>, the joint <span class="math inline">\((x,y)\)</span> is Gaussian whenever the prior on <span class="math inline">\(x\)</span> and the observation noise are, and the posterior over <span class="math inline">\(x\)</span> given the observed is exactly <code>condition_gaussian</code> applied to that joint<a href="#fn13" class="footnote-ref" id="fnref13" role="doc-noteref"><sup>13</sup></a><a href="#fn14" class="footnote-ref" id="fnref14" role="doc-noteref"><sup>14</sup></a>. This means we can prototype a Kalman-style sensor fusion update with the four lines above before ever writing a filtering library call.</p>
 <p><big>Mahalanobis-distance anomaly detection</big></p>
 <p>Putting the whole guideline together on a concrete task: flag anomalous points in correlated multivariate data, using a shrinkage-regularized covariance estimate (Step 3) and the chi-squared calibration of the Mahalanobis distance (Step 4):</p>
-<div id="936ff183" class="cell" data-execution_count="7">
+<div id="8bba1970" class="cell" data-execution_count="7">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.covariance <span class="im">import</span> LedoitWolf</span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> scipy.stats <span class="im">import</span> chi2</span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -923,7 +923,7 @@ Figure&nbsp;4: The 99% cutoff is an ellipse, not a circle, because it respects t
 </div>
 <p><big>A worked portfolio-risk snippet</big></p>
 <p>The same <span class="math inline">\(\mu\)</span>, <span class="math inline">\(\Sigma\)</span> also drive the mean-variance side of things directly. For portfolio weights <span class="math inline">\(\mathbf w\)</span> (summing to 1), the portfolio variance is a direct quadratic form in the covariance matrix — the same object as the Mahalanobis exponent, just without reverse:</p>
-<div id="26242e94" class="cell" data-execution_count="9">
+<div id="38709e27" class="cell" data-execution_count="9">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>w <span class="op">=</span> np.array([<span class="fl">0.60</span>, <span class="fl">0.40</span>])</span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>portfolio_var  <span class="op">=</span> w <span class="op">@</span> Sigma_hat <span class="op">@</span> w</span>
@@ -933,7 +933,7 @@ Figure&nbsp;4: The 99% cutoff is an ellipse, not a circle, because it respects t
 <span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> scipy.stats <span class="im">import</span> norm</span>
 <span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>VaR_99 <span class="op">=</span> <span class="op">-</span>(portfolio_mean <span class="op">+</span> norm.ppf(<span class="fl">0.01</span>) <span class="op">*</span> np.sqrt(portfolio_var))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<div id="601d88a1" class="cell" data-execution_count="10">
+<div id="e8fe904a" class="cell" data-execution_count="10">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># w1 ranges from 0 to 1, and w2 = 1 - w1</span></span>
