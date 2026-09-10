@@ -524,7 +524,9 @@ T(n) = \cases{
 $$
 
 For **Merge Sort**, we assume $n$ is an exact power of 2 for simplicity. The algorithm divides the array into $a=2$ subproblems, each of size have exactly $n/b = n/2$. 
+
 - **Dividing Cost** $D(n)$: Finding the middle of the array takes constant time, $D(n) = \Theta(1)$. 
+
 - **Combining Cost** $C(n)$: Merging two sorted subarrays of total size $n$ requires linear time, $C(n) = \Theta(n)$.
 
 This yields the classical recursive equation:
