@@ -440,7 +440,7 @@ window.Quarto = {
 f(n) = 100n \qquad \text{and} \qquad g(n)= n^2+5
 \]</span></p>
 <p>For small inputs (<span class="math inline">\(n&lt;100\)</span>), <span class="math inline">\(f(n)\)</span> is larger. However, there is a <em>crossover point</em> (<span class="math inline">\(n_0=100\)</span>), beyond which the quadratic term of <span class="math inline">\(g(n)\)</span> dominates. As <span class="math inline">\(n\to \infty\)</span>, <span class="math inline">\(g(n)\)</span> grows infinitely faster than <span class="math inline">\(f(n)\)</span>, making <span class="math inline">\(f(n)\)</span> asymptotically superior because its resource footprint grows slower.</p>
-<div id="8c8ec068" class="cell" data-execution_count="1">
+<div id="f4419e21" class="cell" data-execution_count="1">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -460,7 +460,7 @@ f(n) = 100n \qquad \text{and} \qquad g(n)= n^2+5
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="foundations-of-computational-algorithms-and-computational-complexity_files/figure-html/cell-2-output-1.png" width="610" height="449" class="figure-img"></p>
+<p><img src="foundations-of-computational-algorithms-and-computational-complexity_files/figure-html/cell-2-output-1.png" width="611" height="451" class="figure-img"></p>
 </figure>
 </div>
 </div>
@@ -641,7 +641,7 @@ n! \gg c^n \gg n^3 \gg n^2 \gg n^{1+\epsilon}\gg n\log n \gg \sqrt{n} \gg n \gg 
 <li><strong>Operational Definition</strong>: <span class="math inline">\(T(n) = c\)</span> steps.</li>
 <li><strong>Canonical Code Template</strong>:</li>
 </ul>
-<div id="a098b0ed" class="cell" data-execution_count="2">
+<div id="193af395" class="cell" data-execution_count="2">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> get_first_element(arr):</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> arr[<span class="dv">0</span>]  <span class="co"># Accessing the first element is a constant-time operation</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
@@ -661,7 +661,7 @@ n! \gg c^n \gg n^3 \gg n^2 \gg n^{1+\epsilon}\gg n\log n \gg \sqrt{n} \gg n \gg 
 <li><strong>Operational Definition</strong>: <span class="math inline">\(T(n) = T(n/2) + O(1)\)</span>.</li>
 <li><strong>Canonical Code Template</strong>:</li>
 </ul>
-<div id="eb4c9f1e" class="cell" data-execution_count="3">
+<div id="fba6f840" class="cell" data-execution_count="3">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> binary_search_digits(n):</span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>    count <span class="op">=</span> <span class="dv">0</span></span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">while</span> n <span class="op">&gt;</span> <span class="dv">0</span>:</span>
@@ -684,7 +684,7 @@ n! \gg c^n \gg n^3 \gg n^2 \gg n^{1+\epsilon}\gg n\log n \gg \sqrt{n} \gg n \gg 
 <li><strong>Operational Definition</strong>: <span class="math inline">\(T(n) = c\cdot n\)</span>.</li>
 <li><strong>Canonical Code Template</strong>:</li>
 </ul>
-<div id="aed56e2e" class="cell" data-execution_count="4">
+<div id="cdda6bd3" class="cell" data-execution_count="4">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> find_max_element(arr):</span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>    max_val <span class="op">=</span> arr[<span class="dv">0</span>]</span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> element <span class="kw">in</span> arr: <span class="co"># traverse the list of size $n$ exactly once</span></span>
@@ -707,7 +707,7 @@ n! \gg c^n \gg n^3 \gg n^2 \gg n^{1+\epsilon}\gg n\log n \gg \sqrt{n} \gg n \gg 
 <li><strong>Operational Definition</strong>: <span class="math inline">\(T(n) = 2T(n/2) + O(n)\)</span>.</li>
 <li><strong>Canonical Code Template</strong>:</li>
 </ul>
-<div id="7c459643" class="cell" data-execution_count="5">
+<div id="1393f5f2" class="cell" data-execution_count="5">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> merge_sort(arr):</span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="bu">len</span>(arr) <span class="op">&lt;=</span> <span class="dv">1</span>:</span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> arr</span>
@@ -731,7 +731,7 @@ n! \gg c^n \gg n^3 \gg n^2 \gg n^{1+\epsilon}\gg n\log n \gg \sqrt{n} \gg n \gg 
 <li><strong>Operational Definition</strong>: <span class="math inline">\(T(n) = c\cdot n^2\)</span>.</li>
 <li><strong>Canonical Code Template</strong>:</li>
 </ul>
-<div id="39670317" class="cell" data-execution_count="6">
+<div id="a41f6fc1" class="cell" data-execution_count="6">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> find_duplicates(arr):</span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>    n <span class="op">=</span> <span class="bu">len</span>(arr)</span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(n):</span>
@@ -755,7 +755,7 @@ n! \gg c^n \gg n^3 \gg n^2 \gg n^{1+\epsilon}\gg n\log n \gg \sqrt{n} \gg n \gg 
 <li><strong>Operational Definition</strong>: <span class="math inline">\(T(n) = c\cdot n^3\)</span>.</li>
 <li><strong>Canonical Code Template</strong>:</li>
 </ul>
-<div id="697d251e" class="cell" data-execution_count="7">
+<div id="c8fbc6a6" class="cell" data-execution_count="7">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> cubic_matrix_multiplication(A, B, n):</span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>    C <span class="op">=</span> [[<span class="dv">0</span>] <span class="op">*</span> n <span class="cf">for</span> _ <span class="kw">in</span> <span class="bu">range</span>(n)]  <span class="co"># Initialize result matrix</span></span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(n):</span>
@@ -779,7 +779,7 @@ n! \gg c^n \gg n^3 \gg n^2 \gg n^{1+\epsilon}\gg n\log n \gg \sqrt{n} \gg n \gg 
 <li><strong>Operational Definition</strong>: <span class="math inline">\(T(n) = T(n-1) + T(n-2)\)</span>.</li>
 <li><strong>Canonical Code Template</strong>:</li>
 </ul>
-<div id="b0b65e6f" class="cell" data-execution_count="8">
+<div id="37db3b80" class="cell" data-execution_count="8">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> recursive_fibonacci(n):</span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> n <span class="op">&lt;=</span> <span class="dv">1</span>:</span>
 <span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> n</span>
@@ -801,7 +801,7 @@ n! \gg c^n \gg n^3 \gg n^2 \gg n^{1+\epsilon}\gg n\log n \gg \sqrt{n} \gg n \gg 
 <li><strong>Operational Definition</strong>: <span class="math inline">\(T(n) = n \cdot T(n-1)\)</span>.</li>
 <li><strong>Canonical Code Template</strong>:</li>
 </ul>
-<div id="336508d1" class="cell" data-execution_count="9">
+<div id="403858de" class="cell" data-execution_count="9">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> generate_permutations(arr):</span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="bu">len</span>(arr) <span class="op">==</span> <span class="dv">0</span>:</span>
 <span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> [[]]  <span class="co"># Base case: one permutation of an empty list</span></span>
@@ -873,7 +873,7 @@ n! \gg c^n \gg n^3 \gg n^2 \gg n^{1+\epsilon}\gg n\log n \gg \sqrt{n} \gg n \gg 
 <blockquote class="blockquote">
 <p><strong>Selection Sort Python Implementation</strong>:</p>
 </blockquote>
-<div id="e7c38aca" class="cell" data-execution_count="10">
+<div id="47ed07b1" class="cell" data-execution_count="10">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> selection_sort(arr):</span>
 <span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>    n <span class="op">=</span> <span class="bu">len</span>(arr)</span>
 <span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(n):</span>
@@ -905,7 +905,7 @@ T(n) \in \Theta(n^2) (\text{quadratic time complexity})
 <blockquote class="blockquote">
 <p><strong>Naive Matrix Multiplication Python Implementation</strong></p>
 </blockquote>
-<div id="526d5608" class="cell" data-execution_count="11">
+<div id="6483e059" class="cell" data-execution_count="11">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> matrix_multiply(A, B, x, y, z):</span>
 <span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""</span></span>
 <span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="co">    A is of size x * y, B is of size y * z, and C will be of size x * z.</span></span>
@@ -946,7 +946,11 @@ T(n) = \cases{
   a T(n/b) + D(n) + C(n), &amp; otherwise
 }
 \]</span></p>
-<p>For <strong>Merge Sort</strong>, we assume <span class="math inline">\(n\)</span> is an exact power of 2 for simplicity. The algorithm divides the array into <span class="math inline">\(a=2\)</span> subproblems, each of size have exactly <span class="math inline">\(n/b = n/2\)</span>. - <strong>Dividing Cost</strong> <span class="math inline">\(D(n)\)</span>: Finding the middle of the array takes constant time, <span class="math inline">\(D(n) = \Theta(1)\)</span>. - <strong>Combining Cost</strong> <span class="math inline">\(C(n)\)</span>: Merging two sorted subarrays of total size <span class="math inline">\(n\)</span> requires linear time, <span class="math inline">\(C(n) = \Theta(n)\)</span>.</p>
+<p>For <strong>Merge Sort</strong>, we assume <span class="math inline">\(n\)</span> is an exact power of 2 for simplicity. The algorithm divides the array into <span class="math inline">\(a=2\)</span> subproblems, each of size have exactly <span class="math inline">\(n/b = n/2\)</span>.</p>
+<ul>
+<li><p><strong>Dividing Cost</strong> <span class="math inline">\(D(n)\)</span>: Finding the middle of the array takes constant time, <span class="math inline">\(D(n) = \Theta(1)\)</span>.</p></li>
+<li><p><strong>Combining Cost</strong> <span class="math inline">\(C(n)\)</span>: Merging two sorted subarrays of total size <span class="math inline">\(n\)</span> requires linear time, <span class="math inline">\(C(n) = \Theta(n)\)</span>.</p></li>
+</ul>
 <p>This yields the classical recursive equation:</p>
 <p><span class="math display">\[
 T(n) = 2 T(n/2) + \Theta(n)
